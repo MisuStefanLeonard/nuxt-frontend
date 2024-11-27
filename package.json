@@ -1,0 +1,58 @@
+{
+  "name": "nuxt-frontend",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "nuxi dev",
+    "build": "nuxi build",
+    "start": "nuxi preview",
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "@gtm-support/vue-gtm": "^3.1.0",
+    "@mdi/font": "^7.4.47",
+    "@nuxt/eslint-config": "^0.5.5",
+    "axios": "^1.7.4",
+    "bcryptjs": "^2.4.3",
+    "bootstrap": "^5.3.3",
+    "cookie": "^0.6.0",
+    "js-cookie": "^3.0.5",
+    "mitt": "^3.0.1",
+    "pinia": "^2.2.2",
+    "pinia-plugin-persistedstate": "^4.0.2",
+    "qs": "^6.13.0",
+    "sweetalert2": "^11.12.4",
+    "vee-validate": "^4.13.2",
+    "vue": "^3.2.13",
+    "vuetify": "^3.7.0",
+    "yup": "^1.4.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.12.16",
+    "@babel/eslint-parser": "^7.12.16",
+    "@nuxtjs/eslint-module": "^3.1.0",
+    "@nuxtjs/i18n": "^8.5.5",
+    "@pinia/nuxt": "^0.5.5",
+    "@types/linkify-it": "^5.0.0",
+    "eslint": "^8.0.0",
+    "eslint-plugin-vue": "^9.0.0",
+    "nuxt": "latest",
+    "postcss": "^8.4.41"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "@nuxt/eslint-config"
+    ],
+    "rules": {}
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead",
+    "not ie 11"
+  ]
+}

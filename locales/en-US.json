@@ -1,0 +1,173 @@
+{
+    "menu": {
+      "home": "Home",
+      "about": "About Us",
+      "contact": "Contact Us",
+      "shop": "Shop",
+      "allProducts" : "All products",
+      "cuverturi": "Bedspreads",
+      "perdele": "Curtains",
+      "draperii": "Drapes",
+      "perne": "Pillows",
+      "profile": "Profile",
+      "myProfile": "My Profile",
+      "logout": "Log Out",
+      "login": "Log In",
+      "register": "Register",
+      "language" : "Language",
+      "shoppingCart" : "Shopping cart"
+    },
+    "messages": {
+      "logoutSuccess": "You have been logged out",
+      "loginRequiredForProfile": "You need to log in to view your profile",
+      "loginRequired": "You need to be logged in!",
+      "loginRequiredForAdmin": "You are not allowed! Log in as administrator.",
+      "changedDataSuccessText": "The account email with the new data has been changed! Please log in again. Thank you for your patience. Redirecting to login.",
+      "textExpiredLink": "The activation link has expired! Don’t worry, click the button below to resend it. It will take 2-3 minutes. Thank you for your patience!",
+      "textConfirmationErrorAlert": "An error occurred while accessing the confirmation link. Please try again! We apologize for the inconvenience.",
+      "changedDataSuccess": "Your data has been updated! Thank you for your cooperation! You can close this page.",
+      "changeDataSuccessAdmin": "The account email with the new data has been changed! Please log in again. Thank you for your patience. Redirecting to login.",
+      "textExpiredLinkTextAdmin": "The activation link has expired! Talk to the administrator for a new link!",
+      "textConfirmationSucces": "You have successfully confirmed your account! Go back to the login page! You can close this page.",
+      "textExpiredLinkInConfirmation": "This activation link has expired! Click the button below to resend a new activation link. From the moment you press resend, a new link will be sent. If that new link expires, to resend another link, you must enter the last confirmation link. Thank you.",
+      "textErrorNewConfirmationLink": "Something went wrong while resending the link! Please try again.",
+      "textConfirmationError": "Error confirming the link! Please try again!",
+      "textNewConfirmationLinkSucces": "The reactivation link has been successfully sent!",
+      "goToLogIn": "Go to login",
+      "resend": "Resend link",
+      "infoText": "Enter the new password for your account.",
+      "forgotPasswordText": "Password has been successfully changed! You can log in to your account. Redirecting to the login window. Please wait.",
+      "wrongInputText": "The password does not meet the form's rules. Choose a different password!",
+      "errorAlertText": "An error occurred, please try again.",
+      "isSendingAlertText": "You must wait 1 minute before you can change your password again.",
+      "waitAlertText": "Password is being changed, please wait... Thank you.",
+      "validTokenText": "The token for password reset has expired. Please repeat the process of sending the password reset link again. Thank you!",
+      "expiredCardText": "The link to reset the password has expired. Don’t worry, you can resend it again. Go to the login window and follow the steps to reset the password."
+    },
+    "sweetAlert2": {
+      "Error": "Error",
+      "Success": "Success",
+      "Attention": "Attention",
+      "CheckForm": "Check the form again!",
+      "SavedAddressSuccesfully": "Your address has been successfully saved",
+      "ErrorWhenSavingAddress": "An error occurred while saving the address",
+      "DeleteAddressSuccesfully": "Your address has been successfully deleted!",
+      "ErrorWhenDeletingAddress": "An error occurred while deleting the address. Please refresh the page.",
+      "EmailAlreadyExists": "The email already exists!",
+      "NothingChanged": "You haven't changed anything",
+      "ModifiedSuccesfulyData": "Data successfully modified",
+      "EmailChanged": "You have chosen to change the email, and a new confirmation email has been sent to the new email address.",
+      "WaitPlease": "Please wait..",
+      "EmailExists": "The email already exists",
+      "UsernameExists": "The username already exists",
+      "WaitRegister": "Registration is in progress..."
+    },
+    "profile": {
+      "generalInfo": {
+        "info": "Here you will find your account data section, where you can modify them.",
+        "infoAddresses": "In this section of the menu, you can add/delete/edit your delivery or billing addresses.",
+        "infoOrders": "Here you can see the list of past orders.",
+        "orders" : "Orders",
+        "accountData" : "Account data",
+        "addresses" : "Addresses",
+        "accountSettings" : "Account settings"
+      },
+      "AccountAddreses": "Account Addresses",
+      "PROFIL": "PROFILE",
+      "ADRESE": "ADDRESSES",
+      "personalDataGeneral": {
+        "accountData": "Account Data",
+        "personalData": "PERSONAL DATA",
+        "personalDataInfo": "Welcome to the personal data section! Here you can view the data associated with your account. Allowed actions include editing/saving as well as the option to delete your account!",
+        "genderOptions": {
+          "feminine": "Feminine",
+          "masculine": "Masculine",
+          "preferNotToSay": "Prefer not to say"
+        },
+        "name": "Name",
+        "prename": "First Name",
+        "gender": "Gender",
+        "number": "Phone Number",
+        "email": "E-mail",
+        "username": "Username"
+      },
+      "emptyAddress" : "Empty list of addresses",
+      "addressesInfo": "Welcome to the addresses section! Here you can view the data associated with your account. The allowed actions are saving/deleting the delivery/billing addresses.",
+      "emptyAddressListText": "You have no saved addresses",
+      "addressType": "Address Type",
+      "building": "Building",
+      "buildingNumber": "Building Number",
+      "street": "Street",
+      "streetNumber": "Street Number",
+      "city": "City",
+      "county": "County",
+      "postalCode": "Postal Code",
+      "Cif": "CIF",
+      "firmName": "Firm Name/Legal Person",
+      "delivery": "Delivery",
+      "billing": "Billing"
+    },
+    "textFieldsMessages": {
+      "requiredRule": "This field is required",
+      "passwordRule": "The password must contain at least 8 characters, including an uppercase letter, a lowercase letter, a number, and a special character",
+      "repeatPasswordRule": "Passwords do not match",
+      "sameAsOldPasswordRule": "The password cannot be the same as the old one",
+      "maxLength": "Maximum characters:",
+      "exactLength": "Exact length:",
+      "onlyNumbers": "Only numbers are allowed",
+      "onlyLetters": "Only letters are allowed with no spaces",
+      "email": "The email format is incorrect",
+      "usernameRule": "The username must be at least 6 characters long and contain only letters and numbers."
+    },
+    "button": {
+      "save": "Save",
+      "delete": "Delete",
+      "addAddress": "Add Address"
+    },
+    "forgotPassword": {
+      "title": "Reset Password",
+      "infoText": "Enter the email associated with the account whose password you forgot.",
+      "emailSendingText": "The email is being sent, please wait...",
+      "isSendingAlertText": "You must wait 1 minute before you can resend another password reset email.",
+      "ifEmailExists": "If this email is associated with an account, a password reset email has been sent. Please check your email and follow the instructions.",
+      "wrongEmailAddress": "The email address you entered is incorrect. Please check it again.",
+      "error": "An error occurred, please try again."
+    },
+    "login": {
+      "title": "Log in to your account",
+      "stayLoggedIn": "Stay logged in",
+      "logInText": "Log In",
+      "logInWithGoogle": "Log in with Google",
+      "forgotPasswordText": "Forgot your password?",
+      "noAccount": "Don’t have an account?",
+      "wrongCredentials": "The username or password is incorrect / You haven’t activated your account",
+      "errorMessage": "An error occurred, please try again later!",
+      "waitLogInMessage": "Logging in...",
+      "labels": {
+        "accountNameOrEmail": "Account name or associated email",
+        "password": "Password"
+      }
+    },
+    "logout": {
+      "title": "Logout Page",
+      "succesfullLogoutMessage": "You have successfully logged out, redirecting to the main page.",
+      "logoutMessage": "We look forward to seeing you again!"
+    },
+    "register": {
+      "title1": "NEW CUSTOMER",
+      "title2": "Registration",
+      "registerText": "Register",
+      "alreadyHaveAccount": "Already have an account?",
+      "succesfullText": "You have successfully registered! A confirmation email has been sent to your email address.",
+      "unsuccesfullText": "There was a problem with the registration, please try again!",
+      "waitRegisterText": "Please wait... Registration is in progress...",
+      "labels": {
+        "email": "Email address",
+        "username": "Username",
+        "password": "Password",
+        "repeatPassword": "Repeat password",
+        "termsAndConditions": "I agree to the terms and conditions"
+      }
+    }
+  }
+  
