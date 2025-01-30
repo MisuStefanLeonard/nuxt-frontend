@@ -19,7 +19,7 @@ class UserService extends ApiService {
    */ 
   
    async getPersonalDataFromDb() {  
-    const response =  await this.get('profile/data' , true)
+    const response =  await this.get('profile/data' , true,false , false)
     sessionStorage.setItem(`user`, response.username)
     console.log(response)
     return response;
@@ -131,8 +131,10 @@ class UserService extends ApiService {
   updateDataFromAdmin(changeRequestId){
     return this.get(`admin/emailChanged/${changeRequestId}` , false , false );
   }
-  // de modificat USER.js sa foloseasva API Service
-  // de scris enpoint-ul pentru get-ul de schimbare mail la client-side 
+  
+  sendContactEmail(formData){
+    return this.post('sendContactEmail' , formData , false , false)
+  }
   
 }
 

@@ -48,9 +48,7 @@
   })
 
   const getCurrentLocaleProps = computed(() => {
-    console.log(locale.value)
     const currentLocaleProps  = locales.value.find(lang => lang.code.toUpperCase() === locale.value.toUpperCase())
-    console.log(currentLocaleProps)
     if(currentLocaleProps !== undefined){
         currentLocaleProps.language = currentLocaleProps.name
         currentLocaleProps.code = currentLocaleProps.code.toUpperCase()

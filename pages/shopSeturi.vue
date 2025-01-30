@@ -120,20 +120,26 @@
                             </v-card-subtitle>
                             <v-card-text class="text-center">
                             <v-carousel hide-delimiters 
-                                
                                 hide-delimiter-background
                                 cycle
-                                progress="primary"
                                 class="mb-2"
                                 height="450">
                                 <template v-if="allImages(set.setProductsDto).length > 0">
-                                    <!-- de adaugat modal la deschidere -->
-                                <v-carousel-item v-for="image in allImages(set.setProductsDto)"
-                                    :key="image.presignedUrl"
-                                    :src="image.presignedUrl"
-                                    @click="openImageModal(set.setProductsDto)"
-                                    cover>
-                                </v-carousel-item>
+                                <v-tooltip :text="`${t('general.openImage')}`">
+                                    <template v-slot:activator="{props}">
+                                        <v-carousel-item v-for="image in allImages(set.setProductsDto)"
+                                            eager
+                                            :key="image.presignedUrl"
+                                            :src="image.presignedUrl"
+                                            @click="openImageModal(set.setProductsDto)"
+                                            v-bind="props"
+                                            class="cursor-pointer"
+                                            :aspect-ratio="16 / 5"
+                                            >
+                                        </v-carousel-item>
+                                    </template>
+                                </v-tooltip>
+                                
                                 </template>
 
                                 <!-- Fallback when no images are found -->
@@ -157,7 +163,7 @@
                                         >
                                         <template v-if="imagesInModal.length > 0">
                                             <v-carousel-item v-for="(image,index) in imagesInModal"
-                                            :key="index" :src="image.presignedUrl" aspect-ratio="16/9" cover eager>
+                                            :key="index" :src="image.presignedUrl" :aspect-ratio="4/3"  eager>
                                             </v-carousel-item>
                                         </template>
 
@@ -182,10 +188,28 @@
                             </v-container>
                             <v-row no-gutters>
                                 <v-col cols="12" class="my-1">
-                                <v-btn variant="flat" color="primary" @click="seeSetPage(set.encodedIdSet , set.numeSetDto)">
-                                    {{ $t('shop.seeDetails') }} <v-icon class="ml-1">mdi-arrow-right</v-icon>
-                                </v-btn>
+                                    <NuxtLink prefetch :prefetch-on="{interaction: true}"
+                                     :to="localPath(`/set/${set.encodedIdSet}/${set.numeSetDto}`)">
+                                        <v-btn variant="flat" color="primary" >
+                                            {{ $t('shop.seeDetails') }} <v-icon class="ml-1">mdi-arrow-right</v-icon>
+                                        </v-btn>
+                                    </NuxtLink>
+                                  
                                 </v-col >
+                                <v-col cols="12" class="my-1">
+                                    <p class="font-weight-light h5"><span class="h1 font-weight-light">{{ set.reviewsInfoGeneral.averageRating }}</span> / 5</p>
+                                    <v-rating
+                                        hover :length="5"
+                                        :size="24"
+                                        readonly
+                                        half-increments
+                                        v-model="set.reviewsInfoGeneral.averageRating"
+                                        color="orange-lighten-1"
+                                        active-color="primary"
+                                        class="ma-2"
+                                    ></v-rating>
+                                    <p class="font-weight-light h5">{{ set.reviewsInfoGeneral.totalReviews }} {{ $t('general.reviews') }}</p>
+                                </v-col>
                             </v-row>
                             </v-card-text>
                         </v-card>
@@ -214,6 +238,7 @@
 
 import productService from '~/services/Products'
 
+
 definePageMeta({
   title : 'Magazin seturi',
   layout: 'default',
@@ -236,6 +261,7 @@ const imagesInModal = ref([]);
 const route = useRoute()
 const router = useRouter()
 const localPath = useLocalePath();
+const {t} = useI18n();
 
 // filters options
 const rangePrice = ref([0,2000])

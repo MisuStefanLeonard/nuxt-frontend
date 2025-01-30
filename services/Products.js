@@ -25,7 +25,7 @@ class ProductsService extends ApiService{
             productPrice,
             productReverseFace
         }
-        return this.get(`paginated/${pageNumber}/${currency}` , true , false , true , params) 
+        return this.get(`paginated/${pageNumber}/${currency}` , true , false , false , params) 
     }
 
 
@@ -47,7 +47,7 @@ class ProductsService extends ApiService{
             productPrice,
             productName
         }
-        return this.get(`sets/paginated/${pageNumber}/${currency}` , true , false , true , params) 
+        return this.get(`sets/paginated/${pageNumber}/${currency}` , true , false , false , params) 
     }
 
     /**
@@ -76,7 +76,7 @@ class ProductsService extends ApiService{
      */
 
     getProductData(productCode , productType, currency){
-        return this.get(`${productCode}/${productType}/${currency}` , true , false, true)
+        return this.get(`${productCode}/${productType}/${currency}` , true , false, false)
     }
 
     /**
@@ -87,7 +87,7 @@ class ProductsService extends ApiService{
      * @returns 
      */
     getSetData(encodedIdSet , numeSet , currency){
-        return this.get(`set/${encodedIdSet}/${numeSet}/${currency}` , true,false,true)
+        return this.get(`set/${encodedIdSet}/${numeSet}/${currency}` , true,false,false)
     }
 
     /**
@@ -116,6 +116,77 @@ class ProductsService extends ApiService{
      deleteFromCart(form){
         return this.post('cart/delete' , form , null , false)
     }
+
+    /**
+     * 
+     * @param {String} currency [The current currency selected]
+     * @returns {List}
+     */
+    getMostViewedProducts(currency){
+        return this.get(`mostViewedProducts/${currency}` , true , false , true)
+    }
+
+    /**
+     * 
+     * @returns {List} [List of items in the cart]
+     */
+    getCartItems(currency){
+        return this.get(`cart/${currency}` , true , false , false )
+    }
+
+    /**
+     * 
+     * @param {Object} body [Product/Bundle data to decrement/increment quantity]
+     * @returns 
+     */
+    modifyQuantity(body){
+        return this.post('modify/quantity' , body , false , false)
+    }
+
+    deleteItemFromCart(body){
+        return this.post('cart/delete' , body , false , false)
+    }
+
+    /**
+     * 
+     * @param {String} currency  [Currency currency selected]
+     * @returns {(List,List)} [Tuple with two lists : First list is the updated products
+     * and the second list is the products that got their prices modified]
+     */
+    syncCartOnCheckout(currency){
+        return this.get(`syncCartOnCheckout/${currency}` , true , false , false)
+    }
+
+    /**
+     * 
+     * @param {String} data  [Currency currency selected]
+     * @returns {HttpStatusCode} [The response if the voucher was applied succefully]
+     */
+    applyVoucherCode(data){
+        return this.post("applyVoucher" , data , null , false)
+    }
+
+    getProductTypesAndCategoriesForUser(){
+        return this.get("productTypesAndCategories" , true , false , false)
+    }
+
+    /**
+     * 
+     * @returns {List} [The list with the newProducts cached for 30 minutes]
+     */
+    getNewProductsInShop(currentCurrency){
+        return this.get(`newProducts/${currentCurrency}` , true , false ,false)
+    }
+
+     /**
+     * 
+     * @returns {List} [The list with the limitedEdition cached for 30 minutes]
+     */
+    getLimitedEditionProductsInShop(currentCurrency){
+        return this.get(`limitedEditionProducts/${currentCurrency}` , true , false ,false)
+    }
+
+
 }
 
 export default new ProductsService()

@@ -8,6 +8,7 @@ class ApiService {
 
     async apiRequest(method, url, data = null, options = {}, returnData) {
         const store = useUserStore();
+        const localePath = useLocalePath()
         try {
             const response = await axios({
                 method,
@@ -46,12 +47,12 @@ class ApiService {
 
             const errorReturnObJ = {
                 status : errorStatus,
-                message : error.response.data
+                message : error.response?.data
             }
             if (errorStatus === 401) {
                 console.error("Expired token");
                 store.showSnackbar("Token-ul a expirat/Access neautorizat!");
-                navigateTo('/user/logout');
+                navigateTo(localePath('/user/logout'));
             } else if (errorStatus === 400) {
                 if(returnData === null){
                     return  errorReturnObJ;

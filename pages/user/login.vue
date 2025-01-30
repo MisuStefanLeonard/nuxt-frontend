@@ -186,6 +186,8 @@ const loginAccount = async () => {
       } else if (response === -4) {
         waitLogInBanner.value = false;
         showWrongCredentialsBanner();
+      }else if(response === -2){
+        navigateTo(localePath("/home"))
       } else if (response === 0) {
         waitLogInBanner.value = false;
         showError();

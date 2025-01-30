@@ -1,11 +1,18 @@
-
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   modules: [
     '@pinia/nuxt',
     'pinia-plugin-persistedstate/nuxt',
+    '@nuxt/image'
   ],
   $development: {
+    components : false,
+    app: {
+      pageTransition: {name: 'page' , mode:'out-in'}
+    },
+    image : {
+      domains: ['https://dw45vxtt6tooj.cloudfront.net'],   
+    },
     devServer: {
       host: '0.0.0.0', // Listen on all network interfaces
       port: 3000, // Optional: Specify a port, default is 3000
@@ -14,7 +21,19 @@ export default defineNuxtConfig({
       '@pinia/nuxt',
       'pinia-plugin-persistedstate/nuxt',
       '@nuxtjs/i18n',
+      '@zadigetvoltaire/nuxt-gtm'
     ],
+    gtm: {
+      id: 'GTM-NWHGHS9Q',
+      defer: false,
+      compatibility: false,
+      enabled: true,
+      debug: true , // false for production
+      loadScript: true,
+      trackOnNextTick: false,
+      devtools: true,
+      enableRouterSync: true
+    },
     i18n: {
       lazy: true,
       langDir : "locales",
@@ -58,6 +77,7 @@ export default defineNuxtConfig({
       '~/plugins/SweetAlert.js',
       '~/plugins/vuetify.js',
       '~/plugins/emitter.js',
+      '~/plugins/google.recaptcha.client.js'
     ],
     css: [
       'bootstrap/dist/css/bootstrap.min.css',

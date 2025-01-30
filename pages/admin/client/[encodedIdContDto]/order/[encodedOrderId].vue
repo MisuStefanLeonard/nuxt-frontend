@@ -271,6 +271,10 @@
                                                                         </v-col>
                                                                         <v-divider></v-divider>
                                                                         <v-col cols="12">
+                                                                            <p class="h5 font-weight-light p-1 m-2">Inaltime aleasa: {{ product.inaltimeSetDto }}</p>
+                                                                        </v-col>
+                                                                        <v-divider></v-divider>
+                                                                        <v-col cols="12">
                                                                             <p class="h5 font-weight-light p-1 m-2">TOTAL MATERIAL FOLOSIT</p>
                                                                             <v-divider></v-divider>
                                                                             <p  class="h6 font-weight-light p-1 m-2">{{ product.totalMetruMaterial }} METRI</p>
@@ -302,8 +306,8 @@
 
 <script setup>
 import { useUserStore } from '~/store/user';
-import { ref,onMounted,watchEffect } from 'vue';
-
+import { ref,onMounted } from 'vue';
+import AdminNavDrawerOnClient from '~/components/admin/AdminNavDrawerOnClient.vue';
 
 const route = useRoute()
 const store = useUserStore()

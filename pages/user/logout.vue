@@ -47,6 +47,7 @@
   const logout = async () => {
     emitter.emit('isLoggedIn' , false);
     const response = await RegisterService.logout()
+    console.log(response)
     if (response === 1) {
       showSuccesfullLogout()
     }

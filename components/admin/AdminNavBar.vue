@@ -92,6 +92,12 @@ const navAdminItems = ref([
     path: '/admin/manopere',
     icon: 'mdi-car-shift-pattern',
     dropdown: []
+  },
+  {
+    title: 'General',
+    path: '/admin/general',
+    icon: 'mdi-cog-outline',
+    dropdown: []
   }
 ]);
 

@@ -102,7 +102,7 @@
                             >
                             <template #[`item.codProdus`]="{ item }">
                               <p class="font-weight-light text-"> <v-icon @click="navigateTo(`/admin/product/${item.codProdus}` , {open:{target: '_blank'}})" class="mx-2">mdi-eye</v-icon>
-                                <NuxtLink class="text-decoration-none text-white" :to="{name:'admin-product-codProdus' , params: {codProdus : item.codProdus}}"
+                                <NuxtLink class="text-decoration-none text-white" :to="{ name: 'admin-product-codProdus___ro', params: { codProdus: item.codProdus }}"
                                 target="_blank">
                                     {{ item.codProdus }}</NuxtLink>
                               </p>
@@ -204,7 +204,7 @@
                             >
                             <template #[`item.codProdus`]="{ item }">
                               <p class="font-weight-light text-"> <v-icon @click="navigateTo(`/admin/product/${item.codProdus}` , {open:{target: '_blank'}})" class="mx-2">mdi-eye</v-icon>
-                                <NuxtLink class="text-decoration-none text-white" :to="{name:'admin-product-codProdus' , params: {codProdus : item.codProdus}}"
+                                <NuxtLink class="text-decoration-none text-white" :to="{name:'admin-product-codProdus___ro' , params: {codProdus : item.codProdus}}"
                                 target="_blank">
                                     {{ item.codProdus }}</NuxtLink>
                               </p>
@@ -472,13 +472,11 @@
   </template>
 
 <script setup>
-import { reactive } from 'vue';
-import AdminNavDrawerOnDashboard from '~/components/admin/AdminNavDrawerOnDashboard.vue';
 import adminService from '~/services/Admin';
 import { VDateInput } from 'vuetify/labs/components';
 
-const dashBoardData = reactive({})
-const GAData = reactive({})
+const dashBoardData = ref({})
+const GAData = ref({})
 const chooseDate = ref(null)
 const today = new Date().toISOString().substring(0,10)
 const maxDate = ref(today)
@@ -492,34 +490,34 @@ definePageMeta({
 
 // const runTimeConfig = useRuntimeConfig();
 
-const usersPerPageHeaders = [
+const usersPerPageHeaders = ref([
   { title: 'Nume pagina', align: 'center', key: 'pageName' },
   { title: 'Total useri activi', align: 'center', key: 'activeUsers' , sortable: false},
   { title: 'Total useri activi(1 zi)', align: 'center', key: 'active1DayUsers', sortable: false },
   { title: 'Total useri activi(28 zi)', align: 'center', key: 'active28DayUsers' , sortable: false},
   { title: 'Vizualizari pagina', align: 'center', key: 'pageViews' , sortable: false},
   { title: 'Orase', align: 'center', key: 'cities'},
-]
+])
 
-const usersPerPageHeaderReal = [
+const usersPerPageHeaderReal = ref([
   { title: 'Nume pagina', align: 'center', key: 'pageName' },
   { title: 'Total useri activi ', align: 'center', key: 'activeUsers' , sortable: false},
   { title: 'Total useri activi(1 zi) ', align: 'center', key: 'active1DayUsers', sortable: false  , isAdded: true},
   { title: 'Total useri activi(28 zi) ', align: 'center', key: 'active28DayUsers' , sortable: false, isAdded: true},
   { title: 'Vizualizari pagina', align: 'center', key: 'pageViews' , sortable: false},
   { title: 'Orase', align: 'center', key: 'cities'},
-]
+])
 
-const filteredHeadersReal = usersPerPageHeaderReal.filter(state => state.isAdded != true)
+const filteredHeadersReal = usersPerPageHeaderReal.value.filter(state => state.isAdded != true)
 
 
-const headers = [
+const headers =ref( [
   { title: 'Cod produs', align: 'center', key: 'codProdus' },
   { title: 'Venit acumulat(RON)', align: 'center', key: 'venitTotal' },
   { title: 'Nr. vanzari', align: 'center', key: 'nrVanzari'  , isAdded: true},
-]
+])
 
-const filteredHeaders = headers.filter(state => state.isAdded != true)
+const filteredHeaders = headers.value.filter(state => state.isAdded != true)
 
 
 
@@ -534,65 +532,65 @@ const boxShadowStyle = {
 
 
 const activeProductsTotal = computed(() => {
-  return Object.entries(dashBoardData.totalProduse ?? {}).filter(([status]) => status === 'Active');
+  return Object.entries(dashBoardData.value.totalProduse ?? {}).filter(([status]) => status === 'Active');
 });
 
 const inactiveProductsTotal = computed(() => {
-  return Object.entries(dashBoardData.totalProduse ?? {}).filter(([status]) => status === 'Inactive');
+  return Object.entries(dashBoardData.value.totalProduse ?? {}).filter(([status]) => status === 'Inactive');
 });
 
 const registeredClients = computed(() => {
-  if (dashBoardData.tipuriClientiGeneral) {
-    return Object.entries(dashBoardData.tipuriClientiGeneral).filter(([status]) => status === 'Inregistrat');
+  if (dashBoardData.value.tipuriClientiGeneral) {
+    return Object.entries(dashBoardData.value.tipuriClientiGeneral).filter(([status]) => status === 'Inregistrat');
   }
   return []; // Return an empty array if the data is not yet available
 });
 
 const unregisteredClients = computed(() => {
-  if (dashBoardData.tipuriClientiGeneral) {
-    return Object.entries(dashBoardData.tipuriClientiGeneral).filter(([status]) => status === 'Neinregistrat');
+  if (dashBoardData.value.tipuriClientiGeneral) {
+    return Object.entries(dashBoardData.value.tipuriClientiGeneral).filter(([status]) => status === 'Neinregistrat');
   }
   return []; // Return an empty array if the data is not yet available
 });
 
 const finishedOrders = computed(() => {
-  if (dashBoardData.tipuriComenziGeneral) {
-    return Object.entries(dashBoardData.tipuriComenziGeneral).filter(([status]) => status === 'Finalizata');
+  if (dashBoardData.value.tipuriComenziGeneral) {
+    return Object.entries(dashBoardData.value.tipuriComenziGeneral).filter(([status]) => status === 'Finalizata');
   }
   return []; // Return an empty array if the data is not yet available
 });
 
 const returnedOrders = computed(() => {
-  if (dashBoardData.tipuriComenziGeneral) {
-    return Object.entries(dashBoardData.tipuriComenziGeneral).filter(([status]) => status === 'Rambursata');
+  if (dashBoardData.value.tipuriComenziGeneral) {
+    return Object.entries(dashBoardData.value.tipuriComenziGeneral).filter(([status]) => status === 'Rambursata');
   }
   return []; // Return an empty array if the data is not yet available
 });
 
 const canceledOrders = computed(() => {
-  if (dashBoardData.tipuriComenziGeneral) {
-    return Object.entries(dashBoardData.tipuriComenziGeneral).filter(([status]) => status === 'Anulata');
+  if (dashBoardData.value.tipuriComenziGeneral) {
+    return Object.entries(dashBoardData.value.tipuriComenziGeneral).filter(([status]) => status === 'Anulata');
   }
   return []; // Return an empty array if the data is not yet available
 });
 
 const waitingOrders = computed(() => {
-  if (dashBoardData.tipuriComenziGeneral) {
-    return Object.entries(dashBoardData.tipuriComenziGeneral).filter(([status]) => status === 'InAsteptare');
+  if (dashBoardData.value.tipuriComenziGeneral) {
+    return Object.entries(dashBoardData.value.tipuriComenziGeneral).filter(([status]) => status === 'InAsteptare');
   }
   return []; // Return an empty array if the data is not yet available
 });
 
 const processingOrders = computed(() => {
-  if (dashBoardData.tipuriComenziGeneral) {
-    return Object.entries(dashBoardData.tipuriComenziGeneral).filter(([status]) => status === 'InProcesare');
+  if (dashBoardData.value.tipuriComenziGeneral) {
+    return Object.entries(dashBoardData.value.tipuriComenziGeneral).filter(([status]) => status === 'InProcesare');
   }
   return []; // Return an empty array if the data is not yet available
 });
 
 const processedOrders = computed(() => {
-  if (dashBoardData.tipuriComenziGeneral) {
-    return Object.entries(dashBoardData.tipuriComenziGeneral).filter(([status]) => status === 'Procesata');
+  if (dashBoardData.value.tipuriComenziGeneral) {
+    return Object.entries(dashBoardData.value.tipuriComenziGeneral).filter(([status]) => status === 'Procesata');
   }
   return []; // Return an empty array if the data is not yet available
 });
@@ -605,8 +603,8 @@ const processedOrders = computed(() => {
 
 
 const parsedUsersPerPageData = computed(() => {
-  if(GAData.useriActiviPerPagina){
-    return Object.entries(GAData.useriActiviPerPagina).map(userData => {
+  if(GAData.value.useriActiviPerPagina){
+    return Object.entries(GAData.value.useriActiviPerPagina).map(userData => {
       return {
         pageName : userData[0],
         activeUsers : userData[1].totalActiveUserPerPage,
@@ -620,8 +618,8 @@ const parsedUsersPerPageData = computed(() => {
 })
 
 const parsedUsersPerPageDataReal = computed(() => {
-  if(GAData.useriActiviPerPagina){
-    return Object.entries(GAData.useriActiviPerPaginaReal).map(userData => {
+  if(GAData.value.useriActiviPerPagina){
+    return Object.entries(GAData.value.useriActiviPerPaginaReal).map(userData => {
       return {
         pageName : userData[0],
         activeUsers : userData[1].totalActiveUserPerPage,
@@ -650,8 +648,8 @@ const displayDataInRange = (async (chooseDate) => {
     const responseFromDatabaseData = await adminService.getMainDashboardData(minDate_DateTime, maxDate_DateTime)
     const responseFromAnalyticsData  = await adminService.getGoogleAnalyticsData(minDate_Date , maxDate_Date)
 
-    Object.assign(dashBoardData, responseFromDatabaseData);
-    Object.assign(GAData, responseFromAnalyticsData);
+    Object.assign(dashBoardData.value, responseFromDatabaseData);
+    Object.assign(GAData.value, responseFromAnalyticsData);
 
     isLoading.value = false;
     loaded.value = true;
@@ -698,8 +696,8 @@ const getDashboardData = (async () => {
   fireAlarm('info' , 'Asteptati...' , '' , null)
   const response = await adminService.getMainDashboardData();
   if(Object.keys(response).length !== 0){
-    Object.assign(dashBoardData,response)
-    console.log(dashBoardData)
+    Object.assign(dashBoardData.value,response)
+    console.log(dashBoardData.value)
     swal.close()
   }else{
     swal.close()
@@ -711,13 +709,13 @@ const getGAData = (async () => {
   fireAlarm('info' , 'Asteptati...' , '' , null)
   const response_GA = await adminService.getGoogleAnalyticsData()
   swal.close()
-  Object.assign(GAData , response_GA);
-  console.log(GAData)
+  Object.assign(GAData.value , response_GA);
+  console.log(GAData.value)
 })
 
 const parseTotalRevenuePerProduct = computed(() => {
   // Use Object.entries to iterate over the object
-  return Object.entries(dashBoardData.venitTotalPeProdus).map(([key, value]) => {
+  return Object.entries(dashBoardData.value.venitTotalPeProdus).map(([key, value]) => {
     // Create a new object with codProdus and venitTotal
     return {
       codProdus: key,     // The product code (key)
@@ -727,7 +725,7 @@ const parseTotalRevenuePerProduct = computed(() => {
 });
 
 const parseinfoPerTop5Product = computed(() => {
-  return Object.values(dashBoardData.topProduseVanduteGeneral).map(product => {
+  return Object.values(dashBoardData.value.topProduseVanduteGeneral).map(product => {
     return {
       codProdus: product.codProdus,     // The product code
       venitTotal: product.venitTotal,   // The total revenue

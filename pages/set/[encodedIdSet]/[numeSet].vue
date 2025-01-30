@@ -3,7 +3,7 @@
         <v-sheet color="grey-lighten-2" class="p-3">
             <v-row>
                 <v-col cols="12" xs="12" md="7" sm="12" class="p-1">
-                    <v-card class="bg-grey-lighten-4 h-100" elevation="12">
+                    <v-card class="bg-grey-lighten-4 h-100 " elevation="12">
                         <v-card-text>
                             <v-alert v-if="selectedImage" class="text-center" color="blue" variant="tonal" icon="mdi-information">
                                 {{ $t('shopSeturi.showImageForProduct') }} <b class="text-black">{{ selectedImage.productName.toUpperCase() }} </b>
@@ -14,39 +14,100 @@
                                     ((setData.pretSetDto - setData.pretRedusSetDto) / setData.pretSetDto) * 100
                                 ) }}% {{$t('shop.discount')}}</span>
                             </v-alert>
-                            <div height="auto">
-                                <v-row>
-                                    <v-col cols="12" class="text-center">
-                                        <v-img
-                                        :src="selectedImage.url" 
-                                        eager 
-                                        :aspect-ratio="4 / 3"
-                                        @click="dialog = true">
-                                            
-                                        </v-img>
-                                    </v-col>
-                                </v-row>
-                                
-                                <v-row >
-                                    <v-col v-for="(image, productIndex) in allImages" :key="productIndex" :cols="height" >
-                                        <v-tooltip :text="`${t('general.selectImage')}`">
-                                            <template v-slot:activator="{ props }">
-                                                <v-img
-                                                    eager
-                                                    cover
-                                                    :aspect-ratio="1 / 1"
-                                                    :src="image.url"
-                                                    @click="selectImage(image)"
-                                                    class="cursor-pointer" 
-                                                    v-bind="props" >
-                                                </v-img>
-                                            </template>
-                                        </v-tooltip>
-                                    </v-col>
-                                </v-row>
-                                
+                            
+                            <v-row>
+                                <v-col cols="12" class="text-center">
+                                    <v-tooltip :text="`${t('general.zoomImage')}`" v-if="isMounted">
+                                        <template v-slot:activator="{props}">
+                                            <NuxtImg :src="selectedImage.url"
+                                            preload
+                                            v-bind="props"
+                                            @click="dialog = true"
+                                            format="webp"
+                                            sizes="md:800px"
+                                            :width="screenSize.width"
+                                            :height="screenSize.height"
+                                            class="cursor-pointer"
+                                            >
+
+                                            </NuxtImg>
+                                            <!-- <v-img
+                                                :src="selectedImage.url" 
+                                                eager 
+                                                class="cursor-pointer"
+                                                :aspect-ratio="4 / 4"
+                                                @click="dialog = true"
+                                                v-bind="props" >
+                                            </v-img> -->
+                                        </template>
+                                    </v-tooltip>
+                                    
+                                </v-col>
+                            </v-row>
+                              
+                                <v-sheet color="grey-lighten-4" 
+                                    class="mx-auto"  
+                                    max-width="350"
+                                    >
+                                    <v-slide-group
+                                    show-arrows="always"
+                                    v-model="activeSlide"
+                                    center-active
+                                    selected-class="cursor-pointer opacity-70 mt-2 "
+                                    
+                                        >
+                                        <v-slide-group-item 
+                                        v-for="(image,productIndex) in allImages" 
+                                        :key="productIndex" 
+                                        v-slot="{isSelected,toggle,selectedClass}">
+                                            <v-tooltip :text="`${t('general.selectImage')}`">
+                                                <template v-slot:activator="{ props }">
+                                                    <NuxtImg :src="image.url"
+                                                    preload
+                                                    format="webp"
+                                                    class="mx-5 my-5 w-50"
+                                                    @click="() => { toggle(); selectImage(image); }"
+                                                        :class="selectedClass " 
+                                                        v-bind="props" 
+                                                    >
+                                                    <div class="d-flex fill-height align-center justify-center">
+                                                            <v-scale-transition>
+                                                                <v-icon
+                                                                    v-if="isSelected"
+                                                                    color="black"
+                                                                    icon="mdi-close-circle-outline"
+                                                                    size="24"
+                                                                ></v-icon>
+                                                            </v-scale-transition>
+                                                        </div>
+                                                    </NuxtImg>
+                                                    <!-- <v-img
+                                                        eager
+                                                        :aspect-ratio="7 / 8"
+                                                        :src="image.url"
+                                                        class="mx-5 w-50"
+                                                        @click="() => { toggle(); selectImage(image); }"
+                                                        :class="selectedClass " 
+                                                        v-bind="props" >
+                                                        <div class="d-flex fill-height align-center justify-center">
+                                                            <v-scale-transition>
+                                                                <v-icon
+                                                                    v-if="isSelected"
+                                                                    color="black"
+                                                                    icon="mdi-close-circle-outline"
+                                                                    size="24"
+                                                                ></v-icon>
+                                                            </v-scale-transition>
+                                                        </div>
+                                                    </v-img> -->
+                                                </template>
+                                            </v-tooltip>
+                                        </v-slide-group-item>
+                                    </v-slide-group>
+                                </v-sheet>
+                                        
                                 <v-dialog v-model="dialog" max-width="600">
-                                    <v-card>
+                                    <v-card class="bg-grey-lighten-3 p-1" >
                                         <v-card-text>
                                             <v-img
                                                 :src="selectedImage.url"
@@ -60,11 +121,7 @@
                                         </v-card-actions>
                                     </v-card>
                                 </v-dialog>
-                            </div>
-
-                                
-                            
-                            
+                          
                         </v-card-text>
                     </v-card>
                 </v-col>
@@ -114,45 +171,50 @@
                             <div v-if=" selectedProduct !== null">
                                 <div v-if="selectedProduct.tipulProdusuluiDto !== 'draperie' && selectProduct.tipulProdusuluiDto !== 'perdea'">
                                     <div v-if="selectedProduct.selectedDimensions.length > 0">
-                                        <div class="text-center">
-                                            <p class="font-weight-thin h5 ">{{ $t('shop.dimensionAvailable') }}</p>
-                                            <p class="font-weight-thin h6">{{ $t('shop.WidthXHeight') }}</p>
-                                        </div>
-                                        <v-divider></v-divider>
-                                        <v-row >
-                                            <v-col cols="12" v-for="(dimension,index) in selectedProduct.selectedDimensions" :key="index">
-                                                <div class="text-center">
-                                                    <v-btn height="75"
-                                                    variant="elevated"
-                                                    block
-                                                    :color="selectedDimensions.some(d => d.productName === selectedProduct?.numeProdusDto && d.dimensionSelected === dimension) ? 'green' : 'grey-lighten-2'"
-                                                    active-color="red"
-                                                    @click="toggleButton(dimension , 'dimension')"
-                                                >
-                                                    <v-row>
-                                                        <v-col cols="12">
-                                                            {{ $t('shop.DIMENSION') }} {{ dimension.lungimeDto }} x {{ dimension.latimeDto }}
-                                                        </v-col>
-                                                        <v-col v-if="dimension.recomandarePat" cols="12">
-                                                            {{ $t('shop.BEDRECOMENDATION') }} {{ dimension.recomandarePat ? dimension.recomandarePat : 'N/A'}}
-                                                        </v-col>
-                                                    </v-row>
-                                                    <p></p> 
-                                                    <p></p>
-                                                </v-btn>
-                                                </div>
-                                                
-                                            </v-col>
-                                        </v-row>
+                                        <v-card class="elevation-12 p-1">
+                                            <v-card-title class="text-center">
+                                                <p class="font-weight-thin h5 ">{{ $t('shop.dimensionAvailable') }}</p>
+                                                <p class="font-weight-thin h6">{{ $t('shop.WidthXHeight') }}</p>
+                                            </v-card-title>
+                                            <v-divider></v-divider>
+                                            <v-card-text >
+                                                <v-row >
+                                                    <v-col cols="12" v-for="(dimension,index) in selectedProduct.selectedDimensions" :key="index">
+                                                        <div class="text-center">
+                                                            <v-btn height="75"
+                                                            variant="elevated"
+                                                            block
+                                                            :color="selectedDimensions.some(d => d.productName === selectedProduct?.numeProdusDto && d.dimensionSelected === dimension) ? 'green' : 'grey-lighten-2'"
+                                                            active-color="red"
+                                                            @click="toggleButton(dimension , 'dimension')"
+                                                        >
+                                                            <v-row>
+                                                                <v-col cols="12">
+                                                                    {{ $t('shop.DIMENSION') }} {{ dimension.lungimeDto }} x {{ dimension.latimeDto }}
+                                                                </v-col>
+                                                                <v-col v-if="dimension.recomandarePat" cols="12">
+                                                                    {{ $t('shop.BEDRECOMENDATION') }} {{ dimension.recomandarePat ? dimension.recomandarePat : 'N/A'}}
+                                                                </v-col>
+                                                            </v-row>
+                                                            <p></p> 
+                                                            <p></p>
+                                                        </v-btn>
+                                                        </div>
+                                                        
+                                                    </v-col>
+                                                </v-row>
+                                            </v-card-text>
+                                        </v-card>
                                     </div>
-                                    <v-divider></v-divider>
+                                    <v-divider opacity="70" ></v-divider>
                                 </div>
                                 <div v-else>
-                                    <!-- DE TERMINAT MANOPERA PERDEA/DRAPERIE -->
-                                    <div class="text-center">
-                                        <p class="font-weight-thin h5">{{ $t('shopSeturi.availableManopera') }}</p>
-                                        <v-divider></v-divider>
-                                        <v-row>
+                                   <v-card class="p-1" elevation="12" >
+                                        <v-card-title>
+                                            <p class="font-weight-thin h5">{{ $t('shopSeturi.availableManopera') }}</p>
+                                        </v-card-title>
+                                        <v-card-text>
+                                            <v-row>
                                             <v-col cols="12"
                                             v-for="(manopera,index) in selectedProduct.selectedManopere"
                                             :key="index">
@@ -169,110 +231,198 @@
                                                 </div>
                                             </v-col>
                                         </v-row>
-                                        <v-divider></v-divider>
-                                    </div>
+                                        </v-card-text>
+                                   </v-card>
+                                   <v-divider opacity="70"></v-divider>
                                     <div v-if="printManoperaInformation !== undefined" class="my-3">
                                         <v-alert variant="outlined" type="info" class="mb-2">
                                             <span class="font-weight-bold text-black">{{ $t('shopSeturi.showInfoAboutManopera') }} <b class="text-blue">{{ printManoperaInformation.manoperaSelected.numeManopera }}</b></span>
                                         </v-alert>
-                                        <v-alert variant="outlined" type="info" class="mb-2">
-                                            <span class="font-weight-bold text-black">{{ $t('shopSeturi.recommendedWidth') }}  <b class="text-blue">{{ Math.round(printManoperaInformation.manoperaSelected.metruTotalFolosit / printManoperaInformation.manoperaSelected.tipGalerie.incretireRejansa)}} {{ $t('shopSeturi.meter') }}</b></span>
+                                        <v-alert variant="outlined" type="info" class="mb-2 text-justify">
+                                            <span class="font-weight-bold text-black ">- {{ $t('shopSeturi.recommendedWidth') }}  <b class="text-blue">{{ printManoperaInformation.manoperaSelected.metruTotalFolosit / printManoperaInformation.manoperaSelected.tipGalerie.incretireRejansa}} {{ $t('shopSeturi.meter') }}</b></span>
                                             <br>
-                                            <span class="font-weight-bold text-black">{{ $t('shopSeturi.maximumWidth') }}  <b class="text-blue">{{ Math.round(printManoperaInformation.manoperaSelected.metruTotalFolosit / printManoperaInformation.manoperaSelected.tipGalerie.incretireRejansa)}} {{ $t('shopSeturi.meter') }}</b></span>
+                                            <span class="font-weight-bold text-black">- {{ $t('shopSeturi.maximumWidth') }}  <b class="text-blue">{{ printManoperaInformation.manoperaSelected.metruTotalFolosit / printManoperaInformation.manoperaSelected.tipGalerie.incretireRejansa}} {{ $t('shopSeturi.meter') }}</b></span>
+                                            <br>
+                                            <span class="font-weight-bold text-black">- {{ $t('shopSeturi.recommendedHeight') }}  <b class="text-blue">{{printManoperaInformation.manoperaSelected.inaltimeMaxima / 100}} {{ $t('shopSeturi.meter') }}</b></span>
+                                            <br>
+                                            <span class="font-weight-bold text-black">- <b class="text-red">{{ $t('shopSeturi.userWidthPrefference') }}.</b>  </span>
+
                                         </v-alert>
-                                        <v-card elevation="6" class="bg-grey-lighten-2">
-                                            <v-card-title class="text-center font-weight-light">
-                                                {{ $t('shopSeturi.manoperaName') }} {{ printManoperaInformation.manoperaSelected.numeManopera}}
-                                            </v-card-title>
-                                            <v-divider opacity="70"></v-divider>
-                                            <v-card-text>
-                                                <v-row>
-                                                    <v-col cols="12">
-                                                        <p class="font-weight-normal h5">{{ $t('shopSeturi.rejansaType') }}</p>
-                                                        <v-divider></v-divider>
-                                                        <v-row>
-                                                            <v-col cols="12">
-                                                                <p class="font-weight-light h6">{{ $t('shopSeturi.rejansaName') }} <b>{{ printManoperaInformation.manoperaSelected.tipGalerie.numeTipRejansa }}</b></p>
-                                                                <p class="font-weight-light h6">{{ $t('shopSeturi.rejansaIncretire') }} <b>{{ printManoperaInformation.manoperaSelected.tipGalerie.incretireRejansa }}</b></p>
-                                                                <p class="font-weight-light h6">{{ $t('shopSeturi.catchWithRings') }}<b>{{ printManoperaInformation.manoperaSelected.tipGalerie.sePrindeCuInele === true ? 'DA' : 'NU'  }}</b></p>
-                                                                <p class="font-weight-light h6">{{ $t('shopSeturi.totalMeters') }}<b>{{ printManoperaInformation.manoperaSelected.metruTotalFolosit }}</b></p>
-                                                            </v-col>
-                                                            <v-col cols="12">
-                                                                <v-img eager
-                                                                :aspect-ratio="16 / 5"
-                                                                :src="printManoperaInformation.manoperaSelected.tipGalerie.presignedUrl" >
+                                        <v-alert variant="outlined" type="warning" class="mb-2" >
+                                            <span class="font-weight-bold text-black">{{ $t('shopSeturi.inputHeight') }}</span>
 
-                                                                </v-img>
-                                                            </v-col>
-                                                            
-                                                        </v-row>
-                                                    </v-col>
-                                                    <v-divider opacity="70" ></v-divider>
-                                                    <v-col cols="12" v-if="printManoperaInformation.manoperaSelected.tipGalerie.sePrindeCuInele === true">
-                                                        <p class="font-weight-normal h5">{{ $t('shopSeturi.ringType') }}</p>
-                                                        <v-divider></v-divider>
-                                                        <v-row>
-                                                            <v-col cols="12">
-                                                                <p class="font-weight-normal h6">{{ $t('shopSeturi.ringColor') }} <b>{{ printManoperaInformation.manoperaSelected.tipInel.numeTipInel }}</b></p>
-                                                                <v-img eager
-                                                                :aspect-ratio="16 / 5"
-                                                                :src="printManoperaInformation.manoperaSelected.tipInel.presignedUrl" >
-                                                                </v-img>
-                                                            </v-col>
-                                                        </v-row>
-                                                    </v-col>
-                                                    <v-divider v-if="printManoperaInformation.manoperaSelected.tipGalerie.sePrindeCuInele === true" opacity="70" ></v-divider>
-                                                    <v-col cols="12">
-                                                        <p class="font-weight-normal h5">{{ $t('shopSeturi.liningType') }}</p>
-                                                        <v-divider></v-divider>
-                                                        <v-row>
-                                                            <v-col cols="12">
-                                                                <p class="font-weight-normal h6">{{ $t('shopSeturi.liningTypeName') }} <b>{{ printManoperaInformation.manoperaSelected.tipLinie.numeTipCusaturaColt }}</b></p>
-                                                            </v-col>
-                                                            <v-col cols="12">
-                                                                <v-img eager
-                                                                :aspect-ratio="16 / 5"
-                                                                :src="printManoperaInformation.manoperaSelected.tipLinie.presignedUrl" >
+                                        </v-alert>
+                                        <div>
+                                            <v-form ref="heightInputForm" validate-on="input" class="text-center">
+                                                <v-text-field :label="`${t('shopSeturi.prefferedHeight')}`"
+                                                :rules="[rules.maxChar(4) , rules.onlyNumbers , rules.notEmpty]" 
+                                                v-model="currentHeightPreffered">
+                                                </v-text-field>
+                                                <v-snackbar class="text-center"
+                                                 v-model="successSnackBar"
+                                                    color="green"
+                                                    rounded="pill">
+                                                    {{ $t('general.heightSaved') }}
+                                                </v-snackbar>
+                                                <v-btn block  class="my-4"
+                                                        color="green" 
+                                                        variant="elevated" 
+                                                        ripple
+                                                        @click=savePreferredHeight>
+                                                            {{ $t('button.save') }}
+                                                </v-btn>
+                                               
+                                            </v-form>
+                                            
+                                        </div>
+                                        <v-stepper v-model="step"
+                                         elevation="12" class="mb-6" 
+                                         :mobile="heightComp">
+                                            <v-stepper-header>
+                                                <v-stepper-item
+                                                    title="Rejansa" 
+                                                    value="1" 
+                                                     >
+                                                </v-stepper-item>
+                                                <v-divider></v-divider>
+                                                <v-stepper-item v-if="printManoperaInformation.manoperaSelected.tipGalerie.sePrindeCuInele === true"
+                                                    title="Inele prindere" 
+                                                    value="2" 
+                                                     >
+                                                </v-stepper-item>
+                                                <v-divider></v-divider>
+                                                <v-stepper-item
+                                                    title="Tip linie" 
+                                                    :value="printManoperaInformation.manoperaSelected.tipGalerie.sePrindeCuInele === true ? 3 : 2" 
+                                                       >
+                                                </v-stepper-item>
+                                            </v-stepper-header>
+                                            <v-stepper-window>
+                                                <v-stepper-window-item value="1" >
+                                                    <v-card elevation="6" class="bg-grey-lighten-2">
+                                                        <v-card-text>
+                                                            <v-row>
+                                                                <v-col cols="12">
+                                                                    <p class="font-weight-normal h5">{{ $t('shopSeturi.rejansaType') }}</p>
+                                                                    <v-divider></v-divider>
+                                                                    <v-row>
+                                                                        <v-col cols="12">
+                                                                            <p class="font-weight-light h6">{{ $t('shopSeturi.rejansaName') }} <b>{{ printManoperaInformation.manoperaSelected.tipGalerie.numeTipRejansa }}</b></p>
+                                                                            <p class="font-weight-light h6">{{ $t('shopSeturi.rejansaIncretire') }} <b>{{ printManoperaInformation.manoperaSelected.tipGalerie.incretireRejansa }}</b></p>
+                                                                            <p class="font-weight-light h6">{{ $t('shopSeturi.catchWithRings') }}<b>{{ printManoperaInformation.manoperaSelected.tipGalerie.sePrindeCuInele === true ? 'DA' : 'NU'  }}</b></p>
+                                                                            <p class="font-weight-light h6">{{ $t('shopSeturi.totalMeters') }}<b>{{ printManoperaInformation.manoperaSelected.metruTotalFolosit }}</b></p>
+                                                                            <p class="font-weight-light h6">{{ $t('shopSeturi.maximumHeight') }}<b>{{ printManoperaInformation.manoperaSelected.inaltimeMaxima }}</b></p>
+                                                                        </v-col>
+                                                                        <v-col cols="12">
+                                                                            <v-img eager
+                                                                            :aspect-ratio="16 / 5"
+                                                                            :src="printManoperaInformation.manoperaSelected.tipGalerie.presignedUrl" >
 
-                                                                </v-img>
-                                                            </v-col>
-                                                            
-                                                        </v-row>
-                                                    </v-col>
-                                                </v-row>
-                                              
-                                            </v-card-text>
-                                        </v-card>
+                                                                            </v-img>
+                                                                        </v-col>
+                                                                    </v-row>
+                                                                </v-col>
+                                                            </v-row>
+                                                        </v-card-text>
+                                                    </v-card>
+                                                </v-stepper-window-item>
+                                                <v-stepper-window-item value="2" v-if="printManoperaInformation.manoperaSelected.tipGalerie.sePrindeCuInele === true" >
+                                                    <v-card elevation="6" class="bg-grey-lighten-2">
+                                                        <v-card-text>
+                                                            <v-row>
+                                                                <v-col cols="12" v-if="printManoperaInformation.manoperaSelected.tipGalerie.sePrindeCuInele === true">
+                                                                    <p class="font-weight-normal h5">{{ $t('shopSeturi.ringType') }}</p>
+                                                                    <v-divider></v-divider>
+                                                                    <v-row>
+                                                                        <v-col cols="12">
+                                                                            <p class="font-weight-normal h6">{{ $t('shopSeturi.ringColor') }} <b>{{ printManoperaInformation.manoperaSelected.tipInel.numeTipInel }}</b></p>
+                                                                            <v-img eager
+                                                                            :aspect-ratio="16 / 5"
+                                                                            :src="printManoperaInformation.manoperaSelected.tipInel.presignedUrl" >
+                                                                            </v-img>
+                                                                        </v-col>
+                                                                    </v-row>
+                                                                </v-col>
+                                                            </v-row>
+                                                        </v-card-text>
+                                                    </v-card>
+                                                </v-stepper-window-item>
+                                                <v-stepper-window-item :value="printManoperaInformation.manoperaSelected.tipGalerie.sePrindeCuInele === true ? 3 : 2"  >
+                                                    <v-card elevation="6" class="bg-grey-lighten-2">
+                                                        <v-card-text>
+                                                            <v-row>
+                                                                <v-col cols="12">
+                                                                    <p class="font-weight-normal h5">{{ $t('shopSeturi.liningType') }}</p>
+                                                                    <v-divider></v-divider>
+                                                                    <v-row>
+                                                                        <v-col cols="12">
+                                                                            <p class="font-weight-normal h6">{{ $t('shopSeturi.liningTypeName') }} <b>{{ printManoperaInformation.manoperaSelected.tipLinie.numeTipCusaturaColt }}</b></p>
+                                                                        </v-col>
+                                                                        <v-col cols="12">
+                                                                            <v-img eager
+                                                                            :aspect-ratio="16 / 5"
+                                                                            :src="printManoperaInformation.manoperaSelected.tipLinie.presignedUrl" >
+
+                                                                            </v-img>
+                                                                        </v-col>
+                                                                        
+                                                                    </v-row>
+                                                                </v-col>
+                                                            </v-row>
+                                                        </v-card-text>
+                                                    </v-card>
+                                                </v-stepper-window-item>
+                                            </v-stepper-window>
+                                            <v-stepper-actions >
+                                                <template v-slot:next="{props}">
+                                                    <v-btn variant="outlined" color="primary" class="ma-1"
+                                                    v-bind="props" @click="step++">
+                                                        {{ $t('shop.next') }}<v-icon>mdi-arrow-right</v-icon>
+                                                    </v-btn>
+                                                </template>
+                                                <template v-slot:prev="{props}">
+                                                    <v-btn variant="outlined" color="error" class="ma-1"
+                                                    v-bind="props" @click="step--">
+                                                        {{ $t('shop.curtain.back') }}<v-icon>mdi-arrow-left</v-icon>
+                                                    </v-btn>
+                                                </template>
+                                            </v-stepper-actions>
+                                        </v-stepper>
                                     </div>
                                     
                                 </div>
                                 <div>
-                                    <div class="text-center">
-                                        <p class="font-weight-thin h5">{{ $t('shop.colorAvailable') }}</p>
-                                    </div>
+                                    <v-card elevation="12" class="p-2">
+                                        <v-card-title class="text-center">
+                                            <p class="font-weight-thin h5">{{ $t('shop.colorAvailable') }}</p>
+                                        </v-card-title>
                                     <v-divider></v-divider>
-                                    <v-row>
-                                        <v-col cols="12" 
-                                        v-for="(color,index) in selectedProduct.selectedColors"
-                                        :key="index">
-                                        <div class="text-center">
-                                            <v-btn
-                                                variant="elevated"
-                                                block
-                                                :color="selectedColors.some(c => c.productName === selectedProduct?.numeProdusDto && c.colorSelected === color) ? 'red' : 'grey-lighten-2'"
-                                                active-color="blue"
-                                                @click="toggleButton(color,'color')"
-                                            >
-                                                {{ color.numeCuloareDto }}
-                                            </v-btn>
-                                        </div>
-                                        
-                                        </v-col>
-                                    </v-row>
+                                    <v-card-text>
+                                        <v-row>
+                                            <v-col cols="12" 
+                                            v-for="(color,index) in selectedProduct.selectedColors"
+                                            :key="index">
+                                            <div class="text-center">
+                                                <v-btn
+                                                    variant="elevated"
+                                                    block
+                                                    :color="selectedColors.some(c => c.productName === selectedProduct?.numeProdusDto && c.colorSelected === color) ? 'red' : 'grey-lighten-2'"
+                                                    active-color="blue"
+                                                    @click="toggleButton(color,'color')"
+                                                >
+                                                    {{ color.numeCuloareDto }}
+                                                </v-btn>
+                                            </div>
+                                            
+                                            </v-col>
+                                        </v-row>
+                                    </v-card-text>
+                                    </v-card> 
+                                    <v-divider opacity="70"></v-divider>
                                 </div>
                             </div>
                            
-                            <div class="mt-4">
+                            <div class="mt-6">
                                 <span class="font-weight-thin h5">
                                     <b v-if="setData.pretRedusSetDto > 0">
                                         <p><s>{{ setData.pretSetDto }} {{ selectedCurrency === 'RON' ? 'RON' : 'EUR' }}</s></p>
@@ -309,13 +459,24 @@
                                     </template>
                                 </v-btn>
                             </div>
+                            <div>
+                                <NuxtLink :to="navigateTo(localePath('/measurement'))" prefetch :prefetch-on="{interaction: true}">
+                                    {{ $t('general.howToMeasure') }}
+                                </NuxtLink>
+                            </div>
+                            <div class="mt-4 text-center">
+                                <p class="font-weight-light h6">{{ $t('general.informations') }}</p>
+                                <span><v-icon class="mr-2">mdi-phone</v-icon>0744959764</span>
+                                <br>
+                                <span><v-icon class="mr-2">mdi-email</v-icon>texx@email.com</span>
+                            </div>
                         </v-card-text>
                     </v-card>
                 </v-col>
                 <v-col cols="12" xs="12" sm="12" md="6" class="p-1">
                     <v-card elevation="12">
                         <v-card-title class="font-weight-light text-center">
-                            <p class="h5">{{ $t('description.productsInfo.titleInfo') }}</p>
+                            <p class="h5">{{ $t('shopSeturi.description.productsInfo.titleInfo') }}</p>
                         </v-card-title>
                         <v-card-text>
                             <v-divider></v-divider>
@@ -331,30 +492,30 @@
                                         <v-card-text class="bg-grey-lighten-3" >
                                             <v-row>
                                                 <v-col cols="12" >
-                                                    <p class=" font-weight-bold h6">{{ $t('description.productsInfo.general.titleGeneral') }}</p>
+                                                    <p class=" font-weight-bold h6">{{ $t('shopSeturi.description.productsInfo.general.titleGeneral') }}</p>
                                                     <v-divider></v-divider>
-                                                    <p class="font-weight-normal h7">{{ $t('description.productsInfo.general.name') }} <b>{{ product.numeProdusDto }}</b></p>
-                                                    <p class="font-weight-normal h7">{{ $t('description.productsInfo.general.type') }}<b>{{ product.tipulProdusuluiDto.toUpperCase() }}</b></p>
-                                                    <p class="font-weight-normal h7">{{ $t('description.productsInfo.general.identifier') }} <b>{{ product.codProdusDto.toUpperCase() }}</b></p>
+                                                    <p class="font-weight-normal h7">{{ $t('shopSeturi.description.productsInfo.general.name') }} <b>{{ product.numeProdusDto }}</b></p>
+                                                    <p class="font-weight-normal h7">{{ $t('shopSeturi.description.productsInfo.general.type') }}<b>{{ product.tipulProdusuluiDto.toUpperCase() }}</b></p>
+                                                    <p class="font-weight-normal h7">{{ $t('shopSeturi.description.productsInfo.general.identifier') }} <b>{{ product.codProdusDto.toUpperCase() }}</b></p>
                                                     <v-divider></v-divider>
                                                 </v-col>
                                                 <v-col cols="12">
-                                                    <p class=" font-weight-bold h6">{{ $t('description.productsInfo.general.prodDescription') }}</p>
+                                                    <p class=" font-weight-bold h6">{{ $t('shopSeturi.description.productsInfo.general.prodDescription') }}</p>
                                                     <v-divider></v-divider>
                                                     <p class="font-weight-normal h7 text-justify"><b>{{ product.descriereDto }}</b></p>
                                                     <v-divider></v-divider>
                                                 </v-col>
                                                 <v-col cols="12">
-                                                    <p class=" font-weight-bold h6">{{ $t('description.productsInfo.compozitionAndCaring.title') }}</p>
+                                                    <p class=" font-weight-bold h6">{{ $t('shopSeturi.description.productsInfo.compozitionAndCaring.title') }}</p>
                                                     <v-divider></v-divider>
-                                                    <p class="font-weight-normal h7 text-justify">{{ $t('description.productsInfo.compozitionAndCaring.compozition') }} <b>{{ product.compozitieDto }}</b></p>
-                                                    <p class="font-weight-normal h7 text-justify">{{ $t('description.productsInfo.compozitionAndCaring.caring') }} <b>{{ product.ingrijireDto }}</b></p>
+                                                    <p class="font-weight-normal h7 text-justify">{{ $t('shopSeturi.description.productsInfo.compozitionAndCaring.compozition') }} <b>{{ product.compozitieDto }}</b></p>
+                                                    <p class="font-weight-normal h7 text-justify">{{ $t('shopSeturi.description.productsInfo.compozitionAndCaring.caring') }} <b>{{ product.ingrijireDto }}</b></p>
                                                     <v-divider></v-divider>
                                                 </v-col>
                                                 <v-col cols="12">
-                                                    <p class=" font-weight-bold h6">{{ $t('description.productsInfo.manufacturer.title') }}</p>
+                                                    <p class=" font-weight-bold h6">{{ $t('shopSeturi.description.productsInfo.manufacturer.title') }}</p>
                                                     <v-divider></v-divider>
-                                                    <p class="font-weight-normal h7 text-justify">{{ $t('description.productsInfo.manufacturer.name') }} <b>{{ product.numeProducatorDto }}</b></p>
+                                                    <p class="font-weight-normal h7 text-justify">{{ $t('shopSeturi.description.productsInfo.manufacturer.name') }} <b>{{ product.numeProducatorDto }}</b></p>
                                                     <v-divider></v-divider>
                                                 </v-col>
                                             </v-row>
@@ -404,15 +565,16 @@
                                     </v-col>
                                     <v-col cols="12" >
                                         <div class="text-center">
-                                            <v-icon
-                                                v-for="starIndex in 5"
-                                                :key="starIndex"
-                                                :color="starIndex <= review.numarSteleDto ? 'orange' : 'grey'"
-                                            >
-                                                mdi-star
-                                            </v-icon>
-                                            
-                                       
+                                            <v-rating
+                                                hover :length="5"
+                                                :size="24"
+                                                readonly
+                                                half-increments
+                                                v-model="review.numarSteleDto"
+                                                color="orange-lighten-1"
+                                                active-color="primary"
+                                                class="ma-2"
+                                            ></v-rating>
                                         <p class="font-weight-thin h6 mt-2">{{ review.textRecenzie }}</p>
                                         </div>
                                     </v-col>
@@ -424,7 +586,57 @@
                         </v-card>
                     </v-card>
                 </v-col>
-                
+                <v-col cols="12" v-if="setData.reviewsGeneral">
+                    <v-card elevation="24" class="bg-grey-lighten-2 text-center">
+                        <v-card-title>
+                            <p class="font-weight-thin h3 my-7">{{ $t('general.ratingOverview') }}</p>
+                        </v-card-title>
+                        <v-card-text>
+                            <v-row>
+                                <v-col cols="12">
+                                    <p class="font-weight-light h5"><span class="h1 font-weight-light">{{ setData.reviewsGeneral.averageRating }}</span> / 5</p>
+                                    <v-rating
+                                        hover :length="5"
+                                        :size="32"
+                                        readonly
+                                        half-increments
+                                        v-model="setData.reviewsGeneral.averageRating"
+                                        color="orange-lighten-1"
+                                        active-color="primary"
+                                        class="ma-2"
+                                    ></v-rating>
+                                    <p class="font-weight-light h5">{{ setData.reviewsGeneral.totalReviews }} {{ $t('general.reviews') }}</p>
+                                </v-col>
+                                <v-col cols="12">
+                                    <v-list bg-color="transparent" class="d-flex flex-column-reverse" density="compact">
+                                        <v-list-item v-for="(value, index) in [5, 4, 3, 2, 1]" :key="index">
+                                            <v-progress-linear
+                                                :model-value="getPercentage(value)"
+                                                class="mx-n5"
+                                                color="yellow-darken-3"
+                                                height="15"
+                                                rounded
+                                            ></v-progress-linear>
+                                            <template v-slot:prepend>
+                                                <span>{{ value }}</span>
+                                                <v-icon class="mx-3" icon="mdi-star"></v-icon>
+                                            </template>
+                                            <template v-slot:append>
+                                                <div >
+                                                    <span class="d-flex justify-end">
+                                                        {{ getReviewCount(value) }}
+                                                    </span>
+                                                </div>
+                                            </template>
+                                        </v-list-item>
+                                    </v-list>
+                                </v-col>
+                            </v-row>
+                           
+                        </v-card-text>
+                    </v-card>
+                </v-col>
+                <v-divider></v-divider>
                 <v-col cols="12" v-if="isLoggedIn" c>
                     <v-form @submit.prevent="postReview()" validate-on="submit" ref="reviewForm" class="p-3 m-2 bg-grey-lighten-4 text-center">
                         <p class="font-weight-thin h5 text-center">{{ $t('shop.leaveAReview') }}</p>
@@ -435,19 +647,16 @@
                             :rules="[rules.notEmpty,rules.maxChar(150)]">
 
                         </v-textarea>
-                        <v-radio-group :rules="[rules.stars]"
-                        inline class="d-flex justify-center"
-                        density="comfortable" >
-                            <v-radio 
-                            v-for="(star,index) in 5"
-                            :key="index"
-                            false-icon="mdi-star"
-                            true-icon="mdi-star"
-                            :color="index + 1 > stars ? 'grey' : 'orange'"
-                            @click="clickStar(index + 1)">
-
-                            </v-radio>
-                        </v-radio-group>
+                        <v-rating
+                            hover :length="5"
+                            :size="32"
+                            v-model="stars"
+                            :item-labels="[`${$t('general.notCalitative')}` , '' , `${$t('general.ok')}` , '' , `${$t('general.calitative')}`]"
+                            item-label-position="bottom"
+                            color="orange-lighten-1"
+                            active-color="primary"
+                            class="ma-2"
+                        ></v-rating>
                         <p class="font-weight-thin h6 ">({{ stars }} {{ stars === 1 ? 'stea' : 'stele' }})</p>
                         <v-btn class="text-center m-2 p-2" variant="flat" color="primary" type="submit">
                             {{ $t('shop.post') }}
@@ -456,7 +665,7 @@
                     <p class="font-weight-thin h6 text-center">{{$t('shop.reviewInfo')}}</p>
                 </v-col>
                 <v-col cols="12" v-else>
-                    <v-card class="p-2" elevation="12" >
+                    <v-card class="p-2 bg-grey-lighten-2" elevation="12"  >
                         <v-card-text>
                             <p class="font-weight-light h5 text-center text-red">{{ $t('textFieldsMessages.mustBeLoggedInForReview') }}</p>
                             <div class="text-center">
@@ -478,6 +687,11 @@
 import { useDisplay } from 'vuetify';
 import productService from '~/services/Products'
 
+
+definePageMeta({
+    middleware: 'locale'
+})
+
 const swal = useNuxtApp().$swal
 const route = useRoute();
 const localePath = useLocalePath();
@@ -495,10 +709,20 @@ const stars = ref(0)
 const reviewForm = ref(null)
 const reviewText = ref('')
 const isLoggedIn = ref(false)
+const prefferedHeights = ref([])
+const currentHeightPreffered = ref('')
+const heightInputForm = ref(null)
+const successSnackBar = ref(false)
+const activeSlide = ref(0)
+const isMounted = ref(false)
+const step = ref(1)
+
+const onlyNums = new RegExp('^[1-9]\\d{0,3}$');
 
 const rules = {
     notEmpty : value => !!value || t('textFieldsMessages.notEmpty'),
     maxChar: maxLength => value => !value || value.length <= maxLength || `${t('textFieldsMessages.maxLength')} ${maxLength}`,
+    onlyNumbers : value => onlyNums.test(String(value)) || t('textFieldsMessages.onlyNumbers'),
     stars : value => value <= 5 && value >=0 || t('textFieldsMessages.starsRule')
 }
 
@@ -509,6 +733,13 @@ definePageMeta({
 
 useSeoMeta({
     title: () => setName,
+})
+
+useHead({
+    link : [
+        {rel: 'dns-prefetch' , href: 'https://dw45vxtt6tooj.cloudfront.net'},
+        {rel: 'preconnect' , href: 'https://dw45vxtt6tooj.cloudfront.net'},
+    ]
 })
 
 
@@ -525,9 +756,37 @@ const setData = ref({
     reviewsSet: []
 })
 
-const clickStar = (index) => {
-    stars.value = index
-}
+const getPercentage = (rating) => {
+    const totalReviews = setData.value.reviewsGeneral.totalReviews || 0;
+    if (totalReviews === 0) return 0;
+    
+    const reviewCount = getReviewCount(rating);
+    return Math.round((reviewCount / totalReviews) * 100);
+};
+
+const heightComp = computed(() => {
+    switch (name.value) {
+      case 'xs': return true
+      default : return false;
+    }
+})
+
+const getReviewCount = (rating) => {
+    switch (rating) {
+        case 5:
+            return setData.value.reviewsGeneral.fiveStarsReviews;
+        case 4:
+            return setData.value.reviewsGeneral.fourStarsReviews;
+        case 3:
+            return setData.value.reviewsGeneral.threeStarsReviews;
+        case 2:
+            return setData.value.reviewsGeneral.twoStarsReviews;
+        case 1:
+            return setData.value.reviewsGeneral.oneStarReviews;
+        default:
+            return 0;
+    }
+};
 
 const getSetData =  async () => {
     const responseFromSetDataFetch = await productService.getSetData(encodedIdSet,setName,selectedCurrency.value)
@@ -538,7 +797,8 @@ const getSetData =  async () => {
     }
    
     Object.assign(setData.value , responseFromSetDataFetch)
-
+    // Extract all image URLs
+    
     console.log(setData.value)
 }
 
@@ -561,10 +821,11 @@ const getSelectedManoperaForSelectedProduct = computed(() => {
     }
 })
 
-const height = computed(() => {
+const screenSize = computed(() => {
     switch (name.value) {
-      case 'xs': return 3
-      default : return 3
+      case 'xs': return {width : 300 , height : 300}
+      case 'sm' : return { width :600 , height : 600 }
+      default : return { width : 550 , height : 550}
     }
 })
 
@@ -628,6 +889,13 @@ const selectImage = ((imageObj) => {
 
 const selectProduct = (product) => {
     selectedProduct.value = product;
+    console.log(selectedProduct.value)
+    const savedHeight = prefferedHeights.value.find(
+        h => h.productName === selectedProduct.value.numeProdusDto
+    );
+
+    currentHeightPreffered.value = savedHeight ? savedHeight.height : '';
+
 };
 
 // info is either a dimension or a color or manopera
@@ -641,6 +909,7 @@ const toggleButton = (info, type) => {
         // Add the newly selected dimension
         selectedDimensions.value.push({
             productName: selectedProduct.value.numeProdusDto,
+            productId : selectedProduct.value.idProdus,
             dimensionSelected: info
         });
     } else if (type === 'color') {
@@ -648,10 +917,11 @@ const toggleButton = (info, type) => {
         selectedColors.value = selectedColors.value.filter(
             selected => selected.productName !== selectedProduct.value.numeProdusDto
         );
-
+        console.log(info)
         // Add the newly selected color
         selectedColors.value.push({
             productName: selectedProduct.value.numeProdusDto,
+            productId : selectedProduct.value.idProdus,
             colorSelected: info
         });
     } else if (type === 'manopera'){
@@ -660,6 +930,7 @@ const toggleButton = (info, type) => {
         )
         selectedManopere.value.push({
             productName: selectedProduct.value.numeProdusDto,
+            productId : selectedProduct.value.idProdus,
             manoperaSelected: info
         });
     }
@@ -669,6 +940,44 @@ const toggleButton = (info, type) => {
     console.log("Selected Manopere:", selectedManopere.value);
 
 };
+// de terminat manopera cu user height input
+// de vazut cum pot sa afisez currentprefferHeight can clientul revine la o selectie anterioara
+const savePreferredHeight =  async () => {
+    const isValidHeightForm = await heightInputForm.value.validate()
+    if(isValidHeightForm.valid){    
+        const selectedManopera = selectedManopere.value.find
+            (m => m.productName === selectedProduct.value.numeProdusDto)
+
+        if(parseInt(selectedManopera.manoperaSelected.inaltimeMaxima) < parseInt(currentHeightPreffered.value)){
+            fireAlarm('top-end' , 'error' , `${t('shopSeturi.heightPrefferedRule')}` , 3500)
+            return;
+        }
+
+        prefferedHeights.value = prefferedHeights.value.filter(
+            h => h.productName !== selectedProduct.value.numeProdusDto
+        )
+        
+        prefferedHeights.value.push({
+            productName: selectedProduct.value.numeProdusDto,
+            productId : selectedProduct.value.idProdus,
+            height : currentHeightPreffered.value
+        });
+
+        successSnackBar.value = true;
+        setTimeout(() => {
+            successSnackBar.value = false
+        }, 1500);
+
+        console.log("Preferred Heights:", prefferedHeights.value);
+
+
+    }else {
+        fireAlarm('top-end' , 'error' , `${t('sweetAlert2.CheckForm')}` , 3000)
+        return;
+    }
+    
+};
+
 
 const printManoperaInformation = computed(() => {
     let manoperaInfo = selectedManopere.value.find(m => m.productName === selectedProduct.value.numeProdusDto)
@@ -710,7 +1019,21 @@ const validateProductsOnSet = (products) => {
                     error: `${t('shopSeturi.selectManoperaForProduct')} ${product.numeProdusDto}`
                 };
             }
+
+            const findPrefferedHeight  = prefferedHeights.value.find(pf => 
+                 pf.productName === product.numeProdusDto
+            )
+
+            if(findPrefferedHeight === undefined){
+                return {
+                    flag: false,
+                    error : `${t('shopSeturi.selectHeightPlease')} ${product.numeProdusDto}, manopera : ${findCurrentProductSelectedManopere.manoperaSelected.numeManopera}`
+                }
+            }
         }
+
+
+       
     }
 
     // If no issues were found, return success
@@ -719,28 +1042,34 @@ const validateProductsOnSet = (products) => {
 
 const constructFormDataToSend = () => {
     const setOnCartDto = {
-        encodedIdSet: encodedIdSet, // Assuming this is already available
-        productsInCart: []
+        encodedIdSet: encodedIdSet, 
+        productsInCart: [],
+        currentCurrency : selectedCurrency.value,
+        pretCurent: setData.value.pretRedusSetDto > 0 ? setData.value.pretRedusSetDto : setData.value.pretSetDto,
+
     };
 
     setData.value.produsePeSet.forEach(product => {
         const selectedColor = selectedColors.value.find(c => c.productName === product.numeProdusDto)?.colorSelected;
+       
         const selectedDimension = selectedDimensions.value.find(d => d.productName === product.numeProdusDto)?.dimensionSelected;
         const selectedManopera = selectedManopere.value.find(m => m.productName === product.numeProdusDto)?.manoperaSelected;
-        console.log(selectedDimension)
-        console.log(selectedColor)
-        console.log(selectedManopera)
+        const prefferedHeight = prefferedHeights.value.find(m => m.productName === product.numeProdusDto)?.height
         setOnCartDto.productsInCart.push({
             idProdus: product.idProdus,
             idCuloare: selectedColor.idCuloare,
-            idDimensiune: selectedDimension.idDimensiune,
-            idManopera: selectedManopera?.idManopera || null,
-            pretCurent: setData.value.pretRedusSetDto > 0 ? setData.value.pretRedusSetDto : setData.value.pretSetDto
+            idDimensiune: selectedDimension?.idDimensiune,
+            idManopera: selectedManopera?.idManopera ,
+            prefferedHeight : prefferedHeight
         });
+      
     });
+
+
 
     const formData = new FormData();
     formData.append("setItems", JSON.stringify(setOnCartDto));
+    // formData.append("setItemsForLocalStorage" , JSON.stringify(localStorageSet))
     formData.append("cartItem" , null)
     return formData;
 };
@@ -755,25 +1084,39 @@ function fireAlarm(position , icon , title , timer){
     });
 }
 
+const updateLocalCart = (() => {
+    var getCartCount = localStorage.getItem('cartCount')
+    if(getCartCount !== null){
+        var updateCart = parseInt(getCartCount)
+        updateCart++
+        localStorage.setItem('cartCount' , String(updateCart))
+    }else{
+        localStorage.setItem('cartCount' , '1');
+    }
+})
+
 const addOrUpdateCart = (async () => {
     if (!isClicked.value) {
         const validateProducts = validateProductsOnSet(setData.value.produsePeSet)
-        
-        if(validateProducts.flag !== false){
-            if(useCookie('userLoggedIn').value === 1){
-                const formToSend = constructFormDataToSend()
-                const responseFromCartAddingOrUpdating = await productService.addToCart(formToSend);
-                if(responseFromCartAddingOrUpdating.status === 200){
-                    fireAlarm('top-end' , 'success' , `${t('general.addToCart')}` , 1000)
-                }else if(responseFromCartAddingOrUpdating.status === 204){
-                    fireAlarm('top-end' , 'success' , `${t('general.incrementQuantity')}` , 3000)
-                }else if(responseFromCartAddingOrUpdating.status === 404){
-                    fireAlarm('top-end' , 'error' , `${t('general.errorOnCartAddingOrUpdating')}` , 3000)
-                }else if(responseFromCartAddingOrUpdating.status === 400){
-                    fireAlarm('top-end' , 'error' , `${t('forgotpassword.error')}` , 3000)
-                }
-                
+        if(validateProducts.flag){
+            const formToSend = constructFormDataToSend()
+           
+            const responseFromCartAddingOrUpdating = await productService.addToCart(formToSend);
+            if(responseFromCartAddingOrUpdating.status === 200){
+                fireAlarm('top-end' , 'success' , `${t('general.addToCart')}` , 1000)
+                updateLocalCart()
+            }else if(responseFromCartAddingOrUpdating.status === 204){
+                fireAlarm('top-end' , 'success' , `${t('general.incrementQuantity')}` , 3000)
+                updateLocalCart()
+            }else if(responseFromCartAddingOrUpdating.status === 404){
+                fireAlarm('top-end' , 'error' , `${t('general.errorOnCartAddingOrUpdating')}` , 3000)
+            }else if(responseFromCartAddingOrUpdating.status === 400){
+                fireAlarm('top-end' , 'error' , `${t('forgotPassword.error')}` , 3000)
+            }else if(responseFromCartAddingOrUpdating.status === 401){
+                fireAlarm('top-end' , 'error' , 'Token expired/expirat' , 3000)
+                navigateTo(localePath('/user/logout'))
             }
+        
 
             isClicked.value = true;
                 setTimeout(() => {
@@ -795,10 +1138,13 @@ const addOrUpdateCart = (async () => {
 
 onMounted(async () => {
     await getSetData()
-    selectedImage.value = allImages.value[0]
+    if(allImages && allImages.value.length > 0){
+        selectedImage.value = allImages.value[0]
+    }
     if(useCookie('userLoggedIn').value === 1){
         isLoggedIn.value = true;
     }
+    isMounted.value = true;
 })
 
 

@@ -151,6 +151,7 @@ const addressForm = ref(null);
 // Data handling
 const addressesDataFromDb = ref([])
 const addressToSaveToDb = ref({
+  idAdresa : 0,
   alias: '',
   tip_adresa: '',
   bloc: '',
@@ -267,8 +268,8 @@ const dataForm = [
     placeholder: '',
     type: 'text',
     model: 'cif',
-    rules: [validationRules.required, validationRules.onlyNumbers],
-    counter: 6 // No max length defined for Cif, so no counter
+    rules: [validationRules.required, validationRules.onlyNumbers,validationRules.maxLength(13)],
+    counter: 13
   },
   {
     label: t('profile.firmName'),
@@ -380,6 +381,7 @@ const saveAddress = async () => {
       hideFormToAddAddress();
       swal.close()
       fireAlarm('success' , t('sweetAlert2.Success') , t('sweetAlert2.SavedAddressSuccesfully') , null)
+      addressesDataFromDb.value = addressesDataFromDb.value.push(addressToSaveToDb.value)
       dummyBoolean.value = true;
       window.location.reload()
     } else {
@@ -399,13 +401,18 @@ const deleteAddress = async (alias) => {
   if (response === 1) {
     swal.close()
     fireAlarm('success' , t('sweetAlert2.Success') , t('sweetAlert2.DeleteAddressSuccesfully') , null)
-    window.location.reload()
-    dummyBoolean.value = true;
+    var findIndex = addressesDataFromDb.value.findIndex(address => address.alias === alias)
+    if(findIndex === -1){
+      window.location.reload()
+    }else{
+      addressesDataFromDb.value = addressesDataFromDb.value.splice(findIndex,1)
+    }
+
   } else {
     swal.close()
     fireAlarm('error' ,  t('sweetAlert2.Error') , t('sweetAlert2.ErrorWhenDeletingAddress') , null)
-    dummyBoolean.value = true;
   }
+  dummyBoolean.value = true;
 }
 
 // Lifecycle hook

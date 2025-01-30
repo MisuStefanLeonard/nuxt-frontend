@@ -53,7 +53,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
 import RegisterService from '~/services/Register'
 import UserService from '~/services/User'
 
@@ -179,6 +179,14 @@ function fireAlarm(icon, title, text, isLoading = null) {
 const assignDataFromDb = async () => {
   fireAlarm('info', t('sweetAlert2.Attention'),t('sweetAlert2.WaitPlease'), true);
   const data = await UserService.getPersonalDataFromDb();
+
+  if(data === 0){
+    swal.close()
+    fireAlarm('error' , "Error" , t('sweetAlert2.Error') , null)
+    setTimeout(() => {
+      navigateTo(localePath('/user/profile'))
+    }, 1500);
+  }
   userDataFromDb.value = data;
 
   if(userDataFromDb.value.gen === true){

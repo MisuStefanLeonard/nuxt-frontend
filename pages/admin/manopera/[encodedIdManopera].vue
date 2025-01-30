@@ -33,6 +33,16 @@
                             ></v-text-field>
                         </v-col>
                         <v-col cols="12">
+                            <v-text-field
+                                v-model="manoperaData.inaltimeMaxima"
+                                :rules="[rules.numeric]"
+                                label="Inaltime maxima permisa pe manopera (cm)"
+                                variant="outlined"
+                                color="black"
+                                class="p-2 m-1"
+                            ></v-text-field>
+                        </v-col>
+                        <v-col cols="12">
                             <v-select 
                                 :items="manoperaData.optiuniDisponibile.rejanseDisponibile"
                                 :rules="[rules.required]"

@@ -5,18 +5,18 @@
         </div>
       <div v-else>
 
-      <v-container class="pb-2 text-center shadow-lg mt-2">
+      <v-container fluid class="pb-2 text-center shadow-lg mt-2">
         <p class="h2 font-weight-light"><v-icon class="mr-2" size="24">mdi-cog-outline</v-icon>{{$t('profile.generalInfo.accountSettings')}}</p>
       </v-container>
-      <v-container class="mt-4 text-center d-block">
+      <v-container fluid class="mt-4 text-center d-block">
         <v-card 
           v-for="card_item in cardData" 
           :key="card_item.card_title" 
-          class="w-100 bg-grey-darken-4 my-2"
+          class="w-100 bg-grey-darken-4 my-2 elevation-24"
         >
-          <nuxt-link :to="localePath(card_item.card_path)" class="d-flex flex-column justify-center align-center" style="text-decoration: none;">
+          <nuxt-link :to="localePath(card_item.card_path)" class="d-flex flex-column justify-center align-center text-white" style="text-decoration: none;">
             <v-card-title>
-              <v-row align="center" justify="center">
+              <v-row  justify="center">
                 <v-col cols="auto">
                   <v-icon>{{ card_item.card_icon }}</v-icon>
                 </v-col>
@@ -67,5 +67,9 @@ const cardData = ref([
     }
 ])
 
+
+onMounted(() => {
+  console.log("Force mount")
+})
 
 </script>

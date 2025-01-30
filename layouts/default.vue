@@ -1,6 +1,9 @@
 <template>
+ 
     <v-app>
-      <MyNavBar />
+      <FirstTimeEntering />
+      <MyNavBar :key="route.fullPath" />
+      
       <v-main>
         <SnackbarExpired />
         <NuxtPage />
@@ -13,6 +16,7 @@
   import MyNavBar from '~/components/user/MyNavBar.vue';
   import SnackbarExpired from '~/components/SnackbarExpired.vue';
   import FooterComp from '~/components/user/FooterComp.vue';
+  import FirstTimeEntering from '~/components/user/FirstTimeEntering.vue';
   import { ref, onMounted } from 'vue';
   import { useNuxtApp } from '#app';
 
@@ -23,7 +27,7 @@
 
   useHead({
     titleTemplate : (titleChunk) => {
-      return titleChunk ? `${titleChunk} - Site Title` : 'Site Title';
+      return titleChunk ? `${titleChunk}` : 'Site Title';
     },
     htmlAttrs:{
       lang: route.path.startsWith('/en') ? 'en' : 'ro',
@@ -98,13 +102,13 @@
             height="0" width="0" style="display:none;visibility:hidden"></iframe>`,
       }
     ],
-    link:
-    [
-      {rel :'canonical' , href: route.meta.canonicalUrl || 'Default'},
-      {rel :'dns-prefetch' , href: route.meta.externalAPI_URL || 'Default'},
-      {rel :'prefetch' , href: route.meta.externalResource || 'Default'},
-      {rel :'alternate', href: route.meta.alternateLang || 'Default'}
-    ]
+    // link:
+    // [
+    //   {rel :'canonical' , href: route.meta.canonicalUrl || 'Default'},
+    //   {rel :'dns-prefetch' , href: route.meta.externalAPI_URL || 'Default'},
+    //   {rel :'prefetch' , href: route.meta.externalResource || 'Default'},
+    //   {rel :'alternate', href: route.meta.alternateLang || 'Default'}
+    // ]
   })
 
   onMounted(() => {

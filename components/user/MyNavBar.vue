@@ -25,8 +25,18 @@
           v-model="item.showItems"
         >
           <template v-slot:activator="{ props }">
-            <v-btn text v-bind="props" density="compact" size="50" class="mr-1">
-              <v-icon >{{ item.icon }}</v-icon>
+            <v-btn 
+             text v-bind="props" density="compact" size="50" >
+              <v-badge 
+                v-if="item.title === 'menu.shoppingCart' && isClient"
+                :content="cartCount"
+                color="yellow"
+                size="small"
+                :max="9"
+              >
+                <v-icon class="mr-2">{{ item.icon }}</v-icon>
+              </v-badge>
+              <v-icon v-else>{{ item.icon }}</v-icon>
             </v-btn>
           </template>
           <v-list v-if="item.dropdown.length > 0">
@@ -48,11 +58,12 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import NavigationDrawer from './NavigationDrawer.vue' 
-import LanguageSwitcher from './LanguageSwitcher.vue';
+import LanguageSwitcher from './LanguageSwitcher.vue'
+import { cartCount } from '~/middleware/cart'
 // Inject the emitter
 const nuxtApp = useNuxtApp()
 const emitter = nuxtApp.$emitter
-
+const isClient = ref(false)
 const localePath  = useLocalePath()
 
 // Router instance
@@ -74,17 +85,17 @@ const menuItems2 = ref([
     path: '/shop', 
     icon: 'mdi-store',
     dropdown: [
-        { title: 'menu.allProducts', path: '/shop', icon: '' , query : {} },
-        { title: 'menu.cuverturi', path: '/shop', icon: '', query: {type : 'cuvertura'}},
-        { title: 'menu.perdele', path: '/shop', icon: '', query: {type : 'perdea'} },
-        { title: 'menu.draperii', path: '/shop', icon: '',query: {type : 'draperie'} },
-        { title: 'menu.perne', path: '/shop', icon: '' , query: {type : 'perna'} },
-        { title: 'menu.sets', path: '/shopSeturi', icon: '' , query: {} },
+        { title: 'menu.allProducts', path: '/shop', icon: 'mdi-package-variant' , query : {} },
+        { title: 'menu.cuverturi', path: '/shop', icon: 'mdi-bed-king-outline', query: {type : 'cuvertura'}},
+        { title: 'menu.perdele', path: '/shop', icon: 'mdi-window-shutter-open', query: {type : 'perdea'} },
+        { title: 'menu.draperii', path: '/shop', icon: 'mdi-blinds-horizontal',query: {type : 'draperie'} },
+        { title: 'menu.perne', path: '/shop', icon: 'mdi-bed-outline' , query: {type : 'perna'} },
+        { title: 'menu.sets', path: '/shopSeturi', icon: 'mdi-gift' , query: {} },
         
     ]
   },
   // de terminat de adaugat query params la caii si la filtre.
-  { title: 'menu.shoppingCart' , path: '/user/cart' , icon:'mdi-shopping-outline' , dropdown : []}
+  { title: 'menu.shoppingCart' , path: '/cart' , icon:'mdi-shopping-outline' , dropdown : []}
 ])
 
 
@@ -93,6 +104,25 @@ if (emitter) {
     isLoggedIn.value = status;
   })
 }
+const getCartCount = function(){ 
+  try {
+    localStorage.setItem('test' , 'test');
+    var getItem = localStorage.getItem('test');
+    if(getItem !== null ){
+      localStorage.removeItem('test');
+      var cartCountS = localStorage.getItem('cartCount');
+      if(cartCountS === null){
+        localStorage.setItem('cartCount' , '0')
+      }
+      cartCount.value = String(parseInt(cartCountS))
+
+    }
+  } catch (exception) {
+    console.error("Local storage not available" , ex);
+    return 0 // def value
+  }
+}
+
 
 function toggleDropdown(item) {
   item.expand = !item.expand;
@@ -111,6 +141,8 @@ function isAuthenticated() {
 // Run this once the component is mounted
 onMounted(() => {
   isLoggedIn.value = isAuthenticated();
+  isClient.value = true;
+  getCartCount()
 })
 
 

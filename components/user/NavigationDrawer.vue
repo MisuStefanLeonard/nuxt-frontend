@@ -8,13 +8,29 @@
       
       <!-- Dropdown items -->
       <v-list-item v-for="item in menuItems2" :key="item.title" @click="item.dropdown.length > 0 ? toggleDropdown(item) : goTo(item.path)" >
-        <v-list-item-title><v-icon class="mr-2">{{ item.icon }}</v-icon>{{ $t(item.title) }}</v-list-item-title>
+        <v-list-item-title>
+          <v-icon class="mr-2" >{{ item.icon }}</v-icon>
+          {{ $t(item.title) }}
+          <v-badge inline
+            v-if="item.title === 'menu.shoppingCart' && isClient"
+            :content="cartCount"
+            color="yellow"
+            :max="9"
+            size="small"
+            :offset-y="2"
+          >
+          </v-badge>
+        </v-list-item-title>
         <template v-if="item.dropdown.length > 0">
           <v-expand-transition>
-            
-            <v-list v-if="item.expand" class="bg-grey-darken-4">
+            <v-list v-if="item.expand" >
               <v-list-item v-for="dropitem in item.dropdown" :key="dropitem.title" @click="handleDropDown(dropitem)">
-                <v-list-item-title><v-icon class="mr-2">{{ dropitem.icon }}</v-icon>{{ $t(dropitem.title) }}</v-list-item-title>
+                <v-list-item-title>
+                  <v-icon class="mr-2">
+                    {{ dropitem.icon }}
+                  </v-icon>
+                  {{ $t(dropitem.title) }}
+                </v-list-item-title>
               </v-list-item>
             </v-list>
           </v-expand-transition>
@@ -54,6 +70,8 @@
 import { ref, watch } from 'vue'
 import { useNuxtApp } from '#app'
 import LanguageSwitcher from './LanguageSwitcher.vue';
+import { cartCount } from '~/middleware/cart'
+import Products from '~/services/Products';
 
 // Define props
 const props = defineProps({
@@ -61,6 +79,10 @@ const props = defineProps({
   menuItems: Array,
   menuItems2: Array
 })
+
+const isClient = ref(false)
+
+
 
 
 // Reactive state
@@ -90,6 +112,9 @@ emitter.on('isLoggedIn' , (state) => {
     isLoggedIn.value = false;
   }
 })
+
+
+
 
 const emitButtonAction = () => {
   if(isLoggedIn.value === true){
@@ -122,6 +147,29 @@ function toggleDropdown(item) {
   });
 }
 
+const getCartCount = function(){ 
+  try {
+    localStorage.setItem('test' , 'test');
+    var getItem = localStorage.getItem('test');
+    if(getItem !== null ){
+      localStorage.removeItem('test');
+      var cartCountS = localStorage.getItem('cartCount');
+      if(cartCountS === null){
+        localStorage.setItem('cartCount' , '0')
+      }
+      cartCount.value = String(parseInt(cartCountS))
+
+    }
+  } catch (exception) {
+    console.error("Local storage not available" , ex);
+    return 0 // def value
+  }
+}
+
+const getAllProductCategoriesAndTypes = (async () => {
+  const response = await Products.getProductTypesAndCategoriesForUser();
+  console.log(response)
+})
 
 
 const currentDropDown = (option) => {
@@ -131,6 +179,7 @@ const currentDropDown = (option) => {
   const translatedDraperii = t('menu.draperii')
   const translatedPerne = t('menu.perne')
   const translatedSets = t('menu.sets')
+  const translatedCart = t('menu.shoppingCart')
   
   switch (option) {
     case translatedGeneralShop: {
@@ -179,6 +228,10 @@ const currentDropDown = (option) => {
       })
       break
     }
+    case translatedCart: {
+      navigateTo(localePath('/cart'))
+      break;
+    }
     default:
       break
   }
@@ -186,6 +239,10 @@ const currentDropDown = (option) => {
 
 onMounted(() => {
   isLoggedIn.value = getCookie('userLoggedIn') === 1
+  isClient.value = true
+  getCartCount()
+  getAllProductCategoriesAndTypes()
+  console.log("nav drawer mounted")
 })
 
 </script>

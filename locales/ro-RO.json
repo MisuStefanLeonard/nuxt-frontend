@@ -52,6 +52,9 @@
         "Success" : "Succes",
         "Attention" : "Atentie",
         "CheckForm" : "Verificati formularul din nou!",
+        "SendSuccesfully" : "Formular trimis cu succes.",
+        "ErrorOccured" : "O eroare a avut loc",
+        "ServerError" : "O eroare a avut la procesarea cererei",
         "SavedAddressSuccesfully" : "V-ati salvat adresa cu succes",
         "ErrorWhenSavingAddress" : "O eroare a avut loc la salvarea adresei",
         "DeleteAddressSuccesfully" : "V-ati sters adresa cu success!",
@@ -66,7 +69,15 @@
         "WaitRegister" : "Inregistrarea se realizeaza...",
         "ReviewPostedSuccesfully" : "Ati postat review-ul cu success",
         "ReviewErrorProductNotFound" : "Produsul nu mai exista. A fost dezactivat/sters din magazin",
-        "Select" : "Va rog selectati o optiune"
+        "Select" : "Va rog selectati o optiune",
+        "CheckOrderDetailsForm" : "Verificati formularul cu detaliile comenzii",
+        "ExpiredOrInvalidVoucher" : "Voucher-ul adaugat nu mai este valid / A expirat",
+        "AlreadyUsedVoucher" : "Voucher-ul este deja folosit.",
+        "CheckDeliveryAndBillingAddress" : "Verificati formularul cu detaliile adresei",
+        "CheckDeliveryAddress" : "Verificati formularul cu detaliile adresei de livrare",
+        "CheckBillingAddress" : "Verificati formularul cu detaliile adresei de facturare"
+
+
     },
     "profile": {
         "generalInfo" : {
@@ -110,8 +121,8 @@
         "postalCode" : "Cod postal" ,
         "Cif" : "CIF",
         "firmName" : "Nume firma/Persoana juridica",
-        "delivery" : "Delivery",
-        "billing" : "Billing"
+        "delivery" : "Livrare",
+        "billing" : "Facturare"
         
     },
     "textFieldsMessages":{
@@ -132,7 +143,8 @@
     "button" : {
         "save" : "Salveaza",
         "delete" : "Sterge",
-        "addAddress" : "Adauga adresa"
+        "addAddress" : "Adauga adresa",
+        "sendForm" : "Trimite formular" 
     },
     "forgotPassword" : {
         "title" : "Resetare parola",
@@ -253,7 +265,9 @@
             "railwayWidth" : "Lungime sina (cm)",
             "heightUntilBottom" : "Inaltime de la sina la podea (cm)"
         },
-        "discount" : "REDUCERE "
+        "discount" : "REDUCERE ",
+        "limitedEdition" : "LIMITAT",
+        "newProduct" : "NOU"
 
     },
     "shopSeturi" : {
@@ -273,6 +287,7 @@
         "showImageForColor" : "si culoarea ",
         "showInfoAboutManopera" : "Se afiseaza informatii despre manopera" ,
         "recommendedWidth" : "Pentru aceasta manopera va recomandam o lungime a sinei de: ",
+        "recommendedHeight" : "Pentru aceasta manopera inaltimea maxima a materialului este: ",
         "maximumWidth" : "Cu metrii de material disponibili pe aceasta manopera, perdeaua/draperie va incapea pe o lungime a sinei de :",
         "meter" : "m (metru)",
         "manoperaName" : "Nume manopera : " , 
@@ -281,10 +296,14 @@
         "rejansaIncretire" : "Incretire rejansa : ",
         "catchWithRings" : "Prindere cu inele : ",
         "totalMeters" : "Total metrii de material disponibili : ",
+        "maximumHeight" : "Inaltime maxima : ",
         "ringType" : "INELE PRINDERE",
         "ringColor" : "Culoare inel : ",
         "liningType" : "TIPUL CUSATURII DE COLT",
         "liningTypeName" : "Tipul cusaturii de colt : ",
+        "prefferedHeight" : "Inaltime dorita" , 
+        "inputHeight" : "Introduceti inaltimea dorita pentru aceasta manopera(cm , centimetri)",
+        "userWidthPrefference" : "Daca aveti o lungime de sina mai mica decat cea recomandata , aceasta poate fi o alegere valida pentru dumneavoastra",
         "description" : {
             "productsInfo" :{
                 "titleInfo" :  "Informatii produse",
@@ -305,17 +324,116 @@
                     "name" : "NUME : "
                 }
             }
-        }
+        },
+        "heightPrefferedRule" : "Inaltimea aleasa trebuie sa fie mai mica sau egala decat inaltimea maxima a materialului",
+        "selectHeightPlease" : "Selectati o inaltime pentru produsul "
     },
     "general" : {
         "selectImage" : "Selecteaza imaginea",
+        "quantityModified" : "Cantitate modificata cu succes!",
+
+        "errorOnDeletingProduct" : "O eorare a avut loc la stergerea produsului",
         "addToCart" : "Produsul a fost adaugat in cos",
+        "productMissing" : "Produsul/setul nu mai exista! Refresh in 2 secunde",
         "incrementQuantity" : "Produsul se afla deja in cos. Cantitatea a fost marita cu 1",
         "errorOnCartAddingOrUpdating" : "O eroare a avut loc la adaugarea in cart",
+        "errorOnQuantityUpdating" : "O eroare a avut loc la modificarea cantitatii",
         "notCalitative" : "Necalitativ",
         "calitative" : "Calitativ",
         "ok" : "Normal",
-        "ratingOverview" : "Total recenzii"
+        "ratingOverview" : "Total recenzii",
+        "reviews" : "review-uri",
+        "openImage" : "Deschide imaginea in modal",
+        "heightSaved" : "Inaltime preferata salvata cu succes",
+        "zoomImage" : "Mareste imaginea",
+        "seeProduct" : "Vezi produsul",
+        "usersPrefferences" : "Preferintele utilizatorilor",
+        "forgotRejansa" : "Va rugam selectati o rejansa",
+        "forgotLiningType" : "Va rugam selectati un tip de linie",
+        "forgotRingType" : "Va rugam selectati tipul inelului",
+        "howToMeasure" : "Cum masor?",
+        "informations" : "Aveti nevoie de informatii?"
+    },
+    "cart" : {
+        "empty" : "Cosul de cumparaturi este gol",
+        "title" : "Cos de cumparaturi",
+        "material" : "Material : ",
+        "dimensions" : "Dimensiuni : ",
+        "widthNotForCurtains" : "Latime (cm)",
+        "bedRecommendation" : "Recomandare pat (lungime x latime)",
+        "quantity" : "Cantitate",
+        "setName" : "Nume set :",
+        "chosenManopera" : "Manopera aleasa",
+        "materialWidth" : "/ Lungime material",
+        "manoperaInfo" : "Informatii manopera",
+        "maxHeight" : "Inaltime maxima material" ,
+        "titles" : {
+            "manopera" : "Manopera",
+            "rejansa" : "Rejansa",
+            "ring" : "Inel prindere",
+            "line" : "Tip linie"
+        },
+        "meterPrice" : "Pret metru : ",
+        "goToCheckout" : "MERGI LA CHECKOUT",
+        "totalPrice" : "PRET TOTAL : ",
+        "quantityIncremented" : "Cantitate marita cu succes",
+        "quantityDecremented" : "Cantitate scazuta cu succes",
+        "deletedSuccesfully" : "Produsul/Setul a fost sters cu succes"
+        
+    },
+    "checkout" : {
+        "title" : "Finalizare cumparaturi",
+        "fetchError" : "O eroare a avut loc. Repetati sesiunea. Va redirectionam spre cosul de cumparaturi.",
+        "emptyCart" : "Cosul de cumparaturi este gol. Redirectionare.",
+        "sameBillingAndDeliveryAddress" : "Adresa de livrare aceeasi cu cea de facturare",
+        "chooseAddresses" : "Alege adresele",
+        "noDeliveryAddress" : "Nu aveti adrese de livrare salvate",
+        "noBillingAddress" : "Nu aveti adrese de facturare salvate",
+        "inputAddress" : "Introduceti adresa",
+        "inputDeliveryAddress" : "Introduceti adresa de livrare",
+        "inputBillingAddress" : "Introduceti adresa de facturare",
+        "rambursPaymentInfo" : "Pentru taxa ramburs se poate percepe o taxa pentru procesare",
+        "bankTransferPaymentInfo" : "Daca alegeti plata prin transfer bancar, la detalii plata adaugati numarul comenzii alaturi de suma aferenta de platit. Aveti la dispozitie 24 de ore. In caz contrar , comanda va fi stearsa.",
+        "paymentMethods" : "Metode de plata",
+        "tableHeaders" : {
+            "paymentMethod" : "Metoda de plata",
+            "cost" : "Cost",
+            "select" : "Selecteaza"
+        },
+        "tableRows" : {
+            "cashOnDelivery" : "Ramburs",
+            "card" : "Card",
+            "bankTransfer" : "Transfer bancar"
+        },
+        "paymentFee" : "Plata procesare",
+        "addressSelected" : "Adresa selectata",
+        "noAddressSelected" : "Nu aveti nicio adresa selectata",
+        "selectedDeliveryAddress" : "Adresa de livrare selectata",
+        "selectedBillingAddress" : "Adresa de facturare selectata",
+        "notSelectedDeliveryAddress" : "Nu aveti nicio adresa de livrare selectata",
+        "notSelectedBillingAddress" : "Nu aveti nicio adresa de facturare selectata",
+        "discountCode" : "Aveti un cupon/cod de reducere?",
+        "applyDiscountCode" : "Aplica cuponul",
+        "appliedSuccesfully" : "Voucher aplicat cu succes!",
+        "productsPriceChanged" : "Cateva preturi au fost modificate in timp ce dumneavoastra faceati cumparaturi.Iata noile preturi pentru toate produsule schimbate." ,
+        "productsDeleted" : "Daca unele produse pe care le-ati adaugat in cos nu mai sunt, inseamna ca au fost dezactivate/sterse din magazin. Ne pare rau pentru incovenienta."
+    },
+    "contactPage" : {
+        "title" : "Contacteaza-ne",
+        "reasonToContact" : {
+            "orderProblem" : "Am o problema cu comanda",
+            "returnProduct" : "Vreau sa returnez un produs/produse",
+            "generalProblem" : "Problema generala",
+            "suggestions" : "Sugestii pentru imbunatatiri",
+            "damagedProducts" : "Produs/Produse avariate"
+        },
+        "orderNumber" : "Numarul comenzii",
+        "reason": "Motiv de contact",
+        "problemDescription" : "Descriere",
+        "assureReason" : "* Datele dumneavoastra nu vor fi prelucrate in niciun fel!"
+    },
+    "homePage" : {
+        "welcome" : "Bun venit"
     }
   }
   

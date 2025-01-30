@@ -587,6 +587,14 @@ class AdminService extends ApiService{
     /**
      * THE ** END ** OF THE API'S FOR THE DASHBOARD DATA
      */
+
+    modifyGeneralSettings(formData){
+        return this.post('modifyGeneralSettings' , formData , false , false)
+    }
+
+    getGeneralSettings(){
+        return this.get('generalSettings' , true , false , false)
+    }
 }
 
 export default new AdminService();

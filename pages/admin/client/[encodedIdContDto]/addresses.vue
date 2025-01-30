@@ -14,7 +14,7 @@
 
                 <v-divider></v-divider>
 
-                <v-container fluid class="w-75 p-2">
+                <v-container fluid class="w-100 p-2">
                     <v-alert variant="tonal" type="info" class="text-left">
                         <p>Aici puteti gasii adresele clientului, 
                         cele de facturare, cat si cele de livrare.
@@ -38,7 +38,7 @@
                         <p class="font-weight-bold h5">LA FINAL , NU UITATI SA SALVATI!</p>
                     </v-alert>
                 </v-container>
-                <v-container class="w-75" fluid >
+                <v-container class="w-100" fluid >
                     <v-sheet elevation="24" rounded class="p-3 mt-4 " color="grey-darken-4">
                     <v-row class="text-center">
                         <v-col cols="12">
@@ -60,17 +60,17 @@
                                             </v-icon>
                                         </div>
                                         <v-divider></v-divider>
-                                        <p class="font-weight-light h6">Nume adresa: {{ address.aliasDto }}</p>
+                                        <p class="font-weight-light h6 mb-2">Nume adresa: {{ address.aliasDto }}</p>
                                     </v-card-title>
-                                    <v-divider></v-divider>
+                                   
                                     <v-card-text>
-                                        <p class="font-weight-light h6">Bloc: {{ address.blocDto }} - Nr bloc: {{ address.nrBlocDto }}</p>
-                                        <v-divider></v-divider>
-                                        <p class="font-weight-light h6">Strada :{{ address.stradaDto }} - Nr strada:  {{ address.nrStradaDto }}</p>
-                                        <v-divider></v-divider>
-                                        <p class="font-weight-light h6">Oras: {{ address.orasDto }} - Judet: {{ address.judetDto }}</p>
-                                        <v-divider></v-divider>
-                                        <p class="font-weight-light h6">Cod postal: {{ address.codPostalDto }}</p>
+                                        <p class="font-weight-light h6 mb-2">Bloc: {{ address.blocDto }} - Nr bloc: {{ address.nrBlocDto }}</p>
+                                        
+                                        <p class="font-weight-light h6 mb-2">Strada :{{ address.stradaDto }} - Nr strada:  {{ address.nrStradaDto }}</p>
+                                        
+                                        <p class="font-weight-light h6 mb-2">Oras: {{ address.orasDto }} - Judet: {{ address.judetDto }}</p>
+                                        
+                                        <p class="font-weight-light h6 mb-2">Cod postal: {{ address.codPostalDto }}</p>
                                     </v-card-text> 
                                     <v-card-actions>
                                         <v-container>
@@ -120,21 +120,17 @@
                                             </v-icon>
                                         </p>
                                         <v-divider></v-divider>
-                                        <p class="font-weight-light h6">Nume adresa: {{ address.aliasDto }}</p>
+                                        <p class="font-weight-light h6 mb-2">Nume adresa: {{ address.aliasDto }}</p>
                                     </v-card-title>
-                                    <v-divider></v-divider>
+                                    
                                     <v-card-text>
-                                        <p class="font-weight-light h6">Bloc: {{ address.blocDto }} - Nr bloc: {{ address.nrBlocDto }}</p>
-                                        <v-divider></v-divider>
-                                        <p class="font-weight-light h6">Strada :{{ address.stradaDto }} - Nr strada:  {{ address.nrStradaDto }}</p>
-                                        <v-divider></v-divider>
-                                        <p class="font-weight-light h6">Oras: {{ address.orasDto }} - Judet: {{ address.judetDto }}</p>
-                                        <v-divider></v-divider>
-                                        <p class="font-weight-light h6">Cod postal: {{ address.codPostalDto }}</p>
-                                        <v-divider></v-divider>
-                                        <p class="font-weight-bold h6">Date firma</p>
-                                        <p class="font-weight-light h6">Nume firma: {{ address.numeFirmaDto }}</p>
-                                        <p class="font-weight-light h6">Cif: {{ address.cifDto }}</p>
+                                        <p class="font-weight-light h6 mb-2">Bloc: {{ address.blocDto }} - Nr bloc: {{ address.nrBlocDto }}</p>
+                                        <p class="font-weight-light h6 mb-2">Strada :{{ address.stradaDto }} - Nr strada:  {{ address.nrStradaDto }}</p>
+                                        <p class="font-weight-light h6 mb-2">Oras: {{ address.orasDto }} - Judet: {{ address.judetDto }}</p>
+                                        <p class="font-weight-light h6 mb-2">Cod postal: {{ address.codPostalDto }}</p>
+                                        <p class="font-weight-bold h6 mb-2">Date firma</p>
+                                        <p class="font-weight-light h6 mb-2">Nume firma: {{ address.numeFirmaDto }}</p>
+                                        <p class="font-weight-light h6 mb-2">Cif: {{ address.cifDto }}</p>
 
                                     </v-card-text>
                                     <v-card-actions>

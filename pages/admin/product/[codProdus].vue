@@ -370,7 +370,7 @@
                                                         color="error" size="32">mdi-delete-circle</v-icon>
                                                 </v-col>
                                             </v-row>
-                                            <div v-if="selectedColorForImageForm && selectedColorForImageForm.numeCuloare === culoare.numeCuloareDto && selectedColorForImageForm.codCuloare === culoare.codCuloareDto" 
+                                            <div v-if="showFormForAddingImage&&selectedColorForImageForm && selectedColorForImageForm.numeCuloare === culoare.numeCuloareDto && selectedColorForImageForm.codCuloare === culoare.codCuloareDto" 
                                             class="text-center bg-blue-grey-darken-4">
                                                
                                                 <v-icon color="white" @click="closeImageForm()" size="32"
@@ -512,7 +512,7 @@ const rules = {
 };
 
 
-const product = reactive({
+const product = ref({
     codProdusDto: '',
     oldCodProdusDto : '',
     descriereDto: '',
@@ -535,9 +535,9 @@ const product = reactive({
     culoriProdusDto: [],
 });
 
-var originalProduct = reactive({});
+const originalProduct = ref({});
 
-const productOptions = reactive({
+const productOptions = ref({
     coduriCuloriForBox: [],
     culoriForBox: [],
     latimiForBox: [],
@@ -550,10 +550,10 @@ const productOptions = reactive({
 });
 
 const productType = computed(() => {
-    return product.tipulProdusuluiDto;
+    return product.value.tipulProdusuluiDto;
 })
 
-const typeFormData = reactive({
+const typeFormData = ref({
     categorieDto: '',
     justAdded: true,
 });
@@ -630,7 +630,7 @@ const dimensionForm = ref([
     },
 ]);
 
-const dimensionFormData = reactive({
+const dimensionFormData = ref({
     lungimeDto: '',
     latimeDto: '',
     pretDto: '',
@@ -639,7 +639,7 @@ const dimensionFormData = reactive({
     justAdded: true,
 });
 
-const colorFormData = reactive({
+const colorFormData = ref({
     numeCuloareDto: '',
     codCuloareDto: '',
     justAdded: true,
@@ -674,7 +674,7 @@ const colorsForm = ref([
     },
 ]);
 
-const imageFormData = reactive({
+const imageFormData = ref({
     imagine: null,
     caleImagineDto: '',
     fisierInBucketDto: '',
@@ -765,9 +765,9 @@ const assignFromDbToProduct = async (productCode) => {
         errorOnLoadingProduct.value = true;
     } else {
         Swal.close();
-        Object.assign(product, response);
-        originalProduct = JSON.parse(JSON.stringify(product))
-        // Object.assign(originalProduct,product)
+        Object.assign(product.value, response);
+        originalProduct.value = JSON.parse(JSON.stringify(product.value))
+       
     }
 };
 
@@ -779,8 +779,8 @@ const assignProductOptionsFromDb = async () => {
     } else if (responseForOptions === -2) {
         navigateTo('/user/logout');
     } else {
-        Object.assign(productOptions, responseForOptions);
-        console.log(productOptions)
+        Object.assign(productOptions.value, responseForOptions);
+        console.log(productOptions.value)
     }
 };
 
@@ -797,10 +797,10 @@ const assingProductCodesAndNamesFromDb = async () => {
         productCodesAndNames.value = response;
         numeProdusArray.value = productCodesAndNames.value
             .map(elem => elem.numeProdus)
-            .filter(elem => elem !== product.numeProdusDto);
+            .filter(elem => elem !== product.value.numeProdusDto);
         codProdusArray.value = productCodesAndNames.value
             .map(elem => elem.codProdus)
-            .filter(elem => elem !== product.codProdusDto);
+            .filter(elem => elem !== product.value.codProdusDto);
 
         console.log(numeProdusArray.value)
         console.log(codProdusArray.value)
@@ -820,12 +820,12 @@ function  closeTypeForm(){
 }
 
 const deleteType = async (categorie) => {
-    const typeToDeleteFromDtoIndex = product.tipuriProduseDto.findIndex(
+    const typeToDeleteFromDtoIndex = product.value.tipuriProduseDto.findIndex(
         type => type.categorieDto === categorie
     );
 
     if (typeToDeleteFromDtoIndex !== -1) {
-        const typeToDeleteFromDto = product.tipuriProduseDto[typeToDeleteFromDtoIndex];
+        const typeToDeleteFromDto = product.value.tipuriProduseDto[typeToDeleteFromDtoIndex];
         if (!typeToDeleteFromDto.justAdded) {
             const responseFromDeletion = await adminService.deleteProductType(
                 categorie,
@@ -833,14 +833,14 @@ const deleteType = async (categorie) => {
             );
             if (responseFromDeletion === 1) {
                 showDeletionSuccess();
-                product.tipuriProduseDto.splice(typeToDeleteFromDtoIndex, 1);
+                product.value.tipuriProduseDto.splice(typeToDeleteFromDtoIndex, 1);
             } else if (responseFromDeletion === -2) {
                 navigateTo('/user/logout');
             } else {
                 showDeletionError();
             }
         } else {
-            product.tipuriProduseDto.splice(typeToDeleteFromDtoIndex, 1);
+            product.value.tipuriProduseDto.splice(typeToDeleteFromDtoIndex, 1);
         }
     } else {
         showDeletionError();
@@ -858,7 +858,7 @@ function closeDimensionForm(){
 }
 
 const deleteDimension = async (lungime, latime, pret, pretRedus, recomandarePat) => {
-    const dimensionToDeleteFromDtoIndex = product.dimensiuniProduseDto.findIndex(
+    const dimensionToDeleteFromDtoIndex = product.value.dimensiuniProduseDto.findIndex(
         dimension =>
             dimension.lungimeDto === lungime &&
             dimension.latimeDto === latime &&
@@ -868,7 +868,7 @@ const deleteDimension = async (lungime, latime, pret, pretRedus, recomandarePat)
     );
 
     if (dimensionToDeleteFromDtoIndex !== -1) {
-        const dimensionToDeleteFromDto = product.dimensiuniProduseDto[dimensionToDeleteFromDtoIndex];
+        const dimensionToDeleteFromDto = product.value.dimensiuniProduseDto[dimensionToDeleteFromDtoIndex];
         if (!dimensionToDeleteFromDto.justAdded) {
             const responseFromDeletion = await adminService.deleteDimension(
                 lungime,
@@ -879,14 +879,14 @@ const deleteDimension = async (lungime, latime, pret, pretRedus, recomandarePat)
             );
             if (responseFromDeletion === 1) {
                 showDeletionSuccess();
-                product.dimensiuniProduseDto.splice(dimensionToDeleteFromDtoIndex, 1);
+                product.value.dimensiuniProduseDto.splice(dimensionToDeleteFromDtoIndex, 1);
             } else if (responseFromDeletion === -2) {
                 navigateTo('/user/logout')
             } else {
                 showDeletionError();
             }
         } else {
-            product.dimensiuniProduseDto.splice(dimensionToDeleteFromDtoIndex, 1);
+            product.value.dimensiuniProduseDto.splice(dimensionToDeleteFromDtoIndex, 1);
         }
     } else {
         showDeletionError();
@@ -904,13 +904,13 @@ function closeColorForm(){
 }
 
 const deleteColor = async (numeCuloare, codCuloare) => {
-    const colorToDeleteFromDtoIndex = product.culoriProdusDto.findIndex(
+    const colorToDeleteFromDtoIndex = product.value.culoriProdusDto.findIndex(
         color =>
             color.numeCuloareDto === numeCuloare && color.codCuloareDto === codCuloare
     );
 
     if (colorToDeleteFromDtoIndex !== -1) {
-        const colorToDeleteFromDto = product.culoriProdusDto[colorToDeleteFromDtoIndex];
+        const colorToDeleteFromDto = product.value.culoriProdusDto[colorToDeleteFromDtoIndex];
         if (!colorToDeleteFromDto.justAdded) {
             const responseFromDeletion = await adminService.deleteColor(
                 numeCuloare,
@@ -919,7 +919,7 @@ const deleteColor = async (numeCuloare, codCuloare) => {
             );
             if (responseFromDeletion === 1) {
                 showDeletionSuccess();
-                product.culoriProdusDto.splice(colorToDeleteFromDtoIndex, 1);
+                product.value.culoriProdusDto.splice(colorToDeleteFromDtoIndex, 1);
             } else if (responseFromDeletion === -2) {
                 navigateTo('/user/logout')
 
@@ -927,7 +927,7 @@ const deleteColor = async (numeCuloare, codCuloare) => {
                 showDeletionError();
             }
         } else {
-            product.culoriProdusDto.splice(colorToDeleteFromDtoIndex, 1);
+            product.value.culoriProdusDto.splice(colorToDeleteFromDtoIndex, 1);
         }
     } else {
         showDeletionError();
@@ -937,21 +937,24 @@ const deleteColor = async (numeCuloare, codCuloare) => {
 function showImageForm(numeCuloare, codCuloare){
    selectedColorForImageForm.value = { numeCuloare, codCuloare };
    dummyBoolean.value = false;
+   showFormForAddingImage.value = true
 }
 
 function closeImageForm(){
    selectedColorForImageForm.value = false;
    dummyBoolean.value = true;
+   showFormForAddingImage.value = false
+
 }
 
 const deleteImage = async (numeCuloare, codCuloare, caleImagineDto, fisierInBucket) => {
-    const colorFromDtoIndex = product.culoriProdusDto.findIndex(
+    const colorFromDtoIndex = product.value.culoriProdusDto.findIndex(
         color =>
             color.numeCuloareDto === numeCuloare && color.codCuloareDto === codCuloare
     );
 
     if (colorFromDtoIndex !== -1) {
-        const colorFromDto = product.culoriProdusDto[colorFromDtoIndex];
+        const colorFromDto = product.value.culoriProdusDto[colorFromDtoIndex];
         const imageToDeleteFromDtoIndex = colorFromDto.imaginiProdusDto.findIndex(
             image =>
                 image.caleImagineDto === caleImagineDto && image.fisierInBucketDto === fisierInBucket
@@ -992,14 +995,14 @@ const deleteImage = async (numeCuloare, codCuloare, caleImagineDto, fisierInBuck
 
 
 const saveToDtoArrayType = () => {
-    const { categorieDto } = typeFormData;
+    const { categorieDto } = typeFormData.value;
 
     if (categorieDto) {
         const newTypeItem = {
-            categorieDto: typeFormData.categorieDto,
+            categorieDto: typeFormData.value.categorieDto,
             justAdded: true,
         };
-        const isTypeAlreadyInDto = product.tipuriProduseDto.findIndex(
+        const isTypeAlreadyInDto = product.value.tipuriProduseDto.findIndex(
             type => type.categorieDto === categorieDto
         );
         if (isTypeAlreadyInDto !== -1) {
@@ -1013,9 +1016,9 @@ const saveToDtoArrayType = () => {
             return;
         }
 
-        product.tipuriProduseDto.push(newTypeItem);
+        product.value.tipuriProduseDto.push(newTypeItem);
 
-        typeFormData.categorieDto = '';
+        typeFormData.value.categorieDto = '';
 
         showFormForAddingType.value = false;
         dummyBoolean.value = true
@@ -1031,7 +1034,7 @@ const saveToDtoArrayType = () => {
 };
 
 const saveToDtoArrayDimension = () => {
-    const { lungimeDto, latimeDto, pretDto, recomandarePat, pretRedusDto } = dimensionFormData;
+    const { lungimeDto, latimeDto, pretDto, recomandarePat, pretRedusDto } = dimensionFormData.value;
     if (lungimeDto && latimeDto && pretDto && recomandarePat && pretRedusDto) {
         const newDimensionItem = {
             lungimeDto: lungimeDto.trim(),
@@ -1042,7 +1045,7 @@ const saveToDtoArrayDimension = () => {
             justAdded: true,
         };
 
-        const isDimensionAlreadyInDto = product.dimensiuniProduseDto.findIndex(
+        const isDimensionAlreadyInDto = product.value.dimensiuniProduseDto.findIndex(
             dimension =>
                 dimension.lungimeDto === newDimensionItem.lungimeDto &&
                 dimension.latimeDto === newDimensionItem.latimeDto &&
@@ -1062,13 +1065,13 @@ const saveToDtoArrayDimension = () => {
             return;
         }
 
-        product.dimensiuniProduseDto.push(newDimensionItem);
+        product.value.dimensiuniProduseDto.push(newDimensionItem);
 
-        dimensionFormData.lungimeDto = '';
-        dimensionFormData.latimeDto = '';
-        dimensionFormData.pretDto = '';
-        dimensionFormData.pretRedusDto = '';
-        dimensionFormData.recomandarePat = '';
+        dimensionFormData.value.lungimeDto = '';
+        dimensionFormData.value.latimeDto = '';
+        dimensionFormData.value.pretDto = '';
+        dimensionFormData.value.pretRedusDto = '';
+        dimensionFormData.value.recomandarePat = '';
 
         showFormForAddingDimension.value = false;
         dummyBoolean.value = true
@@ -1084,16 +1087,16 @@ const saveToDtoArrayDimension = () => {
 };
 
 const saveToDtoArrayColor = () => {
-    const { numeCuloareDto, codCuloareDto } = colorFormData;
+    const { numeCuloareDto, codCuloareDto } = colorFormData.value;
     if (numeCuloareDto && codCuloareDto) {
         const newColorItem = {
-            numeCuloareDto: colorFormData.numeCuloareDto,
-            codCuloareDto: colorFormData.codCuloareDto,
+            numeCuloareDto: colorFormData.value.numeCuloareDto,
+            codCuloareDto: colorFormData.value.codCuloareDto,
             imaginiProdusDto: [],
             justAdded: true,
         };
 
-        const isColorAlreadyInDtoIndex = product.culoriProdusDto.findIndex(
+        const isColorAlreadyInDtoIndex = product.value.culoriProdusDto.findIndex(
             color =>
                 color.numeCuloareDto === numeCuloareDto && color.codCuloareDto === codCuloareDto
         );
@@ -1109,10 +1112,10 @@ const saveToDtoArrayColor = () => {
             return;
         }
 
-        product.culoriProdusDto.push(newColorItem);
+        product.value.culoriProdusDto.push(newColorItem);
 
-        colorFormData.numeCuloareDto = '';
-        colorFormData.codCuloareDto = '';
+        colorFormData.value.numeCuloareDto = '';
+        colorFormData.value.codCuloareDto = '';
 
         showFormForAddingColor.value = false;
         dummyBoolean.value = true
@@ -1129,28 +1132,28 @@ const saveToDtoArrayColor = () => {
 };
 
 const saveToDtoArrayColorImages = (numeCuloare, codCuloare) => {
-    const { imagine, fisierInBucketDto, presignedUrl } = imageFormData;
+    const { imagine, fisierInBucketDto, presignedUrl } = imageFormData.value;
 
     if (imagine && fisierInBucketDto && presignedUrl) {
-        imageFormData.caleImagineDto = imagine.name;
+        imageFormData.value.caleImagineDto = imagine.name;
         const newImageItem = {
-            imageStream: imageFormData.imagine,
-            fisierInBucketDto: imageFormData.fisierInBucketDto,
-            caleImagineDto: imageFormData.imagine.name,
-            presignedUrl: URL.createObjectURL(imageFormData.imagine),
+            imageStream: imageFormData.value.imagine,
+            fisierInBucketDto: imageFormData.value.fisierInBucketDto,
+            caleImagineDto: imageFormData.value.imagine.name,
+            presignedUrl: URL.createObjectURL(imageFormData.value.imagine),
             justAdded: true,
         };
 
-        const currentColorInDtoArrIndex = product.culoriProdusDto.findIndex(
+        const currentColorInDtoArrIndex = product.value.culoriProdusDto.findIndex(
             color =>
                 color.numeCuloareDto === numeCuloare && color.codCuloareDto === codCuloare
         );
 
         if (currentColorInDtoArrIndex !== -1) {
-            const currentColorInDtoArr = product.culoriProdusDto[currentColorInDtoArrIndex];
+            const currentColorInDtoArr = product.value.culoriProdusDto[currentColorInDtoArrIndex];
             const isImageAlreadyInDtoIndex = currentColorInDtoArr.imaginiProdusDto.findIndex(
                 image =>
-                    image.caleImagineDto === imageFormData.caleImagineDto &&
+                    image.caleImagineDto === imageFormData.value.caleImagineDto &&
                     image.fisierInBucketDto === fisierInBucketDto
             );
 
@@ -1167,9 +1170,9 @@ const saveToDtoArrayColorImages = (numeCuloare, codCuloare) => {
 
             currentColorInDtoArr.imaginiProdusDto.push(newImageItem);
 
-            imageFormData.fisierInBucketDto = '';
-            imageFormData.imagine = null;
-            imageFormData.presignedUrl = 'temp';
+            imageFormData.value.fisierInBucketDto = '';
+            imageFormData.value.imagine = null;
+            imageFormData.value.presignedUrl = 'temp';
 
             showFormForAddingImage.value = false;
             dummyBoolean.value = true
@@ -1198,32 +1201,32 @@ const saveToDtoArrayColorImages = (numeCuloare, codCuloare) => {
 };
 
 function clearTypeFields(){
-    typeFormData.categorieDto = ''
-    typeFormData.justAdded = false
+    typeFormData.value.categorieDto = ''
+    typeFormData.value.justAdded = false
 }
 
 function clearDimensionFields(){
-    dimensionFormData.latimeDto = ''
-    dimensionFormData.lungimeDto = ''
-    dimensionFormData.pretDto = 0
-    dimensionFormData.pretRedusDto = 0
-    dimensionFormData.recomandarePat = ''
-    dimensionFormData.justAdded = false
+    dimensionFormData.value.latimeDto = ''
+    dimensionFormData.value.lungimeDto = ''
+    dimensionFormData.value.pretDto = 0
+    dimensionFormData.value.pretRedusDto = 0
+    dimensionFormData.value.recomandarePat = ''
+    dimensionFormData.value.justAdded = false
 }
 
 function clearColorFields(){
-    colorFormData.codCuloareDto = ''
-    colorFormData.numeCuloareDto = ''
-    colorFormData.justAdded = false
+    colorFormData.value.codCuloareDto = ''
+    colorFormData.value.numeCuloareDto = ''
+    colorFormData.value.justAdded = false
 }
 
 function clearImageFields(){
-    imageFormData.caleImagineDto = ''
-    imageFormData.fisierInBucketDto = ''
-    imageFormData.imagine = null
-    URL.revokeObjectURL(imageFormData.presignedUrl)
-    imageFormData.justAdded = false
-    imageFormData.presignedUrl = 'temp'
+    imageFormData.value.caleImagineDto = ''
+    imageFormData.value.fisierInBucketDto = ''
+    imageFormData.value.imagine = null
+    URL.revokeObjectURL(imageFormData.value.presignedUrl)
+    imageFormData.value.justAdded = false
+    imageFormData.value.presignedUrl = 'temp'
 }
 
 
@@ -1238,17 +1241,17 @@ const finalSaveData = async () => {
     closeImageForm()
     clearImageFields()
     
-    console.log(product)
-    console.log(originalProduct)
+    console.log(product.value)
+    console.log(originalProduct.value)
 
-    if (JSON.stringify(product) !== JSON.stringify(originalProduct)) {
+    if (JSON.stringify(product.value) !== JSON.stringify(originalProduct.value)) {
         const isValidMainForm = await mainForm.value.validate()
         console.log(isValidMainForm)
         if(isValidMainForm.valid){
-            if(product.tipulProdusuluiDto === 'perdea' || product.tipulProdusuluiDto === 'draperie'){
-                product.dimensiuniProduseDto = []
+            if(product.value.tipulProdusuluiDto === 'perdea' || product.value.tipulProdusuluiDto === 'draperie'){
+                product.value.dimensiuniProduseDto = []
             }
-            const response = await adminService.saveProductChanges(product, product.oldCodProdusDto);
+            const response = await adminService.saveProductChanges(product.value, product.value.oldCodProdusDto);
             if (Array.isArray(response)) {
                 const errorDetected = handleSaveResponseErrors(response);
                 if (errorDetected) return;
@@ -1259,7 +1262,7 @@ const finalSaveData = async () => {
                     text: 'Modificările au fost salvate cu succes!',
                     timer: 3000,
                 });
-                originalProduct = JSON.parse(JSON.stringify(product));
+                originalProduct.value = JSON.parse(JSON.stringify(product.value));
             } else {
                 Swal.fire({
                     icon: 'error',
@@ -1309,6 +1312,8 @@ const handleSaveResponseErrors = (response) => {
     });
     return errorDetected;
 };
+
+
 
 onMounted(async () => {
     productCode.value = route.params.codProdus;

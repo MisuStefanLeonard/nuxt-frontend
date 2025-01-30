@@ -6,7 +6,7 @@
                     <v-card class="bg-grey-lighten-4 h-100" elevation="12">
                         <v-card-text>
                             <v-alert class="text-center" color="blue" variant="tonal" icon="mdi-information">
-                                {{ $t('shop.productsImagesShownFor') }} {{ selectedColor.name}}
+                                {{ $t('shop.productsImagesShownFor') }} {{ imgColor}}
                             </v-alert>
                             <v-alert v-if="product.pretBazaRedusDto > 0 || selectedDimension.priceDiscount > 0" class="text-center mt-2 mb-2" color="red" variant="flat" icon="mdi-sale">
                                 <span v-if="dimensionsLength <= 0" class="font-weight-bold h6">{{ Math.ceil(
@@ -19,44 +19,89 @@
                                 </span>
                             </v-alert>
                         
-                            <div height="auto">
-                                <v-row>
-                                    <v-col cols="12" class="text-center">
-                                        <v-img
-                                        :src="selectedImage.imageUrl" 
-                                        eager 
+                        
+                            <v-row v-if="selectedImage">
+                                <v-col cols="12" class="text-center">
+                                    <v-tooltip :text="`${t('general.zoomImage')}`" v-if="isMounted">
+                                        <template v-slot:activator="{props}">
+                                            <NuxtImg v-if="selectedImage !== ''"
+                                             :src="selectedImage.imageUrl"
+                                            preload
+                                            v-bind="props"
+                                            @click="dialog = true"
+                                            format="webp"
+                                            sizes="md:800px sm:400px"
+                                            :width="screenSize.width"
+                                            :height="screenSize.height"
+                                            class="cursor-pointer"
+                                            ></NuxtImg>
+                                            <v-img v-else
+                                            src="/notFound.png">
+                                                
+                                            </v-img>
+                                        </template>
+                                    </v-tooltip>
+                                </v-col>
+                            </v-row>
+                            <v-row v-else>
+                                <v-col cols="12" class="text-center">
+                                    <v-img
+                                        src="/notFound.png" 
+                                        class="cursor-pointer"
                                         :aspect-ratio="4 / 3"
-                                        @click="dialog = true">
-                                            
-                                        </v-img>
-                                    </v-col>
-                                </v-row>
-                                
-                                <v-row >
-                                    <v-col v-for="(image, productIndex) in allImages" :key="productIndex" :cols="height" >
-                                        <v-tooltip :text="`${t('general.selectImage')}`">
-                                            <template v-slot:activator="{ props }">
-                                                <v-img
-                                                    eager
-                                                    cover
-                                                    :aspect-ratio="1 / 1"
-                                                    :src="image.imageUrl"
-                                                    @click="selectImage(image)"
-                                                    class="cursor-pointer" 
-                                                    v-bind="props" >
-                                                </v-img>
-                                            </template>
-                                        </v-tooltip>
-                                    </v-col>
-                                </v-row>
-                                
+                                         >
+                                    </v-img>
+                                </v-col>
+                            </v-row>
+                            <v-sheet color="grey-lighten-4" v-if="selectedImage" 
+                                    class="mx-auto"  
+                                    max-width="350"
+                                    >
+                                    <v-slide-group v-if="allImages"
+                                    show-arrows="always"
+                                    v-model="activeSlide"
+                                    center-active
+                                    selected-class="cursor-pointer opacity-70 mt-2 "
+                                    
+                                        >
+                                        <v-slide-group-item
+                                        v-for="(image,productIndex) in allImages" 
+                                        :key="productIndex" 
+                                        v-slot="{isSelected,toggle,selectedClass}">
+                                            <v-tooltip :text="`${t('general.selectImage')}`">
+                                                <template v-slot:activator="{ props }"> 
+                                                   <NuxtImg :src="image.imageUrl"
+                                                    preload
+                                                    format="webp"
+                                                    class="mx-5 my-5 w-50"
+                                                    sizes="xs:200px"
+                                                    @click="() => { toggle(); selectImage(image); }"
+                                                        :class="selectedClass " 
+                                                        v-bind="props" 
+                                                    >
+                                                        <div class="d-flex fill-height align-center justify-center">
+                                                            <v-scale-transition>
+                                                                <v-icon
+                                                                    v-if="isSelected"
+                                                                    color="white"
+                                                                    icon="mdi-close-circle-outline"
+                                                                    size="24"
+                                                                ></v-icon>
+                                                            </v-scale-transition>
+                                                        </div>
+                                                    </NuxtImg>
+                                                </template>
+                                            </v-tooltip>
+                                        </v-slide-group-item>
+                                    </v-slide-group>
+                                </v-sheet>
                                 <v-dialog v-model="dialog" max-width="600">
                                     <v-card>
                                         <v-card-text>
                                             <v-img
                                                 :src="selectedImage.imageUrl"
                                                 aspect-ratio="16/9"
-                                                class="mx-auto"
+                                               
                                             ></v-img>
                                         </v-card-text>
                                         <v-card-actions>
@@ -65,7 +110,7 @@
                                         </v-card-actions>
                                     </v-card>
                                 </v-dialog>
-                            </div>
+                            
 
                         </v-card-text>
                     </v-card>
@@ -96,342 +141,385 @@
                                 </v-alert>
                             </div>
                             <div v-if="dimensionsLength > 0">
-                                <div class="text-center">
-                                    <p class="font-weight-thin h5 ">{{ $t('shop.dimensionAvailable') }}</p>
-                                    <p class="font-weight-thin h6">{{ $t('shop.WidthXHeight') }}</p>
-                                </div>
-                                <v-divider></v-divider>
-                                <v-row >
-                                    <v-col cols="12" v-for="(dimension,index) in product.dimensiuniProdus" :key="index">
-                                        <div class="text-center">
-                                            <v-btn height="75"
-                                            variant="elevated"
-                                            block
-                                            :active="activeButtonDimensions === index"
-                                            active-color="green"
-                                            @click="toggleButton(index , 'dimension')"
-                                        >
-                                            <v-row>
-                                                <v-col cols="12">
-                                                    {{ $t('shop.DIMENSION') }} {{ dimension.lungimeDto }} x {{ dimension.latimeDto }}
-                                                </v-col>
-                                                <v-col cols="12">
-                                                    {{ $t('shop.BEDRECOMENDATION') }} {{ dimension.recomandarePat ? dimension.recomandarePat : 'N/A'}}
-                                                </v-col>
-                                            </v-row>
-                                            <p></p> 
-                                            <p></p>
-                                        </v-btn>
-                                        </div>
-                                        
-                                    </v-col>
-                                </v-row>
-                            </div>
-                            <v-divider></v-divider>
-                            <div>
-                                <div class="text-center">
-                                    <p class="font-weight-thin h5">{{ $t('shop.colorAvailable') }}</p>
-                                </div>
-                                <v-divider></v-divider>
-                                <v-row>
-                                    <v-col cols="12" 
-                                    v-for="(color,index) in product.culoriProdus"
-                                    :key="index">
-                                    <div class="text-center">
-                                        <v-btn
-                                            variant="elevated"
-                                            block
-                                            :active="activeButtonColors === index"
-                                            active-color="blue"
-                                            @click="toggleButton(index,'color')"
-                                        >
-                                            {{ color.numeCuloareDto }}
-                                        </v-btn>
-                                    </div>
-                                    
-                                    </v-col>
-                                </v-row>
-                            </div>
-                            <v-divider></v-divider>
-                            <div v-if="product.tipulProdusuluiDto === 'perdea' || product.tipulProdusuluiDto === 'draperie'">
-                                <div class="text-center" v-if="showFormForOnlyMaterial">
-                                    <v-row no-gutters >
-                                        <v-col cols="12" >
-                                            <v-checkbox 
-                                                color="red"
-                                                v-model="withManufacturing"
-                                          
-                                                :label="$t('shop.curtain.notOnlyMaterial')"
-                                                :true-value="true"
-                                                :false-value="false"
-                                                density="compact" >
-                                            </v-checkbox>
-                                        </v-col>
-                                        <v-col cols="12">
-                                            <v-checkbox 
-                                                color="primary"
-                                                v-model="onlyMaterial"
-                                               
-                                                :label="$t('shop.curtain.onlyMaterial')"
-                                                :true-value="true"
-                                                :false-value="false"
-                                                density="compact">
-                                            </v-checkbox>
-                                        </v-col>
-                                        <v-col cols="12">
-                                            <v-btn class="bg-green mt-2" variant="flat"
-                                                @click="nextFormFromStart" >
-                                                {{$t('shop.next')}}<v-icon class="mx-1">mdi-arrow-right
-                                                            </v-icon>
-                                            </v-btn>
-                                        </v-col>
-                                    </v-row>
-                                </div>
-                                <div v-if="showFormOnlyForWidth" class="text-center">
-                                    <v-alert class="my-3" v-if="readyToAddToCart" type="success" variant="flat" >
-                                        {{ $t('shop.curtain.priceListed') }}
-                                    </v-alert>
-                                    <p class="font-weight-thin h5">
-                                        <b v-if="product.pretBazaRedusDto > 0">
-                                            <p><s>{{ product.pretBazaDto }} {{ selectedCurrency === 'RON' ? 'RON/METRU' : 'EUR/METER' }}</s></p>
-                                            <div class="price-container">
-                                                <div class="discount">
-                                                    {{ Math.ceil(
-                                                        ((product.pretBazaDto - product.pretBazaRedusDto) / product.pretBazaDto) * 100
-                                                    ) }}%
-                                                </div>
-                                                <span class="text-above text-error font-weight-bold">
-                                                    {{ product.pretBazaRedusDto }} {{ selectedCurrency === 'RON' ? 'RON/METRU' : 'EUR/METER' }}
-                                                </span>
-                                            </div>
-                                        </b>
-                                        <b v-else>
-                                            {{ product.pretBazaDto }} {{ selectedCurrency === 'RON' ? 'RON/METRU' : 'EUR/METER' }}
-                                        </b>
-                                    </p>
-                                    <v-form validate-on="submit" @submit.prevent="submitOnlyWidthForm" ref="onlyWidthForm" class="text-center">
-                                        <v-text-field
-                                        variant="outlined"
-                                        :label="$t('shop.curtain.onlyWidth')" 
-                                        v-model="onlyWidth" 
-                                        counter="4"
-                                        :rules="[rules.onlyNumbers , rules.notEmpty,rules.maxChar(4)]"
-                                        >
-                                        </v-text-field>
-                                        <v-row>
-                                            <v-col cols="12">
-                                                <v-btn type="submit" variant="flat" class="bg-green"
+                                <v-card class="elevation-12 p-1">
+                                    <v-card-title class="text-center">
+                                        <p class="font-weight-thin h5 ">{{ $t('shop.dimensionAvailable') }}</p>
+                                        <p class="font-weight-thin h6">{{ $t('shop.WidthXHeight') }}</p>
+                                    </v-card-title>
+                                    <v-card-text>
+                                        <v-row >
+                                            <v-col cols="12" v-for="(dimension,index) in product.dimensiuniProdus" :key="index">
+                                                <div class="text-center">
+                                                    <v-btn height="75"
+                                                    variant="elevated"
+                                                    block
+                                                    :active="activeButtonDimensions === index"
+                                                    active-color="green"
+                                                    @click="toggleButton(index , 'dimension')"
                                                 >
-                                                    {{ $t('shop.curtain.finish') }}<v-icon class="mx-1">mdi-arrow-right
-                                                            </v-icon>
+                                                    <v-row>
+                                                        <v-col cols="12">
+                                                            {{ $t('shop.DIMENSION') }} {{ dimension.lungimeDto }} x {{ dimension.latimeDto }}
+                                                        </v-col>
+                                                        <v-col cols="12">
+                                                            {{ $t('shop.BEDRECOMENDATION') }} {{ dimension.recomandarePat ? dimension.recomandarePat : 'N/A'}}
+                                                        </v-col>
+                                                    </v-row>
+                                                    <p></p> 
+                                                    <p></p>
                                                 </v-btn>
-                                            </v-col>
-                                            <v-col cols="12">
-                                                <v-btn variant="flat" class="bg-red"
-                                                @click="goBack('0')">
-                                                    {{ $t('shop.curtain.back') }}<v-icon class="mx-1">mdi-arrow-left
-                                                            </v-icon>
-                                                </v-btn>
+                                                </div>
+                                                
                                             </v-col>
                                         </v-row>
-                                    </v-form>
-                                </div>
-                                <div v-if="showFormForWidthAndHeight" class="text-center">
-                                    <p class="font-weight-thin h5">
-                                        <b v-if="product.pretBazaRedusDto > 0">
-                                            <p><s>{{ product.pretBazaDto }} {{ selectedCurrency === 'RON' ? 'RON/METRU' : 'EUR/METER' }}</s></p>
-                                            <div class="price-container">
-                                                <div class="discount">
-                                                    {{ Math.ceil(
-                                                        ((product.pretBazaDto - product.pretBazaRedusDto) / product.pretBazaDto) * 100
-                                                    ) }}%
-                                                </div>
-                                                <span class="text-above text-error font-weight-bold">
-                                                    {{ product.pretBazaRedusDto }} {{ selectedCurrency === 'RON' ? 'RON/METRU' : 'EUR/METER' }}
-                                                </span>
+                                    </v-card-text>
+                                </v-card>
+                            </div>
+                            <v-divider opacity="70"></v-divider>
+                            <div>
+                                <v-card class="elevation-12 p-1">
+                                    <v-card-title class="text-center">
+                                        <p class="font-weight-thin h5">{{ $t('shop.colorAvailable') }}</p>
+                                    </v-card-title>
+                                    <v-card-text>
+                                        <v-row>
+                                            <v-col cols="12" 
+                                            v-for="(color,index) in product.culoriProdus"
+                                            :key="index">
+                                            <div class="text-center">
+                                                <v-btn
+                                                    variant="elevated"
+                                                    block
+                                                    :active="activeButtonColors === index"
+                                                    active-color="blue"
+                                                    @click="toggleButton(index,'color')"
+                                                >
+                                                    {{ color.numeCuloareDto }}
+                                                </v-btn>
                                             </div>
-                                        </b>
-                                        <b v-else>
-                                            {{ product.pretBazaDto }} {{ selectedCurrency === 'RON' ? 'RON/METRU' : 'EUR/METER' }}
-                                        </b>
-                                    </p>
-                                    <span class="font-weight-bold">1. {{ $t('shop.curtain.inputWidthAndHeight') }}</span>
-                                    <v-row no-gutters >
-                                        <v-col cols="12">
-                                            <v-form ref="widthAndDimensionForm" class="m-1 text-center"
-                                            validate-on="submit" @submit.prevent="toRejansaType">
-                                                <v-text-field density="compact"
-                                                :label="$t('shop.width')" 
-                                                v-model="prefferedWidth" 
-                                                counter="4"
-                                                :rules="[rules.notEmpty , rules.onlyNumbers , rules.maxChar(4)]" >
-                                                </v-text-field>
+                                            
+                                            </v-col>
+                                        </v-row>
+                                    </v-card-text>
+                                </v-card>
+                            </div>
+                            <v-divider opacity="70"></v-divider>
+                            <div v-if="product.tipulProdusuluiDto === 'perdea' || product.tipulProdusuluiDto === 'draperie'">
+                                <v-stepper v-model="step" elevation="12" class="mb-6"
+                                >
+                                    <v-stepper-header v-if="selectedOption === 'onlyMaterial' ">
+                                        <v-stepper-item
+                                            title="Start"
+                                            value="1">
+                                        </v-stepper-item>
+                                        <v-divider></v-divider>
+                                        <v-stepper-item
+                                            title="Dimensiune"
+                                            value="2">
+                                        </v-stepper-item>
+                                    </v-stepper-header>
+                                    <v-stepper-header v-else-if="selectedOption === 'withManufacturing'">
+                                        <v-stepper-item
+                                            title="Start"
+                                            value="1">
+                                        </v-stepper-item>
+                                        <v-divider></v-divider>
+                                        <v-stepper-item
+                                            title="Dimensiuni"
+                                            value="2">
+                                        </v-stepper-item>
+                                        <v-divider></v-divider>
+                                        <v-stepper-item
+                                            title="Rejansa"
+                                            value="3">
+                                        </v-stepper-item>
+                                        <v-divider></v-divider>
+                                        <v-stepper-item v-if="chosenRejansaType&&chosenRejansaType.sePrindeCuInele"
+                                            title="Inele prindere"
+                                            value="4">
+                                        </v-stepper-item>
+                                        <v-divider  v-if="chosenRejansaType&&chosenRejansaType.sePrindeCuInele"></v-divider>
+                                        <v-stepper-item
+                                            title="Tip linie"
+                                            :value="chosenRejansaType&&chosenRejansaType.sePrindeCuInele ? '5' : '4' ">
+                                        </v-stepper-item>
+                                    </v-stepper-header>
+                                        <v-stepper-window  v-if="selectedOption === 'onlyMaterial'">
+                                            <v-stepper-window-item value="1">
+                                                <div class="text-center" >
+                                                    <v-row no-gutters >
+                                                        <v-col cols="12" >
+                                                            <v-radio-group v-model="selectedOption" color="primary">
+                                                                <v-radio :label="$t('shop.curtain.notOnlyMaterial')" value="withManufacturing" />
+                                                                <v-radio  :label="$t('shop.curtain.onlyMaterial')" value="onlyMaterial" />
+                                                            </v-radio-group>
+                                                        </v-col>
+                                                    </v-row>
+                                                </div>
+                                            </v-stepper-window-item>
+                                        <v-stepper-window-item value="2">
+                                            <div  class="text-center">
+                                                <v-alert class="my-3" v-if="readyToAddToCart" type="success" variant="flat" >
+                                                    {{ $t('shop.curtain.priceListed') }}
+                                                </v-alert>
+                                                <p class="font-weight-thin h5">
+                                                    <b v-if="product.pretBazaRedusDto > 0">
+                                                        <p><s>{{ product.pretBazaDto }} {{ selectedCurrency === 'RON' ? 'RON/METRU' : 'EUR/METER' }}</s></p>
+                                                        <div class="price-container">
+                                                            <div class="discount">
+                                                                {{ Math.ceil(
+                                                                    ((product.pretBazaDto - product.pretBazaRedusDto) / product.pretBazaDto) * 100
+                                                                ) }}%
+                                                            </div>
+                                                            <span class="text-above text-error font-weight-bold">
+                                                                {{ product.pretBazaRedusDto }} {{ selectedCurrency === 'RON' ? 'RON/METRU' : 'EUR/METER' }}
+                                                            </span>
+                                                        </div>
+                                                    </b>
+                                                    <b v-else>
+                                                        {{ product.pretBazaDto }} {{ selectedCurrency === 'RON' ? 'RON/METRU' : 'EUR/METER' }}
+                                                    </b>
+                                                </p>
+                                                <v-form validate-on="submit" @submit.prevent="submitOnlyWidthForm" ref="onlyWidthForm" class="text-center">
+                                                    <v-text-field
+                                                    variant="outlined"
+                                                    :label="$t('shop.curtain.onlyWidth')" 
+                                                    v-model="onlyWidth" 
+                                                    counter="4"
+                                                    :rules="[rules.onlyNumbers , rules.notEmpty,rules.maxChar(4)]"
+                                                    >
+                                                    </v-text-field>
+                                                    <v-row>
+                                                        <v-col cols="12">
+                                                            <v-btn type="submit"  variant="flat"
+                                                            color="green">
+                                                                {{ $t('shop.curtain.finish') }}
+                                                            </v-btn>
+                                                        </v-col>
+                                                    </v-row>
+                                                </v-form>
+                                            </div>
+                                            
+                                        </v-stepper-window-item>
+                                        <v-stepper-actions 
+                                       >
+                                            <template v-slot:next="{props}">
+                                                    <v-btn variant="outlined" color="green" 
+                                                    v-bind="props" @click="checkNextStep()">
+                                                        NEXT<v-icon>mdi-arrow-right</v-icon>
+                                                    </v-btn>
+                                            </template>
+                                            <template v-slot:prev="{props}">
                                                
-                                                <v-text-field density="compact"
-                                                :label="$t('shop.height')"
-                                                counter="4"
-                                                v-model="prefferedHeight" 
-                                                :rules="[rules.notEmpty , rules.onlyNumbers ,  rules.maxChar(4)]" >
-                                                </v-text-field>
+                                                    <v-btn variant="outlined" color="error" 
+                                                v-bind="props" @click="goBack()">
+                                                    <v-icon>mdi-arrow-left</v-icon>BACK
+                                                </v-btn>
+                                            
+                                            </template>
+                                        </v-stepper-actions>
+                                    </v-stepper-window>
+                                    <v-stepper-window v-else>
+                                        <v-stepper-window-item value="1">
+                                                <div class="text-center" >
+                                                    <v-row no-gutters >
+                                                        <v-col cols="12" >
+                                                            <v-radio-group v-model="selectedOption" color="primary">
+                                                                <v-radio :label="$t('shop.curtain.notOnlyMaterial')" value="withManufacturing" />
+                                                                <v-radio  :label="$t('shop.curtain.onlyMaterial')" value="onlyMaterial" />
+                                                                
+                                                            </v-radio-group>
+                                                        </v-col>
+                                                    </v-row>
+                                                </div>
+                                            </v-stepper-window-item>
+                                        <v-stepper-window-item value="2">
+                                            <div class="text-center">
+                                                <p class="font-weight-thin h5">
+                                                    <b v-if="product.pretBazaRedusDto > 0">
+                                                        <p><s>{{ product.pretBazaDto }} {{ selectedCurrency === 'RON' ? 'RON/METRU' : 'EUR/METER' }}</s></p>
+                                                        <div class="price-container">
+                                                            <div class="discount">
+                                                                {{ Math.ceil(
+                                                                    ((product.pretBazaDto - product.pretBazaRedusDto) / product.pretBazaDto) * 100
+                                                                ) }}%
+                                                            </div>
+                                                            <span class="text-above text-error font-weight-bold">
+                                                                {{ product.pretBazaRedusDto }} {{ selectedCurrency === 'RON' ? 'RON/METRU' : 'EUR/METER' }}
+                                                            </span>
+                                                        </div>
+                                                    </b>
+                                                    <b v-else>
+                                                        {{ product.pretBazaDto }} {{ selectedCurrency === 'RON' ? 'RON/METRU' : 'EUR/METER' }}
+                                                    </b>
+                                                </p>
+                                                <span class="font-weight-bold">2. {{ $t('shop.curtain.inputWidthAndHeight') }}</span>
+                                                <v-row no-gutters >
+                                                    <v-col cols="12">
+                                                        <v-form ref="widthAndDimensionForm" class="m-1 text-center"
+                                                        validate-on="submit" >
+                                                            <v-text-field density="compact"
+                                                            :label="$t('shop.width')" 
+                                                            v-model="prefferedWidth" 
+                                                            counter="4"
+                                                            :rules="[rules.notEmpty , rules.onlyNumbers , rules.maxChar(4)]" >
+                                                            </v-text-field>
+                                                        
+                                                            <v-text-field density="compact"
+                                                            :label="$t('shop.height')"
+                                                            counter="4"
+                                                            v-model="prefferedHeight" 
+                                                            :rules="[rules.notEmpty , rules.onlyNumbers ,  rules.maxChar(4)]" >
+                                                            </v-text-field>
 
-                                                <v-checkbox density="compact"
-                                                :label="$t('shop.pair')"
-                                                v-model="isPair"
-                                                :false-value=false
-                                                :true-value=true 
-                                                 >
-                                               
-                                                </v-checkbox>
-                                                
-                                                <v-row>
-                                                    <v-col cols="12">
-                                                        <v-btn type="submit" class="my-2 bg-green" >
-                                                            {{ $t('shop.next') }}<v-icon class="mx-1">mdi-arrow-right
-                                                            </v-icon>
-                                                        </v-btn>
-                                                    </v-col>
-                                                    <v-col cols="12">
-                                                        <v-btn type="submit" @click="goBack('0')" class="my-2 bg-red" >
-                                                                {{ $t('shop.curtain.back') }}<v-icon class="mx-1">mdi-arrow-left
-                                                                </v-icon>
-                                                        </v-btn>
+                                                            <v-checkbox density="compact"
+                                                            :label="$t('shop.pair')"
+                                                            v-model="isPair"
+                                                            :false-value=false
+                                                            :true-value=true 
+                                                            >
+                                                        
+                                                            </v-checkbox>
+                                                           
+                                                        </v-form>
                                                     </v-col>
                                                 </v-row>
-                                               
-                                            </v-form>
-                                        </v-col>
-                                    </v-row>
-                                </div>
-                           
-                                <div v-else-if="showRejansaTypeSelect" class="text-center">
-                                    <div class="my-2">
-                                        <span class="font-weight-bold ">2. {{ $t('shop.curtain.chooseRejansaType') }}</span>
-                                    </div>
-                                    <v-divider></v-divider>
-                                    <v-row no-gutters>
-                                        <v-col v-for="(rejansa,index) in product.tipuriRejansa"
-                                        :key="index" cols="6" xs="6" sm="6" class="">
-                                            <div>
-                                                <span class="font-weight-light h6">{{ rejansa.pretTipRejansa }} <b>{{ selectedCurrency === 'RON' ? 'RON/METRU' : 'EUR/METER' }}</b></span>
                                             </div>
-                                            <span class="font-weight-light h6"> {{ $t('shop.curtain.incretire')}}: <b>{{ rejansa.incretireRejansa }}</b> </span>
-                                            <v-img eager class="h-100 border-sm ml-1"
-                                            aspect-ratio="1:1"
-                                            cover 
-                                            color="black"
-                                            :src="rejansa.presignedUrl">
-                                                <v-checkbox v-model="chosenRejansaType"
-                                                :value="rejansa"
-                                                density="compact"
-                                                base-color="black"
-                                                color="primary">
+                                        </v-stepper-window-item>
+                                        <v-stepper-window-item value="3">
+                                            <div  class="text-center">
+                                                <div class="my-2">
+                                                    <span class="font-weight-bold ">3. {{ $t('shop.curtain.chooseRejansaType') }}</span>
+                                                </div>
+                                                <v-divider></v-divider>
+                                                <v-row no-gutters>
+                                                    <v-col v-for="(rejansa,index) in product.tipuriRejansa"
+                                                    :key="index" cols="6" xs="3" sm="4" class="">
+                                                        <div>
+                                                            <span class="font-weight-light h6">{{ rejansa.pretTipRejansa }} <b>{{ selectedCurrency === 'RON' ? 'RON/METRU' : 'EUR/METER' }}</b></span>
+                                                        </div>
+                                                        <span class="font-weight-light h6"> {{ $t('shop.curtain.incretire')}}: <b>{{ rejansa.incretireRejansa }}</b> </span>
+                                                        <v-img eager class="h-100 border-sm ml-1"
+                                                        :aspect-ratio="1 / 1"
+                                                         cover
+                                                        color="black"
+                                                        :src="rejansa.presignedUrl">
+                                                            <v-checkbox v-model="chosenRejansaType"
+                                                            :value="rejansa"
+                                                            density="compact"
+                                                            base-color="black"
+                                                            color="primary">
 
-                                                </v-checkbox>
-                                            </v-img>
-                                        </v-col>
-                                        <v-col cols="12" class="text-center mt-10 pt-4">
-                                            <v-btn type="submit" @click="checkRejansaType()" class="my-2 bg-green" >
-                                                    {{ $t('shop.next') }}<v-icon class="mx-1">mdi-arrow-right
-                                                    </v-icon>
-                                            </v-btn>
-                                        </v-col>
-                                        <v-col cols="12" class="text-center">
-                                            <v-btn type="submit" @click="goBack('1')" class="my-2 bg-red" >
-                                                    {{ $t('shop.curtain.back') }}<v-icon class="mx-1">mdi-arrow-left
-                                                    </v-icon>
-                                            </v-btn>
-                                        </v-col>
-                                    </v-row>
-                                </div>
-                                <div v-else-if="showRingTypeSelect" class="text-center">
-                                    <div class="my-2">
-                                        <span class="font-weight-bold ">3. {{ $t('shop.curtain.chooseRingType') }}</span>
-                                    </div>
-                                    <v-divider></v-divider>
-                                    <v-row no-gutters>
-                                        <v-col v-for="(ringType,index) in product.tipuriInele"
-                                        :key="index" cols="6" xs="6" sm="4" >
-                                            <v-img eager class="h-100 border-sm ml-1"
-                                            aspect-ratio="1:1"
-                                            cover 
-                                            color="black"
-                                            :src="ringType.presignedUrl">
-                                                <v-checkbox v-model="chosenRingType"
-                                                :value="ringType"
-                                                density="compact"
-                                                base-color="black"
-                                                color="primary">
+                                                            </v-checkbox>
+                                                        </v-img>
+                                                    </v-col>
+                                                    
+                                                </v-row>
+                                                <v-divider opacity="0" ></v-divider>
+                                                <v-divider opacity="0" ></v-divider>
+                                                <v-divider opacity="0" ></v-divider>
+                                            </div>
+                                        </v-stepper-window-item>
+                                        <v-stepper-window-item v-if="chosenRejansaType&&chosenRejansaType.sePrindeCuInele" :value="chosenRejansaType&&chosenRejansaType.sePrindeCuInele === true ? '4' : '-1'" >
+                                            <div  class="text-center">
+                                                <div class="my-2">
+                                                    <span class="font-weight-bold ">4. {{ $t('shop.curtain.chooseRingType') }}</span>
+                                                </div>
+                                                <v-divider></v-divider>
+                                                <v-row no-gutters>
+                                                    <v-col v-for="(ringType,index) in product.tipuriInele"
+                                                    :key="index" cols="6" xs="6" sm="4" >
+                                                        <v-img eager class="h-100 border-sm ml-1"
+                                                        aspect-ratio="1:1"
+                                                        cover 
+                                                        color="black"
+                                                        :src="ringType.presignedUrl">
+                                                            <v-checkbox v-model="chosenRingType"
+                                                            :value="ringType"
+                                                            density="compact"
+                                                            base-color="black"
+                                                            color="primary">
 
-                                                </v-checkbox>
-                                            </v-img>
-                                        </v-col>
-                                        <v-col cols="12" class="text-center  mt-3 pt-4 ">
-                                            <v-btn type="submit" @click="checkRingType()" class="my-2 bg-green" >
-                                                    {{ $t('shop.next') }}<v-icon class="mx-1">mdi-arrow-right
-                                                    </v-icon>
-                                            </v-btn>
-                                        </v-col>
-                                        <v-col cols="12" class="text-center">
-                                            <v-btn type="submit" @click="goBack('2')" class="my-2 bg-red" >
-                                                    {{ $t('shop.curtain.back') }}<v-icon class="mx-1">mdi-arrow-left
-                                                    </v-icon>
-                                            </v-btn>
-                                        </v-col>
-                                    </v-row>
-                                </div>
-                                <div v-else-if="showLiningTypeSelect" class="text-center">
-                                    <div class="my-2">
-                                        <span class="font-weight-bold ">{{ chosenRingType === null ? '3.' : '4.' }} {{ $t('shop.curtain.chooseLiningType') }}</span>
-                                    </div>
-                                    <v-divider></v-divider>
-                                    <v-alert class="mb-2" v-if="readyToAddToCart" type="success" variant="flat" >
-                                        {{ $t('shop.curtain.priceListed') }}
-                                    </v-alert>
-                                    <v-row no-gutters>
-                                        <v-col v-for="(liningType,index) in product.tipuriLinie"
-                                        :key="index" cols="6" xs="6" sm="4" >
-                                        <span class="font-weight-thin h6">{{ liningType.pretTipCusaturaColt }} {{ selectedCurrency === 'RON' ? 'RON/METRU' : 'EUR/METER' }}</span>
-                                            <v-img eager class="h-100 border-sm ml-1"
-                                            aspect-ratio="1:1"
-                                            cover 
-                                            color="black"
-                                            :src="liningType.presignedUrl">
-                                                <v-checkbox v-model="chosenLiningType"
-                                                :value="liningType"
-                                                density="compact"
-                                                base-color="black"
-                                                color="primary">
+                                                            </v-checkbox>
+                                                        </v-img>
+                                                    </v-col>
+                                                    <v-divider opacity="0" ></v-divider>
+                                                    
+                                                </v-row>
+                                            </div>
+                                           
+                                        </v-stepper-window-item>
+                                        <v-stepper-window-item :value="chosenRejansaType&&chosenRejansaType.sePrindeCuInele === true ? '5' : '4'">
+                                            <div  class="text-center">
+                                                <div class="my-2">
+                                                    <span class="font-weight-bold ">{{ chosenRingType === null ? '4.' : '5.' }} {{ $t('shop.curtain.chooseLiningType') }}</span>
+                                                </div>
+                                                <v-divider></v-divider>
+                                                <v-alert class="mb-2" v-if="readyToAddToCart" type="success" variant="flat" >
+                                                    {{ $t('shop.curtain.priceListed') }}
+                                                </v-alert>
+                                                <v-row no-gutters>
+                                                    <v-col v-for="(liningType,index) in product.tipuriLinie"
+                                                    :key="index" cols="6" xs="6" sm="6" >
+                                                    <span class="font-weight-thin h6">{{ liningType.pretTipCusaturaColt }} {{ selectedCurrency === 'RON' ? 'RON/METRU' : 'EUR/METER' }}</span>
+                                                        <v-img eager class=" border-sm ml-1"
+                                                        aspect-ratio="1:1"
+                                                        cover 
+                                                        :src="liningType.presignedUrl">
+                                                            <v-checkbox v-model="chosenLiningType"
+                                                            :value="liningType"
+                                                            density="compact"
+                                                            base-color="black"
+                                                            color="primary">
 
-                                                </v-checkbox>
-                                            </v-img>
-                                        </v-col>
-                                        <v-col cols="12" class="text-center  mt-3 pt-4">
-                                            <v-btn type="submit" @click="checkLiningType()" class="my-2 bg-green" >
-                                                    {{ $t('shop.curtain.finish') }}<v-icon class="mx-1">mdi-arrow-right
-                                                    </v-icon>
-                                            </v-btn>
-                                        </v-col>
-                                        <v-col cols="12" class="text-center">
-                                            <v-btn type="submit" @click="goBack('2')" class="my-2 bg-red" >
-                                                    {{ $t('shop.curtain.back') }}<v-icon class="mx-1">mdi-arrow-left
-                                                    </v-icon>
-                                            </v-btn>
-                                        </v-col>
-                                    </v-row>
-                                </div>
+                                                            </v-checkbox>
+                                                        </v-img>
+                                                    </v-col>
+                                                    <v-col cols="12" class="text-center  mt-3 pt-4">
+                                                        <v-btn type="submit" @click="checkLiningType()" class="my-2 bg-green" >
+                                                                {{ $t('shop.curtain.finish') }}<v-icon class="mx-1">mdi-arrow-right
+                                                                </v-icon>
+                                                        </v-btn>
+                                                        <v-divider opacity="0" ></v-divider>
+                                                    </v-col>
+                                                   
+                                                </v-row>
+                                            </div>
+                                        </v-stepper-window-item>
+                                        <v-stepper-actions 
+                                       >
+                                            <template v-slot:next="{props}">
+                                                    <v-btn variant="outlined" color="green" 
+                                                    v-bind="props" @click="checkNextStep()">
+                                                        NEXT<v-icon>mdi-arrow-right</v-icon>
+                                                    </v-btn>
+                                            </template>
+                                            <template v-slot:prev="{props}">
+                                               
+                                                    <v-btn variant="outlined" color="error" 
+                                                v-bind="props" @click="goBack()">
+                                                    <v-icon>mdi-arrow-left</v-icon>BACK
+                                                </v-btn>
+                                            
+                                            </template>
+                                        </v-stepper-actions>
+                                    </v-stepper-window>
+                                </v-stepper>
+                                
                             </div>
-                            <v-divider></v-divider>
-                            <v-alert v-if="!onlyMaterial && withManufacturing"  class="my-4 p-2 text-justify"   
-                            border-color="success" elevation="12" border >
+                            <!-- <v-divider></v-divider> -->
+                            <v-alert v-if="selectedOption === 'withManufacturing'"  class="my-4 p-2 text-justify"   
+                            elevation="12"  >
                                 <p class="text-center h6 font-weight-light"  v-if="prefferedWidth !== ''">{{ $t('shop.curtain.railwayWidth') }}: {{ prefferedWidth }}</p>
                                 <p class="text-center h6 font-weight-light"  v-if="prefferedHeight !== ''">{{ $t('shop.curtain.heightUntilBottom') }}: {{ prefferedHeight }}</p>
                                 <p class="text-center h6 font-weight-light"  v-if="prefferedHeight !== ''">{{ $t('shop.pair') }}: {{ isPair === false ? 'Nu' : 'Da' }}</p>
                                 <v-divider></v-divider>
-                                <p class="text-center h6 font-weight-light" v-if="chosenRejansaType !== null">{{ $t('shop.curtain.rejansa') }} : {{ chosenRejansaType.numeTipRejansa }}</p>
-                                <p class="text-center h6 font-weight-light" v-if="chosenRejansaType !== null">{{ $t('shop.curtain.incretire') }} : {{ chosenRejansaType.incretireRejansa }}</p>
+                                <p class="text-center h6 font-weight-light" v-if="chosenRejansaType">{{ $t('shop.curtain.rejansa') }} : {{ chosenRejansaType.numeTipRejansa }}</p>
+                                <p class="text-center h6 font-weight-light" v-if="chosenRejansaType">{{ $t('shop.curtain.incretire') }} : {{ chosenRejansaType.incretireRejansa }}</p>
                                 <v-divider></v-divider>
-                                <p class="text-center h6 font-weight-light" v-if="chosenRingType !== null">{{ $t('shop.curtain.rings') }} : {{ chosenRingType.numeTipInel }}</p>
-                                <p class="text-center h6 font-weight-light" v-if="chosenLiningType !== null" >{{ $t('shop.curtain.lineType') }} : {{ chosenLiningType.numeTipCusaturaColt }}</p>
+                                <p class="text-center h6 font-weight-light" v-if="chosenRingType">{{ $t('shop.curtain.rings') }} : {{ chosenRingType.numeTipInel }}</p>
+                                <v-divider></v-divider>
+                                <p class="text-center h6 font-weight-light" v-if="chosenLiningType " >{{ $t('shop.curtain.lineType') }} : {{ chosenLiningType.numeTipCusaturaColt }}</p>
                             </v-alert>
                             <div v-if="product.tipulProdusuluiDto !== 'perdea' && product.tipulProdusuluiDto !== 'draperie'" class="text-center">
                                 <p v-if="dimensionsLength > 0" class="font-weight-light h5">
@@ -457,7 +545,7 @@
                                 <p v-else>{{ product.pretBazaRedusDto > 0 ? product.pretBazaRedusDto : product.pretBaza }}</p>
                             </div>
                             <div v-else class="text-center">
-                                <p v-if="!readyToAddToCart" class="font-weight-bold h6">{{ $t('shop.curtain.priceCalculation') }}</p>
+                                <p v-if="!readyToAddToCart" class="font-weight-bold h6 my-2">{{ $t('shop.curtain.priceCalculation') }}</p>
                                 <p class="font-weight-bold h6">{{ finalPrice }} {{ selectedCurrency === 'RON' ? 'RON' : 'EUR' }}</p>
                             </div>
                             <div class="mt-2 text-center">
@@ -466,7 +554,7 @@
                                     variant="flat"
                                     color="primary"
                                     :disabled="(product.tipulProdusuluiDto === 'perdea' || product.tipulProdusuluiDto === 'draperie') && !readyToAddToCart"
-                                    @click="handleClick"
+                                    @click="addOrUpdateCart"
                                 >
                                     <template v-if="!isClicked">
                                         {{ $t('shop.addToCart') }}
@@ -476,6 +564,21 @@
                                         <v-icon class="mx-1">mdi-check</v-icon>
                                     </template>
                                 </v-btn>
+                            </div>
+                            <div class="text-center mt-4">
+                                
+                            </div>
+                            <div class="mt-4 text-center">
+                                <p class="font-weight-light h6">{{ $t('general.informations') }}</p>
+                                <div class="mb-2">
+                                    <NuxtLink :to="localePath('/measurement')" prefetch :prefetch-on="{interaction: true}" class="mb-3  text-decoration-none	">
+                                    <span class="h5 font-weight-light">{{ $t('general.howToMeasure') }}</span>
+                                    </NuxtLink>
+                                </div>
+                               
+                                <span><v-icon class="mr-2">mdi-phone</v-icon>0744959764</span>
+                                <br>
+                                <span><v-icon class="mr-2">mdi-email</v-icon>texx@email.com</span>
                             </div>
                         </v-card-text>
                     </v-card>
@@ -574,15 +677,17 @@
                                     </v-col>
                                     <v-col cols="12" >
                                         <div class="text-center">
-                                            <v-icon
-                                                v-for="starIndex in 5"
-                                                :key="starIndex"
-                                                :color="starIndex <= review.numarSteleDto ? 'orange' : 'grey'"
-                                            >
-                                                mdi-star
-                                            </v-icon>
-                                            
-                                       
+                                            <v-rating
+                                                hover :length="5"
+                                                :size="24"
+                                                readonly
+                                                half-increments
+                                                v-model="review.numarSteleDto"
+                                                color="orange-lighten-1"
+                                                active-color="primary"
+                                                class="ma-2"
+                                            ></v-rating>
+                                          
                                         <p class="font-weight-thin h6 mt-2">{{ review.textRecenzie }}</p>
                                         </div>
                                     </v-col>
@@ -595,15 +700,50 @@
                     </v-card>
                 </v-col>
                 <v-divider></v-divider>
-                <v-col cols="12">
-                    <v-card elevation="12" class="bg-grey-lighten-1 text-center">
+                <v-col cols="12" v-if="product.reviewsGeneral">
+                    <v-card elevation="24" class="bg-grey-lighten-2 text-center">
                         <v-card-title>
-                            <p class="font-weight-thin h3">{{ $t('general.ratingOverview') }}</p>
+                            <p class="font-weight-thin h3 my-7">{{ $t('general.ratingOverview') }}</p>
                         </v-card-title>
                         <v-card-text>
                             <v-row>
                                 <v-col cols="12">
-                                    <p></p>
+                                    <p class="font-weight-light h5"><span class="h1 font-weight-light">{{ product.reviewsGeneral.averageRating }}</span> / 5</p>
+                                    <v-rating
+                                        hover :length="5"
+                                        :size="32"
+                                        readonly
+                                        half-increments
+                                        v-model="product.reviewsGeneral.averageRating"
+                                        color="orange-lighten-1"
+                                        active-color="primary"
+                                        class="ma-2"
+                                    ></v-rating>
+                                    <p class="font-weight-light h5">{{ product.reviewsGeneral.totalReviews }} {{ $t('general.reviews') }}</p>
+                                </v-col>
+                                <v-col cols="12">
+                                    <v-list bg-color="transparent" class="d-flex flex-column-reverse" density="compact">
+                                        <v-list-item v-for="(value, index) in [5, 4, 3, 2, 1]" :key="index">
+                                            <v-progress-linear
+                                                :model-value="getPercentage(value)"
+                                                class="mx-n5"
+                                                color="yellow-darken-3"
+                                                height="15"
+                                                rounded
+                                            ></v-progress-linear>
+                                            <template v-slot:prepend>
+                                                <span>{{ value }}</span>
+                                                <v-icon class="mx-3" icon="mdi-star"></v-icon>
+                                            </template>
+                                            <template v-slot:append>
+                                                <div >
+                                                    <span class="d-flex justify-end">
+                                                        {{ getReviewCount(value) }}
+                                                    </span>
+                                                </div>
+                                            </template>
+                                        </v-list-item>
+                                    </v-list>
                                 </v-col>
                             </v-row>
                            
@@ -630,7 +770,6 @@
                             color="orange-lighten-1"
                             active-color="primary"
                             class="ma-2"
-                            @click="console.log(stars)"
                         ></v-rating>
                         <p class="font-weight-thin h6 ">({{ stars }} {{ stars === 1 ? 'stea' : 'stele' }})</p>
                         <v-btn class="text-center m-2 p-2" variant="flat" color="primary" type="submit">
@@ -651,6 +790,87 @@
                         </v-card-text>
                     </v-card>
                 </v-col>
+                <v-col cols="12" v-if="mostViewedProducts && mostViewedProducts.length > 0">
+                    <p class="text-center font-weight-thin h3">{{ $t('general.usersPrefferences') }}</p>
+                    <v-sheet elevation="12"
+                     class="mx-auto border-sm p-2 ma-1" max-width="100%">
+                        <v-slide-group 
+                            :show-arrows="height !== true"
+                            v-model="activeSlideMostViewedProducts"
+                            center-active
+                            >
+                            <v-slide-group-item 
+                             v-for="(product,index) in mostViewedProducts" 
+                            
+                            :key="index" >
+                           
+                            <v-tooltip :text="`${t('general.seeProduct')}`"
+                             >
+                              <template v-slot:activator = "{props}">
+                                <div fluid class="text-center mx-5 my-2">
+                                    <v-card class="h-100 p-2  bg-grey-lighten-4 elevation-12">
+                                        <v-card-title>
+                                            <p class="text-center font-weight-light h5 mx-2">{{ product.numeProdusDto }}</p>
+                                        </v-card-title>
+                                        <v-card-subtitle>
+                                            <p class="text-center font-weight-thin h6 mx-2">({{ product.tipulProdusuluiDto }})</p>
+                                        </v-card-subtitle>
+                                        <v-card-text class="h-100">
+                                            <v-row>
+                                                <v-col cols="12">
+                                                    <v-img  v-if="findFirstColorWithImage(product) !== 'empty'"
+                                                        :aspect-ratio="10 / 9"
+                                                        
+                                                        eager class=" h-75 p-2 cursor-pointer  "
+                                                        :alt="`${product.numeProdusDto} + culoare ${product.culoriProdusDto[0].numeCuloareDto}`"
+                                                        :src="findFirstColorWithImage(product)" 
+                                                        @click="navigateTo(localePath(`/product/${product.codProdusDto}/${product.tipulProdusuluiDto}`))" 
+                                                        v-bind="props">
+                                                    
+                                                    </v-img>
+                                                    <v-img v-else
+                                                        
+                                                        :aspect-ratio="10 / 9"
+                                                        eager class="h-75 p-2 cursor-pointer "
+                                                        :alt="`Image ${product.numeProdusDto}`"
+                                                        @click="navigateTo(localePath(`/product/${product.codProdusDto}/${product.tipulProdusuluiDto}`))" 
+                                                        src="/notFound.png" 
+                                                        v-bind="props" >
+                                                    </v-img>
+                                                    
+                                                </v-col>
+                                                <v-col cols="12">
+                                                    <p v-if="product.pretBazaRedusDto === 0"  class="text-center font-weight-thin h5 mx-2">{{ product.pretBazaDto }} {{selectedCurrency}}</p>
+                                                    <p v-else class="text-red text-center font-weight-thin h5 mx-2">{{ product.pretBazaRedusDto }} {{selectedCurrency}}</p>
+                                                </v-col>
+                                                <v-col cols="12">
+                                                    <NuxtLink prefetch :prefetch-on="{interaction: true}"
+                                                        :to="localePath(`/product/${product.codProdusDto}/${product.tipulProdusuluiDto}`)">
+                                                        <v-btn variant="flat"
+                                                        color="primary">
+                                                            {{ $t('shop.seeDetails') }}
+                                                            <v-icon class="ml-2">mdi-arrow-right</v-icon>
+                                                        </v-btn>
+                                                    </NuxtLink>
+                                                   
+                                                </v-col>
+                                            </v-row>
+                                        </v-card-text>
+                                    </v-card>
+                                    
+                                    
+
+                                    </div>
+                               
+                              </template>
+                            </v-tooltip>
+                               
+                           
+                            </v-slide-group-item>
+                        </v-slide-group>
+                    </v-sheet>
+                    
+                </v-col>
             </v-row>
            
         </v-sheet>
@@ -668,7 +888,22 @@ const route = useRoute();
 const localePath = useLocalePath();
 const {t} = useI18n();
 const {name} = useDisplay()
+const currency = useState('selectedCurrency')
 
+definePageMeta({
+    middleware : ['locale']
+})
+
+useHead({
+    link : [
+        {rel: 'dns-prefetch' , href: 'https://dw45vxtt6tooj.cloudfront.net'},
+        {rel: 'preconnect' , href: 'https://dw45vxtt6tooj.cloudfront.net'},
+    ]
+})
+
+
+
+// Add preload links dynamically
 
 
 
@@ -684,13 +919,16 @@ const reviewText = ref('')
 const selectedCurrency = ref('RON');
 const dimensionsLength = ref(0);
 const reviewsLen = ref(0);
+const selectedOption = ref('onlyMaterial')
+const imgColor = ref('')
 
 const selectedImage = ref('')
 const dialog = ref(false)
+const isMounted = ref(false)
+const activeSlide = ref(0)
+const step = ref(1)
 
-const showFormForOnlyMaterial = ref(true);
-const onlyMaterial = ref(false)
-const withManufacturing = ref(false)
+
 
 const showFormOnlyForWidth = ref(false)
 const onlyWidthForm = ref(null)
@@ -702,20 +940,27 @@ const prefferedHeight = ref('')
 const showFormForWidthAndHeight = ref(false)
 const widthAndDimensionForm = ref(null)
 
-const showRejansaTypeSelect = ref(false);
 const chosenRejansaType = ref(null)
 
-const showRingTypeSelect = ref(false);
 const chosenRingType = ref(null)
 
-const showLiningTypeSelect = ref(false);
 const chosenLiningType = ref(null)
 const readyToAddToCart = ref(false)
 const finalPrice = ref(0);
 
+const mostViewedProducts = ref([])
+const activeSlideMostViewedProducts = ref(0)
+
+
 const onlyNums = new RegExp('^[1-9]\\d{0,3}$');
 
-
+const screenSize = computed(() => {
+    switch (name.value) {
+      case 'xs': return {width : 300 , height : 300}
+      case 'sm' : return { width :600 , height : 600 }
+      default : return { width : 550 , height : 550}
+    }
+})
 
 
 const rules = {
@@ -728,10 +973,13 @@ const rules = {
 const isPair = ref(false)
 
 const selectedColor = ref({
+    idCuloare: 0,
     name : '',
     colorCode: '',
+    imgUrl : ''
 })
 const selectedDimension = ref({
+    idDimensiune: 0,
     width: '',
     height: '',
     price: 0,
@@ -742,7 +990,7 @@ const isClicked = ref(false);
 
 const height = computed(() => {
     switch (name.value) {
-      case 'xs': return 3
+      case 'xs': return true
       default : return 3
     }
 })
@@ -759,38 +1007,205 @@ const allImages = computed(() => {
 });
 
 
+const findFirstColorWithImage = ((product) => {
+    if(product.culoriProdusDto.length === 0){
+        return 'empty'
+    }
+
+    var colorWithImageURL = product.culoriProdusDto[0].imaginiProdusDto[0].presignedUrl;
+    return colorWithImageURL;
+})
+
+
+
+
+const getPercentage = (rating) => {
+    const totalReviews = product.value.reviewsGeneral.totalReviews || 0;
+    if (totalReviews === 0) return 0;
+    
+    const reviewCount = getReviewCount(rating);
+    return Math.round((reviewCount / totalReviews) * 100);
+};
+
+const getReviewCount = (rating) => {
+    switch (rating) {
+        case 5:
+            return product.value.reviewsGeneral.fiveStarsReviews;
+        case 4:
+            return product.value.reviewsGeneral.fourStarsReviews;
+        case 3:
+            return product.value.reviewsGeneral.threeStarsReviews;
+        case 2:
+            return product.value.reviewsGeneral.twoStarsReviews;
+        case 1:
+            return product.value.reviewsGeneral.oneStarReviews;
+        default:
+            return 0;
+    }
+};
+
 
 
 function filterImagesByColor(color) {
     const colorData = product.value.culoriProdus.find(c => c.numeCuloareDto === color);
-    console.log(colorData)
     filteredImages.value = colorData ? colorData.imaginiProdusDto.map(image => ({
         imageUrl: image.presignedUrl,
     })) : [];
 }
 
 const selectImage = ((imageObj) => {
-    console.log(imageObj)
     selectedImage.value = imageObj
-    selectedColor.value.name = selectedImage.value.colorName
+    imgColor.value = selectedImage.value.colorName
 })
 
-function handleClick() {
-    if (!isClicked.value) {
-        swal.fire({
-            position: "top-end",
-            icon: "success",
-            title: "Produsul a fost adaugat in cos",
-            showConfirmButton: false,
-            timer: 1000
-        });
-        isClicked.value = true;
-        // Reset the button after 1 second
-        setTimeout(() => {
-            isClicked.value = false;
-        }, 1000);
+const constructFormDataToSend = () => {
+    const materialNeededMeters = product.value.tipulProdusuluiDto === 'perdea' || product.value.tipulProdusuluiDto === 'draperie'
+        ? onlyWidth.value === 0
+             ? (prefferedWidth.value / 100)  * chosenRejansaType.value.incretireRejansa
+             : (onlyWidth.value / 100)
+        : -11;
+   
+    var itemToPushInCart = {
+        idProdus: product.value.idProdus,
+        idCuloare: selectedColor.value.idCuloare,
+        idDimensiune: selectedDimension.value.idDimensiune === 0 ? null : selectedDimension.value.idDimensiune,
+        lungimeSina : product.value.tipulProdusuluiDto === 'perdea' || product.value.tipulProdusuluiDto === 'draperie' ? 
+                chosenRejansaType.value !== null ?  prefferedWidth.value : null
+                : 'notPerdeaOrDraperie'
+           , // only material was selected
+        inaltime : product.value.tipulProdusuluiDto === 'perdea' || product.value.tipulProdusuluiDto === 'draperie' ? 
+                chosenRejansaType.value !== null ?  prefferedHeight.value : null
+                : 'notPerdeaOrDraperie', // only material was selected
+        perechePerdea : product.value.tipulProdusuluiDto === 'perdea' || product.value.tipulProdusuluiDto === 'draperie' ? 
+            chosenRejansaType.value !== null ? isPair.value : null
+            : 'notPerdeaOrDraperie',//  only maaterial was selected
+        idRejansa : chosenRejansaType.value === null ? -11 : chosenRejansaType.value.idRejansa, // if null 
+        idInelPrindere : chosenRingType.value === null? -11:  chosenRingType.value.idInelPrindere, // if null
+        idTipLinie: chosenLiningType.value === null ? -11 : chosenLiningType.value.idTipLinie, // if null
+        materialFolosit : materialNeededMeters,
+        pretCurentTipLinie : chosenLiningType.value === null ? -11 : chosenLiningType.value.pretTipCusaturaColt ,
+        pretCurentTipGalerie : chosenRejansaType.value === null ? -11 : chosenRejansaType.value.pretTipRejansa,
+        currentCurrency : selectedCurrency.value,
+        pretCurent : product.value.tipulProdusuluiDto === 'perdea' || product.value.tipulProdusuluiDto === 'draperie' 
+                ? finalPrice.value : dimensionsLength.value > 0 ? 
+                    (selectedDimension.value.priceDiscount > 0 ? 
+                        selectedDimension.value.priceDiscount : selectedDimension.value.price)
+                    :  product.value.pretBazaRedusDto > 0 ?
+                            product.value.pretBazaRedusDto : product.value.pretBazaDto
+    }
+   
+
+    const formData = new FormData();
+    formData.append("cartItem", JSON.stringify(itemToPushInCart));
+    formData.append("setItems" , null)
+    return formData;
+};
+
+
+function validateProduct(){
+    if(product.value.tipulProdusuluiDto === 'perdea' || product.value.tipulProdusuluiDto === 'draperie'){
+        if(onlyWidth.value === 0){
+            if(chosenRejansaType.value === null){
+                return {
+                    flag: false,
+                    error : `${t('general.forgotRejansa')}`
+                }
+            }
+
+            if(chosenRejansaType.value.sePrindeCuInele === true){
+                if(chosenRingType.value === null){
+                    return {
+                        flag: false,
+                        error : `${t('general.forgotRingType')}`
+                    }
+                }
+            }
+
+            if(chosenLiningType.value === null){
+                return {
+                    flag: false,
+                    error : `${t('general.forgotLiningType')}`
+                }
+            }
+
+            return {
+                flag: true,
+                error : 'none'
+            }
+        }
+
+        return {
+            flag : true,
+            error : 'none'
+        }
+    }
+
+    return {
+        flag : true,
+        error : 'none'
     }
 }
+
+function fireAlarm(position , icon , title , timer){
+    swal.fire({
+        position: position,
+        icon: icon,
+        title: title,
+        showConfirmButton: false,
+        timer: timer
+    });
+}
+
+const updateLocalCart = (() => {
+    var getCartCount = localStorage.getItem('cartCount')
+    if(getCartCount !== null){
+        var updateCart = parseInt(getCartCount);
+        updateCart++
+        localStorage.setItem('cartCount' , String(updateCart))
+    }else{
+        localStorage.setItem('cartCount' , '1');
+    }
+})
+
+
+const addOrUpdateCart = (async () => {
+    if (!isClicked.value) {
+        const validation = validateProduct()
+        if(validation.flag !== false){
+            const formToSend = constructFormDataToSend()
+            const responseFromCartAddingOrUpdating = await productService.addToCart(formToSend);
+            if(responseFromCartAddingOrUpdating.status === 200){
+                fireAlarm('top-end' , 'success' , `${t('general.addToCart')}` , 1000)
+                updateLocalCart()
+            }else if(responseFromCartAddingOrUpdating.status === 204){
+                fireAlarm('top-end' , 'success' , `${t('general.incrementQuantity')}` , 3000)
+                updateLocalCart()
+            }else if(responseFromCartAddingOrUpdating.status === 404){
+                fireAlarm('top-end' , 'error' , `${t('general.errorOnCartAddingOrUpdating')}` , 3000)
+            }else if(responseFromCartAddingOrUpdating.status === 400){
+                fireAlarm('top-end' , 'error' , `${t('forgotPassword.error')}` , 3000)
+            }else if(responseFromCartAddingOrUpdating.status === 401){
+                fireAlarm('top-end' , 'error' , 'Token expired/expirat' , 3000)
+                navigateTo(localePath('/user/logout'))
+            }
+            
+
+            isClicked.value = true;
+                setTimeout(() => {
+                    isClicked.value = false;
+                }, 1000);
+        
+        }else{
+            swal.fire({
+                icon: "error",
+                title: "Eroare",
+                text:  `${validation.error}`,
+                showConfirmButton: true,
+                timer: 4000
+            });
+        }
+    }
+})   
 
 const getCurrentLocale = () => {
   const currentLanguage = useCookie('i18n_redirected').value;
@@ -805,18 +1220,26 @@ const getCurrentLocale = () => {
 function toggleButton(index, type) {
     if (type === 'dimension') {
         activeButtonDimensions.value = index;
-        selectedDimension.value ={
+        selectedDimension.value = {
+            idDimensiune : product.value.dimensiuniProdus[index].idDimensiune,
             width: product.value.dimensiuniProdus[index].lungimeDto,
             height: product.value.dimensiuniProdus[index].latimeDto,
             price :  product.value.dimensiuniProdus[index].pretDto,
             priceDiscount:  product.value.dimensiuniProdus[index].pretRedusDto
         }
+        console.log(selectedDimension.value)
     } else if (type === 'color') {
         activeButtonColors.value = index;
+        selectedColor.value.idCuloare = product.value.culoriProdus[index].idCuloare
         selectedColor.value.name = product.value.culoriProdus[index].numeCuloareDto
         selectedColor.value.colorCode = product.value.culoriProdus[index].codCuloareDto
-        selectedImage.value = allImages.value.find(img => img.colorName === selectedColor.value.name)
-      
+        if(product.value.culoriProdus[index].imaginiProdusDto.length > 0){
+            selectedColor.value.imgUrl = product.value.culoriProdus[index].imaginiProdusDto[0].presignedUrl
+        }
+        if(allImages&&allImages.value){
+            selectedImage.value = allImages.value.find(img => img.colorName === selectedColor.value.name)
+        }
+        console.log(selectedColor.value)
     }
 }
 
@@ -833,8 +1256,11 @@ const getProductData = async () => {
     if (product.value.culoriProdus && product.value.culoriProdus.length > 0) {
         // Set the default color as the first color available
         selectedColor.value = {
+           idCuloare : product.value.culoriProdus[0].idCuloare,
            name : product.value.culoriProdus[0].numeCuloareDto,
-           colorCode: product.value.culoriProdus[0].codCuloareDto
+           colorCode: product.value.culoriProdus[0].codCuloareDto,
+           imgUrl : product.value.culoriProdus[0].imaginiProdusDto.length > 0 ?
+             product.value.culoriProdus[0].imaginiProdusDto[0].presignedUrl : ''
         };
         activeButtonColors.value = 0;
         filterImagesByColor(selectedColor.value.name);
@@ -842,16 +1268,19 @@ const getProductData = async () => {
     if(product.value.dimensiuniProdus && product.value.dimensiuniProdus.length > 0){
         dimensionsLength.value = product.value.dimensiuniProdus.length;
         selectedDimension.value = { 
+            idDimensiune : product.value.dimensiuniProdus[0].idDimensiune,
             width: product.value.dimensiuniProdus[0].lungimeDto,
             height: product.value.dimensiuniProdus[0].latimeDto,
             price :  product.value.dimensiuniProdus[0].pretDto,
             priceDiscount:  product.value.dimensiuniProdus[0].pretRedusDto
         }
         activeButtonDimensions.value = 0;
+        console.log(selectedDimension.value)
     }
     if(product.value.reviewsProdus){
         reviewsLen.value = product.value.reviewsProdus.length
     }
+    
 }
 
 
@@ -881,7 +1310,7 @@ const postReview =  async () => {
         }else if(responseFromPostReview === -4){
             navigateTo(localePath('/error/NotFound'))
         }else {
-            navigateTo(localePath('/error/generalError'))
+            navigateTo(localePath('/user/logout'))
         }
 
     }else{
@@ -896,28 +1325,6 @@ const postReview =  async () => {
     
 }
 
-const nextFormFromStart = () => {
-  
-    // case where client wants only material
-    if(onlyMaterial.value === true && withManufacturing.value === false ){
-        showFormOnlyForWidth.value = true;
-        showFormForOnlyMaterial.value = false
-    }
-    // case where the client wants a manufacturing made
-    else if(onlyMaterial.value === false && withManufacturing.value === true){
-        showFormForWidthAndHeight.value = true;
-        showFormForOnlyMaterial.value = false
-    }else{
-        swal.fire({
-            icon : 'error',
-            title: '',
-            text: t('sweetAlert2.Select'),
-            timer: 3000
-        })
-        return;
-    }
-}
-
 
 const submitOnlyWidthForm =  async () => {
     const isValidForm = await onlyWidthForm.value.validate();
@@ -925,6 +1332,11 @@ const submitOnlyWidthForm =  async () => {
         chosenWidthOnlyForMaterial.value = onlyWidth.value / 100;
         finalPrice.value = chosenWidthOnlyForMaterial.value * (product.value.pretBazaRedusDto > 0 ? product.value.pretBazaRedusDto : product.value.pretBazaDto)
         readyToAddToCart.value = true;
+        chosenRejansaType.value = null
+        chosenRingType.value = null
+        chosenLiningType.value = null
+        prefferedWidth.value = 0
+        prefferedHeight.value = 0
     }else{
         swal.fire({
             icon : 'error',
@@ -936,57 +1348,88 @@ const submitOnlyWidthForm =  async () => {
     }
 }
 
-const toRejansaType = async () => {
-    const validForm = await widthAndDimensionForm.value.validate();
-    if(validForm.valid){
-        showFormForWidthAndHeight.value = false;
-        showRejansaTypeSelect.value = true;
-    }else {
-        swal.fire({
-            icon : 'error',
-            title: '',
-            text: t('sweetAlert2.CheckForm'),
-            timer: 3000
-        })
-        return;
-    }
-   
-}
-
-const checkRejansaType = () => {
-    if(chosenRejansaType.value !== null){
-        if(chosenRejansaType.value.sePrindeCuInele === true){
-            showRejansaTypeSelect.value = false;
-            showRingTypeSelect.value = true
-        }else{
-            showRejansaTypeSelect.value = false;
-            showLiningTypeSelect.value = true
+const checkStepFunction = async () => {
+     if (step.value === 1) {
+        if(selectedOption.value === 'onlyMaterial'){
+            showFormOnlyForWidth.value = true;
+        }else {
+            showFormForWidthAndHeight.value = true;
+            onlyWidth.value = 0
         }
-    }else{
-        swal.fire({
-            icon : 'error',
-            title: '',
-            text: t('sweetAlert2.Select'),
-            timer: 3000
-        })
-        return;
+        if (showFormOnlyForWidth.value === true) {
+            const isValidForm = await onlyWidthForm.value.validate();
+            if (!isValidForm.valid) {
+                swal.fire({
+                    icon: "error",
+                    title: "",
+                    text: t("sweetAlert2.CheckForm"),
+                    timer: 3000
+                });
+                return false;
+            }
+        } else if (showFormForWidthAndHeight.value === true) {
+            const isValidForm = await widthAndDimensionForm.value.validate();
+            if (!isValidForm.valid) {
+                swal.fire({
+                    icon: "error",
+                    title: "",
+                    text: t("sweetAlert2.CheckForm"),
+                    timer: 3000
+                });
+                return false;
+            }
+        }
+        return true;
+    } else if (step.value === 2) {
+        // Step 2: Validate Rejansa Selection
+        if (!chosenRejansaType.value) {
+            swal.fire({
+                icon: "error",
+                title: "",
+                text: t("sweetAlert2.Select"),
+                timer: 3000
+            });
+            return false;
+        }
+        return true;
+    } else if (step.value === 3 && chosenRejansaType.value?.sePrindeCuInele) {
+        // Step 3: Validate Ring Type Selection (if applicable)
+        if (!chosenRingType.value) {
+            swal.fire({
+                icon: "error",
+                title: "",
+                text: t("sweetAlert2.Select"),
+                timer: 3000
+            });
+            return false;
+        }
+        return true;
+    } else if (step.value === 4 || (!chosenRejansaType.value?.sePrindeCuInele && step.value === 3)) {
+        // Step 4: Validate Lining Type Selection
+        if (!chosenLiningType.value) {
+            swal.fire({
+                icon: "error",
+                title: "",
+                text: t("sweetAlert2.Select"),
+                timer: 3000
+            });
+            return false;
+        }
+       
+        return true;
     }
-}
+    return true;
+};
 
-const checkRingType =  () => {
-    if(chosenRingType.value !== null){
-        showRingTypeSelect.value = false
-        showLiningTypeSelect.value = true
-    }else{
-        swal.fire({
-            icon : 'error',
-            title: '',
-            text: t('sweetAlert2.Select'),
-            timer: 3000
-        })
-        return;
+
+const checkNextStep = async () => {
+    const isStepValid = await checkStepFunction();
+    if(isStepValid){
+        step.value++;
+        console.log('dupa' , step.value)
     }
-}
+};
+
 
 
 const checkLiningType =  () => {
@@ -1009,38 +1452,23 @@ const checkLiningType =  () => {
 }
 
 
-const goBack = (formNumber) => {
-    if(formNumber === '0'){
-        if(showFormOnlyForWidth.value === true && showFormForWidthAndHeight.value === false){
-            showFormOnlyForWidth.value = false
-        }else if(showFormOnlyForWidth.value === false && showFormForWidthAndHeight.value === true){
-            showFormForWidthAndHeight.value = false
-        }
-        readyToAddToCart.value = false;
-        finalPrice.value = 0;
-        showFormForOnlyMaterial.value = true;
-    }else if(formNumber === '1'){
-        showRejansaTypeSelect.value = false
-        showFormForWidthAndHeight.value = true
-    }else if(formNumber === '2' ){
-        if(chosenRingType.value === null){
-            readyToAddToCart.value = false;
-            finalPrice.value = 0;
-            showLiningTypeSelect.value = false
-            showRejansaTypeSelect.value = true
-        }else{
-            readyToAddToCart.value = false;
-            finalPrice.value = 0;
-            chosenRingType.value =  null
-            showRingTypeSelect.value = false
-            showRejansaTypeSelect.value = true
-        }
+const goBack = () => {
+    if(step.value === 2){
+        onlyWidth.value = 0;
     }
+    finalPrice.value = 0;
+    readyToAddToCart.value = false
+    step.value--;
+
 }
 
 
-
+const getMostViewedProducts = async () => {
+   
+    const responseFromMostViewedProducts = await productService.getMostViewedProducts(currency.value)
+    mostViewedProducts.value = responseFromMostViewedProducts;
   
+}
 
 onMounted(async () => {
     if(useCookie('userLoggedIn').value === 1){
@@ -1048,8 +1476,14 @@ onMounted(async () => {
     }
    getCurrentLocale()
    await getProductData()
-   selectedImage.value = allImages.value[0]
+   if(allImages && allImages.value && allImages.value[0]){
+        selectedImage.value = allImages.value[0]
+        imgColor.value = allImages.value[0].colorName
+   }
+   getMostViewedProducts()
+   isMounted.value = true
 })
+
 </script>
 
 <style scoped>

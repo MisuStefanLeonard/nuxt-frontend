@@ -1,7 +1,7 @@
 <template>
     <div class="background-wrapper">
         <div class="background"></div>
-        <v-container class="content" fluid>
+        <div class="content" fluid>
           <v-container fluid>
             <p class="font-weight-light h1 text-center">{{ $t('shop.products') }}</p>
           </v-container>
@@ -171,39 +171,50 @@
                 </v-col>
               </v-row>
               </v-sheet>
-              
+              <v-divider opacity="0"></v-divider>
               <v-row no-gutters id="products">
                 <v-col sm="6" xs="12" md="6" v-for="product in currentProductsOnPage"
-                  :key="product.codProdusDto">
-                  <v-card class="bg-grey-lighten-3 p-2 m-3" elevation="24"
+                  :key="product.codProdusDto" class="my-2">
+                  <v-card class="bg-grey-lighten-3 p-2 m-2 h-100" elevation="24"
                     >
                     <v-card-title >
+                      <div
+                        class="ribbon"
+                        v-if="
+                          (product.dimensiuniProduseDto.length <= 0 && product.pretBazaRedusDto > 0) || 
+                          (product.dimensiuniProduseDto.some(dim => dim.pretRedusDto > 0))
+                        "
+                      >
+                        {{ $t('shop.discount') }}
+                      </div>
                       <p  class="font-weight-thin h5 text-center">{{ product.numeProdusDto.toUpperCase() }}</p>
                     </v-card-title>
-                    <v-card-subtitle v-if="product.dimensiuniProduseDto.length > 0">
-                      <v-row>
-                        <v-col cols="12">
-                          <span>* Pretul difera in functie de dimensiunea produsului</span>
-                        </v-col>
-                        <v-col cols="12">
-                          <span>* Pretul afisat este pentru cea mai mica dimensiune</span>
-                        </v-col>
-                      </v-row>
-                    </v-card-subtitle>
                     <v-card-text class="text-center">
+                      <div v-if="product.dimensiuniProduseDto.length > 0" class="mb-2">
+                        <span>* Pretul difera in functie de dimensiunea produsului</span>
+                        <br>
+                        <span>* Pretul afisat este pentru cea mai mica dimensiune</span>
+                      </div>
                       <v-carousel hide-delimiters 
                         show-arrows="hover"
                         hide-delimiter-background
                         cycle
-                        progress="primary"
                         class="mb-2"
                         height="300">
                         <template v-if="allImages(product).length > 0">
-                          <v-carousel-item v-for="image in allImages(product)"
-                              :key="image.presignedUrl"
-                              :src="image.presignedUrl"
-                              cover>
-                          </v-carousel-item>
+                          <v-tooltip :text="`${t('general.openImage')}`">
+                              <template v-slot:activator="{props}">
+                                  <v-carousel-item v-for="image in allImages(product)"
+                                      eager
+                                      :key="image.presignedUrl"
+                                      :src="image.presignedUrl"
+                                      @click="openImageModal(product)"
+                                      v-bind="props"
+                                      class="cursor-pointer"
+                                      :aspect-ratio="3 / 4">
+                                  </v-carousel-item>
+                              </template>
+                          </v-tooltip>
                         </template>
 
                         <!-- Fallback when no images are found -->
@@ -211,22 +222,89 @@
                           <v-carousel-item src="/notFound.png" cover></v-carousel-item>
                         </template>
                       </v-carousel>
+                      <v-dialog v-model="isImageModalOpen" max-height="700" max-width="600">
+                        <v-card >
+                          <v-card-title class="text-center">
+                              <v-btn color="primary" text @click="isImageModalOpen = false"><v-icon>mdi-close</v-icon></v-btn>
+                          </v-card-title>
+                          
+                              <v-carousel 
+                              hide-delimiters 
+                              
+                              hide-delimiter-background
+                              cycle
+                              progress="primary"
+                              class="mb-2"
+                              >
+                              <template v-if="imagesInModal.length > 0">
+                                  <v-carousel-item v-for="(image,index) in imagesInModal"
+                                  :key="index" :src="image.presignedUrl" :aspect-ratio="4/3"  eager>
+                                  </v-carousel-item>
+                              </template>
+
+                          
+                              <template v-else>
+                              <v-carousel-item src="/notFound.png" cover></v-carousel-item>
+                              </template>
+                          </v-carousel>
+                        </v-card>
+                      </v-dialog>
                       <v-container fluid>
                         <p v-if="product.dimensiuniProduseDto.length <= 0" class="font-weight-light h5 mb-2">
-                          <span v-if="product.pretBazaDto !== 0 && product.pretBazaRedusDto !== 0">{{ product.pretBazaRedusDto }} {{ selectedCurrency === 'RON' ? 'RON' : 'EUR' }}</span>
-                          <span v-if="product.pretBazaDto !== 0 && product.pretBazaRedusDto === 0">{{ product.pretBazaDto }} {{ selectedCurrency === 'RON' ? 'RON' : 'EUR' }}</span> 
+                          <span v-if="product.pretBazaRedusDto > 0">
+                            <s>{{ product.pretBazaDto }} {{ selectedCurrency === 'RON' ? 'RON' : 'EUR' }}</s>
+                            <br>
+                            <span class="text-error font-weight-bold">
+                              {{ product.pretBazaRedusDto }} {{ selectedCurrency === 'RON' ? 'RON' : 'EUR' }}
+                            </span>
+                          </span>
+                          <span v-else>
+                            {{ product.pretBazaDto }} {{ selectedCurrency === 'RON' ? 'RON' : 'EUR' }}
+                          </span>
                         </p>
                         <div v-else>
-                          <p class="font-weight-light h5 mb-2">{{ product.dimensiuniProduseDto[product.dimensiuniProduseDto.length-1].pretDto }} {{ selectedCurrency === 'RON' ? 'RON' : 'EUR' }}</p>
+                          <template v-if="product.dimensiuniProduseDto.some(dimension => dimension.pretRedusDto > 0)">
+                            <p class="font-weight-light h5 mb-2">
+                              <s>{{ product.dimensiuniProduseDto[product.dimensiuniProduseDto.length-1].pretDto }} {{ selectedCurrency === 'RON' ? 'RON' : 'EUR' }}</s>
+                              <br>
+                              <span class="text-error font-weight-bold">
+                                {{ product.dimensiuniProduseDto[product.dimensiuniProduseDto.length-1].pretRedusDto }} {{ selectedCurrency === 'RON' ? 'RON' : 'EUR' }}
+                              </span>
+                            </p>
+                          </template>
+                          <template v-else>
+                            <p class="font-weight-light h5 mb-2">
+                              {{ product.dimensiuniProduseDto[product.dimensiuniProduseDto.length-1].pretDto }} {{ selectedCurrency === 'RON' ? 'RON' : 'EUR' }}
+                            </p>
+                          </template>
                         </div>
-                       
                       </v-container>
                       <v-row no-gutters>
                         <v-col cols="12" class="my-1">
-                          <v-btn variant="flat" color="primary" @click="seeProductPage(product.codProdusDto , product.tipulProdusuluiDto)">
+                          <NuxtLink prefetch :prefetch-on="{interaction: true}"
+                            :to="localPath(`/product/${product.codProdusDto}/${product.tipulProdusuluiDto}`)">
+                              <v-btn variant="flat" color="primary" >
+                                  {{ $t('shop.seeDetails') }} <v-icon class="ml-1">mdi-arrow-right</v-icon>
+                              </v-btn>
+                          </NuxtLink>
+                          <!-- <v-btn variant="flat" color="primary" @click="seeProductPage(product.codProdusDto , product.tipulProdusuluiDto)">
                             {{ $t('shop.seeDetails') }} <v-icon class="ml-1">mdi-arrow-right</v-icon>
-                          </v-btn>
+                          </v-btn> -->
                         </v-col >
+                        <v-col cols="12" class="my-1">
+                          <p class="font-weight-light h5"><span class="h1 font-weight-light">{{ product.reviewsInfoGeneral.averageRating }}</span> / 5</p>
+                            <v-rating
+                                hover :length="5"
+                                :size="24"
+                                readonly
+                                half-increments
+                                v-model="product.reviewsInfoGeneral.averageRating"
+                                color="orange-lighten-1"
+                                active-color="primary"
+                                class="ma-2"
+                            ></v-rating>
+                            <p class="font-weight-light h5">{{ product.reviewsInfoGeneral.totalReviews }} {{ $t('general.reviews') }}</p>
+                        </v-col>
                       </v-row>
                     </v-card-text>
                   </v-card>
@@ -248,7 +326,7 @@
             </v-sheet>
            
           </div>
-        </v-container>
+        </div>
     </div>
 </template>
 
@@ -274,6 +352,8 @@ const selectedCurrency = ref('RON');
 const route = useRoute()
 const router = useRouter()
 const localPath = useLocalePath();
+const {t} = useI18n()
+const gtm = useGtm()
 
 const rangeWidth = ref([0,300])
 const rangeHeight = ref([0,300])
@@ -282,6 +362,9 @@ const rangePrice = ref([0,2000])
 const productTypes = ref([]);
 const productColors = ref([]);
 const fataReversibila = ref(true)
+const isImageModalOpen = ref(false);
+const imagesInModal = ref([]);
+
 
 const getCurrentLocale = () => {
   const currentLanguage = useCookie('i18n_redirected').value;
@@ -318,10 +401,15 @@ const getPaginatedProducts = (async (pageNumber,productTypes = null,colorOptions
   }
 })
 
+const openImageModal  = (product) => {
+    const images = allImages(product);
+    isImageModalOpen.value = true;
+    imagesInModal.value = images;
+}
+
 const getFilterOptions = (async () => {
   const filterOptionsResponse =  await productService.getFilterOptions(selectedCurrency.value);
   Object.assign(filterOptions.value , filterOptionsResponse);
-  console.log(filterOptions.value);
   rangePrice.value[0] = filterOptions.value.pricesRange[0]
   rangePrice.value[1] = filterOptions.value.pricesRange[1]
 
@@ -430,7 +518,14 @@ const deleteFilters = () => {
 };
 
 const seeProductPage = (codProdus,tipProdus) => {
-  navigateTo(localPath(`/product/${codProdus}/${tipProdus}`))
+  gtm.trackEvent({
+    event: 'product_view',
+    category: `Product_Click`,
+    action: 'click',
+    label: `${codProdus}/${tipProdus}`,
+    value: 1,
+    noninteraction: false,
+  });
 }
 
 watch(() => route.query, applyFiltersFromQuery, { immediate: true });
@@ -469,6 +564,24 @@ onBeforeMount(async () => {
   position: relative;
   z-index: 1;
   width: 100%;
+}
+
+.ribbon {
+  font-size: 14px;
+  font-weight: bold;
+  color: #fff;
+}
+.ribbon {
+  position: absolute;
+  top: 0;
+  right: 0;
+  line-height: 1.8;
+  padding-inline: 1lh;
+  clip-path: polygon(
+    100% 100%,0 100%,999px calc(100% - 999px),calc(100% - 999px) calc(100% - 999px));
+  transform: translate(calc((1 - cos(45deg))*100%), -100%) rotate(45deg);
+  transform-origin: 0% 100%;
+  background-color: red; /* the main color  */
 }
 
 
