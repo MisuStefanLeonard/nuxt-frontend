@@ -1,5 +1,10 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
+  vite:{
+    build : {
+      sourcemap : true
+    }
+  },
   modules: [
     '@pinia/nuxt',
     'pinia-plugin-persistedstate/nuxt',
@@ -8,7 +13,15 @@ export default defineNuxtConfig({
   $development: {
     components : false,
     app: {
-      pageTransition: {name: 'page' , mode:'out-in'}
+      pageTransition: {name: 'page' , mode:'out-in'},
+      head: {
+        link:
+         [
+          { rel: 'icon', type: 'image/png', href: '/favicon-16x16.png' },
+          { rel: 'icon', type: 'image/png', href: '/favicon-32x32.png' },
+          { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+         ]
+      }
     },
     image : {
       domains: ['https://dw45vxtt6tooj.cloudfront.net'],   

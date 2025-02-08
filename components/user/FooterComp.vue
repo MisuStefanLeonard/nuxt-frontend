@@ -27,6 +27,7 @@
         <p class="h4">Suport clienti</p>
         <p class="h6 font-weight-light">Contacteaza-ne</p>
         <p class="h6 font-weight-light">Livrare comenzi</p>
+        <NuxtLink class="h6 font-weight-light text-display-none" :to="locale('/measurement')">Cum masor?</NuxtLink>
       </v-col>
       <v-col cols="12" xs="12" sm="4">
         <p class="h4">Informatii</p>
@@ -58,19 +59,8 @@
 </template>
 
 
-<script>
+<script setup>
 
-
-export default {
-    data: () => ({
-      icons: [
-        'mdi-facebook',
-        'mdi-twitter',
-        'mdi-linkedin',
-        'mdi-instagram',
-      ],
-    }),
-    name: 'FooterComp'
-    
-}
+const icons = ['mdi-facebook','mdi-twitter','mdi-linkedin','mdi-instagram']
+const locale = useLocalePath()
 </script>

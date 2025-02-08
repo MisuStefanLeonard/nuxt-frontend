@@ -2,15 +2,78 @@
   <div class="background-wrapper">
     <div class="background"></div>
     <v-container class="content">
+      <v-snackbar v-if="modifiedAddressSuccefully" v-model="modifiedAddressSuccefully" class="text-center"
+        :timeout="3000" color="green">
+          {{ $t('sweetAlert2.ModifiedSuccesfully') }}
+      </v-snackbar>
+      <v-snackbar v-if="modifiedAddressUnsuccefully" v-model="modifiedAddressUnsuccefully" class="text-center"
+        :timeout="3000" color="red">
+          {{ $t('sweetAlert2.ErrorWhenModifyingAddress') }}
+      </v-snackbar>
+      <v-snackbar v-if="waitSnackBar" v-model="waitSnackBar" class="text-center"
+        :timeout="3000" color="blue">
+          {{ $t('sweetAlert2.Wait') }}
+      </v-snackbar>
+      <v-dialog v-model="modifyUserAddressDialog"
+       max-width="500" width="500" max-height="100%" 
+       persistent class=" p-2 m-1" scrollable>
+        <v-btn color="black" @click="closeModifyingDialog()">Close <v-icon class="ml-2">mdi-close</v-icon></v-btn>
+        <v-card class="bg-blue-grey-lighten-5 text-center" height="500" width="500">
+          <v-card-text>
+              <v-form ref="modifyUserAddressForm" @submit.prevent="modifyAddress()" >
+              <div v-for="(data) in filteredDataForm" :key="data.label">
+                <v-text-field
+                  v-if="notSelectables(data.model)"
+                  :label="data.label"
+                  :placeholder="data.placeholder"
+                  :type="data.type"
+                  :counter="data.counter"
+                  v-model="addressToSaveToDb[data.model]"
+                  :rules="data.rules"
+                  class="p-3"
+                ></v-text-field>
+
+                <v-select
+                  v-else-if="data.model === 'tipAdresaDto'"
+                  :label="data.label"
+                  v-model="addressToSaveToDb[data.model]"
+                  :items="translatedAddressTypes"
+                  :rules="data.rules"
+                  item-title="text"
+                  item-value="value"
+                  class="p-3"
+                ></v-select>
+
+                <v-text-field 
+                  v-else
+                  :label="data.label"
+                  :placeholder="data.placeholder"
+                  :rules="data.rules"
+                  v-model="addressToSaveToDb[data.model]"
+                  class="p-3"
+                ></v-text-field>
+              </div>
+            
+              <v-btn rounded="xl"  type="submit" color="success" variant="flat" class="font-weight-normal my-4">
+                {{ $t('button.save') }} 
+                <v-icon class="pl-2">mdi-content-save</v-icon>
+              </v-btn>
+            </v-form>
+          </v-card-text>
+        </v-card>
+        
+      </v-dialog>
       <v-breadcrumbs>
         <v-breadcrumbs-item :to="'/user/profile'"><p class="font-weight-bold h6">{{$t('profile.PROFIL')}}</p> </v-breadcrumbs-item>
         <v-breadcrumbs-divider><p class="font-weight-bold h6">/</p></v-breadcrumbs-divider>
         <v-breadcrumbs-item disabled><p class="font-weight-bold h6">{{$t('profile.ADRESE')}}</p></v-breadcrumbs-item>
       </v-breadcrumbs>
       <v-container class="justify-center">
-      
         <v-alert v-if="infoAlert" v-model="infoAlert" type="info" closable>
           {{ $t('profile.addressesInfo') }}
+        </v-alert>
+        <v-alert type="warning" closable class="mt-3">
+          <p class="font-weight-normal text-black">{{ $t('profile.modifyingInfo') }}</p>
         </v-alert>
       </v-container>
       <v-container class="d-block text-center">
@@ -48,14 +111,14 @@
             </v-card-title>
             <v-card-text>
               <v-row>
-                <v-col cols="6">
+                <v-col cols="12" xs="12" sm="6" md="6">
                   <p class="font-weight-light">{{ $t('profile.addressType') }}: {{translatedAddressType(card_item.tipAdresaDto)}}</p>
                   <p class="font-weight-light">{{ $t('profile.building') }} : {{card_item.blocDto}}</p>
                   <p class="font-weight-light">{{ $t('profile.buildingNumber') }} : {{card_item.nrBlocDto}}</p>
                   <p class="font-weight-light">{{ $t('profile.street') }} : {{card_item.stradaDto}}</p>
                   <p class="font-weight-light">{{ $t('profile.streetNumber') }} : {{card_item.nrStradaDto}}</p>
                 </v-col>
-                <v-col cols="6">
+                <v-col cols="12" xs="12" sm="6" md="6">
                   <p class="font-weight-light">{{ $t('profile.city') }} : {{card_item.orasDto}}</p>
                   <p class="font-weight-light">{{ $t('profile.county') }} : {{card_item.judetDto}}</p>
                   <p class="font-weight-light">{{ $t('profile.postalCode') }} : {{card_item.codPostalDto}}</p>
@@ -64,13 +127,13 @@
                 </v-col>
               </v-row>
             </v-card-text>
-            <v-btn :disabled="isDataFetching"  @click="deleteAddress(card_item.aliasDto)" rounded="xl" type="submit" color="red" variant="tonal" class="font-weight-bold bg-grey-lighten-3 my-4 ">
-              {{ $t('button.delete') }} 
-              <v-icon class="pl-2">mdi-trash-can</v-icon>
+            <v-btn :disabled="isDataFetching || card_item.isDeletedDto"  @click="openModifyingUserDialog(card_item)" rounded="xl" type="submit" color="blue" variant="tonal" class="font-weight-bold bg-grey-lighten-3 my-4 ">
+              {{ $t('button.modify') }} 
+              <v-icon class="pl-2">mdi-pen</v-icon>
             </v-btn>
           </v-card>
 
-          <v-btn :disabled="isDataFetching" v-if="buttonShow"  rounded="xl" @click="showFormToAddAnAddress()" type="submit" color="blue" variant="tonal" class="font-weight-bold bg-grey-lighten-3 my-4">
+          <v-btn :disabled="isDataFetching" v-if="buttonShow"  rounded="xl" @click="showFormToAddAnAddress('modify')" type="submit" color="blue" variant="flat" class="font-weight-bold  my-4">
             {{ $t('button.addAddress') }} 
             <v-icon class="pl-2">mdi-plus-circle-outline</v-icon>
           </v-btn>
@@ -90,7 +153,7 @@
               ></v-text-field>
 
               <v-select
-                v-else-if="data.model === 'tip_adresa'"
+                v-else-if="data.model === 'tipAdresaDto'"
                 :label="data.label"
                 v-model="addressToSaveToDb[data.model]"
                 :items="translatedAddressTypes"
@@ -115,7 +178,7 @@
               <v-icon class="pl-2">mdi-content-save</v-icon>
             </v-btn>
           </v-form>
-          <v-btn :disabled="isDataFetching" rounded="xl" @click="showFormToAddAnAddress()" type="submit" color="blue" variant="tonal" class="font-weight-bold bg-grey-lighten-3 my-4">
+          <v-btn :disabled="isDataFetching" rounded="xl" @click="showFormToAddAnAddress()" type="submit" color="blue" variant="flat" class="font-weight-bold  my-4">
             {{ $t('button.addAddress') }} 
             <v-icon class="pl-2">mdi-plus-circle-outline</v-icon>
           </v-btn>
@@ -139,8 +202,11 @@ const {t} = useI18n()
 
 // Alerts and general state
 const infoAlert = ref(true)
-const infoAlertText = ''
-
+const modifyUserAddressDialog = ref(false)
+const modifyUserAddressForm = ref(null)
+const modifiedAddressSuccefully = ref(false)
+const modifiedAddressUnsuccefully = ref(false)
+const waitSnackBar = ref(false)
 const emptyAddressListAlert = ref(true)
 
 const showFormForAddingAddress = ref(false)
@@ -152,17 +218,18 @@ const addressForm = ref(null);
 const addressesDataFromDb = ref([])
 const addressToSaveToDb = ref({
   idAdresa : 0,
-  alias: '',
-  tip_adresa: '',
-  bloc: '',
-  nr_bloc: '',
-  strada: '',
-  nr_strada: '',
-  oras: '',
-  judet: '',
-  codPostal: '',
-  cif: '',
-  nume_firma: ''
+  aliasDto: '',
+  tipAdresaDto: '',
+  blocDto: '',
+  nrBlocDto: '',
+  stradaDto: '',
+  nrStradaDto: '',
+  orasDto: '',
+  judetDto: '',
+  codPostalDto: '',
+  cifDto: '',
+  numeFirmaDto: '',
+  isModifying : null
 })
 
 const dummyBoolean = ref(true)
@@ -186,23 +253,39 @@ const validationRules = {
   maxLength: (length) => v => !v || v.length <= length || `${t('textFieldsMessages.maxLength')} ${length}`,
   exactLength: (length) => v => !v || v.length == length || `${t('textFieldsMessages.exactLength')} ${length}`,
   onlyNumbers: v => /^[0-9]+$/.test(v) || t('textFieldsMessages.onlyNumbers'),
+  checkAliasUsed : (currentAddress) => (v) => checkIsAliasUsed(v,currentAddress) ||  t('profile.useAnotherAlias')
 };
 
+const checkIsAliasUsed = ((alias) => {
+  if(addressToSaveToDb.value.isModifying === true){
+    currentModifyingAlias.value = addressToSaveToDb.value.aliasDto
+    addressToSaveToDb.value.isModifying = null;
+  }
+ 
+  if(currentModifyingAlias.value !== ''){
+    var addressFilteredWithoutCurrentAlias =  addressesDataFromDb.value.filter(p => p.aliasDto !== currentModifyingAlias.value)
+    return addressFilteredWithoutCurrentAlias.findIndex(address => address.aliasDto === alias) === -1
+  }else{
+    return addressesDataFromDb.value.findIndex(address => address.aliasDto === alias) === -1
+  }
+})
+
+const currentModifyingAlias = ref('')
 // dataForm definition
 const dataForm = [
   {
     label: 'Alias',
     placeholder: '',
     type: 'text',
-    model: 'alias',
-    rules: [validationRules.required, validationRules.maxLength(20)],
+    model: 'aliasDto',
+    rules: [validationRules.required, validationRules.maxLength(20) , validationRules.checkAliasUsed()],
     counter: 20
   },
   {
     label: t('profile.addressType'),
     placeholder: '',
     type: 'text',
-    model: 'tip_adresa',
+    model: 'tipAdresaDto',
     options: [],
     rules: [validationRules.required],
     counter: null // No counter needed for selection fields
@@ -211,7 +294,7 @@ const dataForm = [
     label: t('profile.building'),
     placeholder: '',
     type: 'text',
-    model: 'bloc',
+    model: 'blocDto',
     rules: [validationRules.maxLength(10)],
     counter: 10
   },
@@ -219,7 +302,7 @@ const dataForm = [
     label: t('profile.buildingNumber'),
     placeholder: '',
     type: 'text',
-    model: 'nr_bloc',
+    model: 'nrBlocDto',
     rules: [validationRules.maxLength(7)],
     counter: 7
   },
@@ -227,7 +310,7 @@ const dataForm = [
     label: t('profile.street'),
     placeholder: '',
     type: 'text',
-    model: 'strada',
+    model: 'stradaDto',
     rules: [validationRules.required, validationRules.maxLength(30)],
     counter: 30
   },
@@ -235,7 +318,7 @@ const dataForm = [
     label: t('profile.streetNumber'),
     placeholder: '',
     type: 'text',
-    model: 'nr_strada',
+    model: 'nrStradaDto',
     rules: [validationRules.required, validationRules.maxLength(5)],
     counter: 5
   },
@@ -243,7 +326,7 @@ const dataForm = [
     label: t('profile.city'),
     placeholder: '',
     type: 'text',
-    model: 'oras',
+    model: 'orasDto',
     rules: [validationRules.required, validationRules.maxLength(20)],
     counter: 20
   },
@@ -251,7 +334,7 @@ const dataForm = [
     label: t('profile.county'),
     placeholder: '',
     type: 'text',
-    model: 'judet',
+    model: 'judetDto',
     rules: [validationRules.required, validationRules.maxLength(15)],
     counter: 15
   },
@@ -259,7 +342,7 @@ const dataForm = [
     label: t('profile.postalCode'),
     placeholder: '',
     type: 'text',
-    model: 'codPostal',
+    model: 'codPostalDto',
     rules: [validationRules.required, validationRules.exactLength(6), validationRules.onlyNumbers],
     counter: 6
   },
@@ -267,7 +350,7 @@ const dataForm = [
     label: t('profile.Cif'),
     placeholder: '',
     type: 'text',
-    model: 'cif',
+    model: 'cifDto',
     rules: [validationRules.required, validationRules.onlyNumbers,validationRules.maxLength(13)],
     counter: 13
   },
@@ -275,7 +358,7 @@ const dataForm = [
     label: t('profile.firmName'),
     placeholder: '',
     type: 'text',
-    model: 'nume_firma',
+    model: 'numeFirmaDto',
     rules: [validationRules.required, validationRules.maxLength(50)],
     counter: 50
   }
@@ -285,7 +368,7 @@ const dataForm = [
 const filteredDataForm = computed(() => {
   return dataForm.filter(data => {
     // Only show 'cif' and 'nume_firma' fields if 'tip_adresa' is 'Facturare'
-    if ((data.model === 'cif' || data.model === 'nume_firma') && addressToSaveToDb.value.tip_adresa !== 'Facturare') {
+    if ((data.model === 'cifDto' || data.model === 'numeFirmaDto') && addressToSaveToDb.value.tipAdresaDto !== 'Facturare') {
       return false; // Exclude these fields if 'tip_adresa' is not 'Facturare'
     }
     return true; // Include all other fields
@@ -293,7 +376,7 @@ const filteredDataForm = computed(() => {
 });
 
 const notSelectables = (currentModel) => {
-  return currentModel !== 'tip_adresa';
+  return currentModel !== 'tipAdresaDto';
 }
 
 function fireAlarm(icon,title,text,isLoading){
@@ -327,7 +410,7 @@ const assignDataFromDb =  async () => {
   fireAlarm('info' , 'Asteptati...' , '' , true)
 
   const data = await UserService.loadUserAdresses();
-  console.log(data)
+ 
   if (data === -4 || Object.keys(data).length === 0) {
     swal.close()
     emptyAddressListAlert.value = true;
@@ -341,40 +424,69 @@ const assignDataFromDb =  async () => {
 }
 
 const showFormToAddAnAddress = () => {
-  addressToSaveToDb.value.tip_adresa = 'Livrare';
+  addressToSaveToDb.value.tipAdresaDto = 'Livrare';
   emptyAddressListAlert.value = false;
   showFormForAddingAddress.value = true;
   buttonShow.value = false;
 }
 
 const hideFormToAddAddress = () => {
-  addressToSaveToDb.value.tip_adresa = 'Livrare';
+  addressToSaveToDb.value.tipAdresaDto = 'Livrare';
   emptyAddressListAlert.value = false;
   showFormForAddingAddress.value = false;
   buttonShow.value = true;
   resetForm();
 }
 
+const openModifyingUserDialog = ((addressData) => {
+  modifyUserAddressDialog.value = true;
+  addressToSaveToDb.value = {...addressData}
+  addressToSaveToDb.value.isModifying = true;
+ 
+})
+
+const closeModifyingDialog = (() => {
+  addressToSaveToDb.value = {
+    aliasDto: '',
+    tipAdresaDto: 'Livrare',
+    blocDto: '',
+    nrBlocDto: '',
+    stradaDto: '',
+    nrStradaDto: '',
+    orasDto: '',
+    judetDto: '',
+    codPostalDto: '',
+    cifDto: '',
+    numeFirmaDto: '',
+    isModifying : null,
+  };
+  modifyUserAddressForm.value.resetValidation();
+  modifyUserAddressDialog.value = false;
+  currentModifyingAlias.value = ''
+ 
+})
+
 const resetForm = () => {
   addressToSaveToDb.value = {
-    alias: '',
-    tip_adresa: 'Livrare',
-    bloc: '',
-    nr_bloc: '',
-    strada: '',
-    nr_strada: '',
-    oras: '',
-    judet: '',
-    codPostal: '',
-    cif: '',
-    nume_firma: ''
+    aliasDto: '',
+    tipAdresaDto: 'Livrare',
+    blocDto: '',
+    nrBlocDto: '',
+    stradaDto: '',
+    nrStradaDto: '',
+    orasDto: '',
+    judetDto: '',
+    codPostalDto: '',
+    cifDto: '',
+    numeFirmaDto: '',
+    isModifying : null,
   };
   addressForm.value.resetValidation();
 }
 
 const saveAddress = async () => {
   fireAlarm('info' , 'Asteptati...' , '' , true)
-  const isValid = await addressForm.value.validate()
+  const isValid = await modifyUserAddressForm.value.validate()
   if (isValid.valid) {
     const response =  await UserService.saveAddressToDb(addressToSaveToDb.value);
     if (response === 1) {
@@ -395,28 +507,28 @@ const saveAddress = async () => {
   }
 }
 
-const deleteAddress = async (alias) => {
-  fireAlarm('info' , 'Asteptati...' , '' , true)
-  const response = await UserService.deleteUserAddress(alias);
+const modifyAddress = async () => {
+  waitSnackBar.value = true;
+  const response = await UserService.modifyUserAddress(addressToSaveToDb.value);
   if (response === 1) {
-    swal.close()
-    fireAlarm('success' , t('sweetAlert2.Success') , t('sweetAlert2.DeleteAddressSuccesfully') , null)
-    var findIndex = addressesDataFromDb.value.findIndex(address => address.alias === alias)
-    if(findIndex === -1){
-      window.location.reload()
-    }else{
-      addressesDataFromDb.value = addressesDataFromDb.value.splice(findIndex,1)
-    }
-
+    modifiedAddressSuccefully.value = true
+    setTimeout(() => {
+      modifiedAddressSuccefully.value = false 
+    }, 3000);
   } else {
     swal.close()
-    fireAlarm('error' ,  t('sweetAlert2.Error') , t('sweetAlert2.ErrorWhenDeletingAddress') , null)
+    modifiedAddressUnsuccefully.value = true
+    setTimeout(() => {
+      modifiedAddressUnsuccefully.value = false
+    }, 3000);
+   
   }
+  waitSnackBar.value = false;
   dummyBoolean.value = true;
 }
 
 // Lifecycle hook
-onMounted(() => {
+onMounted( () => {
   assignDataFromDb();
 })
 </script>

@@ -206,7 +206,7 @@
                             <v-divider opacity="70"></v-divider>
                             <div v-if="product.tipulProdusuluiDto === 'perdea' || product.tipulProdusuluiDto === 'draperie'">
                                 <v-stepper v-model="step" elevation="12" class="mb-6"
-                                >
+                                :mobile="height === true">
                                     <v-stepper-header v-if="selectedOption === 'onlyMaterial' ">
                                         <v-stepper-item
                                             title="Start"
@@ -218,7 +218,8 @@
                                             value="2">
                                         </v-stepper-item>
                                     </v-stepper-header>
-                                    <v-stepper-header v-else-if="selectedOption === 'withManufacturing'">
+                                    <v-stepper-header v-else-if="selectedOption === 'withManufacturing'"
+                                    >
                                         <v-stepper-item
                                             title="Start"
                                             value="1">
@@ -289,10 +290,10 @@
                                                     :rules="[rules.onlyNumbers , rules.notEmpty,rules.maxChar(4)]"
                                                     >
                                                     </v-text-field>
-                                                    <v-row>
+                                                    <v-row class="my-4">
                                                         <v-col cols="12">
                                                             <v-btn type="submit"  variant="flat"
-                                                            color="green">
+                                                            color="green" >
                                                                 {{ $t('shop.curtain.finish') }}
                                                             </v-btn>
                                                         </v-col>
@@ -957,7 +958,7 @@ const onlyNums = new RegExp('^[1-9]\\d{0,3}$');
 const screenSize = computed(() => {
     switch (name.value) {
       case 'xs': return {width : 300 , height : 300}
-      case 'sm' : return { width :600 , height : 600 }
+      case 'sm' : return { width :500 , height : 500 }
       default : return { width : 550 , height : 550}
     }
 })
@@ -991,6 +992,8 @@ const isClicked = ref(false);
 const height = computed(() => {
     switch (name.value) {
       case 'xs': return true
+      case 'sm' : return false
+      case 'md' : return true
       default : return 3
     }
 })

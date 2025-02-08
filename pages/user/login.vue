@@ -29,7 +29,7 @@
                 variant="outlined"
               ></v-text-field>
               <v-container class="text-center">
-                <v-container class="d-flex justify-center">
+                <!-- <v-container class="d-flex justify-center">
                   <div>
                     <v-checkbox
                       v-model="stayLoggedIn"
@@ -39,7 +39,7 @@
                       @click="stayLoggedInFunc"
                     ></v-checkbox>
                   </div>
-                </v-container>
+                </v-container> -->
                 <v-btn
                   rounded="xl"
                   type="submit"
@@ -167,6 +167,7 @@ const showError = () => {
 }
 
 const nuxtApp = useNuxtApp();
+const swal = nuxtApp.$swal
 const emitter = nuxtApp.$emitter;
 const store = useUserStore();
 
@@ -188,7 +189,16 @@ const loginAccount = async () => {
         showWrongCredentialsBanner();
       }else if(response === -2){
         navigateTo(localePath("/home"))
-      } else if (response === 0) {
+      }else if(response === -3){
+        waitLogInBanner.value = false;
+        $swal.fire({
+          icon: 'error',
+          title: t('sweetAlert2.Error'),
+          text: t('login.alreadyLoggedIn'),
+          timer: 2000
+        });
+      }
+       else if (response === 0) {
         waitLogInBanner.value = false;
         showError();
       }
@@ -204,9 +214,6 @@ const loginAccount = async () => {
 };
 
 
-const stayLoggedInFunc = () => {
-  // Implement stay logged in functionality
-}
 
 const forgotPassword = () => {
   navigateTo(localePath('/user/forgotpassword'))

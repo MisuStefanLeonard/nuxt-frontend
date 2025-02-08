@@ -836,7 +836,15 @@ const deleteType = async (categorie) => {
                 product.value.tipuriProduseDto.splice(typeToDeleteFromDtoIndex, 1);
             } else if (responseFromDeletion === -2) {
                 navigateTo('/user/logout');
-            } else {
+            } else if(responseFromDeletion === -3){
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Eroare',
+                    text: 'Produsul este cumparat de catre cineva. Va rugam asteptati pana la finalizare platii!',
+                    timer: 3000,
+                });
+            }
+            else {
                 showDeletionError();
             }
         } else {
@@ -882,6 +890,13 @@ const deleteDimension = async (lungime, latime, pret, pretRedus, recomandarePat)
                 product.value.dimensiuniProduseDto.splice(dimensionToDeleteFromDtoIndex, 1);
             } else if (responseFromDeletion === -2) {
                 navigateTo('/user/logout')
+            }else if(responseFromDeletion === -3){
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Eroare',
+                    text: 'Produsul este cumparat de catre cineva. Va rugam asteptati pana la finalizare platii!',
+                    timer: 3000,
+                });
             } else {
                 showDeletionError();
             }
@@ -920,6 +935,13 @@ const deleteColor = async (numeCuloare, codCuloare) => {
             if (responseFromDeletion === 1) {
                 showDeletionSuccess();
                 product.value.culoriProdusDto.splice(colorToDeleteFromDtoIndex, 1);
+            }else if(responseFromDeletion === -3){
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Eroare',
+                    text: 'Produsul este cumparat de catre cineva. Va rugam asteptati pana la finalizare comenzii!',
+                    timer: 3000,
+                });
             } else if (responseFromDeletion === -2) {
                 navigateTo('/user/logout')
 
@@ -976,6 +998,13 @@ const deleteImage = async (numeCuloare, codCuloare, caleImagineDto, fisierInBuck
                         URL.revokeObjectURL(imageToDeleteFromDto.presignedUrl);
                     }
                     colorFromDto.imaginiProdusDto.splice(imageToDeleteFromDtoIndex, 1);
+                }else if(responseFromDeletion === -3){
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Eroare',
+                        text: 'Produsul este cumparat de catre cineva. Va rugam asteptati pana la finalizare comenzii!',
+                        timer: 3000,
+                    });
                 } else if (responseFromDeletion === -2) {
                     navigateTo('/user/logout')
                 } else {
@@ -1252,7 +1281,17 @@ const finalSaveData = async () => {
                 product.value.dimensiuniProduseDto = []
             }
             const response = await adminService.saveProductChanges(product.value, product.value.oldCodProdusDto);
+            if(response === -3){
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Eroare',
+                    text: 'Produsul este cumparat de catre cineva. Va rugam asteptati pana la finalizare comenzii!',
+                    timer: 3000,
+                });
+                return;
+            }
             if (Array.isArray(response)) {
+                
                 const errorDetected = handleSaveResponseErrors(response);
                 if (errorDetected) return;
 

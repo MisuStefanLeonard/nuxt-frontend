@@ -13,7 +13,7 @@
       <div class="d-flex align-center justify-center flex-grow-1">
         <v-toolbar-title class="d-flex align-center justify-center">
           <NuxtLink :to="localePath('/home')" style="cursor: pointer" class="text-decoration-none d-flex align-center">
-            <img src="../../assets/LogoTexx.png" alt="Logo" height="75" class="mr-1">
+            <img src="../../assets/LogoTexx.png" alt="Logo" height=45 class="mr-1">
           </NuxtLink>
         </v-toolbar-title>
       </div>
@@ -25,7 +25,7 @@
           v-model="item.showItems"
         >
           <template v-slot:activator="{ props }">
-            <v-btn 
+            <v-btn @click="navigateTo(localePath(item.path))"
              text v-bind="props" density="compact" size="50" >
               <v-badge 
                 v-if="item.title === 'menu.shoppingCart' && isClient"
@@ -36,14 +36,17 @@
               >
                 <v-icon class="mr-2">{{ item.icon }}</v-icon>
               </v-badge>
-              <v-icon v-else>{{ item.icon }}</v-icon>
+              <v-icon @click="navigateTo(localePath(item.path))" v-else>{{ item.icon }}</v-icon>
             </v-btn>
           </template>
           <v-list v-if="item.dropdown.length > 0">
             <v-list-item v-for="dropitem in item.dropdown" :key="dropitem.title" :to="localePath({path: dropitem.path , query: dropitem.query})"
               class="hover:tw-bg-gray-600 dark:hover:tw-bg-gray-600 hover:tw-cursor-pointer" 
               @click="toggleDropdown(item)">
-              <v-list-item-title><v-icon class="mr-2">{{ dropitem.icon }}</v-icon>{{ $t(dropitem.title) }} <!-- Translate dropdown titles --></v-list-item-title>
+              <v-list-item-title @click="navigateTo(localePath(dropitem.path))">
+                <v-icon class="mr-2">{{ dropitem.icon }}</v-icon>
+                {{ $t(dropitem.title) }} 
+              </v-list-item-title>
              
             </v-list-item>
           </v-list>
@@ -60,12 +63,20 @@ import { ref, onMounted } from 'vue'
 import NavigationDrawer from './NavigationDrawer.vue' 
 import LanguageSwitcher from './LanguageSwitcher.vue'
 import { cartCount } from '~/middleware/cart'
+import { useDisplay } from 'vuetify'
 // Inject the emitter
 const nuxtApp = useNuxtApp()
 const emitter = nuxtApp.$emitter
 const isClient = ref(false)
 const localePath  = useLocalePath()
+const {name} = useDisplay()
 
+const heightComp = computed(() => {
+    switch (name.value) {
+      case 'xs': return true
+      default : return 3
+    }
+})
 // Router instance
 
 const sidebar = ref(false)
@@ -94,7 +105,7 @@ const menuItems2 = ref([
         
     ]
   },
-  // de terminat de adaugat query params la caii si la filtre.
+  
   { title: 'menu.shoppingCart' , path: '/cart' , icon:'mdi-shopping-outline' , dropdown : []}
 ])
 

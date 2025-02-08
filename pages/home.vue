@@ -2,7 +2,7 @@
   <div fluid class="m-auto ">
     <div id="image" class="background text-center">
       <v-alert color="red-darken-4" variant="flat">
-        <span class="font-weight-thin h5"> <v-icon class="mx-2">mdi-truck</v-icon>Comenzile de peste 500 de RON beneficiază de transport gratuit</span>
+        <span class="font-weight-thin h5"> <v-icon class="mx-2">mdi-truck</v-icon>{{$t('homePage.orderOver1')}} {{ getMinOrderPriceForFreeDelivery }} {{ selectedCurrency === 'RON' ? 'RON' : 'EUR'  }} {{$t('homePage.orderOver2')}}</span>
       </v-alert>
       <div class="none">
         <span>Bun venit pe texx.ro</span>
@@ -85,12 +85,14 @@
     </div>
 
     <div class="row elevation-24 p-3 mb-2 rounded bg-grey-lighten-5" id="aboutUs">
-      <h3 class="text-center pb-2 pt-2 font-weight-thin"> Informatii masurare </h3>
       <h4 class="text-center font-weight-thin my-3">
         &#129300; Nu stii cum sa alegi dimensiunile potrivite?
         <br>
         <br>
-        <v-btn class="rounded-xl " color="blue">VEZI AICI</v-btn>
+        <NuxtLink :to="localePath('/measurement')">
+          <v-btn class="rounded-xl " color="blue">VEZI AICI</v-btn>
+        </NuxtLink>
+        
       </h4>
     </div>
 
@@ -326,7 +328,6 @@
                                         <v-col cols="12">
                                             <v-img  v-if="findFirstColorWithImage(product) !== 'empty'"
                                                 :aspect-ratio="10 / 9"
-                                                
                                                 eager class=" h-75 p-2 cursor-pointer  "
                                                 :alt="`${product.numeProdusDto} + culoare ${product.culoriProdusDto[0].numeCuloareDto}`"
                                                 :src="findFirstColorWithImage(product)" 
@@ -427,14 +428,13 @@
 
 <script setup>
 import productService from '~/services/Products';
+import userService from '~/services/User';
 import { useDisplay } from 'vuetify';
 definePageMeta({
   title : 'Acasa',
   layout: 'default',
   middleware : 'locale',
   keywords: 'cuverturi de pat, cuverturi moderne, cuverturi premium, cuverturi pentru dormitor, cuverturi pentru pat matrimonial, cuverturi pentru pat de o persoană, cuverturi pentru copii, cuverturi pentru pătuțuri de bebeluși, cuverturi colorate pentru copii, cuverturi cu personaje animate, cuverturi termoizolante, cuverturi matlasate, cuverturi din bumbac satinat, cuverturi pentru bucătărie, cuverturi decorative pentru canapea, cuverturi rezistente la pete, cuverturi impermeabile, cuverturi premium pentru sufragerie, cuverturi din catifea, draperii blackout, draperii elegante, draperii pentru living, draperii moderne pentru sufragerie, draperii pentru dormitor, draperii termoizolante, draperii din in, draperii cu dublu strat, draperii pentru copii, draperii cu imprimeuri jucăușe, draperii pentru camera copiilor, draperii cu personaje Disney, draperii pentru pătuțuri, draperii pentru bucătărie, draperii scurte pentru bucătărie, draperii anti-mucegai pentru bucătărie, draperii rustice pentru bucătărie, perdele albe, perdele vaporoase, perdele pentru dormitor, perdele scurte, perdele moderne, perdele transparente, perdele pentru copii, perdele colorate pentru camera copiilor, perdele cu imprimeuri pentru copii, perdele blackout pentru camera copiilor, perdele pentru bucătărie, perdele scurte pentru bucătărie, perdele cu modele florale pentru bucătărie, perdele rustice pentru bucătărie, perdele anti-mucegai pentru bucătărie, perdele termoizolante pentru bucătărie, perdele decorative pentru bucătărie, perne decorative, perne confortabile, perne ortopedice, perne hipoalergenice, perne pentru dormit, perne pentru copii, perne cu umplutură de bambus, perne cu spumă cu memorie, perne pentru bucătărie, perne pentru scaune de bucătărie, seturi de lenjerii de pat, seturi de cuverturi și perdele, seturi de lenjerii premium, seturi de perne și pături, seturi de draperii și perdele, seturi complete pentru dormitor, seturi textile pentru camera copiilor, seturi de lenjerii pentru pătuțuri de bebeluși, seturi de draperii pentru copii, seturi de perdele și draperii pentru bucătărie, seturi de textile pentru casă, textile premium online, cumpără cuverturi online, reduceri la textile pentru casă, promoții la perdele și draperii, livrare rapidă, decor interior, amenajare locuință, textile pentru dormitor, textile pentru sufragerie, textile pentru camere de copii, textile pentru bucătărie, textile pentru hol, textile de lux pentru casă'
-
-
 
 })
 const {name} = useDisplay()
@@ -446,6 +446,7 @@ const height = computed(() => {
       default : return 3
     }
 })
+const generalSettings = ref({})
 const limitedEditionProductsRef = ref([]);
 const activeSlideLimitedEditionProducts = ref(0)
 
@@ -494,11 +495,26 @@ const findFirstColorWithImage = ((product) => {
     return colorWithImageURL;
 })
 
+const getGeneralSettings = (async () => {
+  // const response = await adminService.getGeneralSettings()
+  const response = await userService.getGeneralSettingsData()
+
+  generalSettings.value = response;
+})
+
+
+const getMinOrderPriceForFreeDelivery = computed(() => {
+  if(generalSettings){
+    return generalSettings.value['pret_comanda_minima']
+  }
+  return '500'
+})
+
 onMounted(async () => {
  await getLimitedEditionProducts()
  await getNewProducts()
  await getUserPreferences()
-
+ await getGeneralSettings();
 })
 </script>
 

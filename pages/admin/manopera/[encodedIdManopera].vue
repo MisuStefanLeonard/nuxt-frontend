@@ -341,6 +341,10 @@ async function modifyManopera() {
         if (response === 1) {
             fireAlarm('success', 'Succes', 'Manopera fost modificata cu succes', null);
             oldManoperaData.value = JSON.parse(JSON.stringify(manoperaData.value));
+        }
+        else if(response === -3){
+            fireAlarm('error' , 'Eroare' , "Manopera este blocata. Un client este in sesiunea de finalizare a platii. Va rugam asteptati." , null)
+            return;
         }else if(response === -4){
             fireAlarm('error' , 'Eroare' , 'Un tip de galerie / Un tip de cusatura la colt / Un tip de inel de prindere nu mai exista. Va rog dati un refresh.' , null)
             return;

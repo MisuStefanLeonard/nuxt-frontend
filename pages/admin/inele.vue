@@ -147,6 +147,9 @@ async function deleteSelectedInele(){
         if(responseFromDeletion === 1){
             fireAlarm('success' , 'Succes!' , 'Inele sterse cu succes' , null);
             window.location.reload()
+        }else if(responseFromDeletion === -3){
+            fireAlarm('warning' , 'Atentie' , "Unul din inele selectate este folosit intr-o tranzactie.Asteptati" , null)
+            return
         }else if(responseFromDeletion === -1){
             swal.close()
             store.snackbarMessage('Token-ul a expirat, logati-va din nou!')
@@ -172,6 +175,7 @@ async function deleteInel(encodedIdInel){
         {
             if (result.isConfirmed) {
                 const deleteMaterialResponse = await adminService.deleteInel(encodedIdInel);
+                console.log(deleteMaterialResponse);
                 if(deleteMaterialResponse === 1){
                     Swal.fire("Sters cu succes!", "", "success");
                     window.location.reload();
@@ -183,6 +187,9 @@ async function deleteInel(encodedIdInel){
                 }else if(deleteMaterialResponse === -2){
                     Swal.fire("O eroare a avut loc" , "" , 'error')
                     return;
+                }else if(deleteMaterialResponse === -3){
+                    fireAlarm('warning' , 'Atentie' , "Inelul selectat este folosit intr-o tranzactie.Asteptati" , null)
+                    return
                 }
             } else if (result.isDenied) {
                 Swal.fire("Nu ati sters nimic", "", "info");

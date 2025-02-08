@@ -290,7 +290,11 @@ async function deleteImage() {
             formData.value.presignedUrl = 'empty'; // Clear the image URL to allow file upload
             formData.value.caleRelativa = null
         
-        }else if(deleteImageResponse === -1){
+        }else if(deleteImageResponse === -3){
+            fireAlarm('warning' , "Atentie" , "Tipul de galerie este folosit de un client intr-o sesiune de cumparat")
+            return
+        }
+        else if(deleteImageResponse === -1){
             store.snackbarMessage('Token-ul a expirat, ati fost delogat')
             navigateTo('/user/logout')
         }else{
@@ -304,11 +308,7 @@ async function saveTipGalerieModification(){
     fireAlarm('info', 'Salvare...', 'Asteptati...', true);
     const isValidForm = await tipGalerieForm.value.validate();
     if(isValidForm.valid){
-        // pretTipGalerieDto: formData.value.pretTipGalerieDto,
-        //     numeTipGalerieDto: formData.value.numeTipGalerieDto,
-        //     presignedUrl:  formData.value.presignedUrl,
-        //     caleRelativa: formData.value.caleRelativa,
-        //     sePrindeCuIneleDto: formData.value.sePrindeCuIneleDto
+       
         const modifiedTipGalerie = {
             pretTipGalerieDto: formData.value.pretTipGalerieDto,
             incretireDto : formData.value.incretireDto,
@@ -335,17 +335,24 @@ async function saveTipGalerieModification(){
 
 
             const response = await adminService.updateOrAddTipGalerie(encodedIdTipGalerieDto, form);
-
+            console.log(response)
             if (response === 1) {
+                swal.close()
                 fireAlarm('success', 'Succes', 'Cusatura galeriei a fost actualizat cu succes', null);
                 originalTipGalerie = modifiedTipGalerie
                 
+            }else if(response === 0){
+                swal.close()
+                fireAlarm('warning' , "Atentie" , "Tipul de galerie este folosit de un client intr-o sesiune de cumparat" , null)
+                return
             } else if (response === -1) {
                 store.snackbarMessage('Token-ul a expirat, ati fost delogat');
                 navigateTo('/user/logout');
             } else if(response === -3){
+                swal.close()
                 fireAlarm('error', 'Eroare', 'Numele imaginii este acelasi cu alta imagine. Schimbati numele imaginii', null);
             }else {
+                swal.close()
                 fireAlarm('error', 'Eroare', 'O eroare a avut loc', null);
             }
 

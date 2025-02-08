@@ -250,6 +250,9 @@ async function deleteImage() {
             formData.value.presignedUrl = 'empty'; // Clear the image URL to allow file upload
             formData.value.caleRelativa = null
         
+        }else if(deleteImageResponse === -3){
+            fireAlarm('warning' , "Atentie" , "Tipul de inel este folosit de un client intr-o sesiune de cumparat" , null)
+            return
         }else if(deleteImageResponse === -1){
             store.snackbarMessage('Token-ul a expirat, ati fost delogat')
             navigateTo('/user/logout')
@@ -290,16 +293,25 @@ async function saveIneleModification(){
 
 
             const response = await adminService.updateOrAddInel(encodedIdInel, form);
-
+            console.log(response)
+            
             if (response === 1) {
+                swal.close();
                 fireAlarm('success', 'Succes', 'Inelul a fost actualizat cu succes', null);
-                originalInel = modifiedInel
+                originalInel.value = modifiedInel
+            }else if(response === 0){
+                swal.close();
+                fireAlarm('warning' , "Atentie" , "Tipul de inel este folosit de un client intr-o sesiune de cumparat" , null)
+                return
             } else if (response === -1) {
+                swal.close();
                 store.snackbarMessage('Token-ul a expirat, ati fost delogat');
                 navigateTo('/user/logout');
             } else if(response === -3){
+                swal.close();
                 fireAlarm('error', 'Eroare', 'Numele imaginii este acelasi cu alta imagine. Schimbati numele imaginii', null);
             }else {
+                swal.close();
                 fireAlarm('error', 'Eroare', 'O eroare a avut loc', null);
             }
 

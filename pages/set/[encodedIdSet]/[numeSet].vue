@@ -460,7 +460,7 @@
                                 </v-btn>
                             </div>
                             <div>
-                                <NuxtLink :to="navigateTo(localePath('/measurement'))" prefetch :prefetch-on="{interaction: true}">
+                                <NuxtLink :to="localePath('/measurement')" prefetch :prefetch-on="{interaction: true}">
                                     {{ $t('general.howToMeasure') }}
                                 </NuxtLink>
                             </div>

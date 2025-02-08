@@ -1,13 +1,16 @@
 <template>
-    <div>
+    <div >
         <v-sheet color="grey-lighten-2" elevation="12" class="p-2 h-100 text-center">
-            <v-alert type="info" variant="flat" class="elevation-12 my-3 text-justify">
+            <v-alert type="warning" variant="flat" class="elevation-12 my-3 text-center" >
                 <p class="font-weight-bold h6">{{ $t('checkout.productsDeleted') }}</p>
             </v-alert>
-            <v-dialog v-if="syncedItems&&syncedItems.items.length > 0"
+            <v-dialog v-if="syncedItems&&syncedItems.modifiedCartItems.length > 0"
                 width="900" v-model="dialogControl"
                 >
-                <v-alert type="warning" variant="flat" class="elevation-12 my-3  text-center">
+                <v-btn color="red" @click="dialogControl = false">
+                    CLOSE <v-icon  class="mx-1">mdi-close</v-icon>
+                </v-btn>
+                <v-alert type="warning" variant="flat" class="elevation-12 mb-3  text-center">
                     <p class="font-weight-normal h6 text-black">{{ $t('checkout.productsPriceChanged') }}</p>
                 </v-alert>
                 <v-card  class="ma-1"
@@ -528,12 +531,7 @@
                                             </v-expansion-panels>
                                         </div>
                                     </div>
-                                    <!-- <v-col cols="12" xs="12" sm="2">
-                                        <div class="h-100  d-flex align-center justify-center">
-                                            <p class="font-weight-light h5 text-center">{{ item.cartItems[0].pretCurent * item.cartItems[0].cantitate }}
-                                            {{ currentCurrency === 'RON' ? 'RON' : 'EUR' }}</p>
-                                        </div>
-                                    </v-col> -->
+                                   
                                 </v-col>
                             </v-row>
                             <!-- AICI SET -->
@@ -707,7 +705,7 @@
                 </v-row>
             </div>
             <!-- USER INPUT -->
-            <div class="text-center p-2">
+            <div class="text-center p-2 ">
                 <div v-if="checkCompletedPersonalAccountDetails">
                     <v-alert type="success" variant="tonal" v-if="personalDetailsSelected" class="mb-4">
                         Selectata cu succes
@@ -735,6 +733,7 @@
                         </v-card-text>
                     </v-card>
                 </div>
+                <v-divider></v-divider>
                 <p class="font-weight-light h4 mt-4">{{currentCurrency === 'RON' ? 'Detalii comanda' : 'Order details'}}</p>
                 <v-form ref="userInfoForm" validate-on="input" class="bg-blue-grey-lighten-5 elevation-12">
                 <div v-for="(data, index) in userForm" :key="index">
@@ -751,6 +750,7 @@
                 </div>
                 </v-form>
             </div>
+            <v-divider></v-divider>
             <!-- ADDRESS INPUT/SELECTION -->
             <div class="text-center p-2">
                <div fluid >
@@ -812,6 +812,7 @@
                                 </v-card>
                             </v-col>
                             <v-col v-else>
+                                <p class="font-weight-light h4 mt-4">{{ $t('profile.delivery') }}</p>
                                 <v-card class="bg-grey-lighten-5 elevation-6 my-4 mr-2">
                                     <v-card-text>
                                         <p>{{ $t('checkout.noDeliveryAddress') }} <v-icon>mdi-emoticon-sad-outline</v-icon></p>
@@ -856,6 +857,7 @@
                                 </v-card>
                             </v-col>
                             <v-col v-else-if="syncedItems.clientsBillingAddresses.length < 0 ">
+                                <p class="font-weight-light h4 mt-4">{{ $t('profile.billing') }}</p>
                                 <v-card class="bg-grey-lighten-5 elevation-6 my-4 mr-2">
                                     <v-card-text>
                                         <p>{{ $t('checkout.noBillingAddress') }} <v-icon>mdi-emoticon-sad-outline</v-icon></p>
@@ -948,11 +950,6 @@
                 <v-alert v-if="selectedPaymentMethod.id === 1" class="text-left" variant="tonal" color="black" icon="mdi-information">
                     <p>{{ $t('checkout.rambursPaymentInfo') }}</p>
                 </v-alert>
-                <v-alert v-if="selectedPaymentMethod.id === 3" class="text-left" variant="tonal" color="black" icon="mdi-information">
-                    <p class="text-bold text-black">{{ $t('checkout.bankTransferPaymentInfo') }}
-                    </p>
-                    <p> IBAN: ROZBR23582377482</p>
-                </v-alert>
                 <p class="font-weight-light h4 my-4">{{ $t('checkout.paymentMethods') }}</p>
                 <v-table class="bg-white elevation-12 ">
                     <thead>
@@ -990,13 +987,13 @@
             <div class="text-center p-2">
                 <v-card class="elevation-24 p-2 bg-grey-darken-4">
                     <v-card-title class="text-left ">
-                        <span class="font-weight-light text-h5">Sumar comanda</span>
+                        <span class="font-weight-light text-h5">{{ $t('checkout.orderSummary') }}</span>
                         <v-divider></v-divider>
                     </v-card-title>
                     <v-card-text>
                     <v-row>
                         <v-col cols="12" xs="12" sm="10"  md="10" class="text-left">
-                            <span class="font-weight-normal text-h6">Produsele din cos</span>
+                            <span class="font-weight-normal text-h6">{{ $t('orderHistory.products') }}</span>
                         </v-col>
                         <v-col cols="12" xs="12" sm="2" md="2" class="text-right">
                             <span class="font-weight-normal text-h6">{{ syncedItems.pretTotal }} {{ currentCurrency === "RON" ? "RON" : "EUR" }}</span>
@@ -1023,8 +1020,17 @@
                         </v-col>
                         <v-divider v-if="discountCodeProperties.codVoucherDto !== ''"></v-divider>
                         <v-col cols="12" xs="12" sm="10" md="10" class="text-left">
+                            <span class="font-weight-normal text-h6">{{ $t('checkout.deliveryFee') }}</span>     
+                        </v-col>
+                        <v-col cols="12" xs="12" sm="2" md="2" class="text-right" >
+                            <span class="font-weight-normal text-h6" v-if="generalSettings.pret_comanda_minima > syncedItems.pretTotal">17 {{ currentCurrency === 'RON' ? 'RON' : 'EUR' }}</span>
+                            <span  class="font-weight-normal text-h6 text-red" v-else>{{ $t('checkout.free') }}</span>
+                        </v-col>
+                        <v-divider></v-divider>
+                        <v-col cols="12" xs="12" sm="10" md="10" class="text-left">
                             <span class="font-weight-normal text-h6">Total</span>     
                         </v-col>
+                        <!-- <v-divider v-if="discountCodeProperties.codVoucherDto !== ''"></v-divider> -->
                         <v-col cols="12" xs="12" sm="2" md="2" class="text-right" >
                             <span v-if="discountCodeProperties.codVoucherDto === ''" class="font-weight-normal text-h6">{{ syncedItems.pretTotal + selectedPaymentMethod.price }} {{ currentCurrency === "RON" ? "RON" : "EUR" }}</span>
                             <span v-else class="font-weight-normal text-h6 text-red">{{ (syncedItems.pretTotal * (discountCodeProperties.reducereDto / 100)) + selectedPaymentMethod.price }} {{ currentCurrency === "RON" ? "RON" : "EUR" }}</span>
@@ -1192,11 +1198,15 @@
 
 <script setup>
 import productService from '~/services/Products';
+import orderService from '~/services/Order';
+import userService from '~/services/User'
 import { useDisplay } from 'vuetify';
 
 definePageMeta({
     middleware : ['locale']
 })
+
+const {t} = useI18n();
 const userData = ref({
   nume: '',
   prenume: '',
@@ -1232,8 +1242,9 @@ const billingUserAddress = ref({
 
 const selectedPaymentMethod = ref({
     id: 1,
-    name: "Ramburs",
-    price: 2.00
+    name: t('checkout.tableRows.cashOnDelivery'),
+    price: 2.00,
+    dbName : "Ramburs"
 })
 const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 const currentCurrency = useState('selectedCurrency')
@@ -1259,7 +1270,7 @@ const voucherApplied = ref(false)
 const dialogControl = ref(true) 
 const {name} = useDisplay()
 const swal = useNuxtApp().$swal
-const {t} = useI18n();
+
 const localePath = useLocalePath();
 const syncedItems = ref({
     items : [],
@@ -1271,7 +1282,7 @@ const syncedItems = ref({
     userOrderDetails : {},
     isLoggedIn : false
 })
-
+const generalSettings = ref({})
 const tableHeaders = ref([
     t('checkout.tableHeaders.paymentMethod'),
     t('checkout.tableHeaders.cost'),
@@ -1281,9 +1292,8 @@ const tableHeaders = ref([
 
 
 const tableRows = ref([
-    {id:1,name: t('checkout.tableRows.cashOnDelivery'), price: 2.00},
-    {id:2,name: t('checkout.tableRows.card') , price: 0.00},
-    {id:3,name: t('checkout.tableRows.bankTransfer') , price: 0.00},
+    {id:1,name: t('checkout.tableRows.cashOnDelivery'), price: 2.00 , dbName : "Ramburs"},
+    {id:2,name: t('checkout.tableRows.card') , price: 0.00 , dbName : "Card"},
 
 ])
 const validationRules = {
@@ -1425,7 +1435,7 @@ const screenSize = computed(() => {
 const filteredDataForm = computed(() => {
   return dataForm.filter(data => {
     // Only show 'cif' and 'nume_firma' fields if 'tip_adresa' is 'Facturare'
-    if (data.model === 'cif' || data.model === 'nume_firma') {
+    if (data.model === 'cifDto' || data.model === 'numeFirmaDto') {
       return false; // Exclude these fields if 'tip_adresa' is not 'Facturare'
     }
     return true; // Include all other fields
@@ -1531,25 +1541,107 @@ const assignBillingUserAddress = (billingAddress) => {
 }
 
 
+const computedCheckVoucherApplied = computed(() => {
+    return discountCodeProperties.value.codVoucherDto !== ''
+        && discountCodeProperties.value.dataExpirareDto !== null
+        && discountCodeProperties.value.reducereDto !== 0
+        && voucherApplied.value !== false
 
+})
 
 
 const orderPayment = (async () => {
-    const isOrderDetailsFormValid = await userInfoForm.value.validate()
-    const isDeliveryAddressDetailsFormValid = await deliveryAddressForm.value.validate()
-    const isBillingAddressDetailsFormValid = await billingAddressForm.value.validate()
-    const isBillingAndDeliveryAddressDetailsFormValid = await deliveryAndBillingForm.value.validate()
-    if(isOrderDetailsFormValid.valid){
+    var isOrderDetailsFormValidBoolean = false;
+    var isDeliveryAddressDetailsFormValidBoolean = false;
+    var isBillingAddressDetailsFormValidBoolean = false;
+    var isBillingAndDeliveryAddressDetailsFormValidBoolean = false;
+
+    // order details validation
+    const isOrderDetailsFormValidObj = await userInfoForm.value.validate()
+    isOrderDetailsFormValidBoolean = isOrderDetailsFormValidObj.valid
+    //
+    console.log(isOrderDetailsFormValidBoolean)
+    if(sameDeliveryAndBilling.value === true){
+        // same delivery and billing details validation
+        const isBillingAndDeliveryAddressDetailsFormValidObj= await deliveryAndBillingForm.value.validate()
+        isBillingAndDeliveryAddressDetailsFormValidBoolean = isBillingAndDeliveryAddressDetailsFormValidObj.valid
+        console.log(isBillingAndDeliveryAddressDetailsFormValidBoolean)
+    }else{
+        // delivery validation
+        const isDeliveryAddressDetailsFormValidObj= await  deliveryAddressForm.value.validate()
+        isDeliveryAddressDetailsFormValidObj = isDeliveryAddressDetailsFormValidObj.valid
+        //
+
+        // billing validation
+        const isBillingAddressDetailsFormValidObj = await billingAddressForm.value.validate()
+        isBillingAddressDetailsFormValidBoolean = isBillingAddressDetailsFormValidObj.valid
+        //
+
+        console.log(isDeliveryAddressDetailsFormValidBoolean)
+        console.log(isBillingAddressDetailsFormValidBoolean)
+    }
+
+    if(sameDeliveryAndBilling.value === true){
+        billingUserAddress.value = {...deliveryUserAddress.value}
+    }
+
+    console.log(selectedPaymentMethod.value)
+
+    if(isOrderDetailsFormValidBoolean){
         if(sameDeliveryAndBilling.value === true){
-            if(isBillingAndDeliveryAddressDetailsFormValid.valid){
-                // proceed with payment
+            if(isBillingAndDeliveryAddressDetailsFormValidBoolean){
+                let intMinOrderForFreeDelivery = parseInt(generalSettings.value.pret_comanda_minima)
+                intMinOrderForFreeDelivery = currentCurrency.value === "RON" ? intMinOrderForFreeDelivery : Math.round(intMinOrderForFreeDelivery / 5);
+                const paymentObj = {
+                    tipPlata :  selectedPaymentMethod.value.dbName,
+                    pretTransport  : currentCurrency.value === "RON"
+                         ? syncedItems.value.pretTotal > intMinOrderForFreeDelivery ? 0 : 17
+                         : syncedItems.value.pretTotal > intMinOrderForFreeDelivery ? 0 : Math.round(17 / 5),
+                    pretTotal : syncedItems.value.pretTotal,
+                    numePeComanda :  userData.value.nume,
+                    prenumePeComanda  : userData.value.prenume,
+                    nrTelefonPeComanda : userData.value.nrTelefon, 
+                    emailPeComanda  : userData.value.email,
+                    voucherAplicat : computedCheckVoucherApplied.value === true ? {...discountCodeProperties.value} : null,
+                    adresaLivrare  : deliveryUserAddress.value,
+                    adresaFacturare : sameDeliveryAndBilling.value === true ? deliveryUserAddress.value : billingUserAddress.value
+                }
+                const form = new FormData()
+                form.append('orderDto' , JSON.stringify(paymentObj))
+                const responseFromPayment = await orderService.placeOrder(currentCurrency.value , form)
+                // status : response.status,
+                // message : response.data
+                if(responseFromPayment.status === 200){
+                    // Token guid|orderid
+                    let getTokenAndOrderId = responseFromPayment.message.split(' ')[1];
+                    const orderId = getTokenAndOrderId.split('|')[1]
+                    const orderConfirmationToken = getTokenAndOrderId.split('|')[0]
+                    console.log(getTokenAndOrderId)
+                    console.log(orderId)
+                    console.log(orderConfirmationToken)
+                    navigateTo(localePath({
+                        path: `/user/order/${orderConfirmationToken}`,
+                        query: { i : orderId }
+                    }));
+                }else if(responseFromPayment.status === 400 && responseFromPayment.message === "Voucher not found"){
+                    fireAlarm('top-end' , 'error' , t('sweetAlert2.Error') , t('sweetAlert2.ExpiredOrInvalidVoucher') , 5000)
+                    voucherApplied.value = false;
+                    discountCode.value = ''
+                    discountCodeProperties.value.codVoucherDto = ''
+                    discountCodeProperties.value.dataExpirareDto = null
+                    discountCodeProperties.value.reducereDto = 0
+                    return
+                }else if(responseFromPayment.status === 204){
+                    fireAlarm('top-end' , 'error' , t('sweetAlert2.Error') , t('sweetAlert2.PaymentRejected') , 5000)
+                    return
+                }
             }else{
                 fireAlarm('top-end' , 'error' , 'Error' , t('sweetAlert2.CheckDeliveryAndBillingAddress') , 3000)
                 return
             }
         }else{
-            if(isDeliveryAddressDetailsFormValid.valid){
-                if(isBillingAddressDetailsFormValid.valid){
+            if(isDeliveryAddressDetailsFormValidBoolean){
+                if(isBillingAddressDetailsFormValidBoolean){
                     // proceed with payment
                 }else{
                     fireAlarm('top-end' , 'error' , 'Error' , t('sweetAlert2.CheckBillingAddress') , 3000)
@@ -1655,9 +1747,15 @@ function fireAlarm(position , icon , title ,text, timer){
     });
 }
 
+const getMinOrderPrice = (async () => {
+    const response = await userService.getGeneralSettingsData();
+    generalSettings.value = response
+    console.log(generalSettings.value)
+})
 
 
 onMounted(async () => {
     await syncCartOnCheckout()
+    await getMinOrderPrice()
 })
 </script>

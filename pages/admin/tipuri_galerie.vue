@@ -172,7 +172,11 @@ async function deleteSelectedTipGalerie(){
         if(responseFromDeletion === 1){
             fireAlarm('success' , 'Succes!' , 'Tipuri galerie sterse cu succes' , null);
             window.location.reload()
-        }else if(responseFromDeletion === -1){
+        }else if(responseFromDeletion === -3){
+            fireAlarm('warning' , 'Atentie' , "Unul din tipurile de galerie selectate este folosit intr-o tranzactie.Asteptati" , null)
+            return
+        }
+        else if(responseFromDeletion === -1){
             swal.close()
             store.snackbarMessage('Token-ul a expirat, logati-va din nou!')
             navigateTo('/user/logout')
@@ -197,6 +201,7 @@ async function deleteTipGalerie(encodedIdTipGalerieDto){
         {
             if (result.isConfirmed) {
                 const deleteTipGalerieResponse = await adminService.deleteTipGalerie(encodedIdTipGalerieDto);
+                console.log(deleteTipGalerieResponse)
                 if(deleteTipGalerieResponse === 1){
                     Swal.fire("Sters cu succes!", "", "success");
                     window.location.reload();
@@ -208,6 +213,9 @@ async function deleteTipGalerie(encodedIdTipGalerieDto){
                 }else if(deleteTipGalerieResponse === -2){
                     Swal.fire("O eroare a avut loc" , "" , 'error')
                     return;
+                }else if(deleteTipGalerieResponse === -3){
+                    fireAlarm('warning' , 'Atentie' , "Tipul de galerie selectat este folosit intr-o tranzactie.Asteptati" , null)
+                    return
                 }
             } else if (result.isDenied) {
                 Swal.fire("Nu ati sters nimic", "", "info");

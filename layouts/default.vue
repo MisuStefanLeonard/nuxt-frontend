@@ -25,6 +25,9 @@
   const isLoggedIn = ref(false);
   const emitter = useNuxtApp().$emitter;
 
+  useSeoMeta({
+  })
+
   useHead({
     titleTemplate : (titleChunk) => {
       return titleChunk ? `${titleChunk}` : 'Site Title';
@@ -102,6 +105,12 @@
             height="0" width="0" style="display:none;visibility:hidden"></iframe>`,
       }
     ],
+    link:
+      [
+        { rel: 'icon', type: 'image/png', href: '/favicon-16x16.png' },
+        { rel: 'icon', type: 'image/png', href: '/favicon-32x32.png' },
+        { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      ]
     // link:
     // [
     //   {rel :'canonical' , href: route.meta.canonicalUrl || 'Default'},
@@ -111,10 +120,10 @@
     // ]
   })
 
-  onMounted(() => {
-    const token = useCookie('userLoggedIn').value;
-    isLoggedIn.value = token === 1;  // Ensure `1` means the user is logged in
-    // Emit the correct login state to update your navigation
-    emitter.emit('isLoggedIn', isLoggedIn.value);
-  });
+  // onMounted(() => {
+  //   const token = useCookie('userLoggedIn').value;
+  //   isLoggedIn.value = token === 1;  // Ensure `1` means the user is logged in
+  //   // Emit the correct login state to update your navigation
+  //   emitter.emit('isLoggedIn', isLoggedIn.value);
+  // });
 </script>

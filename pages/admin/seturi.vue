@@ -172,6 +172,9 @@ const deleteSelectedSets = async () => {
     fireAlarm('success',"Succes",'Ati sters seturile selectate cu succes')
     seturiList.value = seturiList.value.filter(set => !selectedSets.value.includes(set.encodedIdSetDto));
     selectedSets.value = [];
+  }else if(responseFromSetBulkDeletion === -3){
+    fireAlarm('error' , "Atentie" , "Cineva cumpara acest set. Va rugam astepati")
+    return
   } else {
     fireAlarm('error',"Eroare",'O eroare a avut loc')
 }}
@@ -212,6 +215,9 @@ const activateSelectedSets = async () => {
 
     // Clear the selected sets
     selectedSets.value = [];
+  }else if(responseFromSetBulkDeletion === -3){
+    fireAlarm('error' , "Atentie" , "Cineva cumpara acest set. Va rugam astepati")
+    return
   } else {
     fireAlarm('error', "Eroare", 'O eroare a avut loc');
   }
@@ -231,6 +237,9 @@ const toggleSetStatus = async (set) => {
     fireAlarm('success',"Succes",`Setul a fost ${
         set.setActivInMagazin ? 'activat' : 'dezactivat'
       } cu succes`)
+  }else if(response === -3){
+    fireAlarm('error' , "Atentie" , "Cineva cumpara acest set. Va rugam astepati")
+    return
   } else {
     swal.close()
     fireAlarm('error',"Eroare",'O eroare a avut loc!Dati un refresh la pagina')
@@ -243,6 +252,9 @@ const deleteSet = async (encodedIdSetDto) => {
   if (responseFromSetDeletion === 1) {
     fireAlarm('success',"Succes",'Setul a fost sters cu succes')
     seturiList.value = seturiList.value.filter(set => set.encodedIdSetDto !== encodedIdSetDto);
+  }else if(responseFromSetDeletion === -3){
+    fireAlarm('error' , "Atentie" , "Cineva cumpara acest set. Va rugam astepati")
+    return
   } else if (responseFromSetDeletion === -4) {
     fireAlarm('error',"Eroare",' Setul nu mai exista! Dati un refresh la pagina')
   } else {
@@ -273,8 +285,8 @@ async function getSeturi(){
 }
 
 
-onBeforeMount(() => {
-    getSeturi()
+onMounted(async () => {
+    await getSeturi()
 })
 
 

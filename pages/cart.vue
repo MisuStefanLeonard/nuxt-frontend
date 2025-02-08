@@ -630,7 +630,7 @@ const modifyQuantity = (async (isDecrementing,item) => {
     }else if(response === -4){
         fireAlarm('top-end' , 'error' , `${t('general.productMissing')}` , 3000)
         setTimeout(() => {
-            window.reload();
+            location.reload()
         }, 2000);
     }else if(response === -2){
         fireAlarm('top-end' , 'error' , `${t('general.errorOnQuantityUpdating')}` , 3000)

@@ -312,8 +312,14 @@ const deleteProduct = async (productCode) => {
     products.value = products.value.filter(product => product.codProdusAdminDto !== productCode);
   } else if (responseFromProductDeletion === -1) {
     fireAlarm('error',"Eroare",'Produsul nu mai exista! Dati un refresh la pagina',2000)
-
-  } else {
+  }else if(responseFromProductDeletion === -3){
+    swal.fire({
+      icon: 'warning',
+      title: 'Atentie',
+      text: 'Produsul este cumparat de catre cineva in acest moment. Va rugam asteptati!',
+      timer: 5000,
+    });
+  }  else {
     fireAlarm('error',"Eroare",'O eroare a avut loc!Dati un refresh la pagina',2000)
 
   }
@@ -333,7 +339,15 @@ const toggleProductStatus = async (product) => {
       } cu succes`,
       timer: 1500,
     });
-  } else {
+  } else if(response === -3){
+    swal.fire({
+      icon: 'warning',
+      title: 'Atentie',
+      text: 'Produsul este cumparat de catre cineva in acest moment. Va rugam asteptati!',
+      timer: 5000,
+    });
+  } 
+  else {
     fireAlarm('error',"Eroare",'O eroare a avut loc!Dati un refresh la pagina',2000)
     product.activInMagazinDto = !product.activInMagazinDto; 
   }
@@ -349,6 +363,14 @@ const deleteSelectedProducts = async () => {
     fireAlarm('success',"Succes",'Ati sters produsele selectate cu succes',1000)
     products.value = products.value.filter(product => !selectedProducts.value.includes(product.codProdusAdminDto));
     selectedProducts.value = [];
+  } else if(response === -3){
+    swal.fire({
+      icon: 'warning',
+      title: 'Atentie',
+      text: 'Unul dintre produse este cumparat de catre cineva in acest moment. Va rugam asteptati!',
+      timer: 5000,
+    });
+    return
   } else {
     fireAlarm('error',"Eroare",'O eroare a avut loc',2000)
 }}
@@ -388,7 +410,15 @@ const activateSelectedProducts = async () => {
 
     // Clear the selected products
     selectedProducts.value = [];
-  } else {
+  } else if(response === -3){
+    swal.fire({
+      icon: 'warning',
+      title: 'Atentie',
+      text: 'Unul dintre produse este cumparat de catre cineva in acest moment. Va rugam asteptati!',
+      timer: 5000,
+    });
+    return
+  }else {
     fireAlarm('error', "Eroare", 'O eroare a avut loc', 2000);
   }
 };

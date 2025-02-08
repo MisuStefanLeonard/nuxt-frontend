@@ -241,8 +241,8 @@ onMounted(() => {
   isLoggedIn.value = getCookie('userLoggedIn') === 1
   isClient.value = true
   getCartCount()
-  getAllProductCategoriesAndTypes()
-  console.log("nav drawer mounted")
+  // getAllProductCategoriesAndTypes()
+  // console.log("nav drawer mounted")
 })
 
 </script>

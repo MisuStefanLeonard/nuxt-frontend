@@ -679,6 +679,9 @@ const removeProductFromSet = (async (codProdus,idProdusDto) => {
             let indexOfProductToDeleteFromDto = setToModify.value.productsOnSet.indexOf(productToDelete);
             setToModify.value.productsOnSet.splice(indexOfProductToDeleteFromDto,1);
             fireAlarm('success' , 'Succes' , 'Sters cu succes!' , null)
+        }else if(deletionResponse === -3){
+            fireAlarm('error' , "Atentie" , "Cineva cumpara acest set. Va rugam asteptati" , null)
+            return
         }else if(deletionResponse === -2){
             swal.close()
             fireAlarm('error' , 'Eroare' , 'O eroare a avut loc!Dati un refresh si incercati din nou' , null)
@@ -758,7 +761,7 @@ async function saveSetModifications(){
     const isSetValid = validateSet();
     if(isSetValid){
         if(isValid.valid){
-            if(JSON.stringify(setToModify) === JSON.stringify(originalSet)){
+            if(JSON.stringify(setToModify.value) === JSON.stringify(originalSet.value)){
                 swal.close()
                 fireAlarm('info' , 'Atentie' , 'Nu ati modificat nimic' , null)
             }else{
@@ -772,6 +775,9 @@ async function saveSetModifications(){
                     fireAlarm('success' , 'Succes!' , 'Modificat cu succes' , null);
                     setToModify.value = {...setToModify.value};
                     originalSet = JSON.parse(JSON.stringify(setToModify.value));
+                    return
+                }else if(responseFromUpdatingSet === -3){
+                    fireAlarm('error' , "Atentie" , "Cineva cumpara acest set. Va rugam asteptati" , null)
                     return
                 }else{
                     fireAlarm('error' , 'Eroare!' , 'O eroare a avut loc!' , null);

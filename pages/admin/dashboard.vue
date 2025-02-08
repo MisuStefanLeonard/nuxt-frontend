@@ -693,7 +693,6 @@ function fireAlarm(icon, title, text,timer) {
 }
 
 const getDashboardData = (async () => {
-  fireAlarm('info' , 'Asteptati...' , '' , null)
   const response = await adminService.getMainDashboardData();
   if(Object.keys(response).length !== 0){
     Object.assign(dashBoardData.value,response)
@@ -706,7 +705,7 @@ const getDashboardData = (async () => {
 })
 
 const getGAData = (async () => {
-  fireAlarm('info' , 'Asteptati...' , '' , null)
+ 
   const response_GA = await adminService.getGoogleAnalyticsData()
   swal.close()
   Object.assign(GAData.value , response_GA);

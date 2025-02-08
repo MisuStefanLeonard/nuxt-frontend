@@ -1,5 +1,5 @@
 <template>
-    <v-container fluid class="bg-grey-darken-4 p-3">
+    <v-container fluid class="bg-grey-darken-4 p-3 h-100">
         <p class="font-weight-light p-2 m-2 h3">Comenzi</p>
         <v-divider></v-divider>
         <v-container fluid v-if="orders.length !== 0">
@@ -50,8 +50,8 @@
                         </template>
 
                         <template #[`item.tipPlataDto`]="{item}">
-                            <div v-if="item.tipPlataDto === 'TransferBancar'">
-                                <span class="text-blue">Transfer bancar</span>
+                            <div v-if="item.tipPlataDto === 'Ramburs'">
+                                <span class="text-blue">Ramburs</span>
                             </div>
                             <div v-else>
                                 <span class="text-yellow">Plata card</span>

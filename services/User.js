@@ -122,18 +122,44 @@ class UserService extends ApiService {
 
   }
 
-   deleteUserAddress(alias) {
+
+  /**
+   * 
+   * @param {string} alias  [Address alias]
+   * @returns {HttpStatusCode} [200(Ok) for success]
+   */
+   modifyUserAddress(data) {
     return this.put('profile/addresses' , {
-      AddresToDeleteAliasDto: alias
+      NewAddressData: data
     }, false)
   }
+
+  /**
+   * 
+   * @param {string} changeRequestId  [The id of the change email request]
+   * @returns {HttpStatusCode} [200(Ok) for success]
+   */
   
   updateDataFromAdmin(changeRequestId){
     return this.get(`admin/emailChanged/${changeRequestId}` , false , false );
   }
   
+  /**
+   * 
+   * @param {FormData} formData  [The form with the contact infos]
+   * @returns {HttpStatusCode} [200(Ok) for success]
+   */
   sendContactEmail(formData){
     return this.post('sendContactEmail' , formData , false , false)
+  }
+
+
+  /**
+   * 
+   * @returns {Dictionary} [The data with the general app settings stored in db]
+   */
+  getGeneralSettingsData(){
+    return this.get('settings' , true , false , false);
   }
   
 }

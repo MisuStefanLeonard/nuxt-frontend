@@ -6,7 +6,7 @@
         <v-card class="font-weight-light text-left  m-4 p-2 elevation-24 ">
             <v-card-text>
                 <p class="font-weight-normal h5">Pentru a masura cat mai exact si a lua cea mai buna decizie, va recomandam sa luati in considerare urmatoarele aspecte:</p>
-                <v-list>
+                <v-list >
                     <v-list-item>
                         <v-list-item>
                             <span><v-icon>mdi-star-four-points-small</v-icon> folositi intotdeauna o ruleta metalica suficient de rigida astfel incat sa nu flambeze la lungimi mari pentru sistemele de prindere existente</span>
@@ -76,44 +76,54 @@
         <v-card class="font-weight-light text-left  m-4 p-2 elevation-24 ">
             <v-card-text>
                 <p class="font-weight-normal h5">Cum masor dimensiunea unei perdele sau draperii in cazul unei galerii care se va monta ulterior?</p>
-                <v-list>
-                    <v-list-item>
-                        <span><v-icon>mdi-star-four-points-small</v-icon> Masurati intotdeauna lungimea sinei montate sau, daca se monteaza ulterior, lungimea dorita, tinand cont de 15-30 cm de fiecare parte a golului de fereastra si de diverse impedimente ( pereti, mobila, plante, etc). Daca doriti sa montati sina din perete in perete, masurati lungimea dintre pereti.</span>
-                    </v-list-item>
-                    <v-list-item>
-                        <span><v-icon>mdi-star-four-points-small</v-icon> Inaltimea (caderea) perdelei/draperiei va recomandam sa o masurati de sus din tavan pana la: </span>
-                        <br>
+                <v-row>
+                    <v-col cols="12" md="7" sm="12" xs="12">
                         <v-list>
                             <v-list-item>
-                                <span>  <v-icon color="green">mdi-arrow-right</v-icon> pana la podea + 20 cm daca doriti sa stea pe podea (recomandam aceasta inaltime doar in cazul draperiilor) – varianta C</span>
+                                <span><v-icon>mdi-star-four-points-small</v-icon> Masurati intotdeauna lungimea sinei montate sau, daca se monteaza ulterior, lungimea dorita, tinand cont de 15-30 cm de fiecare parte a golului de fereastra si de diverse impedimente ( pereti, mobila, plante, etc). Daca doriti sa montati sina din perete in perete, masurati lungimea dintre pereti.</span>
                             </v-list-item>
                             <v-list-item>
-                                <span>  <v-icon color="green">mdi-arrow-right</v-icon>1-2 cm deasupra podelei (varianta D) </span>
+                                <span><v-icon>mdi-star-four-points-small</v-icon> Inaltimea (caderea) perdelei/draperiei va recomandam sa o masurati de sus din tavan pana la: </span>
+                                <br>
+                                <v-list>
+                                    <v-list-item>
+                                        <span>  <v-icon color="green">mdi-arrow-right</v-icon> pana la podea + 20 cm daca doriti sa stea pe podea (recomandam aceasta inaltime doar in cazul draperiilor) – varianta C</span>
+                                    </v-list-item>
+                                    <v-list-item>
+                                        <span>  <v-icon color="green">mdi-arrow-right</v-icon>1-2 cm deasupra podelei (varianta D) </span>
+                                    </v-list-item>
+                                    <v-list-item>
+                                        <span>  <v-icon color="green">mdi-arrow-right</v-icon>5-10 cm sub glaf, unde este posibil sau 5 cm deasupra caloriferului (varianta E) </span>
+                                    </v-list-item>
+                                    <v-list-item>
+                                        <span>  <v-icon color="green">mdi-arrow-right</v-icon>1-2 cm deasupra glafului (varianta F) </span>
+                                    </v-list-item>
+                                </v-list>
                             </v-list-item>
                             <v-list-item>
-                                <span>  <v-icon color="green">mdi-arrow-right</v-icon>5-10 cm sub glaf, unde este posibil sau 5 cm deasupra caloriferului (varianta E) </span>
+                                <span><v-icon>mdi-star-four-points-small</v-icon> C = inaltimea din tavan pana in podea + 20 cm daca vreti ca draperia sa stea pe podea</span>
                             </v-list-item>
                             <v-list-item>
-                                <span>  <v-icon color="green">mdi-arrow-right</v-icon>1-2 cm deasupra glafului (varianta F) </span>
+                                <span><v-icon>mdi-star-four-points-small</v-icon> D = inaltimea din tavan pana deasupra podelei cu 1-2 cm</span>
+                            </v-list-item>
+                            <v-list-item>
+                                <span><v-icon>mdi-star-four-points-small</v-icon> E = inaltimea din tavan pana sub glaf sau pana deasupra caloriferului</span>
+                            </v-list-item>
+                            <v-list-item>
+                                <span><v-icon>mdi-star-four-points-small</v-icon> F = inaltimea din tavan pana deasupra glafului cu 1-2 cm</span>
+                            </v-list-item>
+                            <v-list-item>
+                                <span><v-icon>mdi-star-four-points-small</v-icon> Nota: intotdeauna sa masurati inaltimea in cel putin 3 puncte, de la stanga la dreapta; daca sunt diferente mari intre inaltimile luate, alegeti inaltimea cea mai scurta. Sau cereti-ne sfatul!</span>
                             </v-list-item>
                         </v-list>
-                    </v-list-item>
-                    <v-list-item>
-                        <span><v-icon>mdi-star-four-points-small</v-icon> C = inaltimea din tavan pana in podea + 20 cm daca vreti ca draperia sa stea pe podea</span>
-                    </v-list-item>
-                    <v-list-item>
-                        <span><v-icon>mdi-star-four-points-small</v-icon> D = inaltimea din tavan pana deasupra podelei cu 1-2 cm</span>
-                    </v-list-item>
-                    <v-list-item>
-                        <span><v-icon>mdi-star-four-points-small</v-icon> E = inaltimea din tavan pana sub glaf sau pana deasupra caloriferului</span>
-                    </v-list-item>
-                    <v-list-item>
-                        <span><v-icon>mdi-star-four-points-small</v-icon> F = inaltimea din tavan pana deasupra glafului cu 1-2 cm</span>
-                    </v-list-item>
-                    <v-list-item>
-                        <span><v-icon>mdi-star-four-points-small</v-icon> Nota: intotdeauna sa masurati inaltimea in cel putin 3 puncte, de la stanga la dreapta; daca sunt diferente mari intre inaltimile luate, alegeti inaltimea cea mai scurta. Sau cereti-ne sfatul!</span>
-                    </v-list-item>
-                </v-list>
+                    </v-col>
+                    <v-col cols="12" sm="12"  xs="12" md="5">
+                        <NuxtImg src="/measurement1.png" preload 
+                        :height="height ? 250 : 1000"
+                        :width="height ? 250 : 1000"></NuxtImg>
+                    </v-col>
+                </v-row>
+                
             </v-card-text>
         </v-card>
        
@@ -131,6 +141,28 @@
                         <span><v-icon>mdi-star-four-points-small</v-icon> Mult mai folosit este varianta montata in afara golului de fereastra, fiind mult mai practica.</span>
                     </v-list-item>
                 </v-list>
+                <NuxtImg src="/interior_window.png" preload 
+                :height="height ? 250 : 1000"
+                        :width="height ? 250 : 1000"></NuxtImg>
+            </v-card-text>
+        </v-card>
+        <v-card class="font-weight-light text-left  m-4 p-2 elevation-24 ">
+            <v-card-text>
+                <p class="font-weight-normal h5">Cum masor dimensiunea unui stor roman care se monteaza in exteriorul golului de fereastra</p>
+                <v-list>
+                    <v-list-item>
+                        <span><v-icon>mdi-star-four-points-small</v-icon> Masurati latimea golului de fereastra si adaugati cate 10 cm de fiecare parte, stanga si dreapta; aceasta este latimea storului roman.</span>
+                    </v-list-item>
+                    <v-list-item>
+                        <span><v-icon>mdi-star-four-points-small</v-icon> Inaltimea storului se masoara astfel: inaltimea golului de fereastra la care se adauga 25 – 30 cm deasupra golului necesari ca storul sa fie strans, astfel incat sa permita deschiderea ferestrei, iar sub golul de fereastra masurati pana unde doriti sa cada storul (tinand cont de ceea ce exista: glaf, calorifer, podea, etc)</span>
+                    </v-list-item>
+                    <v-list-item>
+                        <span><v-icon>mdi-star-four-points-small</v-icon> Multe dintre ferestre au doua sau mai multe canate; in acest caz, incercati sa repartizati storurile tinand cont de numarul acestora, precum si de modul de deschidere al ferestrei/ferestrelor.</span>
+                    </v-list-item>
+                </v-list>
+                <NuxtImg src="/exterior_window.png" preload 
+                :height="height ? 250 : 1000"
+                        :width="height ? 250 : 1000"></NuxtImg>
             </v-card-text>
         </v-card>
         <v-card class="font-weight-light text-left  m-4 p-2 elevation-24 ">
@@ -218,6 +250,20 @@
         </v-card>
     </div>
 </template>
+
+<script setup>
+import { useDisplay } from 'vuetify';
+
+
+
+const {name} = useDisplay()
+const height = computed(() => {
+    switch (name.value) {
+      case 'xs': return true
+      default : return 3
+    }
+})
+</script>
 
 
 

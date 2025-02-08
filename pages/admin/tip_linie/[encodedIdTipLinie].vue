@@ -256,6 +256,9 @@ async function deleteImage() {
             formData.value.presignedUrl = 'empty'; // Clear the image URL to allow file upload
             formData.value.caleRelativa = null
         
+        }else if(deleteImageResponse === -3){
+            fireAlarm('warning' , "Atentie" , "Tipul de inel este folosit de un client intr-o sesiune de cumparat" , null)
+            return
         }else if(deleteImageResponse === -1){
             store.snackbarMessage('Token-ul a expirat, ati fost delogat')
             navigateTo('/user/logout')
@@ -298,6 +301,9 @@ async function saveTipLinieModification(){
             if (response === 1) {
                 fireAlarm('success', 'Succes', 'Cusatura liniei a fost actualizata cu succes', null);
                 originalTipLinie = modifiedTipLinie
+            }else if(response === 0){
+                fireAlarm('warning' , "Atentie" , "Tipul de linie este folosit de un client intr-o sesiune de cumparat" , null)
+                return
             } else if (response === -1) {
                 store.snackbarMessage('Token-ul a expirat, ati fost delogat');
                 navigateTo('/user/logout');

@@ -148,6 +148,9 @@ async function deleteSelectedTipLinie(){
         if(responseFromDeletion === 1){
             fireAlarm('success' , 'Succes!' , 'Tipurile de linie selectate sterse cu succes' , null);
             window.location.reload()
+        }else if(responseFromDeletion === -3){
+            fireAlarm('warning' , 'Atentie' , "Unul din tipurile de linie selectate este folosit intr-o tranzactie.Asteptati" , null)
+            return
         }else if(responseFromDeletion === -1){
             swal.close()
             store.snackbarMessage('Token-ul a expirat, logati-va din nou!')
@@ -185,6 +188,9 @@ async function deleteTipLinie(encodedIdTipLinie){
                 }else if(deleteTipLinieResponse === -2){
                     Swal.fire("O eroare a avut loc" , "" , 'error')
                     return;
+                }else if(deleteTipLinieResponse === -3){
+                    fireAlarm('warning' , 'Atentie' , "Tipul de linie este folosit intr-o tranzactie.Asteptati" , null)
+                    return
                 }
             } else if (result.isDenied) {
                 Swal.fire("Nu ati sters nimic", "", "info");

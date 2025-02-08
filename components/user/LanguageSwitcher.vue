@@ -35,6 +35,7 @@
 
   const { locale , locales } = useI18n();
   const switchLocalePath = useSwitchLocalePath()
+  
 
   const parseLocales = computed(() => {
     let parsedLocales = []

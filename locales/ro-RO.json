@@ -53,10 +53,14 @@
         "Attention" : "Atentie",
         "CheckForm" : "Verificati formularul din nou!",
         "SendSuccesfully" : "Formular trimis cu succes.",
+        "Wait" : "Asteptati",
         "ErrorOccured" : "O eroare a avut loc",
         "ServerError" : "O eroare a avut la procesarea cererei",
+        "PaymentRejected" : "Plata a fost respinsa",
         "SavedAddressSuccesfully" : "V-ati salvat adresa cu succes",
         "ErrorWhenSavingAddress" : "O eroare a avut loc la salvarea adresei",
+        "ErrorWhenModifyingAddress" : "Nu am putut gasii adresa. Va rugam asteptati 1-2 minute si dati refresh la pagina",
+        "ModifiedSuccesfully" : "Modificat cu success",
         "DeleteAddressSuccesfully" : "V-ati sters adresa cu success!",
         "ErrorWhenDeletingAddress" : "O eroare a avut loc la stergerea adresei. Dati un refersh la pagina.",
         "EmailAlreadyExists" : "E-mail-ul exista deja!",
@@ -110,10 +114,13 @@
         },
         "emptyAddress" : "Lista goala de adrese",
         "addressesInfo" : "Bun venit in sectiunea adreselor! Aici va puteti vizualiza datele asociate contului dumneavoastra. Actiunile permise sunt de salvare/stergere a adreselor de livrare/facturare.",
+        "modifyingInfo" : "Adresele pe care nu le puteti modifica inseamna ca deja au comenzi asociate lor. Va rugam sa va creati o adresa noua in loc de a o modifica.",
         "emptyAddressListText" : "Nu aveti nicio adresa salvata",
+        "useAnotherAlias" : "Acest alias exista deja",
         "addressType" : "Tipul adresei",
         "building" : "Bloc",
         "buildingNumber" : "Numar bloc",
+        "alias" : "Alias",
         "street" : "Strada",
         "streetNumber" : "Numar strada",
         "city" : "Oras",
@@ -143,6 +150,7 @@
     "button" : {
         "save" : "Salveaza",
         "delete" : "Sterge",
+        "modify" : "Modifica",
         "addAddress" : "Adauga adresa",
         "sendForm" : "Trimite formular" 
     },
@@ -159,7 +167,8 @@
         "title" : "Logheaza-te in cont",
         "stayLoggedIn" : "Ramai logat",
         "logInText" : "Logheaza-te",
-        "logInWithGoogle" : "Logheaza-te cu Google",
+        "logInWithGoogle" : "Google",
+        "alreadyLoggedIn" : "Deja sunteti logat",
         "forgotPasswordText" : "Ai uitat parola?",
         "noAccount" : "Nu ai cont?",
         "wrongCredentials" : "Numele sau parola sunt gresite / Nu ati activat contul",
@@ -416,7 +425,10 @@
         "applyDiscountCode" : "Aplica cuponul",
         "appliedSuccesfully" : "Voucher aplicat cu succes!",
         "productsPriceChanged" : "Cateva preturi au fost modificate in timp ce dumneavoastra faceati cumparaturi.Iata noile preturi pentru toate produsule schimbate." ,
-        "productsDeleted" : "Daca unele produse pe care le-ati adaugat in cos nu mai sunt, inseamna ca au fost dezactivate/sterse din magazin. Ne pare rau pentru incovenienta."
+        "productsDeleted" : "Daca unele produse pe care le-ati adaugat in cos nu mai sunt, inseamna ca au fost dezactivate/sterse din magazin. Ne pare rau pentru incovenienta.",
+        "orderSummary" : "Sumar comanda",
+        "deliveryFee" : "Plata transport",
+        "free" : "GRATIS"
     },
     "contactPage" : {
         "title" : "Contacteaza-ne",
@@ -433,7 +445,24 @@
         "assureReason" : "* Datele dumneavoastra nu vor fi prelucrate in niciun fel!"
     },
     "homePage" : {
-        "welcome" : "Bun venit"
+        "welcome" : "Bun venit",
+        "orderOver1" : "Comenzile de peste ",
+        "orderOver2" : " beneficiază de transport gratuit"
+    },
+    "orderHistory" : {
+        "order" : "Comanda",
+        "products" : "Produse",
+        "details" : "Detalii personale",
+        "orderDetails" : "Detalii comanda",
+        "orderDate" : "Data plasare comanda : ",
+        "orderStatus" : "Stare comanda : ",
+        "orderTrackingId" : "Id urmarire comanda: ",
+        "orderTracking" : "Urmareste comanda",
+        "orderAddress" : "Adresa livrare/facturare",
+        "orderDeliveryAddress" : "Adresa livrare",
+        "orderBillingAddress" : "Adresa facturare",
+        "noOrderPlaced" : "Nu aveti nicio comanda plasata",
+        "orderPaymentType" : "Tip plata"
     }
   }
   

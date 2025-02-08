@@ -150,7 +150,8 @@ const parseDataInfo = () => {
 
   clientData.value.comenziClient.forEach((comanda) => {
     // Original date string in UTC
-    const parsedDataEmitere = comanda.dataEmitereComandaDto;
+    console.log(comanda.orderDate)
+    const parsedDataEmitere = comanda.orderDate;
 
     // Convert the UTC date string to a Date object
     const utcDate = new Date(parsedDataEmitere + 'Z'); // 'Z' indicates the string is in UTC time
@@ -172,11 +173,11 @@ const parseDataInfo = () => {
 
     // Construct a parsed order data item
     const parsedOrderDataItem = {
-      nrComanda: comanda.idComandaDto,
-      statusComanda: comanda.statusComandaDto,
-      tipPlata: comanda.tipPlataDto,
+      nrComanda: comanda.orderId,
+      statusComanda: comanda.orderStatus,
+      tipPlata: comanda.orderPayment,
       dataEmitere: localDate,
-      awbComanda: comanda.awbComandaDto,
+      awbComanda: comanda.orderTrackingString,
       encodedOrderId : comanda.encodedIdComandaDto
     };
 
@@ -190,7 +191,7 @@ const parseDataInfo = () => {
 // Watch Effect to Parse Orders Data When Client Data Changes
 watchEffect(() => {
   clientData.value = store.getDataPassed;
-
+  console.log(clientData.value)
   if (clientData.value) {
     parseDataInfo();
   }
@@ -199,7 +200,7 @@ watchEffect(() => {
 // Fetch Data on Mounted
 onMounted(() => {
   clientData.value = store.getDataPassed
-  
+  console.log(clientData.value)
 });
 
 
