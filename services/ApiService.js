@@ -9,23 +9,26 @@ class ApiService {
     async apiRequest(method, url, data = null, options = {}, returnData) {
         const store = useUserStore();
         const localePath = useLocalePath()
+        
         try {
             const response = await axios({
                 method,
                 url: `${this.baseURL}/${url}`,
                 data,
                 withCredentials: options.withCredentials,
+                responseType : options.responseType || 'json',
                 params: options.params,
                 paramsSerializer : (params) =>
                     qs.stringify(params , {arrayFormat: 'comma'})
             });
-
+            
             const returnObj = {
                 status : response.status,
                 message : response.data
             }
 
-            
+         
+
             if (response.status === 200) {
                 if(returnData === null){
                     return returnObj; // Ok()
@@ -79,9 +82,11 @@ class ApiService {
             params, // Add query parameters here
             ...(isAnonymous ? {withCredentials: false} : { withCredentials: true }), // Conditionally set credentials
         };
+      
         if (isBlob) {
             options.responseType = 'blob';
         }
+       
         return this.apiRequest("GET", url, null, options, returnData);
     }
 

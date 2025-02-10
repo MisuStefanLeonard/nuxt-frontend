@@ -13,6 +13,10 @@ class OrderService extends ApiService{
         return this.post(`place_order/${currency}` , formData , null , false)
     }
 
+    getConfirmationPage(orderId , confirmationKey){
+        return this.get(`confirmation/${confirmationKey}/${orderId}` , false , false , false)
+    }
+
 }
 
 export default new OrderService();

@@ -52,6 +52,7 @@
         "Success" : "Succes",
         "Attention" : "Atentie",
         "CheckForm" : "Verificati formularul din nou!",
+        "AlreadyVisited" : "Pagina deja vizitata. Redirectionare in 2 secunde",
         "SendSuccesfully" : "Formular trimis cu succes.",
         "Wait" : "Asteptati",
         "ErrorOccured" : "O eroare a avut loc",
@@ -463,6 +464,16 @@
         "orderBillingAddress" : "Adresa facturare",
         "noOrderPlaced" : "Nu aveti nicio comanda plasata",
         "orderPaymentType" : "Tip plata"
+    },
+    "orderConfirmationPage" : {
+        "title" : "Pagina de confirmare a comenzii",
+        "cardTitle" : "Comanda cu numarul ",
+        "wasPlaced" : "a fost plasata",
+        "seeOrderDetails" : "Puteti vedea detalii comenzii in sectiunea profilului dumneavoastra",
+        "emailSentWithOrderDetails" : "Un email a fost trimis cu detalii comenzii pe email-ul pe care s-a realizat comanda",
+        "canLeavePage" : "Pagina poate fi parasita",
+        "thankYou" : "Multumim de cumparaturi si va mai asteptam pe la noi !",
+        "checkMail" : "Poate dura de la 1 pana la 5 minute pana poate ajunge mail-ul. Va rog verificati si la spam! Multumim mult!"
     }
   }
   

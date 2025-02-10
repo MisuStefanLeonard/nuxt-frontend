@@ -570,7 +570,8 @@ class AdminService extends ApiService{
      * EXCEL EXAMPLE FOR PRODUCT IMPORTING
      */
      downloadExcel(){
-        return this.get('downloadExcel', true, true)
+        
+        return this.get('downloadExcel', true, true , false)
     }
 
     /**

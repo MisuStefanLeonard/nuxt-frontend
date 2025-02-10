@@ -1551,6 +1551,16 @@ const computedCheckVoucherApplied = computed(() => {
 
 
 const orderPayment = (async () => {
+    swal.fire({
+            icon: 'info',
+            title: 'Loading...',
+            text: t('sweetAlert2.Wait'),
+            allowOutsideClick: false,
+            showConfirmButton: false,
+            didOpen: () => {
+                swal.showLoading();
+            },
+        });
     var isOrderDetailsFormValidBoolean = false;
     var isDeliveryAddressDetailsFormValidBoolean = false;
     var isBillingAddressDetailsFormValidBoolean = false;
@@ -1611,15 +1621,16 @@ const orderPayment = (async () => {
                 const responseFromPayment = await orderService.placeOrder(currentCurrency.value , form)
                 // status : response.status,
                 // message : response.data
+                swal.close()
                 if(responseFromPayment.status === 200){
                     // Token guid|orderid
                     let getTokenAndOrderId = responseFromPayment.message.split(' ')[1];
                     const orderId = getTokenAndOrderId.split('|')[1]
                     const orderConfirmationToken = getTokenAndOrderId.split('|')[0]
-                    console.log(getTokenAndOrderId)
-                    console.log(orderId)
-                    console.log(orderConfirmationToken)
-                    navigateTo(localePath({
+                    // console.log(getTokenAndOrderId)
+                    // console.log(orderId)
+                    // console.log(orderConfirmationToken)
+                    await navigateTo(localePath({
                         path: `/user/order/${orderConfirmationToken}`,
                         query: { i : orderId }
                     }));

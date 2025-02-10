@@ -35,8 +35,8 @@
           </v-card>
         </v-container>
         <v-container>
-          <v-btn v-if="confirmationSucces" rounded="xl" type="submit" color="primary"
-            variant="outlined" class="font-weight-bold bg-grey-lighten-4" @click="goToLogIn">
+          <v-btn v-if="confirmationSucces" rounded="xl" type="submit" color="blue"
+            variant="outlined" class="font-weight-bold bg-grey-lighten-4" @click="navigateTo(localePath('/user/login'))">
             {{ $t('messages.goToLogIn') }}
           </v-btn>
           <v-btn v-if="expiredLink" rounded="xl" type="submit" color="success"
@@ -69,7 +69,7 @@ const safariFix = ref(false)
 
 // Route and Router instances
 const route = useRoute()
-const router = useRouter()
+const localePath = useLocalePath()
 
 // Method to confirm account
 const confirmAccount = async (token) => {
@@ -85,9 +85,7 @@ const confirmAccount = async (token) => {
 }
 
 // Method to redirect to login
-const goToLogIn = () => {
-  navigateTo(useLocalePath("/user/login"))
-}
+
 
 // Method to resend activation link
 const reSendActivationLink = async () => {
