@@ -1616,6 +1616,7 @@ const orderPayment = (async () => {
                     adresaLivrare  : deliveryUserAddress.value,
                     adresaFacturare : sameDeliveryAndBilling.value === true ? deliveryUserAddress.value : billingUserAddress.value
                 }
+                
                 const form = new FormData()
                 form.append('orderDto' , JSON.stringify(paymentObj))
                 const responseFromPayment = await orderService.placeOrder(currentCurrency.value , form)
