@@ -5,7 +5,6 @@ FROM node:${NODE_VERSION}-slim as build
 WORKDIR /app
 
 COPY ./package.json /app/
-COPY ./package.json /app/
 
 RUN npm install
 
@@ -16,6 +15,7 @@ RUN npm run build
 EXPOSE 3000
 ENV NUXT_HOST=0.0.0.0
 ENV NUXT_PORT=3000
+ENV NODE_ENV=development
 
 CMD [ "npm" , "run" ,"dev" ]
 
