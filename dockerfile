@@ -2,13 +2,14 @@ ARG NODE_VERSION=23.5.0
 
 FROM node:${NODE_VERSION}-slim as build
 
-WORKDIR /app
+WORKDIR /
 
-COPY ./package.json /app/
+COPY ./package*.json ./
 
+RUN np
 RUN npm install
 
-COPY . ./
+COPY . .
 
 RUN npm run build
 
