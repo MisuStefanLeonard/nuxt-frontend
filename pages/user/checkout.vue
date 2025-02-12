@@ -1578,8 +1578,8 @@ const orderPayment = (async () => {
         console.log(isBillingAndDeliveryAddressDetailsFormValidBoolean)
     }else{
         // delivery validation
-        const isDeliveryAddressDetailsFormValidObj= await  deliveryAddressForm.value.validate()
-        isDeliveryAddressDetailsFormValidObj = isDeliveryAddressDetailsFormValidObj.valid
+        const isDeliveryAddressDetailsFormValidObj = await  deliveryAddressForm.value.validate()
+        isDeliveryAddressDetailsFormValidBoolean = isDeliveryAddressDetailsFormValidObj.valid
         //
 
         // billing validation
