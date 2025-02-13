@@ -49,16 +49,15 @@
               </v-alert>
               <v-alert type="info" variant="tonal" class="my-3">
                 <a class="text-white" href="/admin/excel_structure">Aici puteti gasii structura fisierului excel pentru importarea in masa a diferitelor produse</a>
-                <p class="text-white font-weight-bold">Daca apasati pe butonul  <v-icon size="24" color="red" right>mdi-delete</v-icon> produsul va:
-                  <ol>
-                    <li>
-                      Daca produsul are comenzi pe el , acesta nu va fi sters , doar nu v-a mai fi afisat.
-                    </li>
-                    <li>
-                      Daca produsul nu are comenzi pe el , acesta va fi sters de TOT!
-                    </li>
-                  </ol>
-                </p>
+                <p class="text-white font-weight-bold">Daca apasati pe butonul  <v-icon size="24" color="red" right>mdi-delete</v-icon> produsul va:</p>
+                <ol>
+                  <li>
+                    Daca produsul are comenzi pe el , acesta nu va fi sters , doar nu v-a mai fi afisat.
+                  </li>
+                  <li>
+                    Daca produsul nu are comenzi pe el , acesta va fi sters de TOT!
+                  </li>
+                </ol>
               </v-alert>
           </v-container>
       </v-sheet>
