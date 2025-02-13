@@ -1,6 +1,6 @@
-ARG NODE_VERSION=22.14.0
+ARG NODE_VERSION=23.7.0
 
-FROM node:${NODE_VERSION}-alpine as build
+FROM node:${NODE_VERSION}-alpine3.20 as build
 
 WORKDIR /
 
