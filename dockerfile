@@ -1,4 +1,4 @@
-ARG NODE_VERSION=23.5.0
+ARG NODE_VERSION=22.14.0
 
 FROM node:${NODE_VERSION}-alpine as build
 
