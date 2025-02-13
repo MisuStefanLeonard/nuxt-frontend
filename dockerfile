@@ -1,6 +1,6 @@
 ARG NODE_VERSION=23.5.0
 
-FROM node:${NODE_VERSION}-slim as build
+FROM node:${NODE_VERSION}-alpine as build
 
 WORKDIR /
 
