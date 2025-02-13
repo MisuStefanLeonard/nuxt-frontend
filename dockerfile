@@ -1,6 +1,7 @@
 ARG NODE_VERSION=23.7.0
 
 FROM node:${NODE_VERSION}-alpine3.20 as build
+ENV NODE_OPTIONS="--max-old-space-size=4096"
 
 WORKDIR /
 
