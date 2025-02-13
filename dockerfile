@@ -1,15 +1,15 @@
 ARG NODE_VERSION=23.7.0
 
-FROM node:${NODE_VERSION}-alpine3.20 as build
+FROM node:${NODE_VERSION}-alpine as build
 ENV NODE_OPTIONS="--max-old-space-size=4096"
 
-WORKDIR /
+WORKDIR /app
 
-COPY ./package*.json ./
+COPY ./package*.json /app/
 
 RUN npm install
 
-COPY . .
+COPY . /app
 
 # RUN npm run build
 
