@@ -11,7 +11,6 @@
   "dependencies": {
     "@gtm-support/vue-gtm": "^3.1.0",
     "@mdi/font": "^7.4.47",
-    "@nuxt/eslint-config": "^0.5.5",
     "axios": "^1.7.4",
     "bootstrap": "^5.3.3",
     "mitt": "^3.0.1",
@@ -21,7 +20,12 @@
     "sweetalert2": "^11.12.4",
     "vue": "^3.2.13",
     "vue-recaptcha-v3": "^2.0.1",
-    "vuetify": "^3.7.0"
+    "vuetify": "^3.7.0",
+    "@nuxt/image": "^1.8.1",
+    "@nuxtjs/i18n": "^8.5.5",
+    "@pinia/nuxt": "^0.10.1",
+    "@zadigetvoltaire/nuxt-gtm": "^0.0.13",
+    "nuxt": "^3.15.4"
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",
