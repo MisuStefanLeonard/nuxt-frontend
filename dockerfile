@@ -18,17 +18,26 @@ ENV NUXT_HOST=0.0.0.0
 ENV NUXT_PORT=3000
 ENV NODE_ENV=development
 
-FROM nginx:1.21.1-alpine as prod-stage
+# FROM nginx:1.21.1-alpine as prod-stage
 
-RUN rm -rf /usr/share/nginx/html/*
+# RUN rm -rf /usr/share/nginx/html/*
 
-COPY ./nginx/default.conf /etc/nginx/conf.d
+# COPY ./nginx/default.conf /etc/nginx/conf.d
 
-COPY --from=build /app/.output/public /usr/share/nginx/html
+# COPY --from=build /app/.output/public /usr/share/nginx/html
 
-EXPOSE 80
+# EXPOSE 80
 
-CMD [ "nginx", "-g" , "daemon off;" ]
+# CMD [ "nginx", "-g" , "daemon off;" ]
 
-# CMD [ "npm" , "start" ]
+# # CMD [ "npm" , "start" ]
 
+FROM node:${NODE_VERSION}-alpine as production
+
+WORKDIR /app
+COPY --from=build /app /app
+RUN npm install --production
+
+EXPOSE 3000
+
+CMD ["node", ".output/server/index.mjs"]
