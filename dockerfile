@@ -11,12 +11,24 @@ RUN npm install
 
 COPY . /app
 
-# RUN npm run build
+RUN npm run build
 
 EXPOSE 3000
 ENV NUXT_HOST=0.0.0.0
 ENV NUXT_PORT=3000
 ENV NODE_ENV=development
 
-CMD [ "npm" , "run" ,"dev" ]
+FROM nginx:1.21.1-alpine as prod-stage
+
+RUN rm -rf /usr/share/nginx/html/*
+
+COPY ./nginx/default.conf /etc/nginx/conf.d
+
+COPY --from=build /app/dist /usr/share/nginx/html
+
+EXPOSE 80
+
+CMD [ "nginx", "-g" , "daemon off;" ]
+
+# CMD [ "npm" , "start" ]
 
