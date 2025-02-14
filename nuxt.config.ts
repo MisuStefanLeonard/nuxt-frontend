@@ -8,7 +8,9 @@ export default defineNuxtConfig({
   modules: [
     '@pinia/nuxt',
     'pinia-plugin-persistedstate/nuxt',
-    '@nuxt/image'
+    '@nuxt/image',
+    '@nuxtjs/i18n',
+    '@zadigetvoltaire/nuxt-gtm'
   ],
   $development: {
     components : false,
@@ -34,6 +36,7 @@ export default defineNuxtConfig({
       '@pinia/nuxt',
       'pinia-plugin-persistedstate/nuxt',
       '@nuxtjs/i18n',
+      '@nuxt/image',
       '@zadigetvoltaire/nuxt-gtm'
     ],
     gtm: {
