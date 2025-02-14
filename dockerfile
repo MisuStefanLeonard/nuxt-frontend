@@ -7,7 +7,7 @@ WORKDIR /app
 
 COPY ./package*.json /app/
 
-RUN npm install --omit=dev
+RUN npm install
 
 COPY . /app
 
@@ -21,8 +21,10 @@ ENV NODE_ENV=development
 FROM node:${NODE_VERSION}-alpine as production
 
 WORKDIR /app
-COPY --from=build /app /app
-RUN npm install --production
+# COPY --from=build /app /app
+COPY --from=build /app/package*.json /app/
+COPY --from=build /app/.output /app/.output
+RUN npm install --omit=dev
 
 EXPOSE 3000
 
