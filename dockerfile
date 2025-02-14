@@ -24,6 +24,7 @@ WORKDIR /app
 # COPY --from=build /app /app
 COPY --from=build /app/package*.json /app/
 COPY --from=build /app/.output /app/.output
+COPY --from=build /app/locales /app/locales
 RUN npm install --omit=dev
 
 EXPOSE 3000
