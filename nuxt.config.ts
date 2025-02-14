@@ -9,8 +9,8 @@ export default defineNuxtConfig({
     '@pinia/nuxt',
     'pinia-plugin-persistedstate/nuxt',
     '@nuxt/image',
-    '@nuxtjs/i18n',
-    '@zadigetvoltaire/nuxt-gtm'
+    '@nuxtjs/i18n'
+
   ],
   $development: {
     components : false,
