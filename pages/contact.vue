@@ -41,7 +41,7 @@
           </div>
             <v-btn type="submit" variant="flat"
               color="primary">
-                {{ $t('button.sendForm') }} <v-icon>mdi-arrow-right</v-icon>
+                {{ $t('button.sendForm') }} <v-icon  :icon="mdiArrowRight" size="24"></v-icon>
               </v-btn>
           </v-form>
           <p class="font-weight-bold h6 text-subtitle-2 my-3">{{ $t('contactPage.assureReason') }}</p>
@@ -55,6 +55,7 @@
 <script setup>
 import userService from '~/services/User';
 import { useReCaptcha } from 'vue-recaptcha-v3';
+import { mdiArrowRight } from '@mdi/js';
 
 definePageMeta({
   layout: 'default',

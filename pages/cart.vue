@@ -8,7 +8,7 @@
             rounded="pill"
             location="bottom"
         >
-            <v-icon color="white">mdi-check</v-icon> {{ $t('cart.quantityIncremented') }}
+            <v-icon color="white"  :icon="mdiCheck" size="24"></v-icon> {{ $t('cart.quantityIncremented') }}
         </v-snackbar>
         <v-snackbar  class="text-center"
             v-model="decremented"
@@ -17,7 +17,7 @@
             rounded="pill"
             location="bottom"
         >
-            <v-icon color="white">mdi-check</v-icon>  {{ $t('cart.quantityDecremented') }}
+            <v-icon color="white"  :icon="mdiCheck" size="24"></v-icon>  {{ $t('cart.quantityDecremented') }}
         </v-snackbar>
         <v-snackbar  class="text-center"
             v-model="deletedSuccesfully"
@@ -26,7 +26,7 @@
             rounded="pill"
             location="bottom"
         >
-            <v-icon color="white">mdi-check</v-icon>  {{ $t('cart.deletedSuccesfully') }}
+            <v-icon color="white" :icon="mdiCheck" size="24"></v-icon>  {{ $t('cart.deletedSuccesfully') }}
         </v-snackbar>
         <v-sheet color="grey-lighten-2" elevation="12" class="p-2 m-2 h-100 text-center">
             
@@ -37,7 +37,7 @@
                     <v-card class=" bg-grey-lighten-3  w-100 ">
                         <v-card-text>
                             <p class="font-weight-light h5 text-center my-2">{{ $t('cart.empty') }}</p>
-                            <p><v-icon>mdi-emoticon-sad</v-icon></p>
+                            <p><v-icon :icon="mdiEmoticonSad" size="24"></v-icon></p>
                         </v-card-text>
                     </v-card>
                 </v-container>
@@ -130,8 +130,8 @@
                                                 density="compact" 
                                                 variant="outlined"
                                                 color="primary"
-                                                append-icon="mdi-plus"
-                                                :prepend-icon="product.cartItems[0].cantitate > 1 ?  'mdi-minus' : ''"
+                                                :append-icon="mdiPlus"
+                                                :prepend-icon="product.cartItems[0].cantitate > 1 ?  mdiMinus : ''"
                                                 readonly
                                                 v-model="product.cartItems[0].cantitate"
                                                 @click:append="modifyQuantity(false,product)"
@@ -268,13 +268,13 @@
                                                                 <template v-slot:next="{props}">
                                                                     <v-btn variant="outlined" color="primary" class="ma-1"
                                                                     v-bind="props" @click="stepValueSet++">
-                                                                        Next<v-icon>mdi-arrow-right</v-icon>
+                                                                        Next<v-icon :icon="mdiArrowRight" size="24"></v-icon>
                                                                     </v-btn>
                                                                 </template>
                                                                 <template v-slot:prev="{props}">
                                                                     <v-btn variant="outlined" color="error" class="ma-1"
                                                                     v-bind="props" @click="stepValueSet--">
-                                                                    Prev<v-icon>mdi-arrow-left</v-icon>
+                                                                    Prev<v-icon :icon="mdiArrowLeft" size="24"></v-icon>
                                                                     </v-btn>
                                                                 </template>
                                                             </v-stepper-actions>
@@ -299,8 +299,8 @@
                                             density="compact" 
                                             variant="outlined"
                                             color="primary"
-                                            append-icon="mdi-plus"
-                                            :prepend-icon="product.cartItems[0].cantitate > 1 ?  'mdi-minus' : ''"
+                                            :append-icon="mdiPlus"
+                                            :prepend-icon="product.cartItems[0].cantitate > 1 ?  mdiMinus : ''"
                                             readonly
                                             v-model="product.cartItems[0].cantitate"
                                             @click:append="modifyQuantity(false,product)"
@@ -308,7 +308,7 @@
                                           >
                                             
                                         </v-text-field>
-                                        <v-btn color="red-darken-3" @click="deleteItemFromCart(product)">{{ $t('button.delete') }}<v-icon>mdi-trash-can-outline</v-icon></v-btn>
+                                        <v-btn color="red-darken-3" @click="deleteItemFromCart(product)">{{ $t('button.delete') }}<v-icon :icon="mdiTrashCanOutline" size="24"></v-icon></v-btn>
                                     </div>
                                     <v-divider></v-divider>
                                 </v-col>
@@ -334,8 +334,8 @@
                                                 density="compact" 
                                                 variant="outlined"
                                                 color="primary"
-                                                append-icon="mdi-plus"
-                                                :prepend-icon="product.cartItems[0].cantitate > 1 ?  'mdi-minus' : ''"
+                                                :append-icon="mdiPlus"
+                                                :prepend-icon="product.cartItems[0].cantitate > 1 ?  mdiMinus : ''"
                                                 readonly
                                                 v-model="product.cartItems[0].cantitate"
                                                 @click:append="modifyQuantity(false,product)"
@@ -430,13 +430,13 @@
                                                 <template v-slot:next="{props}">
                                                     <v-btn variant="outlined" color="primary" class="ma-1"
                                                     v-bind="props" @click="stepValue++">
-                                                        Next<v-icon>mdi-arrow-right</v-icon>
+                                                        Next<v-icon :icon="mdiArrowRight" size="24"></v-icon>
                                                     </v-btn>
                                                 </template>
                                                 <template v-slot:prev="{props}">
                                                     <v-btn variant="outlined" color="error" class="ma-1"
                                                     v-bind="props" @click="stepValue--">
-                                                       Prev<v-icon>mdi-arrow-left</v-icon>
+                                                       Prev<v-icon  :icon="mdiArrowLeft" size="24"></v-icon>
                                                     </v-btn>
                                                 </template>
                                             </v-stepper-actions>
@@ -465,7 +465,7 @@
                     
                         <p class="font-weight-light h5 text-center my-2">{{ $t('cart.totalPrice') }} <b> {{  itemsInCart.pretTotal }} {{ currentCurrency === 'RON' ? 'RON' : 'EUR' }}</b></p>
                         <v-btn variant="flat" color="black" @click="navigateTo(localPath('/user/checkout'))" >
-                            {{ $t('cart.goToCheckout') }} <v-icon class="ml-1">mdi-arrow-right</v-icon>
+                            {{ $t('cart.goToCheckout') }} <v-icon class="ml-1"  :icon="mdiArrowRight" size="24"></v-icon>
                         </v-btn>
                     </v-card-text>
                 </v-card>
@@ -479,6 +479,7 @@
 
 
 <script setup>
+import { mdiArrowLeft, mdiArrowRight, mdiCheck, mdiEmoticonSad, mdiMinus, mdiPlus, mdiTrashCanOutline } from '@mdi/js';
 import { useDisplay } from 'vuetify';
 import productService from '~/services/Products';
 

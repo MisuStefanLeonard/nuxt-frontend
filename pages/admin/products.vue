@@ -30,7 +30,7 @@
       ></v-file-input>
       <v-sheet class="p-2 m-2"  color="grey-darken-3" elevation="24">
         <p class="text-white h3 font-weight-light">
-          <v-icon size="24" color="primary">mdi-information</v-icon>
+          <v-icon size="24" color="primary" :icon="mdiInformation"></v-icon>
           Informatii
           
         </p>
@@ -49,7 +49,7 @@
               </v-alert>
               <v-alert type="info" variant="tonal" class="my-3">
                 <a class="text-white" href="/admin/excel_structure">Aici puteti gasii structura fisierului excel pentru importarea in masa a diferitelor produse</a>
-                <p class="text-white font-weight-bold">Daca apasati pe butonul  <v-icon size="24" color="red" right>mdi-delete</v-icon> produsul va:</p>
+                <p class="text-white font-weight-bold">Daca apasati pe butonul  <v-icon size="24" color="red" right :icon="mdiDelete"></v-icon> produsul va:</p>
                 <ol>
                   <li>
                     Daca produsul are comenzi pe el , acesta nu va fi sters , doar nu v-a mai fi afisat.
@@ -67,11 +67,11 @@
             <p class="h5 font-weight-light text-white">Sectiunea de adaugare de produse</p>
             <v-btn rounded color="success" class="m-2 " @click="triggerFileInput()">
               Importa Excel
-              <v-icon size="24" class="pl-3" right>mdi-file-upload</v-icon>
+              <v-icon size="24" class="pl-3" right :icon="mdiFileUpload"></v-icon>
             </v-btn>
             <v-btn rounded class="m-2 " color="primary" @click="redirectToAddingProduct()">
               Adauga Produs
-              <v-icon size="24" class="pl-3" right>mdi-plus</v-icon>
+              <v-icon size="24" class="pl-3" right :icon="mdiPlus"></v-icon>
             </v-btn>
           </v-container>
         </v-col>
@@ -81,11 +81,11 @@
             <p class="h5 font-weight-light text-white">Optiune pentru produsele selectate</p>
             <v-btn rounded color="error" class="m-2 " @click="deleteSelectedProducts()">
               Sterge
-              <v-icon size="24" class="pl-3" right>mdi-delete</v-icon>
+              <v-icon size="24" class="pl-3" right :icon="mdiDelete"></v-icon>
             </v-btn>
             <v-btn rounded color="primary" class="m-2 " @click="activateSelectedProducts()">
               Activeaza in magazin
-              <v-icon size="24" class="pl-3" right>mdi-toggle-switch-outline</v-icon>
+              <v-icon size="24" class="pl-3" right :icon="mdiToggleSwitchOutline"></v-icon>
             </v-btn>
           </v-container>
         </v-col>
@@ -146,16 +146,16 @@
               color="primary"
               size="28"
               class="mr-2"
-              @click="seeProductPage(item.codProdusAdminDto)"
+              @click="seeProductPage(item.codProdusAdminDto)" :icon="mdiEye"
             >
-              mdi-eye
+              
             </v-icon>
             <v-icon
               color="error"
               size="28"
-              @click="deleteProduct(item.codProdusAdminDto)"
+              @click="deleteProduct(item.codProdusAdminDto)" :icon="mdiDelete"
             >
-              mdi-delete
+             
             </v-icon>
           </template>
 
@@ -170,6 +170,7 @@
 </template>
 
 <script setup>
+import { mdiDelete, mdiEye, mdiFileUpload, mdiInformation, mdiPlus, mdiToggleSwitchOutline } from '@mdi/js'
 import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import adminService from '~/services/Admin'

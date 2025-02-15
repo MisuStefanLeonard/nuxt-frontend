@@ -73,7 +73,7 @@
                   :disabled="isRegistering"
                 >
                   {{ $t('register.registerText') }}
-                  <v-icon class="pl-1">mdi-account-plus</v-icon>
+                  <v-icon class="pl-1"  :icon="mdiAccountPlus" size="24"></v-icon>
                 </v-btn>
                 <v-spacer class="mt-2"></v-spacer>
                 <v-btn
@@ -85,7 +85,7 @@
                   class="font-weight-bold bg-grey-lighten-3"
                 >
                 {{ $t('register.alreadyHaveAccount') }}
-                  <v-icon class="pl-1">mdi-login</v-icon>
+                  <v-icon class="pl-1" :icon="mdiLogin" size="24"></v-icon>
                 </v-btn>
               </v-container>
               <v-container class="justify-center d-flex">
@@ -108,6 +108,7 @@
 </template>
 
 <script setup>
+import { mdiAccountPlus, mdiLogin } from '@mdi/js';
 import { ref } from 'vue'
 import RegisterService from '~/services/Register'
 

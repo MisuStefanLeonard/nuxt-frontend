@@ -20,7 +20,7 @@
                 </v-text-field>
                 <v-btn rounded="xl" type="submit" variant="outlined" class="font-weight-bold bg-grey-lighten-3 mt-2">
                     Intra
-                    <v-icon class="pl-2">mdi-arrow-right</v-icon>
+                    <v-icon class="pl-2" :icon="mdiArrowRight"></v-icon>
                 </v-btn>
             </v-form>
         </v-container>
@@ -28,6 +28,7 @@
 </template>
 
 <script setup>
+import { mdiArrowRight } from '@mdi/js'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import AdminService from '~/services/Admin'

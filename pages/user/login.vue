@@ -48,7 +48,7 @@
                   class="font-weight-bold bg-grey-lighten-3"
                 >
                   {{ $t('login.logInText') }}
-                  <v-icon class="pl-2">mdi-login</v-icon>
+                  <v-icon class="pl-2" :icon="mdiLogin" size="24"></v-icon>
                 </v-btn>
                 <v-spacer></v-spacer>
                 <v-btn
@@ -59,7 +59,7 @@
                   class="font-weight-bold bg-blue-lighten-1 mt-2"
                 >
                   {{ $t("login.logInWithGoogle") }}
-                  <v-icon class="pl-2">mdi-google-plus</v-icon>
+                  <v-icon class="pl-2" :icon="mdiGooglePlus" size="24"></v-icon>
                 </v-btn>
                 <v-spacer></v-spacer>
                 <v-btn
@@ -71,7 +71,7 @@
                   class="font-weight-bold bg-grey-lighten-3 mt-2"
                 >
                   {{ $t('login.forgotPasswordText') }}
-                  <v-icon class="pl-2">mdi-lock-question</v-icon>
+                  <v-icon class="pl-2" :icon="mdiLockQuestion" size="24"></v-icon>
                 </v-btn>
                 <v-spacer></v-spacer>
 
@@ -99,6 +99,7 @@
 </template>
 
 <script setup>
+import { mdiGooglePlus, mdiLockQuestion, mdiLogin } from '@mdi/js';
 import { ref } from 'vue'
 import RegisterService from '~/services/Register'
 import { useUserStore } from '~/store/user';

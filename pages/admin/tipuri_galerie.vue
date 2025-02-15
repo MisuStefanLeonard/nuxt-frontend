@@ -18,7 +18,7 @@
                     <p class="h5 font-weight-light text-white">Sectiunea de adaugare tipuri galerie </p>
                     <v-btn rounded class="m-2 " color="success" @click="redirectToAddingTipGalerie()">
                         Adauga tip galerie
-                        <v-icon size="24" class="pl-3" right>mdi-plus</v-icon>
+                        <v-icon size="24" class="pl-3" right  :icon="mdiPlus" ></v-icon>
                     </v-btn>
                 </v-col>
                 <v-divider class="border-opacity-50" color="success" vertical></v-divider>
@@ -26,7 +26,7 @@
                     <p class="h5 font-weight-light text-white">Optiune pentru tipuri galerie selectate</p>
                     <v-btn rounded color="error" class="m-2 " @click="deleteSelectedTipGalerie()">
                         Sterge 
-                        <v-icon size="24" class="pl-3" right>mdi-delete</v-icon>
+                        <v-icon size="24" class="pl-3" right :icon="mdiDelete"></v-icon>
                     </v-btn>
                 </v-col>
             </v-row> 
@@ -61,17 +61,17 @@
                         color="error"
                         size="28"
                         @click="deleteTipGalerie(item.encodedIdTipGalerieDto)"
-                        class="mr-2"
+                        class="mr-2"  :icon="mdiDelete"
                     >
-                        mdi-delete
+                      
                     </v-icon>
                     <v-icon
                     color="primary"
                     size="28"
                     class="mr-2"
-                    @click="seeTipGaleriePage(item.encodedIdTipGalerieDto)"
+                    @click="seeTipGaleriePage(item.encodedIdTipGalerieDto)" :icon="mdiEye"
                     >
-                    mdi-eye
+                   
                 </v-icon>
                 </template>
                 <template #[`item.sePrindeCuIneleDto`]="{item}">
@@ -90,6 +90,7 @@
 </template>
 
 <script setup>
+import { mdiEye } from '@mdi/js';
 import Swal from 'sweetalert2';
 import adminService from '~/services/Admin'
 import { useUserStore } from '~/store/user';

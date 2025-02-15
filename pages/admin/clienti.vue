@@ -6,7 +6,7 @@
             <v-text-field
                 v-model="search"
                 label="Cauta dupa numele/prenumele/email/tipul contului/username a clientului"
-                prepend-inner-icon="mdi-magnify"
+                :prepend-inner-icon="mdiMagnify"
                 class="p-3"
                 variant="outlined"
             ></v-text-field>
@@ -55,9 +55,9 @@
                         color="primary"
                         size="28"
                         class="mr-2"
-                        @click="seeClientPage(item.encodedIdContDto)"
+                        @click="seeClientPage(item.encodedIdContDto)" :icon="mdiEye"
                     >
-                        mdi-eye
+                       
                     </v-icon>
                 </template>
             </v-data-table>
@@ -66,6 +66,7 @@
 </template>
 
 <script setup>
+import { mdiEye, mdiMagnify } from '@mdi/js';
 import { ref, onBeforeMount, computed } from 'vue';
 import adminService from '~/services/Admin';
 

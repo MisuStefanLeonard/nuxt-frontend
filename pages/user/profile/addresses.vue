@@ -17,7 +17,7 @@
       <v-dialog v-model="modifyUserAddressDialog"
        max-width="500" width="500" max-height="100%" 
        persistent class=" p-2 m-1" scrollable>
-        <v-btn color="black" @click="closeModifyingDialog()">Close <v-icon class="ml-2">mdi-close</v-icon></v-btn>
+        <v-btn color="black" @click="closeModifyingDialog()">Close <v-icon class="ml-2" size="24" :icon="mdiClose"></v-icon></v-btn>
         <v-card class="bg-blue-grey-lighten-5 text-center" height="500" width="500">
           <v-card-text>
               <v-form ref="modifyUserAddressForm" @submit.prevent="modifyAddress()" >
@@ -56,7 +56,7 @@
             
               <v-btn rounded="xl"  type="submit" color="success" variant="flat" class="font-weight-normal my-4">
                 {{ $t('button.save') }} 
-                <v-icon class="pl-2">mdi-content-save</v-icon>
+                <v-icon class="pl-2" size="24" :icon="mdiContentSave"></v-icon>
               </v-btn>
             </v-form>
           </v-card-text>
@@ -81,8 +81,8 @@
         <v-container v-if="emptyAddressListAlert" class="justify-center">
           <v-card class="bg-grey-darken-4 my-2 rounded-xl ">
             <v-card-title>
-              <v-icon>
-                mdi-map-marker-outline
+              <v-icon size="24" :icon="mdiMapMarkerOutline">
+               
               </v-icon>
               {{ $t('profile.emptyAddress') }}
             </v-card-title>
@@ -92,7 +92,7 @@
           </v-card>
           <v-btn :disabled="isDataFetching"  rounded="xl" @click="showFormToAddAnAddress()" type="submit" color="blue" variant="tonal" class="font-weight-bold bg-grey-lighten-3 my-4">
             {{ $t('button.addAddress') }}
-            <v-icon class="pl-2">mdi-plus-circle-outline</v-icon>
+            <v-icon class="pl-2" size="24" :icon="mdiPlusCircleOutline"></v-icon>
           </v-btn>
         </v-container>
         
@@ -101,11 +101,11 @@
                   :key="card_item.aliasDto"
                   class="bg-grey-darken-4 my-2 rounded-xl ">
             <v-card-title class="my-2">
-              <v-icon v-if="card_item.tipAdresaDto === 'Livrare'">
-                mdi-map-marker-outline
+              <v-icon v-if="card_item.tipAdresaDto === 'Livrare'" size="24" :icon="mdiMapMarkerOutline">
+               
               </v-icon>
-              <v-icon v-else>
-                mdi-file-document-plus-outline
+              <v-icon v-else size="24" :icon="mdiFileDocumentPlusOutline">
+               
               </v-icon>
               {{ card_item.aliasDto }}
             </v-card-title>
@@ -129,13 +129,13 @@
             </v-card-text>
             <v-btn :disabled="isDataFetching || card_item.isDeletedDto"  @click="openModifyingUserDialog(card_item)" rounded="xl" type="submit" color="blue" variant="tonal" class="font-weight-bold bg-grey-lighten-3 my-4 ">
               {{ $t('button.modify') }} 
-              <v-icon class="pl-2">mdi-pen</v-icon>
+              <v-icon class="pl-2" size="24" :icon="mdiPen"></v-icon>
             </v-btn>
           </v-card>
 
           <v-btn :disabled="isDataFetching" v-if="buttonShow"  rounded="xl" @click="showFormToAddAnAddress('modify')" type="submit" color="blue" variant="flat" class="font-weight-bold  my-4">
             {{ $t('button.addAddress') }} 
-            <v-icon class="pl-2">mdi-plus-circle-outline</v-icon>
+            <v-icon class="pl-2" size="24" :icon="mdiPlusCircleOutline"></v-icon>
           </v-btn>
         </v-container>
         <v-container v-if="!emptyAddressListAlert && showFormForAddingAddress" class="d-block w-sm-75 w-lg-75">
@@ -175,12 +175,12 @@
           
             <v-btn rounded="xl"  type="submit" color="green" variant="outlined" class="font-weight-bold bg-grey-lighten-3 my-4">
               {{ $t('button.save') }} 
-              <v-icon class="pl-2">mdi-content-save</v-icon>
+              <v-icon class="pl-2" size="24" :icon="mdiContentSave"></v-icon>
             </v-btn>
           </v-form>
           <v-btn :disabled="isDataFetching" rounded="xl" @click="showFormToAddAnAddress()" type="submit" color="blue" variant="flat" class="font-weight-bold  my-4">
             {{ $t('button.addAddress') }} 
-            <v-icon class="pl-2">mdi-plus-circle-outline</v-icon>
+            <v-icon class="pl-2" size="24" :icon="mdiPlusCircleOutline"></v-icon>
           </v-btn>
         </v-container>
       </v-container>
@@ -189,6 +189,7 @@
 </template>
 
 <script setup>
+import { mdiContentSave, mdiFileDocumentPlusOutline, mdiMapMarkerOutline, mdiPen, mdiPlusCircleOutline } from '@mdi/js'
 import { ref, computed, onMounted } from 'vue'
 import UserService from '~/services/User'
 

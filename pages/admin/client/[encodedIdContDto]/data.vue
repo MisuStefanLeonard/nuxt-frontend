@@ -39,13 +39,13 @@
                         variant="outlined"
                         ></v-text-field>
                         <v-switch v-else-if="item.type === 'switch'" class="p-2 m-2"
-                        :label="`Stare cont: ${accountData.contActivDto}`"
+                        :label="`Stare cont: ${accountData.contActivDto === true ? 'Activat' : 'Neactivat'}`"
                         :placeholder="item.placeholder"
                         :disabled="item.disabled"
                         v-model="accountData.contActivDto"
                         color="success"
-                        false-value="Neactivat"
-                        true-value="Activat"
+                        :false-value="false"
+                        :true-value="true"
                         >
                         </v-switch>
                         <v-date-input v-else-if="item.type === 'date-input'" class="p-2 m-2"
@@ -60,7 +60,7 @@
                         variant="flat"
                         color="success"
                         class="p-2 m-2"
-                        append-icon="mdi-content-save"
+                        :append-icon="mdiContentSave"
                         @click="changeUserData"
                     >
                         Salveaza
@@ -79,6 +79,7 @@
   import AdminNavDrawerOnClient from '~/components/admin/AdminNavDrawerOnClient.vue';
   import adminService from '~/services/Admin';
   import registerService from '~/services/Register'
+import { mdiContentSave } from '@mdi/js';
   
   definePageMeta({
     layout: 'admin',
@@ -229,7 +230,7 @@
                 fireAlarm('error', 'Eroare', 'O eroare a avut loc', null);
                
             }
-            oldData = JSON.parse(JSON.stringify(accountData.value))
+            oldData.value = JSON.parse(JSON.stringify(accountData.value))
             store.setAccountData(accountData.value);
             store.setOriginalAccountData(accountData.value)
         }

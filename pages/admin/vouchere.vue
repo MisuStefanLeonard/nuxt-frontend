@@ -10,7 +10,7 @@
                     <p class="h5 font-weight-light text-white">Sectiunea de adaugare vouchere</p>
                     <v-btn rounded class="m-2 " color="success" @click="redirectToAddingVoucher()">
                         Adauga voucher
-                        <v-icon size="24" class="pl-3" right>mdi-plus</v-icon>
+                        <v-icon size="24" class="pl-3" right :icon="mdiPlus"></v-icon>
                     </v-btn>
                 </v-col>
                 <v-divider class="border-opacity-50" color="success" vertical></v-divider>
@@ -18,14 +18,14 @@
                     <p class="h5 font-weight-light text-white">Optiune pentru voucherele selectate</p>
                     <v-btn rounded color="error" class="m-2 " @click="deleteSelectedVouchers()">
                         Sterge 
-                        <v-icon size="24" class="pl-3" right>mdi-delete</v-icon>
+                        <v-icon size="24" class="pl-3" right :icon="mdiDelete"></v-icon>
                     </v-btn>
                 </v-col>
             </v-row> 
         </v-container>
         <v-sheet color="grey-darken-3 m-2">
             <p class="font-weight-light h3 text-center p-2 m-2">
-                <v-icon size="24" color="primary">mdi-information</v-icon>
+                <v-icon size="24" color="primary" :icon="mdiInformation"></v-icon>
                 Informatii
             </p>
             <v-container fluid>
@@ -79,17 +79,17 @@
                         color="error"
                         size="28"
                         @click="deleteVoucher(item.encodedIdVoucherDto)"
-                        class="mr-2"
+                        class="mr-2" :icon="mdiDelete"
                     >
-                        mdi-delete
+                      
                     </v-icon>
                     <v-icon
                     color="primary"
                     size="28"
                     class="mr-2"
-                    @click="seeVoucherPage(item.encodedIdVoucherDto)"
+                    @click="seeVoucherPage(item.encodedIdVoucherDto)" :icon="mdiEye"
                     >
-                    mdi-eye
+                    
                 </v-icon>
                 </template>
                 
@@ -100,6 +100,7 @@
 </template>
 
 <script setup>
+import { mdiDelete, mdiEye, mdiInformation, mdiPlus } from '@mdi/js';
 import Swal from 'sweetalert2';
 import adminService from '~/services/Admin'
 import { useUserStore } from '~/store/user';

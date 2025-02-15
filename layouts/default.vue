@@ -3,7 +3,6 @@
     <v-app>
       <FirstTimeEntering />
       <MyNavBar :key="route.fullPath" />
-      
       <v-main>
         <SnackbarExpired />
         <NuxtPage />

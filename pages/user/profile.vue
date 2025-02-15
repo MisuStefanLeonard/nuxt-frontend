@@ -6,7 +6,7 @@
       <div v-else>
 
       <v-container fluid class="pb-2 text-center shadow-lg mt-2">
-        <p class="h2 font-weight-light"><v-icon class="mr-2" size="24">mdi-cog-outline</v-icon>{{$t('profile.generalInfo.accountSettings')}}</p>
+        <p class="h2 font-weight-light"><v-icon class="mr-2" size="24" :icon="mdiCogOutline"></v-icon>{{$t('profile.generalInfo.accountSettings')}}</p>
       </v-container>
       <v-container fluid class="mt-4 text-center d-block">
         <v-card 
@@ -18,7 +18,7 @@
             <v-card-title>
               <v-row  justify="center">
                 <v-col cols="auto">
-                  <v-icon>{{ card_item.card_icon }}</v-icon>
+                  <v-icon :icon="card_item.card_icon" size="24"></v-icon>
                 </v-col>
                 <v-col cols="auto">
                   <span class="font-weight-thin">{{ card_item.card_title }}</span>
@@ -35,6 +35,7 @@
   
 
 <script setup>
+import { mdiCogOutline } from '@mdi/js';
 import { ref } from 'vue'
 
 definePageMeta({

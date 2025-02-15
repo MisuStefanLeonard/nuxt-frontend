@@ -95,7 +95,7 @@
                     variant="flat"
                     color="success"
                     class="p-2"
-                    append-icon="mdi-content-save"
+                    :append-icon="mdiContentSave"
                     @click="saveNewTipGalerie"
                 >
                     Adauga
@@ -106,6 +106,7 @@
 </template>
 
 <script setup>
+import { mdiContentSave } from '@mdi/js';
 import { ref } from 'vue';
 import adminService from '~/services/Admin';
 import { useUserStore } from '~/store/user';

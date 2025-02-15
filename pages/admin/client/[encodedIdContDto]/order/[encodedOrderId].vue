@@ -441,9 +441,16 @@
                             </v-col>
                             <v-col cols="12" xs="12" sm="2">
                                 <div class="h-100  d-flex align-center justify-center">
-                                    <p class="font-weight-light h5 text-center">{{ item.cartItems[0].pretCurent * item.cartItems[0].cantitate }}
-                                        RON
+                                    <p v-if="currentOrderData.orderVoucher === null" class="font-weight-light h5 text-center">{{ item.cartItems[0].pretCurent * item.cartItems[0].cantitate }}
+                                       RON
                                     </p>
+                                    <div v-else >
+                                        <p class="font-weight-light h5 text-center text-decoration-line-through">{{ (item.cartItems[0].pretCurent * item.cartItems[0].cantitate) / (1 - currentOrderData.orderVoucher.reducereDto) }}
+                                        RON</p>
+                                        <p class="font-weight-light h5 text-center text-red">{{ item.cartItems[0].pretCurent * item.cartItems[0].cantitate }}
+                                        RON</p>
+                                    </div>
+                                    
                                 </div>
                             </v-col>
                             <v-divider></v-divider>
@@ -464,7 +471,7 @@
                                     <span class="font-weight-normal text-h6">{{ $t('orderHistory.products') }}</span>
                                 </v-col>
                                 <v-col cols="12" xs="12" sm="2" md="2" class="text-right">
-                                    <span class="font-weight-normal text-h6">{{ currentOrderData.pretTotal }} RON</span>
+                                    <span class="font-weight-normal text-h6">{{(currentOrderData.pretTotal / (1 - currentOrderData.orderVoucher.reducereDto)) }} RON</span>
                                 </v-col>
                                 <v-divider></v-divider>
                                 <v-col cols="12" xs="12" sm="10" md="10" class="text-left">
@@ -488,8 +495,8 @@
                                     <span class="font-weight-normal text-h6">Total</span>     
                                 </v-col>
                                 <v-col cols="12" xs="12" sm="2" md="2" class="text-right" >
-                                    <span v-if="currentOrderData.orderVoucher === null" class="font-weight-normal text-h6">{{ currentOrderData.pretTotal }} RON</span>
-                                    <span v-else class="font-weight-normal text-h6 text-red">{{ (currentOrderData.pretTotal * (currentOrderData.orderVoucher.reducereDto))}} RON</span>
+                                    <span v-if="currentOrderData.orderVoucher === null" class="font-weight-normal text-h6" >{{ currentOrderData.pretTotal }} RON</span>
+                                    <span v-else class="font-weight-normal text-red text-h6">{{ currentOrderData.pretTotal }} RON</span>
                                 </v-col>
                             </v-row>
                         </v-card-text>

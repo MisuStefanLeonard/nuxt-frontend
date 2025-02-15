@@ -20,7 +20,7 @@
                         </p>
                     </v-alert>
                     <v-alert variant="tonal" type="info" class="text-left">
-                        <p>Dati click pe iconita <v-icon size="20" color="white">mdi-eye</v-icon>
+                        <p>Dati click pe iconita <v-icon size="22" color="white" :icon="mdiEye"></v-icon>
                             pentru a vedea detaliile comenzii.
                         </p>
                     </v-alert>
@@ -49,9 +49,9 @@
                                 color="primary"
                                 size="28"
                                 class="mr-2"
-                                @click="seeOrderInfo(item.encodedOrderId)"
+                                @click="seeOrderInfo(item.encodedOrderId)" :icon="mdiEye"
                                 >
-                                mdi-eye
+                               
                             </v-icon>
                         </template>
 
@@ -105,6 +105,7 @@
 import { ref, onMounted, watchEffect } from 'vue';
 import { useUserStore } from '~/store/user';
 import AdminNavDrawerOnClient from '~/components/admin/AdminNavDrawerOnClient.vue';
+import { mdiEye } from '@mdi/js';
 
 definePageMeta({
     layout: 'admin',

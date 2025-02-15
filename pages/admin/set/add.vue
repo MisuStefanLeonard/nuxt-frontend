@@ -3,7 +3,7 @@
         <v-container fluid class="text-center">
             <p class="font-weight-light h3 p-2 m-2">Creeaza un set nou</p>
             <v-container fluid class="w-100">
-                <v-alert color="info elevation-24" icon="mdi-information" variant="tonal">
+                <v-alert color="info elevation-24" :icon="mdiInformation" variant="tonal">
                     <p class="font-weigth-bold h6 text-white">
                         - Daca pretul de baza al produsului este 0 , inseamna ca are dimensiuni asociate cu acesta,
                     pretul fiind diferit pe diferite dimensiuni.
@@ -172,7 +172,7 @@
                     <v-card-actions class="m-2 d-xs-block justify-center">
                         <v-btn class="mx-2" variant="flat" color="error" @click="removeProductFromSet(product.codProdusDto, product.idProdusDto)">
                             <template v-slot:prepend>
-                                <v-icon left color="black">mdi-delete</v-icon>
+                                <v-icon left color="black" size="24" :icon="mdiDelete"></v-icon>
                             </template>
                             Sterge
                         </v-btn>
@@ -188,8 +188,8 @@
                     O eroare a avut loc la afisarea datelor produsului!
                 </v-alert>
                 <div class="d-flex">
-                    <v-icon @click="closeAddProductToSet()" color="red">
-                        mdi-close-circle
+                    <v-icon @click="closeAddProductToSet()" color="red" :icon="mdiCloseCircle" size="24">
+                        
                     </v-icon>
                 </div>
                 <p class="font-weight-thin h3 m-1 p-1">Alegeti un produs</p>
@@ -198,8 +198,8 @@
                 class="rounded-xl"
                 :items="productCodes"
                 bg-color="grey-lighten-1"
-                expand-icon="mdi-plus"
-                collapse-icon="mdi-minus"
+                :expand-icon="mdiPlus"
+                :collapse-icon="mdiMinus"
                 open-on-click
                 v-model:activated="selectedProduct"
                 @update:activated="addProductToSet()"
@@ -357,7 +357,7 @@
                                     </v-sheet>
                                 </v-container>
                         </v-card-text>
-                        <v-btn variant="flat" color="success" prepend-icon="mdi-content-save" @click="saveProductToSet()" class="p-2 mb-3 text-center">
+                        <v-btn variant="flat" color="success" :prepend-icon="mdiContentSave" @click="saveProductToSet()" class="p-2 mb-3 text-center">
                             Salveaza produsul
                         </v-btn>
                     </v-card>
@@ -366,7 +366,7 @@
 
             <v-btn v-if="showAddingButton" variant="flat" color="success" @click="showPanelToAddProductToSet()">
                 <template v-slot:prepend>
-                    <v-icon left color="black">mdi-plus</v-icon>
+                    <v-icon left color="black" size="24" :icon="mdiPlus"></v-icon>
                 </template>
                 Adauga produs
             </v-btn>
@@ -416,7 +416,7 @@
                     </div>
                 </v-form>
 
-                <v-btn variant="flat" color="success" prepend-icon="mdi-content-save" @click="saveNewSet()" class="p-2 mt-3">
+                <v-btn variant="flat" color="success" :prepend-icon="mdiContentSave" @click="saveNewSet()" class="p-2 mt-3">
                     Creeaza setul
                 </v-btn>
             </v-container>
@@ -428,6 +428,7 @@
 import adminService from '~/services/Admin'
 
 import { VTreeview } from 'vuetify/labs/components';
+import { mdiCloseCircle, mdiContentSave, mdiDelete, mdiInformation, mdiMinus, mdiPlus } from '@mdi/js';
 
 definePageMeta({
     layout: 'admin',

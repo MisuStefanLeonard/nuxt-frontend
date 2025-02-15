@@ -23,8 +23,8 @@
                                 size="28"
                                 class="mr-2"
                                 @click="seeOrder(item.encodedIdComandaDto , item .encodedIdContDto)"
-                                >
-                                mdi-eye
+                                :icon="mdiEye">
+                              
                             </v-icon>
                         </template>
 
@@ -73,6 +73,7 @@
 <script setup>
 import adminService from '~/services/Admin';
 import { ref,onBeforeMount } from 'vue';
+import { mdiEye } from '@mdi/js';
 
 definePageMeta({
     layout: 'admin',

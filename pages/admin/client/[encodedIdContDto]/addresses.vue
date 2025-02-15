@@ -22,17 +22,17 @@
                     </v-alert>
                     <v-alert variant="tonal" type="warning" class="text-left">
                         <p class="text-center font-weight-bold">ADRESE LIVRARE INFORMATII</p>
-                        <p>Adresele marcate cu iconita <v-icon color="white">mdi-map-marker-off</v-icon> inseamna
-                        ca acestea au fost sterse de catre client, dar pentru dumneavoastra inca sunt vizibile.</p>
-                        <p>Adresele marcate cu iconita <v-icon color="white">  mdi-map-marker</v-icon> inseamna ca
-                        inca sunt folosite de catre client si nu au fost sterse.</p>
+                        <p>Adresele marcate cu iconita <v-icon color="white" :icon="mdiMapMarkerOff"></v-icon> inseamna
+                        ca acestea au fost comenzi aferente adreselor</p>
+                        <p>Adresele marcate cu iconita <v-icon color="white" :icon="mdiMapMarker"></v-icon> inseamna ca
+                        Nu au nicio adresa</p>
                     </v-alert>
                     <v-alert variant="tonal" type="warning" class="text-left">
                         <p class="text-center font-weight-bold">ADRESE FACTURARE INFORMATII</p>
-                        <p>Adresele marcate cu iconita <v-icon color="white">mdi-file-document-minus-outline</v-icon> inseamna
-                        ca acestea au fost sterse de catre client, dar pentru dumneavoastra inca sunt vizibile.</p>
-                        <p>Adresele marcate cu iconita <v-icon color="white">  mdi-file-document-outline</v-icon> inseamna ca
-                        inca sunt folosite de catre client si nu au fost sterse.</p>
+                        <p>Adresele marcate cu iconita <v-icon color="white" :icon="mdiFileDocumentMinusOutline"></v-icon> inseamna
+                        ca acestea au comenzi aferente adresei.</p>
+                        <p>Adresele marcate cu iconita <v-icon color="white" :icon="mdiFileDocumentOutline"></v-icon> inseamna ca
+                        inca nu au comenzi asupra lor</p>
                     </v-alert>
                     <v-alert variant="tonal" type="info" class="text-center">
                         <p class="font-weight-bold h5">LA FINAL , NU UITATI SA SALVATI!</p>
@@ -52,11 +52,11 @@
                                         <div class="ribbon" v-if="address.isDeletedDto === true" >Stearsa</div>
                                         <div>
                                            
-                                            <v-icon v-if="address.isDeletedDto === false" >
-                                                mdi-map-marker
+                                            <v-icon v-if="address.isDeletedDto === false" :icon="mdiMapMarker">
+                                              
                                             </v-icon>
-                                            <v-icon v-else>
-                                                mdi-map-marker-off
+                                            <v-icon :icon="mdiMapMarkerOff" v-else >
+                                              
                                             </v-icon>
                                         </div>
                                         <v-divider></v-divider>
@@ -78,14 +78,14 @@
                                             class="mx-2">
                                                 Modifica 
                                             </v-btn>
-                                            <v-btn :color="address.isDeletedDto === true ? 'green' : 'red'" @click="modifyAddressState(address.isDeletedDto, address.aliasDto,address.tipAdresaDto)" variant="flat">
+                                            <!-- <v-btn :color="address.isDeletedDto === true ? 'green' : 'red'" @click="modifyAddressState(address.isDeletedDto, address.aliasDto,address.tipAdresaDto)" variant="flat">
                                                <template v-if="address.isDeletedDto === true">
                                                     Activeaza
                                                </template>
                                                <template v-else>
                                                     Dezactiveaza
                                                </template>
-                                            </v-btn>
+                                            </v-btn> -->
                                         </v-container>
                                     </v-card-actions>   
                                 </v-card>
@@ -110,13 +110,13 @@
                                 :key="index" class="rounded-xl my-3 p-2 bg-grey-darken-3">
                                     <v-card-title>
                                        
-                                        <div v-if="address.isDeletedDto === true" class="ribbon">Stearsa</div>
+                                        <div v-if="address.isDeletedDto === true" class="ribbon">Comanda</div>
                                         <p>
-                                            <v-icon v-if="address.isDeletedDto === false" >
-                                                    mdi-file-document-outline
+                                            <v-icon v-if="address.isDeletedDto === false" :icon="mdiFileDocumentOutline">
+                                                  
                                             </v-icon>
-                                            <v-icon v-else>
-                                                    mdi-file-document-minus-outline
+                                            <v-icon v-else :icon="mdiFileDocumentMinusOutline">
+                                                  
                                             </v-icon>
                                         </p>
                                         <v-divider></v-divider>
@@ -163,8 +163,7 @@
                 </v-sheet>
                 <v-dialog  v-model="showDialog" max-width="600px" persistent style="z-index: 999;">
                     <v-form ref="addressForm"  class="bg-grey-darken-4 text-center overflow-auto" >
-                        <v-icon color="white" @click="closeModifyDialog()" class="p-2 m-2">
-                            mdi-close-circle
+                        <v-icon color="white" @click="closeModifyDialog()" class="p-2 m-2" :icon="mdiCloseCircle">
                         </v-icon>
                         <p class="font-weight-light h3 text-center my-2 p-2">Modifica adresa</p>
                         <div v-for="(data) in filteredDataForm" :key="data.label">
@@ -212,7 +211,7 @@
                 <v-container class="text-center">
                     <v-btn @click="saveChanges()" color="success" variant="flat" class="p-2">
                         Salveaza
-                        <v-icon class="pl-2">mdi-content-save</v-icon>
+                        <v-icon class="pl-2" :icon="mdiContentSave"></v-icon>
                     </v-btn>
                 </v-container>
                 
@@ -226,6 +225,7 @@ import { ref, watchEffect, nextTick } from 'vue';
 import { useUserStore } from '~/store/user';
 import adminService from '~/services/Admin'
 import AdminNavDrawerOnClient from '~/components/admin/AdminNavDrawerOnClient.vue';
+import { mdiCloseCircle, mdiContentSave, mdiFileDocumentMinusOutline, mdiFileDocumentOutline, mdiMapMarker, mdiMapMarkerOff } from '@mdi/js';
 
 definePageMeta({
     layout: 'admin',

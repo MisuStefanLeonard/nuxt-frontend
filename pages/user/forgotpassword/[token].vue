@@ -55,7 +55,7 @@
                 ></v-text-field>
                 <v-btn rounded="xl" type="submit" variant="outlined" class="mt-4 font-weight-bold bg-grey-lighten-3" :disabled="isSendingAlert.value">
                   Schimba parola
-                  <v-icon class="pl-1">mdi-arrow-right</v-icon>
+                  <v-icon class="pl-1" size="24" :icon="mdiArrowRight"></v-icon>
                 </v-btn>
               </v-form>
             </v-container>
@@ -66,7 +66,8 @@
   </template>
   
   <script setup>
-  import { ref, computed, onMounted } from 'vue';
+  import { mdiArrowRight } from '@mdi/js';
+import { ref, computed, onMounted } from 'vue';
   import { useRoute } from 'vue-router';
   import RegisterService from '~/services/Register';
   

@@ -25,7 +25,7 @@
                     <p class="h5 font-weight-light text-white">Sectiunea de adaugare manopere </p>
                     <v-btn rounded class="m-2 " color="success" @click="navigateTo('/admin/manopera/add')">
                         Adauga manopera
-                        <v-icon size="24" class="pl-3" right>mdi-plus</v-icon>
+                        <v-icon size="24" class="pl-3" right :icon="mdiPlus"></v-icon>
                     </v-btn>
                 </v-col>
             </v-row> 
@@ -61,8 +61,8 @@
                         size="28"
                         class="mr-2"
                         @click="navigateTo(`/admin/manopera/${item.encodedIdManoperaDto}`)"
-                        >
-                        mdi-eye
+                        :icon="mdiEye">
+                      
                     </v-icon>
                 </template>
                 <template #[`item.tipInelDto`]="{ item }">
@@ -83,6 +83,7 @@
 </template>
 
 <script setup>
+import { mdiEye, mdiPlus } from '@mdi/js';
 import adminService from '~/services/Admin'
 
 definePageMeta({

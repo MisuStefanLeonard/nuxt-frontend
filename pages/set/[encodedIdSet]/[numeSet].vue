@@ -75,7 +75,7 @@
                                                                 <v-icon
                                                                     v-if="isSelected"
                                                                     color="black"
-                                                                    icon="mdi-close-circle-outline"
+                                                                    :icon="mdiCloseCircleOutline"
                                                                     size="24"
                                                                 ></v-icon>
                                                             </v-scale-transition>
@@ -377,13 +377,13 @@
                                                 <template v-slot:next="{props}">
                                                     <v-btn variant="outlined" color="primary" class="ma-1"
                                                     v-bind="props" @click="step++">
-                                                        {{ $t('shop.next') }}<v-icon>mdi-arrow-right</v-icon>
+                                                        {{ $t('shop.next') }}<v-icon  size="24" :icon="mdiArrowRight"></v-icon>
                                                     </v-btn>
                                                 </template>
                                                 <template v-slot:prev="{props}">
                                                     <v-btn variant="outlined" color="error" class="ma-1"
                                                     v-bind="props" @click="step--">
-                                                        {{ $t('shop.curtain.back') }}<v-icon>mdi-arrow-left</v-icon>
+                                                        {{ $t('shop.curtain.back') }}<v-icon  size="24" :icon="mdiArrowLeft"></v-icon>
                                                     </v-btn>
                                                 </template>
                                             </v-stepper-actions>
@@ -452,10 +452,10 @@
                                 >
                                     <template v-if="!isClicked">
                                         {{ $t('shop.addToCart') }}
-                                        <v-icon class="mx-1">mdi-shopping-outline</v-icon>
+                                        <v-icon class="mx-1" size="24" :icon="mdiShoppingOutline"></v-icon>
                                     </template>
                                     <template v-else>
-                                        <v-icon class="mx-1">mdi-check</v-icon>
+                                        <v-icon class="mx-1" size="24" :icon="mdiCheck"></v-icon>
                                     </template>
                                 </v-btn>
                             </div>
@@ -466,9 +466,9 @@
                             </div>
                             <div class="mt-4 text-center">
                                 <p class="font-weight-light h6">{{ $t('general.informations') }}</p>
-                                <span><v-icon class="mr-2">mdi-phone</v-icon>0744959764</span>
+                                <span><v-icon class="mr-2" size="24" :icon="mdiPhone"></v-icon>0744959764</span>
                                 <br>
-                                <span><v-icon class="mr-2">mdi-email</v-icon>texx@email.com</span>
+                                <span><v-icon class="mr-2" size="24" :icon="mdiEmail"></v-icon>texx@email.com</span>
                             </div>
                         </v-card-text>
                     </v-card>
@@ -619,7 +619,7 @@
                                             ></v-progress-linear>
                                             <template v-slot:prepend>
                                                 <span>{{ value }}</span>
-                                                <v-icon class="mx-3" icon="mdi-star"></v-icon>
+                                                <v-icon class="mx-3" :icon="mdiStar" size="24"></v-icon>
                                             </template>
                                             <template v-slot:append>
                                                 <div >
@@ -670,7 +670,7 @@
                             <p class="font-weight-light h5 text-center text-red">{{ $t('textFieldsMessages.mustBeLoggedInForReview') }}</p>
                             <div class="text-center">
                                 <v-btn variant="flat" color="primary" @click="navigateTo(localePath('/user/login'))" >
-                                    {{ $t('login.logInText') }} <v-icon>mdi-arrow-right</v-icon>
+                                    {{ $t('login.logInText') }} <v-icon  size="24" :icon="mdiArrowRight"></v-icon>
                                 </v-btn>
                             </div>
                         </v-card-text>
@@ -684,6 +684,7 @@
 
 
 <script setup>
+import { mdiArrowLeft, mdiCheck, mdiCloseCircleOutline, mdiEmail, mdiPhone, mdiShoppingOutline, mdiStar } from '@mdi/js';
 import { useDisplay } from 'vuetify';
 import productService from '~/services/Products'
 

@@ -6,12 +6,12 @@
             <v-sheet color="grey-darken-3">
               <v-container fluid>
                 <p class="font-weight-light h3">
-                  <v-icon class="mr-2">mdi-monitor-dashboard</v-icon>
+                  <v-icon class="mr-2" :icon="mdiMonitorDashboard" size="24"></v-icon>
                   Dashboard
                 </p>
               </v-container>
               <v-divider></v-divider>
-              <v-container fluid>
+              <v-container fluid class="text-center">
                 <v-alert v-if="loaded" class="mb-3 p-2" variant="tonal" type="success"
                 closable>
                   <p class="font-weight-thin h6 text-center text-white">
@@ -44,7 +44,7 @@
                   variant="outlined"
                  base-color="blue">
                 </v-date-input>
-                <v-btn variant="flat" color="primary"
+                <v-btn variant="flat" color="primary" class="text-center"
                 @click="displayDataInRange(chooseDate)">
                   Modifica
                 </v-btn>
@@ -87,8 +87,8 @@
                   <v-expansion-panels >
                     <v-expansion-panel
                      :style="boxShadowStyle" class="bg-grey-darken-4"
-                     expand-icon="mdi-plus"
-                     collapse-icon="mdi-minus">
+                     :expand-icon="mdiPlus"
+                     :collapse-icon="mdiMinus">
                       <v-expansion-panel-title>
                         <p class="h5 font-weight-light">VENIT PER PRODUS</p>
                       </v-expansion-panel-title>
@@ -101,7 +101,7 @@
                             class="bg-grey-darken-3 p-4"
                             >
                             <template #[`item.codProdus`]="{ item }">
-                              <p class="font-weight-light text-"> <v-icon @click="navigateTo(`/admin/product/${item.codProdus}` , {open:{target: '_blank'}})" class="mx-2">mdi-eye</v-icon>
+                              <p class="font-weight-light text-"> <v-icon @click="navigateTo(`/admin/product/${item.codProdus}` , {open:{target: '_blank'}})" class="mx-2" :icon="mdiEye" size="24"></v-icon>
                                 <NuxtLink class="text-decoration-none text-white" :to="{ name: 'admin-product-codProdus___ro', params: { codProdus: item.codProdus }}"
                                 target="_blank">
                                     {{ item.codProdus }}</NuxtLink>
@@ -122,14 +122,14 @@
                       <v-expansion-panels>
                         <v-expansion-panel class="my-2 bg-grey-darken-1" 
                         v-for="(categories, productType, index) in dashBoardData.tipuriProduse" :key="index"
-                        collapse-icon="mdi-minus" expand-icon="mdi-plus">
+                        :collapse-icon="mdiMinus" :expand-icon="mdiPlus">
                           <v-expansion-panel-title>
                             <p class="h5 font-weight-light text-uppercase">{{ productType }}</p>
                           </v-expansion-panel-title>
                           <v-expansion-panel-text >
                             <v-expansion-panels>
-                              <v-expansion-panel  class="bg-grey-darken-3 p-2 m-2" collapse-icon="mdi-minus"
-                              expand-icon="mdi-plus"
+                              <v-expansion-panel  class="bg-grey-darken-3 p-2 m-2" :collapse-icon="mdiMinus"
+                              :expand-icon="mdiPlus"
                               v-for="(statuses, category, idx) in categories" :key="idx"
                               :title="category">
                                 <v-expansion-panel-text   
@@ -189,8 +189,8 @@
                   <v-expansion-panels >
                     <v-expansion-panel
                      :style="boxShadowStyle" class="bg-grey-darken-4"
-                     expand-icon="mdi-plus"
-                     collapse-icon="mdi-minus">
+                     :expand-icon="mdiPlus"
+                     :collapse-icon="mdiMinus">
                       <v-expansion-panel-title>
                         <p class="h5 font-weight-light">5 CELE MAI VANDUTE PRODUSE</p>
                       </v-expansion-panel-title>
@@ -203,7 +203,7 @@
                             class="bg-grey-darken-3 p-4"
                             >
                             <template #[`item.codProdus`]="{ item }">
-                              <p class="font-weight-light text-"> <v-icon @click="navigateTo(`/admin/product/${item.codProdus}` , {open:{target: '_blank'}})" class="mx-2">mdi-eye</v-icon>
+                              <p class="font-weight-light text-"> <v-icon @click="navigateTo(`/admin/product/${item.codProdus}` , {open:{target: '_blank'}})" class="mx-2" :icon="mdiEye" size="24">mdi-eye</v-icon>
                                 <NuxtLink class="text-decoration-none text-white" :to="{name:'admin-product-codProdus___ro' , params: {codProdus : item.codProdus}}"
                                 target="_blank">
                                     {{ item.codProdus }}</NuxtLink>
@@ -325,7 +325,7 @@
                           <v-card-text v-if="processingOrders.length > 0">
                             <div v-for="(orderType,i) in processingOrders"
                             :key="i">
-                              <p class="font-weight-light h5">{{ orderType[1] }} </p>
+                              <p class="font-weight-light h5 text-center">{{ orderType[1] }} </p>
                             </div>
                           </v-card-text>
                           <v-card-text v-else>
@@ -351,7 +351,7 @@
                         </v-card>
                       </v-col>
                       <v-divider ></v-divider>
-                      <v-col cols="12">
+                      <!-- <v-col cols="12">
                         <v-card  class="bg-grey-darken-4">
                           <v-card-title>
                             <p class="font-weight-light text-center h5  text-red">IN ASTEPATARE(transfer bancar)</p>
@@ -366,11 +366,14 @@
                             <p class="font-weight-light h5 text-center"> N/A </p>
                           </v-card-text>
                         </v-card>
-                      </v-col>
+                      </v-col> -->
                     </v-row>
                   </v-card>
               </v-col>
               <v-container fluid class="my-3">
+                <v-divider opacity="0"></v-divider>
+                <v-divider opacity="0"></v-divider>
+
                 <p class="font-weight-light h3 text-center">Date Google Analytics</p>
                 <v-divider></v-divider>
                 <v-container fluid>
@@ -474,6 +477,7 @@
 <script setup>
 import adminService from '~/services/Admin';
 import { VDateInput } from 'vuetify/labs/components';
+import { mdiEye, mdiMinus, mdiMonitorDashboard, mdiPlus } from '@mdi/js';
 
 const dashBoardData = ref({})
 const GAData = ref({})

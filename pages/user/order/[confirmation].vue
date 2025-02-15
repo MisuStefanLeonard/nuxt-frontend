@@ -15,7 +15,7 @@
                 <br>
                 <span class="h5 font-weight-thin"> {{ $t('orderConfirmationPage.thankYou') }}</span>
                 <br>
-                <v-icon>mdi-emoticon-happy-outline</v-icon>
+                <v-icon size="24" :icon="mdiEmoticonHappyOutline"></v-icon>
                 <br>
                 <br>
                 <span class="h5 font-weight-normal "> {{ $t('orderConfirmationPage.checkMail') }}</span>
@@ -25,6 +25,7 @@
 </template>
 
 <script setup>
+import { mdiEmoticonHappyOutline } from '@mdi/js'
 import orderService from '~/services/Order'
 definePageMeta({
     layout: 'default',

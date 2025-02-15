@@ -214,14 +214,14 @@
               <v-icon
                 @click="deleteType(tipProdus.categorieDto)"
                 color="error"
-                size="32"
-              >mdi-delete-circle</v-icon>
+                size="32" :icon="mdiDeleteCircle"
+              ></v-icon>
             </v-col>
             <v-divider :thickness="3"></v-divider>
           </v-row>
           <v-btn @click="showTypeForm()" color="white" class="mt-4 rounded-xl" variant="outlined">
-            Adaugă tip produs
-            <v-icon class="pl-2">mdi-plus</v-icon>
+            Adaugă tip produs 
+            <v-icon class="pl-2" size="24" :icon="mdiPlus"></v-icon>
           </v-btn>
         </div>
 
@@ -281,14 +281,14 @@
               <v-icon
                 @click="deleteDimension(dimensiune.lungimeDto, dimensiune.latimeDto, dimensiune.pretDto, dimensiune.pretRedusDto, dimensiune.recomandarePat)"
                 color="error"
-                size="32"
-              >mdi-delete-circle</v-icon>
+                size="32" :icon="mdiDeleteCircle"
+              ></v-icon>
             </v-col>
             <v-divider :thickness="3"></v-divider>
           </v-row>
           <v-btn @click="showDimensionForm()" color="white" class="mt-4 rounded-xl" variant="outlined">
             Adaugă dimensiune produs
-            <v-icon class="pl-2">mdi-plus</v-icon>
+            <v-icon class="pl-2" :icon="mdiPlus" size="24"></v-icon>
           </v-btn>
         </div>
 
@@ -320,8 +320,8 @@
               <v-icon
                 @click="deleteColor(culoare.numeCuloareDto, culoare.codCuloareDto)"
                 color="error"
-                size="32"
-              >mdi-delete-circle</v-icon>
+                size="32" :icon="mdiDeleteCircle"
+              ></v-icon>
             </v-col>
             <v-divider :thickness="3"></v-divider>
             <!-- Images for each color -->
@@ -339,7 +339,7 @@
                   <v-file-input
                     v-model="imagine.file"
                     label="Imagine"
-                    prepend-icon="mdi-image"
+                    :prepend-icon="mdiImage"
                     accept="image/*"
                     outlined
                     dense
@@ -363,26 +363,26 @@
                     @click="deleteImage(culoare.numeCuloareDto, culoare.codCuloareDto, imagine.caleImagineDto, imagine.fisierInBucketDto)"
                     color="error"
                     class="mb-2"
-                    size="32"
-                  >mdi-delete-circle</v-icon>
+                    size="32" :icon="mdiDeleteCircle"
+                  ></v-icon>
                 </v-col>
               </v-row>
               <v-btn @click="addImageField(culoare)" color="white" class="mb-4 mt-3 rounded-xl" variant="outlined">
                 Adaugă imagine
-                <v-icon class="pl-2">mdi-plus</v-icon>
+                <v-icon class="pl-2" :icon="mdiPlus" size="24"></v-icon>
               </v-btn>
             </v-col>
             <v-divider :thickness="3"></v-divider>
           </v-row>
           <v-btn @click="showColorForm()" color="white" class="mt-4 rounded-xl" variant="outlined">
             Adaugă culoare produs
-            <v-icon class="pl-2">mdi-plus</v-icon>
+            <v-icon class="pl-2" :icon="mdiPlus" size="24"></v-icon>
           </v-btn>
         </div>
 
         <v-btn @click="finalSaveData" color="success" class="font-weight-bold mt-4">
           Salvează modificări
-          <v-icon class="pl-2">mdi-content-save</v-icon>
+          <v-icon class="pl-2" size="24" :icon="mdiContentSave">e</v-icon>
         </v-btn>
       </v-form>
     </v-card>
@@ -393,6 +393,7 @@
 import { ref, reactive, onMounted, onBeforeUnmount } from 'vue'
 import Swal from "sweetalert2";
 import adminService from '~/services/Admin'
+import { mdiContentSave, mdiDeleteCircle, mdiImage, mdiPlus } from '@mdi/js';
 
 definePageMeta({
   layout: 'admin',

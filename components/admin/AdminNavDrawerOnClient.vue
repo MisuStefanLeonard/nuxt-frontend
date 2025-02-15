@@ -11,7 +11,7 @@
                 <v-list-item v-for="item in navData" 
                 :key="item.title"
                 :title="item.title"
-                :prepend-icon='item.icon'
+                :prepend-icon=item.icon
                 :subtitle="item.subtitle"
                 @click="item.route === null ? '' : navigateTo(item.route)"
                 >
@@ -23,6 +23,8 @@
 
 
 <script setup>
+import { mdiAccountCircleOutline, mdiCardAccountDetailsOutline, mdiCartOutline, mdiMapMarkerOutline } from '@mdi/js';
+
 
 const props = defineProps({
     emailDto: String,
@@ -35,25 +37,25 @@ const props = defineProps({
 const navData = computed(() => [
     {
         title: 'Administrare' ,
-        icon: 'mdi-account-circle-outline',
+        icon: mdiAccountCircleOutline,
         subtitle: props.emailDto,
         route: null
     },
     {
         title: 'Date personale' ,
-        icon:'mdi-card-account-details-outline' , 
+        icon:mdiCardAccountDetailsOutline , 
         subtitle:'',
         route: `/admin/client/${props.encodedIdAccountDto}/data`
     },
     {
         title: 'Adrese' ,
-        icon:'mdi-map-marker-outline' , 
+        icon:mdiMapMarkerOutline , 
         subtitle:'',
         route: `/admin/client/${props.encodedIdAccountDto}/addresses`
     },
     {
         title: 'Comenzi' ,
-        icon:'mdi-cart-outline' , 
+        icon:mdiCartOutline , 
         subtitle:'',
         route: `/admin/client/${props.encodedIdAccountDto}/orders`
     },

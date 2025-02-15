@@ -51,7 +51,7 @@
                     variant="flat"
                     color="success"
                     class="p-2"
-                    append-icon="mdi-content-save"
+                    :append-icon="mdiContentSave"
                     @click="saveVoucherModification"
                 >
                     Salveaza
@@ -62,6 +62,7 @@
 </template>
 
 <script setup>
+import { mdiContentSave } from '@mdi/js';
 import { ref, onBeforeMount } from 'vue';
 import { VDateInput } from 'vuetify/labs/components';
 import adminService from '~/services/Admin';

@@ -60,7 +60,9 @@
 
 
 <script setup>
+import { mdiFacebook, mdiInstagram, mdiLinkedin, mdiTwitter } from '@mdi/js';
 
-const icons = ['mdi-facebook','mdi-twitter','mdi-linkedin','mdi-instagram']
+
+const icons = [mdiFacebook,mdiTwitter,mdiLinkedin,mdiInstagram]
 const locale = useLocalePath()
 </script>

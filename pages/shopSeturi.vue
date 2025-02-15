@@ -150,7 +150,7 @@
                             <v-dialog v-model="isImageModalOpen" max-height="700">
                                 <v-card >
                                     <v-card-title class="text-center">
-                                        <v-btn color="primary" text @click="isImageModalOpen = false"><v-icon>mdi-close</v-icon></v-btn>
+                                        <v-btn color="primary" text @click="isImageModalOpen = false"><v-icon size="24" :icon="mdiClose"></v-icon></v-btn>
                                     </v-card-title>
                                     
                                         <v-carousel 
@@ -191,7 +191,7 @@
                                     <NuxtLink prefetch :prefetch-on="{interaction: true}"
                                      :to="localPath(`/set/${set.encodedIdSet}/${set.numeSetDto}`)">
                                         <v-btn variant="flat" color="primary" >
-                                            {{ $t('shop.seeDetails') }} <v-icon class="ml-1">mdi-arrow-right</v-icon>
+                                            {{ $t('shop.seeDetails') }} <v-icon class="ml-1" size="24" :icon="mdiArrowRight"></v-icon>
                                         </v-btn>
                                     </NuxtLink>
                                   
@@ -223,7 +223,7 @@
                         </v-container>
                         <v-container v-else fluid class="bg-grey-lighten-4 text-center m-3 p-2 elevation-24">
                             <p class="font-weight-light h5">{{ $t('shop.noProductFound') }}</p>
-                            <v-icon>mdi-emoticon-sad-outline</v-icon>
+                            <v-icon size="24" :icon="mdiEmoticonSadOutline"></v-icon>
                         </v-container>
                     </v-row>
                     
@@ -236,6 +236,7 @@
 
 <script setup>
 
+import { mdiArrowRight, mdiClose, mdiEmoticonSadOutline } from '@mdi/js';
 import productService from '~/services/Products'
 
 
@@ -268,14 +269,13 @@ const rangePrice = ref([0,2000])
 const productTypes = ref([]);
 
 const getPaginatedSets = (async (pageNumber,productTypes = null ,priceRange ,productName ,currency) => {
-    console.log('in pagianted sets' , currency)
+  
   const responseFromPaginatedProducts = 
     await productService.getSetsForUsers(
       pageNumber,productTypes, 
       priceRange,productName,
       currency);
 
-    console.log(responseFromPaginatedProducts)
   
   if(responseFromPaginatedProducts.shopSets.length !== null || responseFromPaginatedProducts.shopSets.length > 0){
     currentSetsOnPage.value = responseFromPaginatedProducts
@@ -345,7 +345,7 @@ const applyFiltersFromQuery = async () => {
         searchSetAfter.value = route.query.productName
     }
 
-    console.log('in applyfilterfromquery' , selectedCurrency.value)
+   
     getPaginatedSets(
         0, 
         productTypes.value,

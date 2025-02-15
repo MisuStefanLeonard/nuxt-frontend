@@ -13,8 +13,8 @@
                 <v-container fluid v-if="clientOrders.length <= 0" >
                     <v-card class="bg-grey-darken-4 my-2 rounded-xl elevation-12">
                         <v-card-title class="text-center">
-                            <v-icon class="mx-2">
-                                mdi-truck-fast
+                            <v-icon class="mx-2" size="24" :icon="mdiTruckFast">
+                               
                             </v-icon>
                             {{ $t('orderHistory.noOrderPlaced') }}
                         </v-card-title>
@@ -27,7 +27,7 @@
                             <v-expansion-panel-text>
                                 <v-card class="bg-grey-darken-4 elevation-24 p-3">
                                     <v-card-title :class="{'text-body-1' : screenSize === true}">
-                                        {{ $t('orderHistory.details') }} <v-icon class="mx-2">mdi-card-account-details-outline</v-icon>
+                                        {{ $t('orderHistory.details') }} <v-icon class="mx-2" size="24" :icon="mdiCardAccountDetailsOutline"></v-icon>
                                     </v-card-title>
                                     <v-divider></v-divider>
                                     <!-- Order details (personal data) -->
@@ -42,7 +42,7 @@
                                 <!-- Order details (date , number , etc) -->
                                 <v-card class="bg-grey-darken-4 elevation-24 p-3">
                                     <v-card-title  :class="{'text-body-1' : screenSize === true}">
-                                        {{ $t('orderHistory.orderDetails') }} <v-icon class="mx-2">mdi-truck-check-outline</v-icon>
+                                        {{ $t('orderHistory.orderDetails') }} <v-icon class="mx-2" size="24" :icon="mdiTruckCheckOutline"></v-icon>
                                     </v-card-title>
                                     <v-divider></v-divider>
                                     <v-card-text>
@@ -65,7 +65,7 @@
                                 <div v-if="order.clientBillingAddress.cifDto === null && order.clientBillingAddress.numeFirmaDto === null">
                                     <v-card class="bg-grey-darken-4 elevation-24  p-3">
                                         <v-card-title  :class="{'text-body-1' : screenSize === true}">
-                                            {{ $t('orderHistory.orderAddress') }} <v-icon class="mx-2">mdi-map-marker-outline</v-icon> / <v-icon class="mx-2">mdi-file-document-plus-outline</v-icon>
+                                            {{ $t('orderHistory.orderAddress') }} <v-icon class="mx-2" size="24" :icon="mdiMapMarkerOutline"></v-icon> / <v-icon class="mx-2" size="24" :icon="mdiFileDocumentPlusOutline"></v-icon>
                                         </v-card-title>
                                         <v-divider></v-divider>
                                         <v-card-text>
@@ -84,7 +84,7 @@
                                 <div v-else>
                                     <v-card class="bg-grey-darken-4 elevation-24 p-3">
                                         <v-card-title  :class="{'text-body-1' : screenSize === true}">
-                                            {{ $t('orderHistory.orderDeliveryAddress') }} <v-icon class="mx-2">mdi-map-marker-outline</v-icon> 
+                                            {{ $t('orderHistory.orderDeliveryAddress') }} <v-icon class="mx-2" size="24" :icon="mdiMapMarkerOutline"></v-icon> 
                                         </v-card-title>
                                         <v-divider></v-divider>
                                         <v-card-text>
@@ -102,7 +102,7 @@
                                     <v-divider></v-divider>
                                     <v-card class="bg-grey-darken-4 elevation-24 p-3">
                                         <v-card-title :class="{'text-body-1' : screenSize === true}">
-                                            {{ $t('orderHistory.orderBillingAddress') }} <v-icon>mdi-file-document-plus-outline</v-icon>
+                                            {{ $t('orderHistory.orderBillingAddress') }} <v-icon size="24" :icon="mdiProjectorScreenVariantOffOutline"></v-icon>
                                         </v-card-title>
                                         <v-divider></v-divider>
                                         <v-card-text>
@@ -125,7 +125,7 @@
                                 <div>
                                     <v-card class="bg-grey-darken-4 elevation-24 p-3">
                                         <v-card-title :class="{'text-body-1' : screenSize === true}">
-                                            {{ $t('orderHistory.products') }} <v-icon class="mx-2">mdi-package-variant</v-icon>
+                                            {{ $t('orderHistory.products') }} <v-icon class="mx-2" size="24" :icon="mdiPackageVariant"></v-icon>
                                             <v-divider></v-divider>
                                         </v-card-title>
                                         <v-card-text>
@@ -276,14 +276,14 @@
                                                                                     <v-btn variant="outlined" color="primary" class="ma-1"
                                                                                         v-bind="props" @click="stepValue++">
                                                                                         Next
-                                                                                        <v-icon>mdi-arrow-right</v-icon>
+                                                                                        <v-icon size="24" :icon="mdiArrowRight"></v-icon>
                                                                                     </v-btn>
                                                                                 </template>
                                                                                 <template v-slot:prev="{props}">
                                                                                     <v-btn variant="outlined" color="error" class="ma-1"
                                                                                         v-bind="props" @click="stepValue--">
                                                                                         Prev
-                                                                                        <v-icon>mdi-arrow-left</v-icon>
+                                                                                        <v-icon size="24" :icon="mdiArrowLeft"></v-icon>
                                                                                     </v-btn>
                                                                                 </template>
                                                                                 </v-stepper-actions>
@@ -423,14 +423,14 @@
                                                                                 <v-btn variant="outlined" color="primary" class="ma-1"
                                                                                     v-bind="props" @click="stepValueSet++">
                                                                                     Next
-                                                                                    <v-icon>mdi-arrow-right</v-icon>
+                                                                                    <v-icon size="24" :icon="mdiArrowRight"></v-icon>
                                                                                 </v-btn>
                                                                                 </template>
                                                                                 <template v-slot:prev="{props}">
                                                                                 <v-btn variant="outlined" color="error" class="ma-1"
                                                                                     v-bind="props" @click="stepValueSet--">
                                                                                     Prev
-                                                                                    <v-icon>mdi-arrow-left</v-icon>
+                                                                                    <v-icon size="24" :icon="mdiArrowLeft"></v-icon>
                                                                                 </v-btn>
                                                                                 </template>
                                                                             </v-stepper-actions>
@@ -476,7 +476,7 @@
                                 <div>
                                     <v-card class="bg-grey-darken-4 elevation-24 p-3">
                                         <v-card-title  :class="{'text-body-1' : screenSize === true}">
-                                            {{ $t('checkout.orderSummary') }} <v-icon class="mx-2">mdi-ballot-outline</v-icon> 
+                                            {{ $t('checkout.orderSummary') }} <v-icon class="mx-2" size="24" :icon="mdiBallotOutline"></v-icon> 
                                         </v-card-title>
                                         <v-divider></v-divider>
                                         <v-card-text>
@@ -531,6 +531,7 @@
 
 import orderService from '~/services/Order';
 import { useDisplay } from 'vuetify';
+import { mdiArrowLeft, mdiArrowRight, mdiBallotOutline, mdiCardAccountDetailsOutline, mdiFileDocumentPlusOutline, mdiMapMarkerOutline, mdiPackageVariant, mdiProjectorScreenVariantOffOutline, mdiTruckCheckOutline, mdiTruckFast } from '@mdi/js';
 definePageMeta({
     layout: 'default',
     middleware: ['auth' , 'locale']
@@ -538,6 +539,8 @@ definePageMeta({
 
 const clientOrders = ref([])
 const stepValue = ref(0)
+const stepValueSet = ref(0)
+
 const selectedCurrency = useState('selectedCurrency');
 const {t} = useI18n()
 

@@ -2,7 +2,7 @@
   <div fluid class="m-auto ">
     <div id="image" class="background text-center">
       <v-alert color="red-darken-4" variant="flat">
-        <span class="font-weight-thin h5"> <v-icon class="mx-2">mdi-truck</v-icon>{{$t('homePage.orderOver1')}} {{ getMinOrderPriceForFreeDelivery }} {{ selectedCurrency === 'RON' ? 'RON' : 'EUR'  }} {{$t('homePage.orderOver2')}}</span>
+        <span class="font-weight-thin h5"> <v-icon class="mx-2"  :icon="mdiTruck" size="24"></v-icon>{{$t('homePage.orderOver1')}} {{ getMinOrderPriceForFreeDelivery }} {{ selectedCurrency === 'RON' ? 'RON' : 'EUR'  }} {{$t('homePage.orderOver2')}}</span>
       </v-alert>
       <div class="none">
         <span>Bun venit pe texx.ro</span>
@@ -169,7 +169,7 @@
                                                 <v-btn variant="flat"
                                                 color="primary">
                                                     {{ $t('shop.seeDetails') }}
-                                                    <v-icon class="ml-2">mdi-arrow-right</v-icon>
+                                                    <v-icon class="ml-2"  :icon="mdiArrowRight" size="24"></v-icon>
                                                 </v-btn>
                                             </NuxtLink>
                                             
@@ -263,7 +263,7 @@
                                                 <v-btn variant="flat"
                                                 color="primary">
                                                     {{ $t('shop.seeDetails') }}
-                                                    <v-icon class="ml-2">mdi-arrow-right</v-icon>
+                                                    <v-icon class="ml-2"  :icon="mdiArrowRight" size="24"></v-icon>
                                                 </v-btn>
                                             </NuxtLink>
                                             
@@ -356,7 +356,7 @@
                                                 <v-btn variant="flat"
                                                 color="primary">
                                                     {{ $t('shop.seeDetails') }}
-                                                    <v-icon class="ml-2">mdi-arrow-right</v-icon>
+                                                    <v-icon class="ml-2"  :icon="mdiArrowRight" size="24"></v-icon>
                                                 </v-btn>
                                             </NuxtLink>
                                             
@@ -378,11 +378,11 @@
     <div class="text-center elevation-24 p-3 mb-2 rounded bg-grey-lighten-5"  id="frequent">
       <h3 class="text-center pb-2 pt-2 font-weight-thin">Nu esti convins ?</h3>
       <v-btn variant="flat" color="green" class="rounded-xl" @click="navigateTo(localePath('/shop'))">
-          Mergi la cumparaturi <v-icon class="ml-3">mdi-arrow-right</v-icon></v-btn>
+          Mergi la cumparaturi <v-icon class="ml-3"  :icon="mdiArrowRight" size="24"></v-icon></v-btn>
     </div>
     
     <div class=" elevation-24 p-3 mb-2 rounded bg-grey-lighten-5"  id="frequent">
-      <h3 class="text-center pb-2 pt-2 font-weight-thin">Intrebari frecvente <v-icon>mdi-frequently-asked-questions</v-icon></h3>
+      <h3 class="text-center pb-2 pt-2 font-weight-thin">Intrebari frecvente <v-icon  :icon="mdiFrequentlyAskedQuestions" size="24"></v-icon></h3>
       <v-row>
         <v-col cols="12" md="4">
           <v-card class="elevation-12 bg-primary">
@@ -420,7 +420,7 @@
       <div class="mt-4 text-center">
         <p class="font-weight-thin h3">Aveti alta intrebare?</p>
         <v-btn variant="flat" color="green" class="rounded-xl" @click="navigateTo(localePath('/contact'))">
-          Contactati-ne <v-icon class="ml-3">mdi-card-account-mail</v-icon></v-btn>
+          Contactati-ne <v-icon class="ml-3"  :icon="mdiCardAccountMail" size="24"></v-icon></v-btn>
       </div>
     </div>
   </div>
@@ -430,6 +430,7 @@
 import productService from '~/services/Products';
 import userService from '~/services/User';
 import { useDisplay } from 'vuetify';
+import { mdiArrowRight, mdiCardAccountMail, mdiFrequentlyAskedQuestions, mdiTruck } from '@mdi/js';
 definePageMeta({
   title : 'Acasa',
   layout: 'default',

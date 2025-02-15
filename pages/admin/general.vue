@@ -16,7 +16,7 @@
 
                 </v-text-field>
                 <v-btn class="bg-primary my-2" type="submit">
-                    Salveaza<v-icon class="mx-2">mdi-content-save</v-icon>
+                    Salveaza<v-icon class="mx-2" :icon="mdiContentSave"></v-icon>
                 </v-btn>
             </v-form>
         </v-container>
@@ -27,6 +27,7 @@
 
 
 <script setup>
+import { mdiContentSave } from '@mdi/js';
 import adminService from '~/services/Admin';
 
 definePageMeta({

@@ -3,7 +3,7 @@
     <!-- Toolbar -->
     <v-toolbar app color="blue-grey-darken-4">
       <v-btn icon @click="toggleSidebar">
-        <v-icon>mdi-menu</v-icon>
+        <v-icon :icon="mdiMenu"></v-icon>
       </v-btn>
       <v-toolbar-title>Admin Panel</v-toolbar-title>
     </v-toolbar>
@@ -20,8 +20,7 @@
             :key="item.title"
             :to="item.path"
           >
-            <v-icon>
-              {{ item.icon }}
+            <v-icon  :icon="item.icon">
             </v-icon>
             {{ item.title }}
 
@@ -32,8 +31,7 @@
                   :key="dropdownItem.title"
                   :to="dropdownItem.path"
                 >
-                  <v-icon>
-                    {{ dropdownItem.icon }}
+                  <v-icon :icon=" dropdownItem.icon">
                   </v-icon>
                   {{ dropdownItem.title }}
                 </v-list-item>
@@ -47,6 +45,7 @@
 </template>
 
 <script setup>
+import { mdiAccount, mdiCarShiftPattern, mdiCart, mdiCogOutline, mdiMenu, mdiMonitorDashboard, mdiShopping, mdiTicketPercent } from '@mdi/js';
 import { ref } from 'vue';
 
 const sidebar = ref(false);
@@ -55,13 +54,13 @@ const navAdminItems = ref([
   {
     title: 'Dashboard',
     path: '/admin/dashboard',
-    icon: 'mdi-monitor-dashboard',
+    icon: mdiMonitorDashboard,
     dropdown: []
   },
   {
     title: 'Produse',
     path: '/admin/products',
-    icon: 'mdi-cart',
+    icon: mdiCart,
     dropdown: [
       { title: 'Inele', path: '/admin/inele', icon: '' },
       { title: 'Cusaturi', path: '/admin/tipuri_galerie', icon: '' },
@@ -72,31 +71,31 @@ const navAdminItems = ref([
   {
     title: 'Vouchere',
     path: '/admin/vouchere',
-    icon: 'mdi-ticket-percent',
+    icon: mdiTicketPercent,
     dropdown: []
   },
   {
     title: 'Clienti',
     path: '/admin/clienti',
-    icon: 'mdi-account',
+    icon: mdiAccount,
     dropdown: []
   },
   {
     title: 'Comenzi',
     path: '/admin/orders',
-    icon: 'mdi-shopping',
+    icon: mdiShopping,
     dropdown: []
   },
   {
     title: 'Manopere',
     path: '/admin/manopere',
-    icon: 'mdi-car-shift-pattern',
+    icon: mdiCarShiftPattern,
     dropdown: []
   },
   {
     title: 'General',
     path: '/admin/general',
-    icon: 'mdi-cog-outline',
+    icon: mdiCogOutline,
     dropdown: []
   }
 ]);

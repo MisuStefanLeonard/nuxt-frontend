@@ -174,12 +174,12 @@
                                 ></v-combobox>
                             </v-col>
                             <v-col cols="2" class="d-flex align-center justify-center">
-                                <v-icon @click="deleteType(tipProdus.categorieDto)" color="error" size="32">mdi-delete-circle</v-icon>
+                                <v-icon :icon="mdiDeleteCircle" @click="deleteType(tipProdus.categorieDto)" color="error" size="32"></v-icon>
                             </v-col>
                         </v-row>
                         <div v-show="showFormForAddingType && !dummyBoolean" class="text-center bg-grey-darken-3">
-                            <v-icon color="white" @click="closeTypeForm()" size="32" class="d-flex pt-4 m-3">
-                                mdi-close-circle
+                            <v-icon :icon="mdiCloseCircle" color="white" @click="closeTypeForm()" size="32" class="d-flex pt-4 m-3">
+                                
                             </v-icon>
                             <p class="font-weight-light h4 p-2">Tip produs nou</p>
                             <v-form ref="typeFormToAdd" validate-on="submit" class="m-2 p-3">
@@ -205,7 +205,7 @@
                         <v-btn v-if="dummyBoolean" rounded="xl" @click="showTypeForm()" type="button"
                             color="white" variant="outlined" class="font-weight-bold mt-2">
                             Adauga tip produs
-                            <v-icon class="pl-2">mdi-plus</v-icon>
+                            <v-icon class="pl-2" :icon="mdiPlus"></v-icon>
                         </v-btn>
                     </v-expansion-panel-text>
                 </v-expansion-panel>
@@ -259,12 +259,12 @@
                             </v-col>
                             <v-col cols="12" class="d-flex align-center justify-center">
                                 <v-icon id="delete" @click="deleteDimension(dimensiune.lungimeDto, dimensiune.latimeDto, dimensiune.pretDto, dimensiune.pretRedusDto, dimensiune.recomandarePat)"
-                                    color="error" size="32">mdi-delete-circle</v-icon>
+                                    color="error" size="32" :icon="mdiDeleteCircle"></v-icon>
                             </v-col>
                         </v-row>
                         <div v-if="showFormForAddingDimension && !dummyBoolean" class="text-center bg-grey-darken-3">
-                            <v-icon color="white" @click="closeDimensionForm()" size="32" class="d-flex pt-4 m-3">
-                                mdi-close-circle
+                            <v-icon :icon="mdiCloseCircle" color="white" @click="closeDimensionForm()" size="32" class="d-flex pt-4 m-3">
+                               
                             </v-icon>
                             <p class="font-weight-light h4 p-2">Dimensiune noua</p>
                             <v-form validate-on="submit" ref="dimensionFormToAdd" class="m-2 p-3">
@@ -290,7 +290,7 @@
                         <v-btn v-if="dummyBoolean" rounded="xl" @click="showDimensionForm()" type="button"
                             color="white" variant="outlined" class="font-weight-bold mt-2">
                             Adauga dimensiune
-                            <v-icon class="pl-2">mdi-plus</v-icon>
+                            <v-icon class="pl-2" :icon="mdiPlus"></v-icon>
                         </v-btn>
                     </v-expansion-panel-text>
                 </v-expansion-panel>
@@ -321,8 +321,8 @@
                                 ></v-combobox>
                             </v-col>
                             <v-col cols="2" class="d-flex align-center justify-center">
-                                <v-icon @click="deleteColor(culoare.numeCuloareDto, culoare.codCuloareDto)"
-                                    color="error" size="32">mdi-delete-circle</v-icon>
+                                <v-icon :icon="mdiDeleteCircle" @click="deleteColor(culoare.numeCuloareDto, culoare.codCuloareDto)"
+                                    color="error" size="32"></v-icon>
                             </v-col>
 
                             <!-- Images for each color -->
@@ -365,16 +365,16 @@
                                                     </v-img>
                                                 </v-col>
                                                 <v-col cols="12" class="d-flex align-center justify-center">
-                                                    <v-icon id="deleteImage"
+                                                    <v-icon id="deleteImage" :icon="mdiDeleteCircle"
                                                         @click="deleteImage(culoare.numeCuloareDto, culoare.codCuloareDto, imagine.caleImagineDto, imagine.fisierInBucketDto)"
-                                                        color="error" size="32">mdi-delete-circle</v-icon>
+                                                        color="error" size="32"></v-icon>
                                                 </v-col>
                                             </v-row>
                                             <div v-if="showFormForAddingImage&&selectedColorForImageForm && selectedColorForImageForm.numeCuloare === culoare.numeCuloareDto && selectedColorForImageForm.codCuloare === culoare.codCuloareDto" 
                                             class="text-center bg-blue-grey-darken-4">
                                                
-                                                <v-icon color="white" @click="closeImageForm()" size="32"
-                                                    class="d-flex pt-4 m-3">mdi-close-circle
+                                                <v-icon :icon="mdiCloseCircle" color="white" @click="closeImageForm()" size="32"
+                                                    class="d-flex pt-4 m-3">
                                                 </v-icon>
                                                 <p class="font-weight-light h4 p-2">Imagine noua</p>
                                                 <v-form ref="imageFormToAdd" class="m-2 p-3">
@@ -412,7 +412,7 @@
                                             <v-btn rounded="xl" @click="showImageForm(culoare.numeCuloareDto,culoare.codCuloareDto)" type="button" color="white"
                                                 variant="outlined" class="font-weight-bold mt-2">
                                                 Adauga imagine
-                                                <v-icon class="pl-2">mdi-plus</v-icon>
+                                                <v-icon :icon="mdiPlus" class="pl-2"></v-icon>
                                             </v-btn>
                                         </v-expansion-panel-text>
                                     </v-expansion-panel>
@@ -420,8 +420,8 @@
                             </v-col>
                         </v-row>
                         <div v-if="showFormForAddingColor && !dummyBoolean" class="text-center bg-grey-darken-3">
-                            <v-icon color="white" @click="closeColorForm()" size="32"
-                                class="d-flex pt-4 m-3">mdi-close-circle
+                            <v-icon :icon="mdiCloseCircle" color="white" @click="closeColorForm()" size="32"
+                                class="d-flex pt-4 m-3">
                             </v-icon>
                             <p class="font-weight-light h4 p-2">Culoare noua</p>
                             <v-form validate-on="submit" ref="colorFormToAdd" class="m-2 p-3">
@@ -446,7 +446,7 @@
                         <v-btn v-if="dummyBoolean" rounded="xl" @click="showColorForm()" type="button" color="white"
                             variant="outlined" class="font-weight-bold mt-2">
                             Adauga culoare
-                            <v-icon class="pl-2">mdi-plus</v-icon>
+                            <v-icon class="pl-2" :icon="mdiPlus"></v-icon>
                         </v-btn>
                     </v-expansion-panel-text>
                 </v-expansion-panel>
@@ -455,7 +455,7 @@
             <v-btn @click="finalSaveData()" type="button" color="success" variant="flat"
                 class="font-weight-bold mt-2">
                 Salveaza modificari
-                <v-icon class="pl-2">mdi-content-save</v-icon>
+                <v-icon class="pl-2" :icon="mdiContentSave"></v-icon>
             </v-btn>
         </v-card>
         
@@ -466,6 +466,7 @@
 import { ref, reactive,  onMounted, watch } from 'vue';
 import adminService from '~/services/Admin';
 import Swal from 'sweetalert2';
+import { mdiCloseCircle, mdiContentSave, mdiDeleteCircle, mdiPlus } from '@mdi/js';
 
 definePageMeta({
     layout: 'admin',

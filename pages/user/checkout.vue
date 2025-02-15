@@ -8,7 +8,7 @@
                 width="900" v-model="dialogControl"
                 >
                 <v-btn color="red" @click="dialogControl = false">
-                    CLOSE <v-icon  class="mx-1">mdi-close</v-icon>
+                    CLOSE <v-icon  class="mx-1" :icon="mdiClose" size="24"></v-icon>
                 </v-btn>
                 <v-alert type="warning" variant="flat" class="elevation-12 mb-3  text-center">
                     <p class="font-weight-normal h6 text-black">{{ $t('checkout.productsPriceChanged') }}</p>
@@ -165,13 +165,13 @@
                                                                             <template v-slot:next="{props}">
                                                                                 <v-btn variant="outlined" color="primary" class="ma-1"
                                                                                 v-bind="props" @click="stepValue++">
-                                                                                    Next<v-icon>mdi-arrow-right</v-icon>
+                                                                                    Next<v-icon :icon="mdiArrowRight" size="24"></v-icon>
                                                                                 </v-btn>
                                                                             </template>
                                                                             <template v-slot:prev="{props}">
                                                                                 <v-btn variant="outlined" color="error" class="ma-1"
                                                                                 v-bind="props" @click="stepValue--">
-                                                                                Prev<v-icon>mdi-arrow-left</v-icon>
+                                                                                Prev<v-icon :icon="mdiArrowLeft" size="24"></v-icon>
                                                                                 </v-btn>
                                                                             </template>
                                                                         </v-stepper-actions>
@@ -317,13 +317,13 @@
                                                                         <template v-slot:next="{props}">
                                                                             <v-btn variant="outlined" color="primary" class="ma-1"
                                                                             v-bind="props" @click="stepValueSet++">
-                                                                                Next<v-icon>mdi-arrow-right</v-icon>
+                                                                                Next<v-icon :icon="mdiArrowRight" size="24"></v-icon>
                                                                             </v-btn>
                                                                         </template>
                                                                         <template v-slot:prev="{props}">
                                                                             <v-btn variant="outlined" color="error" class="ma-1"
                                                                             v-bind="props" @click="stepValueSet--">
-                                                                            Prev<v-icon>mdi-arrow-left</v-icon>
+                                                                            Prev<v-icon :icon="mdiArrowLeft" size="24"></v-icon>
                                                                             </v-btn>
                                                                         </template>
                                                                     </v-stepper-actions>
@@ -514,13 +514,13 @@
                                                                     <template v-slot:next="{props}">
                                                                         <v-btn variant="outlined" color="primary" class="ma-1"
                                                                         v-bind="props" @click="stepValue++">
-                                                                            Next<v-icon>mdi-arrow-right</v-icon>
+                                                                            Next<v-icon :icon="mdiArrowRight" size="24"></v-icon>
                                                                         </v-btn>
                                                                     </template>
                                                                     <template v-slot:prev="{props}">
                                                                         <v-btn variant="outlined" color="error" class="ma-1"
                                                                         v-bind="props" @click="stepValue--">
-                                                                        Prev<v-icon>mdi-arrow-left</v-icon>
+                                                                        Prev<v-icon :icon="mdiArrowLeft" size="24"></v-icon>
                                                                         </v-btn>
                                                                     </template>
                                                                 </v-stepper-actions>
@@ -666,13 +666,13 @@
                                                                 <template v-slot:next="{props}">
                                                                     <v-btn variant="outlined" color="primary" class="ma-1"
                                                                     v-bind="props" @click="stepValueSet++">
-                                                                        Next<v-icon>mdi-arrow-right</v-icon>
+                                                                        Next<v-icon :icon="mdiArrowRight" size="24"></v-icon>
                                                                     </v-btn>
                                                                 </template>
                                                                 <template v-slot:prev="{props}">
                                                                     <v-btn variant="outlined" color="error" class="ma-1"
                                                                     v-bind="props" @click="stepValueSet--">
-                                                                    Prev<v-icon>mdi-arrow-left</v-icon>
+                                                                    Prev<v-icon :icon="mdiArrowLeft" size="24"></v-icon>
                                                                     </v-btn>
                                                                 </template>
                                                             </v-stepper-actions>
@@ -787,8 +787,8 @@
                                             @change="assignDeliveryUserAddress(deliveryAddress)"
                                            >
                                             </v-checkbox-btn>
-                                            <span >{{ deliveryAddress.aliasDto }}  <v-icon class="mx-2" >mdi-map-marker-outline</v-icon> </span>
-                                            <span v-if="sameDeliveryAndBilling">  / <v-icon class="mx-2" >mdi-file-document-plus-outline </v-icon></span>
+                                            <span >{{ deliveryAddress.aliasDto }}  <v-icon class="mx-2" :icon="mdiMapMarkerOutline" size="24"></v-icon> </span>
+                                            <span v-if="sameDeliveryAndBilling">  / <v-icon class="mx-2" :icon="mdiFileDocumentPlusOutline" size="24"> </v-icon></span>
                                           
                                         </div>
                                         
@@ -815,7 +815,7 @@
                                 <p class="font-weight-light h4 mt-4">{{ $t('profile.delivery') }}</p>
                                 <v-card class="bg-grey-lighten-5 elevation-6 my-4 mr-2">
                                     <v-card-text>
-                                        <p>{{ $t('checkout.noDeliveryAddress') }} <v-icon>mdi-emoticon-sad-outline</v-icon></p>
+                                        <p>{{ $t('checkout.noDeliveryAddress') }} <v-icon :icon="mdiEmoticonSadOutline" size="24"></v-icon></p>
                                     </v-card-text>
                                 </v-card>
                             </v-col>
@@ -833,7 +833,7 @@
                                             @change="assignBillingUserAddress(billingAddress)"
                                            >
                                             </v-checkbox-btn>
-                                            <span>{{ billingAddress.aliasDto }}<v-icon class="mx-2" >mdi-file-document-plus-outline </v-icon></span>
+                                            <span>{{ billingAddress.aliasDto }}<v-icon class="mx-2" :icon="mdiFileDocumentPlusOutline" size="24"> </v-icon></span>
                                         </div>
                                     </v-card-title>
                                     <v-divider></v-divider>
@@ -860,7 +860,7 @@
                                 <p class="font-weight-light h4 mt-4">{{ $t('profile.billing') }}</p>
                                 <v-card class="bg-grey-lighten-5 elevation-6 my-4 mr-2">
                                     <v-card-text>
-                                        <p>{{ $t('checkout.noBillingAddress') }} <v-icon>mdi-emoticon-sad-outline</v-icon></p>
+                                        <p>{{ $t('checkout.noBillingAddress') }} <v-icon :icon="mdiEmoticonSadOutline" size="24"></v-icon></p>
                                     </v-card-text>
                                 </v-card>
                             </v-col>
@@ -1073,7 +1073,7 @@
                                     <v-card class="bg-grey-darken-3 elevation-12 my-4 ml-2">
                                         <v-card-title>
                                             <div >
-                                                <span>{{ deliveryUserAddress.aliasDto }} <v-icon class="mx-2" >mdi-map-marker-outline</v-icon> / <v-icon class="mx-2" >mdi-file-document-plus-outline </v-icon></span>
+                                                <span>{{ deliveryUserAddress.aliasDto }} <v-icon class="mx-2" :icon="mdiMapMarkerOutline" size="24"></v-icon> / <v-icon class="mx-2" :icon="mdiFileDocumentPlusOutline" size="24"> </v-icon></span>
                                             </div>
                                         </v-card-title>
                                         <v-divider></v-divider>
@@ -1097,7 +1097,7 @@
                                 <div v-else>
                                     <v-card class="bg-grey-lighten-2 elevation-12 my-4 ml-2">
                                         <v-card-text >
-                                            <p class="font-weight-normal h6">{{ $t('checkout.noAddressSelected') }} <v-icon>mdi-emoticon-sad-outline</v-icon></p>
+                                            <p class="font-weight-normal h6">{{ $t('checkout.noAddressSelected') }} <v-icon :icon="mdiEmoticonSadOutline" size="24"></v-icon></p>
                                         </v-card-text>
                                     </v-card>
                                 </div>
@@ -1109,7 +1109,7 @@
                                     <v-card class="bg-grey-darken-3 border-sm elevation-12 my-4 ml-2">
                                         <v-card-title>
                                             <div >
-                                                <span>{{ deliveryUserAddress.aliasDto }} <v-icon class="mx-2" >mdi-map-marker-outline</v-icon></span>
+                                                <span>{{ deliveryUserAddress.aliasDto }} <v-icon class="mx-2" :icon="mdiMapMarkerOutline" size="24"></v-icon></span>
                                             </div>
                                         </v-card-title>
                                         <v-divider></v-divider>
@@ -1134,7 +1134,7 @@
                                 <div v-else>
                                     <v-card class="bg-grey-lighten-2 elevation-12 my-4 ml-2">
                                         <v-card-text >
-                                            <p class="font-weight-normal h6">{{ $t('checkout.notSelectedDeliveryAddress') }} <v-icon>mdi-emoticon-sad-outline</v-icon></p>
+                                            <p class="font-weight-normal h6">{{ $t('checkout.notSelectedDeliveryAddress') }} <v-icon :icon="mdiEmoticonSadOutline" size="24"></v-icon></p>
                                         </v-card-text>
                                     </v-card>
                                    
@@ -1144,7 +1144,7 @@
                                     <v-card class="bg-grey-darken-3 elevation-12 my-4 ml-2">
                                         <v-card-title>
                                             <div >
-                                                <span>{{ billingUserAddress.aliasDto }}<v-icon class="mx-2" >mdi-file-document-plus-outline </v-icon></span>
+                                                <span>{{ billingUserAddress.aliasDto }}<v-icon class="mx-2" :icon="mdiFileDocumentPlusOutline" size="24"> </v-icon></span>
                                             </div>
                                         </v-card-title>
                                         <v-divider></v-divider>
@@ -1171,7 +1171,7 @@
                                 <div v-else>
                                     <v-card class="bg-grey-lighten-2 elevation-12 my-4 ml-2">
                                         <v-card-text >
-                                            <p class="font-weight-normal h6">{{ $t('checkout.notSelectedBillingAddress') }} <v-icon>mdi-emoticon-sad-outline</v-icon></p>
+                                            <p class="font-weight-normal h6">{{ $t('checkout.notSelectedBillingAddress') }} <v-icon :icon="mdiEmoticonSadOutline" size="24"></v-icon></p>
                                         </v-card-text>
                                     </v-card>
                                    
@@ -1183,7 +1183,7 @@
                        
                         <v-col  cols="12" md="12" sm="12" class="mt-4">
                             <v-btn class="rounded-xl elevation-12 bg-primary" @click="orderPayment">
-                                {{ currentCurrency === 'RON' ? 'Plateste' : "Pay" }} <v-icon>mdi-arrow-right</v-icon>
+                                {{ currentCurrency === 'RON' ? 'Plateste' : "Pay" }} <v-icon :icon="mdiArrowRight" size="24"></v-icon>
                             </v-btn>
                         </v-col>
                     </v-row>
@@ -1201,6 +1201,7 @@ import productService from '~/services/Products';
 import orderService from '~/services/Order';
 import userService from '~/services/User'
 import { useDisplay } from 'vuetify';
+import { mdiArrowLeft, mdiArrowRight, mdiClose, mdiEmoticonSadOutline, mdiFileDocumentPlusOutline, mdiMapMarkerOutline } from '@mdi/js';
 
 definePageMeta({
     middleware : ['locale']

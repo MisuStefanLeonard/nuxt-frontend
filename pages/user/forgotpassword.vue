@@ -39,7 +39,7 @@
                      color="blue"
                      :disabled="isSendingAlert">
                 Trimite
-                <v-icon class="pl-1">mdi-arrow-right</v-icon>
+                <v-icon class="pl-1" :icon="mdiArrowRight" size="24"></v-icon>
               </v-btn>
             </v-form>
           </v-container>
@@ -54,6 +54,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import RegisterService from '../../services/Register'
+import { mdiArrowRight } from '@mdi/js'
 
 
 definePageMeta({

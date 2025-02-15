@@ -10,7 +10,7 @@
                     <p class="h5 font-weight-light text-white">Sectiunea de adaugare tipuri linie </p>
                     <v-btn rounded class="m-2 " color="success" @click="redirectToAddingTipLinie()">
                         Adauga tip linie
-                        <v-icon size="24" class="pl-3" right>mdi-plus</v-icon>
+                        <v-icon size="24" class="pl-3" right :icon="mdiPlus"></v-icon>
                     </v-btn>
                 </v-col>
                 <v-divider class="border-opacity-50" color="success" vertical></v-divider>
@@ -18,7 +18,7 @@
                     <p class="h5 font-weight-light text-white">Optiune pentru tipurile de linie selectate</p>
                     <v-btn rounded color="error" class="m-2 " @click="deleteSelectedTipLinie()">
                         Sterge 
-                        <v-icon size="24" class="pl-3" right>mdi-delete</v-icon>
+                        <v-icon size="24" class="pl-3" right  :icon="mdiDelete"></v-icon>
                     </v-btn>
                 </v-col>
             </v-row> 
@@ -53,17 +53,18 @@
                         color="error"
                         size="28"
                         @click="deleteTipLinie(item.encodedIdTipLinie)"
-                        class="mr-2"
+                        class="mr-2"  :icon="mdiDelete"
                     >
-                        mdi-delete
+                     
                     </v-icon>
                     <v-icon
                     color="primary"
                     size="28"
                     class="mr-2"
                     @click="seeTipGaleriePage(item.encodedIdTipLinie)"
+                    :icon="mdiEye"
                     >
-                    mdi-eye
+                    
                 </v-icon>
                 </template>
                 
@@ -74,6 +75,7 @@
 </template>
 
 <script setup>
+import { mdiDelete, mdiEye, mdiPlus } from '@mdi/js';
 import Swal from 'sweetalert2';
 import adminService from '~/services/Admin'
 import { useUserStore } from '~/store/user';

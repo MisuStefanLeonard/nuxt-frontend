@@ -152,7 +152,7 @@
                       <v-row no-gutters>
                         <v-col cols="12" xs="12" sm="12" md="6" class="my-1">
                           <v-btn variant="flat" color="success"
-                          @click="applyFilters" append-icon="mdi-filter">
+                          @click="applyFilters" :append-icon="mdiFilter">
                             {{ $t('shop.applyFilters') }}
                           </v-btn>
                         </v-col>
@@ -225,7 +225,7 @@
                       <v-dialog v-model="isImageModalOpen" max-height="700" max-width="600">
                         <v-card >
                           <v-card-title class="text-center">
-                              <v-btn color="primary" text @click="isImageModalOpen = false"><v-icon>mdi-close</v-icon></v-btn>
+                              <v-btn color="primary" text @click="isImageModalOpen = false"><v-icon :icon="mdiClose" size="24"></v-icon></v-btn>
                           </v-card-title>
                           
                               <v-carousel 
@@ -284,12 +284,10 @@
                           <NuxtLink prefetch :prefetch-on="{interaction: true}"
                             :to="localPath(`/product/${product.codProdusDto}/${product.tipulProdusuluiDto}`)">
                               <v-btn variant="flat" color="primary" >
-                                  {{ $t('shop.seeDetails') }} <v-icon class="ml-1">mdi-arrow-right</v-icon>
+                                  {{ $t('shop.seeDetails') }} <v-icon class="ml-1" :icon="mdiArrowRight" size="24"></v-icon>
                               </v-btn>
                           </NuxtLink>
-                          <!-- <v-btn variant="flat" color="primary" @click="seeProductPage(product.codProdusDto , product.tipulProdusuluiDto)">
-                            {{ $t('shop.seeDetails') }} <v-icon class="ml-1">mdi-arrow-right</v-icon>
-                          </v-btn> -->
+                         
                         </v-col >
                         <v-col cols="12" class="my-1">
                           <p class="font-weight-light h5"><span class="h1 font-weight-light">{{ product.reviewsInfoGeneral.averageRating }}</span> / 5</p>
@@ -319,7 +317,7 @@
                 </v-container>
                 <v-container v-else fluid class="bg-grey-lighten-4 text-center m-3 p-2 elevation-24">
                  <p class="font-weight-light h5">{{ $t('shop.noProductFound') }}</p>
-                 <v-icon>mdi-emoticon-sad-outline</v-icon>
+                 <v-icon :icon="mdiEmoticonSadOutline" size="24"></v-icon>
                 </v-container>
               </v-row>
               
@@ -332,6 +330,7 @@
 
 
 <script setup>
+import { mdiArrowRight, mdiClose, mdiEmoticonSadOutline, mdiFilter } from '@mdi/js';
 import { ref } from 'vue';
 import productService from '~/services/Products'
 
@@ -353,7 +352,6 @@ const route = useRoute()
 const router = useRouter()
 const localPath = useLocalePath();
 const {t} = useI18n()
-const gtm = useGtm()
 
 const rangeWidth = ref([0,300])
 const rangeHeight = ref([0,300])
@@ -516,17 +514,6 @@ const deleteFilters = () => {
   router.push({ query: {} });
   getPaginatedProducts(0);
 };
-
-const seeProductPage = (codProdus,tipProdus) => {
-  gtm.trackEvent({
-    event: 'product_view',
-    category: `Product_Click`,
-    action: 'click',
-    label: `${codProdus}/${tipProdus}`,
-    value: 1,
-    noninteraction: false,
-  });
-}
 
 watch(() => route.query, applyFiltersFromQuery, { immediate: true });
 

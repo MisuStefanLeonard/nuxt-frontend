@@ -84,7 +84,7 @@
                                                                 <v-icon
                                                                     v-if="isSelected"
                                                                     color="white"
-                                                                    icon="mdi-close-circle-outline"
+                                                                    :icon="mdiCloseCircleOutline"
                                                                     size="24"
                                                                 ></v-icon>
                                                             </v-scale-transition>
@@ -307,14 +307,14 @@
                                             <template v-slot:next="{props}">
                                                     <v-btn variant="outlined" color="green" 
                                                     v-bind="props" @click="checkNextStep()">
-                                                        NEXT<v-icon>mdi-arrow-right</v-icon>
+                                                        NEXT<v-icon size="24" :icon="mdiArrowRight"></v-icon>
                                                     </v-btn>
                                             </template>
                                             <template v-slot:prev="{props}">
                                                
                                                     <v-btn variant="outlined" color="error" 
                                                 v-bind="props" @click="goBack()">
-                                                    <v-icon>mdi-arrow-left</v-icon>BACK
+                                                    <v-icon size="24" :icon="mdiArrowLeft"></v-icon>BACK
                                                 </v-btn>
                                             
                                             </template>
@@ -478,7 +478,7 @@
                                                     </v-col>
                                                     <v-col cols="12" class="text-center  mt-3 pt-4">
                                                         <v-btn type="submit" @click="checkLiningType()" class="my-2 bg-green" >
-                                                                {{ $t('shop.curtain.finish') }}<v-icon class="mx-1">mdi-arrow-right
+                                                                {{ $t('shop.curtain.finish') }}<v-icon class="mx-1" size="24" :icon="mdiArrowRight">
                                                                 </v-icon>
                                                         </v-btn>
                                                         <v-divider opacity="0" ></v-divider>
@@ -492,14 +492,14 @@
                                             <template v-slot:next="{props}">
                                                     <v-btn variant="outlined" color="green" 
                                                     v-bind="props" @click="checkNextStep()">
-                                                        NEXT<v-icon>mdi-arrow-right</v-icon>
+                                                        NEXT<v-icon size="24" :icon="mdiArrowRight"></v-icon>
                                                     </v-btn>
                                             </template>
                                             <template v-slot:prev="{props}">
                                                
                                                     <v-btn variant="outlined" color="error" 
                                                 v-bind="props" @click="goBack()">
-                                                    <v-icon>mdi-arrow-left</v-icon>BACK
+                                                    <v-icon size="24" :icon="mdiArrowLeft"></v-icon>BACK
                                                 </v-btn>
                                             
                                             </template>
@@ -559,10 +559,10 @@
                                 >
                                     <template v-if="!isClicked">
                                         {{ $t('shop.addToCart') }}
-                                        <v-icon class="mx-1">mdi-shopping-outline</v-icon>
+                                        <v-icon class="mx-1" size="24" :icon="mdiShoppingOutline"></v-icon>
                                     </template>
                                     <template v-else>
-                                        <v-icon class="mx-1">mdi-check</v-icon>
+                                        <v-icon class="mx-1" size="24" :icon="mdiCheck"></v-icon>
                                     </template>
                                 </v-btn>
                             </div>
@@ -577,9 +577,9 @@
                                     </NuxtLink>
                                 </div>
                                
-                                <span><v-icon class="mr-2">mdi-phone</v-icon>0744959764</span>
+                                <span><v-icon class="mr-2" size="24" :icon="mdiPhone"></v-icon>0744959764</span>
                                 <br>
-                                <span><v-icon class="mr-2">mdi-email</v-icon>texx@email.com</span>
+                                <span><v-icon class="mr-2" size="24" :icon="mdiEmail"></v-icon>texx@email.com</span>
                             </div>
                         </v-card-text>
                     </v-card>
@@ -734,7 +734,7 @@
                                             ></v-progress-linear>
                                             <template v-slot:prepend>
                                                 <span>{{ value }}</span>
-                                                <v-icon class="mx-3" icon="mdi-star"></v-icon>
+                                                <v-icon class="mx-3" :icon="mdiStar" size="24"> </v-icon>
                                             </template>
                                             <template v-slot:append>
                                                 <div >
@@ -785,7 +785,7 @@
                             <p class="font-weight-light h5 text-center text-red">{{ $t('textFieldsMessages.mustBeLoggedInForReview') }}</p>
                             <div class="text-center">
                                 <v-btn variant="flat" color="primary" @click="navigateTo(localePath('/user/login'))" >
-                                    {{ $t('login.logInText') }} <v-icon>mdi-arrow-right</v-icon>
+                                    {{ $t('login.logInText') }} <v-icon size="24" :icon="mdiArrowRight"></v-icon>
                                 </v-btn>
                             </div>
                         </v-card-text>
@@ -850,7 +850,7 @@
                                                         <v-btn variant="flat"
                                                         color="primary">
                                                             {{ $t('shop.seeDetails') }}
-                                                            <v-icon class="ml-2">mdi-arrow-right</v-icon>
+                                                            <v-icon class="ml-2" size="24" :icon="mdiArrowRight"></v-icon>
                                                         </v-btn>
                                                     </NuxtLink>
                                                    
@@ -880,6 +880,7 @@
 
 
 <script setup>
+import { mdiArrowRight, mdiCheck, mdiCloseCircleOutline, mdiEmail, mdiPhone, mdiShoppingOutline, mdiStar } from '@mdi/js';
 import { ref } from 'vue';
 import { useDisplay } from 'vuetify';
 import productService from '~/services/Products';

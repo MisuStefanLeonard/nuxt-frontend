@@ -10,7 +10,7 @@
                     <p class="h5 font-weight-light text-white">Sectiunea de adaugare set</p>
                     <v-btn rounded class="m-2 " color="primary" @click="redirectToAddingSet()">
                         Adauga set
-                        <v-icon size="24" class="pl-3" right>mdi-plus</v-icon>
+                        <v-icon size="24" class="pl-3" right :icon="mdiPlus" ></v-icon>
                     </v-btn>
                 </v-col>
                 <v-divider class="border-opacity-50" color="success" vertical></v-divider>
@@ -18,11 +18,11 @@
                     <p class="h5 font-weight-light text-white">Optiune pentru produsele selectate</p>
                     <v-btn rounded color="error" class="m-2 " @click="deleteSelectedSets()">
                         Sterge 
-                        <v-icon size="24" class="pl-3" right>mdi-delete</v-icon>
+                        <v-icon size="24" class="pl-3" right  :icon="mdiDelete"></v-icon>
                     </v-btn>
                         <v-btn rounded color="primary" class="m-2 " @click="activateSelectedSets()">
                         Activeaza in magazin
-                        <v-icon size="24" class="pl-3" right>mdi-toggle-switch-outline</v-icon>
+                        <v-icon size="24" class="pl-3" right :icon="mdiToggleSwitchOutline" ></v-icon>
                     </v-btn>
                 </v-col>
             </v-row> 
@@ -68,17 +68,17 @@
                         color="error"
                         size="28"
                         @click="deleteSet(item.encodedIdSetDto)"
-                        class="mr-2"
+                        class="mr-2" :icon="mdiDelete"
                     >
-                        mdi-delete
+                       
                     </v-icon>
                     <v-icon
                     color="primary"
                     size="28"
                     class="mr-2"
-                    @click="seeSetPage(item.encodedIdSetDto)"
+                    @click="seeSetPage(item.encodedIdSetDto)" :icon="mdiEye"
                     >
-                    mdi-eye
+                   
                 </v-icon>
                 </template>
                 
@@ -91,6 +91,7 @@
 <script setup>
 import adminService from '~/services/Admin'
 import {ref,onBeforeMount} from 'vue'
+import { mdiDelete, mdiEye, mdiToggleSwitchOutline } from '@mdi/js'
 
 definePageMeta({
     layout: 'admin',

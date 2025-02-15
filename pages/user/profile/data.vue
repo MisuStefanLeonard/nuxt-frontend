@@ -44,7 +44,7 @@
             class="font-weight-bold bg-grey-lighten-3 my-4"
           >
             {{ $t('button.save') }}
-            <v-icon class="pl-2">mdi-content-save</v-icon>
+            <v-icon class="pl-2" size="24" :icon="mdiContentSave"></v-icon>
           </v-btn>
         </v-form>
       </v-container>
@@ -53,6 +53,7 @@
 </template>
 
 <script setup>
+import { mdiContentSave } from '@mdi/js';
 import { ref, onMounted } from 'vue'
 import RegisterService from '~/services/Register'
 import UserService from '~/services/User'

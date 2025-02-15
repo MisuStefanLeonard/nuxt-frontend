@@ -2,7 +2,10 @@
 export default defineNuxtConfig({
   vite:{
     build : {
-      sourcemap : true
+      sourcemap : true,
+      rollupOptions : {
+        treeshake: true
+      }
     }
   },
   modules: [
@@ -52,7 +55,7 @@ export default defineNuxtConfig({
     },
     i18n: {
       lazy: true,
-      langDir : "locales/",
+      langDir : "locales",
       strategy : "prefix_except_default",
       baseUrl : 'http://localhost:3000',
       detectBrowserLanguage: {
@@ -97,7 +100,6 @@ export default defineNuxtConfig({
     ],
     css: [
       'bootstrap/dist/css/bootstrap.min.css',
-      '@mdi/font/css/materialdesignicons.css', 
     ]
   },
   routeRules: {
@@ -118,6 +120,5 @@ export default defineNuxtConfig({
   ],
   css: [
     'bootstrap/dist/css/bootstrap.min.css',
-    '@mdi/font/css/materialdesignicons.css', 
   ]
 })

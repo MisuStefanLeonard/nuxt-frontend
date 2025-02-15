@@ -3,13 +3,13 @@
     <v-list class="text-left d-flex flex-column fill-height">
       <!-- Menu items -->
       <v-list-item v-for="item in menuItems" :key="item.title" @click="goTo(item.path)">
-        <v-list-item-title> <v-icon class="mr-2">{{ item.icon }}</v-icon>{{$t(item.title)  }}</v-list-item-title>
+        <v-list-item-title> <v-icon class="mr-2" :icon="item.icon"></v-icon>{{$t(item.title)  }}</v-list-item-title>
       </v-list-item>
       
       <!-- Dropdown items -->
       <v-list-item v-for="item in menuItems2" :key="item.title" @click="item.dropdown.length > 0 ? toggleDropdown(item) : goTo(item.path)" >
         <v-list-item-title>
-          <v-icon class="mr-2" >{{ item.icon }}</v-icon>
+          <v-icon class="mr-2" :icon="item.icon"></v-icon>
           {{ $t(item.title) }}
           <v-badge inline
             v-if="item.title === 'menu.shoppingCart' && isClient"
@@ -26,9 +26,7 @@
             <v-list v-if="item.expand" >
               <v-list-item v-for="dropitem in item.dropdown" :key="dropitem.title" @click="handleDropDown(dropitem)">
                 <v-list-item-title>
-                  <v-icon class="mr-2">
-                    {{ dropitem.icon }}
-                  </v-icon>
+                  <v-icon class="mr-2" :icon="dropitem.icon"></v-icon>
                   {{ $t(dropitem.title) }}
                 </v-list-item-title>
               </v-list-item>
@@ -43,15 +41,15 @@
             <v-btn variant="flat" block :color="isLoggedIn === true ? 'error' : 'success' "
             @click="emitButtonAction">
               <div v-if="isLoggedIn === true">
-                <span>{{ $t('menu.logout') }} <v-icon>mdi-arrow-left</v-icon></span>
+                <span>{{ $t('menu.logout') }} <v-icon :icon="mdiArrowLeft"></v-icon></span>
               </div>
               <div v-else>
-                <span>{{ $t('menu.login') }} <v-icon>mdi-arrow-right</v-icon></span>
+                <span>{{ $t('menu.login') }} <v-icon :icon="mdiArrowRight"></v-icon></span>
               </div>
             </v-btn>
             <v-btn v-if="isLoggedIn === false" 
             variant="flat" block color="primary" @click="goToRegister" class="mt-2">
-              <span>{{ $t('menu.register') }} <v-icon>mdi-account-plus</v-icon></span>
+              <span>{{ $t('menu.register') }} <v-icon :icon="mdiAccountPlus"></v-icon></span>
             </v-btn>
           </v-col>
           
@@ -72,6 +70,7 @@ import { useNuxtApp } from '#app'
 import LanguageSwitcher from './LanguageSwitcher.vue';
 import { cartCount } from '~/middleware/cart'
 import Products from '~/services/Products';
+import { mdiAccountPlus, mdiArrowLeft, mdiArrowRight } from '@mdi/js';
 
 // Define props
 const props = defineProps({
@@ -241,8 +240,7 @@ onMounted(() => {
   isLoggedIn.value = getCookie('userLoggedIn') === 1
   isClient.value = true
   getCartCount()
-  // getAllProductCategoriesAndTypes()
-  // console.log("nav drawer mounted")
+  
 })
 
 </script>
