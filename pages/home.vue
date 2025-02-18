@@ -1,10 +1,10 @@
 <template>
   <div fluid class="m-auto ">
-    <div id="image" class="background text-center">
+    <div id="image" class=" text-center">
       <v-alert color="red-darken-4" variant="flat">
         <span class="font-weight-thin h5"> <v-icon class="mx-2"  :icon="mdiTruck" size="24"></v-icon>{{$t('homePage.orderOver1')}} {{ getMinOrderPriceForFreeDelivery }} {{ selectedCurrency === 'RON' ? 'RON' : 'EUR'  }} {{$t('homePage.orderOver2')}}</span>
       </v-alert>
-      <div class="none">
+      <!-- <div class="none">
         <span>Bun venit pe texx.ro</span>
         <br>
         <span>Bun venit pe texx.ro</span>
@@ -35,50 +35,57 @@
         <span>Bun venit pe texx.ro</span>
         <br>
         <span>Bun venit pe texx.ro</span>
-        
-      </div>
-   
+      </div> -->
+      <v-carousel height="auto" hide-delimiters show-arrows="hover">
+        <v-carousel-item v-for="img in carouselImgs"
+          :key="img"
+          :src="img"
+         
+          cover
+        ></v-carousel-item>
+      </v-carousel>
     </div>
     <div class="row elevation-24 p-4 mb-2 rounded bg-grey-lighten-5" id="welcome">
-      <h3 class="text-center pb-2 pt-2 font-weight-thin"> Bun venit </h3>
+      <h3 class="text-center pb-2 pt-2 font-weight-thin">{{ $t('homePage.welcome') }} </h3>
       
       <h4 class="text-justify font-weight-normal my-3">
-        🌟 Eleganță și rafinament pentru fiecare cameră!
+        {{ $t('homePage.text1') }}
+      </h4>
+      <h5 class="font-weight-thin text-justify ">  {{ $t('homePage.text2') }} </h5>
+    
+      <h4 class="text-justify font-weight-normal  my-3">
+        {{ $t('homePage.text3') }}
+      
        
       </h4>
-      <h5 class="font-weight-thin text-justify my-2"> - Descoperă colecția noastră exclusivistă de cuverturi, draperii, perne și perdele, 
-          create pentru a aduce un plus de stil și confort în locuința ta. Fie că îți dorești 
-          un decor modern, clasic sau extravagant, avem produsele perfecte pentru tine!</h5>
+      <h5 class="font-weight-thin text-justify "> 
+          {{ $t('homePage.text4') }}</h5>
      
       <h4 class="text-justify font-weight-normal  my-3">
-        🏠 Decorează-ți casa cu textile premium, alese cu grijă!
+        {{ $t('homePage.text5') }}
        
-      </h4>
-      <h5 class="font-weight-thin text-justify my-2"> - Alege cuverturi luxoase, draperii opace pentru intimitate, perne decorative pentru un plus de 
-          personalitate și perdele vaporoase care lasă lumina naturală să îți învăluie casa.</h5>
-     
-      <h4 class="text-justify font-weight-normal  my-3">
-        🚀 Livrare rapidă și prețuri accesibile!
         
       </h4>
-      <h5 class="font-weight-thin text-justify my-2"> - Comandă online și bucură-te de livrare rapidă oriunde în România! Beneficiază de promoții exclusive 
-          și garanția unui decor deosebit, fără compromisuri!</h5>
+      <h5 class="font-weight-thin text-justify ">
+          {{ $t('homePage.text6') }}</h5>
      
       <h4 class="text-justify font-weight-normal  my-3">
-        🎨 Stil și funcționalitate într-un singur loc!
+        {{ $t('homePage.text7') }}
+       
       </h4>
-      <h5 class="font-weight-thin text-justify my-2"> - Fie că îți dorești draperii blackout pentru un somn odihnitor, cuverturi pufoase pentru confort maxim, sau perdele 
-          delicate care să ofere un aer sofisticat, pe Texx.ro găsești mereu soluția ideală!
+      <h5 class="font-weight-thin text-justify "> 
+          {{ $t('homePage.text8') }}
           <br>
-          <v-list class="my-3 elevation-12 bg-primary rounded-xl font-weight-thin">
+          <v-list class="my-3 elevation-12 bg-primary rounded-xl font-weight-normal">
             <v-list-item >
-              <span >✅ Materiale premium, durabile și ușor de întreținut</span>
+              <span >    {{ $t('homePage.text9') }}
+               </span>
             </v-list-item>
             <v-list-item>
-              <span> ✅ Design-uri variate pentru orice stil de amenajare</span>
+              <span>     {{ $t('homePage.text10') }}</span>
             </v-list-item>
             <v-list-item>
-              <span>✅ Reduceri și oferte speciale pe tot parcursul anului</span>
+              <span>    {{ $t('homePage.text11') }}</span>
             </v-list-item>
           </v-list>
         </h5>
@@ -86,22 +93,41 @@
 
     <div class="row elevation-24 p-3 mb-2 rounded bg-grey-lighten-5" id="aboutUs">
       <h4 class="text-center font-weight-thin my-3">
-        &#129300; Nu stii cum sa alegi dimensiunile potrivite?
+        &#129300; {{ $t('homePage.text12') }} 
         <br>
         <br>
         <NuxtLink :to="localePath('/measurement')">
-          <v-btn class="rounded-xl " color="blue">VEZI AICI</v-btn>
+          <v-btn class="rounded-xl " color="red"> {{ $t('homePage.text13') }}</v-btn>
         </NuxtLink>
         
       </h4>
     </div>
 
     <div class="row elevation-24 p-3 mb-2 rounded bg-grey-lighten-5" id="aboutUs">
-      <h3 class="text-center pb-2 pt-2 font-weight-thin"> Despre noi </h3>
+      <h3 class="text-center pb-2 pt-2 font-weight-thin"> {{ $t('homePage.aboutUs') }}  </h3>
+      <div class="text-justify">
+        <v-divider opacity="0"></v-divider>
+        <h4 class="text-justify font-weight-light my-3">🏠 {{ $t('aboutUs.text1') }}</h4>
+        <v-divider opacity="0"></v-divider>
+        <h4 class="text-justify font-weight-light my-3">✅ {{ $t('aboutUs.text2') }}</h4>
+        <v-divider opacity="0"></v-divider>
+        <h4 class="text-justify font-weight-light my-3">🌟 {{ $t('aboutUs.text3') }}</h4>
+        <v-divider opacity="0"></v-divider>
+        <h4 class="text-justify font-weight-light my-3">✅ {{ $t('aboutUs.text4') }}</h4>
+        <v-divider opacity="0"></v-divider>
+        <h4 class="text-justify font-weight-light my-3">🏠 {{ $t('aboutUs.text5') }}</h4>
+        <v-divider opacity="0"></v-divider>
+       
+      </div>
+      <div class="text-center">
+        <h4 class="font-weight-light my-2">&#129300; {{ $t('homePage.text14') }}</h4>
+        <v-btn variant="flat" color="green-darken-1" class="rounded-xl" @click="navigateTo(localePath('/shop'))">
+        {{ $t('homePage.text15') }} <v-icon class="ml-3"  :icon="mdiArrowRight" size="24"></v-icon></v-btn>
+      </div>
     </div>
     
     <div class="row elevation-24 p-3 mb-2 rounded bg-grey-lighten-5" id="newProducts" v-if="newProductsRef && newProductsRef.length > 0">
-      <h3 class="text-center pb-2 pt-2 font-weight-thin"> Noutati in magazin </h3>
+      <h3 class="text-center pb-2 pt-2 font-weight-thin">  {{ $t('homePage.newItems') }}  </h3>
      
       <div>
         <v-row>
@@ -195,7 +221,7 @@
     </div>
 
     <div class="row elevation-24 p-3 mb-2 rounded bg-grey-lighten-5" id="newProducts" v-if="limitedEditionProductsRef && limitedEditionProductsRef.length > 0">
-      <h3 class="text-center pb-2 pt-2 font-weight-thin"> Editii limitate </h3>
+      <h3 class="text-center pb-2 pt-2 font-weight-thin">{{ $t('homePage.limitedEditions') }} </h3>
       
       <div>
         <v-row>
@@ -376,40 +402,22 @@
     </div>
 
     <div class="text-center elevation-24 p-3 mb-2 rounded bg-grey-lighten-5"  id="frequent">
-      <h3 class="text-center pb-2 pt-2 font-weight-thin">Nu esti convins ?</h3>
-      <v-btn variant="flat" color="green" class="rounded-xl" @click="navigateTo(localePath('/shop'))">
-          Mergi la cumparaturi <v-icon class="ml-3"  :icon="mdiArrowRight" size="24"></v-icon></v-btn>
+      <h3 class="text-center pb-2 pt-2 font-weight-thin">{{ $t('homePage.text16') }}</h3>
+      <v-btn variant="flat" color="green-darken-1" class="rounded-xl" @click="navigateTo(localePath('/shop'))">
+        {{ $t('homePage.text15') }} <v-icon class="ml-3"  :icon="mdiShoppingOutline" size="24"></v-icon></v-btn>
     </div>
     
     <div class=" elevation-24 p-3 mb-2 rounded bg-grey-lighten-5"  id="frequent">
-      <h3 class="text-center pb-2 pt-2 font-weight-thin">Intrebari frecvente <v-icon  :icon="mdiFrequentlyAskedQuestions" size="24"></v-icon></h3>
+      <h3 class="text-center pb-2 pt-2 font-weight-thin">{{ $t('homePage.freqQuestions') }} <v-icon  :icon="mdiFrequentlyAskedQuestions" size="24"></v-icon></h3>
       <v-row>
-        <v-col cols="12" md="4">
+        <v-col cols="12" md="4" v-for="question in frequentQuestionsArr"
+        :key="question">
           <v-card class="elevation-12 bg-primary">
             <v-card-item class="text-center">
-              <v-card-title class="font-weight-normal h5">Cat timp dureaza livrarea?</v-card-title>
               <v-card-text class="pt-4 ">
-                <span>Durata unei comenzi este de obicei 7-10 zile lucratoare</span>
-              </v-card-text>
-            </v-card-item>
-          </v-card>
-        </v-col>
-        <v-col cols="12" md="4">
-          <v-card class="elevation-12 bg-primary">
-            <v-card-item class="text-center">
-              <v-card-title class="font-weight-normal h5">Cat timp dureaza livrarea?</v-card-title>
-              <v-card-text class="pt-4 ">
-                <span>Durata unei comenzi este de obicei 7-10 zile lucratoare</span>
-              </v-card-text>
-            </v-card-item>
-          </v-card>
-        </v-col>
-        <v-col cols="12" md="4">
-          <v-card class="elevation-12 bg-primary">
-            <v-card-item class="text-center">
-              <v-card-title class="font-weight-normal h5">Cat timp dureaza livrarea?</v-card-title>
-              <v-card-text class="pt-4 ">
-                <span>Durata unei comenzi este de obicei 7-10 zile lucratoare</span>
+                <span class="font-weight-normal h5">{{ $t(question.Q) }}</span>
+                <v-divider opacity="0"></v-divider>
+                <span class="font-weight-light h6">{{  $t(question.A) }}</span>
               </v-card-text>
             </v-card-item>
           </v-card>
@@ -430,13 +438,155 @@
 import productService from '~/services/Products';
 import userService from '~/services/User';
 import { useDisplay } from 'vuetify';
-import { mdiArrowRight, mdiCardAccountMail, mdiFrequentlyAskedQuestions, mdiTruck } from '@mdi/js';
+import { mdiArrowRight, mdiCardAccountMail, mdiFrequentlyAskedQuestions, mdiShoppingOutline, mdiTruck } from '@mdi/js';
+
 definePageMeta({
   title : 'Acasa',
   layout: 'default',
   middleware : 'locale',
-  keywords: 'cuverturi de pat, cuverturi moderne, cuverturi premium, cuverturi pentru dormitor, cuverturi pentru pat matrimonial, cuverturi pentru pat de o persoană, cuverturi pentru copii, cuverturi pentru pătuțuri de bebeluși, cuverturi colorate pentru copii, cuverturi cu personaje animate, cuverturi termoizolante, cuverturi matlasate, cuverturi din bumbac satinat, cuverturi pentru bucătărie, cuverturi decorative pentru canapea, cuverturi rezistente la pete, cuverturi impermeabile, cuverturi premium pentru sufragerie, cuverturi din catifea, draperii blackout, draperii elegante, draperii pentru living, draperii moderne pentru sufragerie, draperii pentru dormitor, draperii termoizolante, draperii din in, draperii cu dublu strat, draperii pentru copii, draperii cu imprimeuri jucăușe, draperii pentru camera copiilor, draperii cu personaje Disney, draperii pentru pătuțuri, draperii pentru bucătărie, draperii scurte pentru bucătărie, draperii anti-mucegai pentru bucătărie, draperii rustice pentru bucătărie, perdele albe, perdele vaporoase, perdele pentru dormitor, perdele scurte, perdele moderne, perdele transparente, perdele pentru copii, perdele colorate pentru camera copiilor, perdele cu imprimeuri pentru copii, perdele blackout pentru camera copiilor, perdele pentru bucătărie, perdele scurte pentru bucătărie, perdele cu modele florale pentru bucătărie, perdele rustice pentru bucătărie, perdele anti-mucegai pentru bucătărie, perdele termoizolante pentru bucătărie, perdele decorative pentru bucătărie, perne decorative, perne confortabile, perne ortopedice, perne hipoalergenice, perne pentru dormit, perne pentru copii, perne cu umplutură de bambus, perne cu spumă cu memorie, perne pentru bucătărie, perne pentru scaune de bucătărie, seturi de lenjerii de pat, seturi de cuverturi și perdele, seturi de lenjerii premium, seturi de perne și pături, seturi de draperii și perdele, seturi complete pentru dormitor, seturi textile pentru camera copiilor, seturi de lenjerii pentru pătuțuri de bebeluși, seturi de draperii pentru copii, seturi de perdele și draperii pentru bucătărie, seturi de textile pentru casă, textile premium online, cumpără cuverturi online, reduceri la textile pentru casă, promoții la perdele și draperii, livrare rapidă, decor interior, amenajare locuință, textile pentru dormitor, textile pentru sufragerie, textile pentru camere de copii, textile pentru bucătărie, textile pentru hol, textile de lux pentru casă'
+  keywords: [ "cuverturi de pat", "cuverturi moderne", "cuverturi premium", "cuverturi pentru dormitor",
+  "cuverturi pentru pat matrimonial", "cuverturi pentru pat de o persoană", "cuverturi pentru copii",
+  "cuverturi pentru pătuțuri de bebeluși", "cuverturi colorate pentru copii", "cuverturi cu personaje animate",
+  "cuverturi termoizolante", "cuverturi matlasate", "cuverturi din bumbac satinat", "cuverturi pentru bucătărie",
+  "cuverturi decorative pentru canapea", "cuverturi rezistente la pete", "cuverturi impermeabile",
+  "cuverturi premium pentru sufragerie", "cuverturi din catifea", "cuverturi groase pentru iarnă",
+  "cuverturi răcoroase pentru vară", "cuverturi din microfibră", "cuverturi cu textură moale",
+  "cuverturi din lână", "cuverturi pentru protecție mobilier", "cuverturi pentru hoteluri",
+  "cuverturi personalizate", "cuverturi anti-acarieni", "cuverturi confortabile", "cuverturi cu broderie",
+  "cuverturi handmade", "draperii blackout", "draperii elegante", "draperii pentru living",
+  "draperii moderne pentru sufragerie", "draperii pentru dormitor", "draperii termoizolante",
+  "draperii din in", "draperii cu dublu strat", "draperii pentru copii", "draperii cu imprimeuri jucăușe",
+  "draperii pentru camera copiilor", "draperii cu personaje Disney", "draperii pentru pătuțuri",
+  "draperii pentru bucătărie", "draperii scurte pentru bucătărie", "draperii anti-mucegai pentru bucătărie",
+  "draperii rustice pentru bucătărie", "draperii izolante fonic", "draperii anti-reflexie",
+  "draperii cu efect de întunecare totală", "draperii cu protecție UV", "draperii pentru birou",
+  "draperii rezistente la apă", "draperii elegante din mătase", "perdele albe", "perdele vaporoase",
+  "perdele pentru dormitor", "perdele scurte", "perdele moderne", "perdele transparente",
+  "perdele pentru copii", "perdele colorate pentru camera copiilor", "perdele cu imprimeuri pentru copii",
+  "perdele blackout pentru camera copiilor", "perdele pentru bucătărie", "perdele scurte pentru bucătărie",
+  "perdele cu modele florale pentru bucătărie", "perdele rustice pentru bucătărie", "perdele anti-mucegai pentru bucătărie",
+  "perdele termoizolante pentru bucătărie", "perdele decorative pentru bucătărie", "perdele filtrante",
+  "perdele care lasă lumina să pătrundă", "perdele cu efect de aerisire", "perdele care oferă intimitate",
+  "perdele cu strat protector", "perdele anti-alergice", "perdele cu strat dublu", "perdele pentru izolare termică",
+  "perne decorative", "perne confortabile", "perne ortopedice", "perne hipoalergenice", "perne pentru dormit",
+  "perne pentru copii", "perne cu umplutură de bambus", "perne cu spumă cu memorie", "perne pentru bucătărie",
+  "perne pentru scaune de bucătărie", "perne cu efect relaxant", "perne cu infuzie de lavandă",
+  "perne pentru un somn liniștit", "perne pentru gât și coloană", "perne pentru gravide", "perne pentru copii mici",
+  "seturi de lenjerii de pat", "seturi de cuverturi și perdele", "seturi de lenjerii premium",
+  "seturi de perne și pături", "seturi de draperii și perdele", "seturi complete pentru dormitor",
+  "seturi textile pentru camera copiilor", "seturi de lenjerii pentru pătuțuri de bebeluși",
+  "seturi de draperii pentru copii", "seturi de perdele și draperii pentru bucătărie", "seturi de textile pentru casă",
+  "textile premium online", "cumpără cuverturi online", "reduceri la textile pentru casă",
+  "promoții la perdele și draperii", "livrare rapidă", "decor interior", "amenajare locuință",
+  "textile pentru dormitor", "textile pentru sufragerie", "textile pentru camere de copii",
+  "textile pentru bucătărie", "textile pentru hol", "textile de lux pentru casă", "textile pentru un somn odihnitor",
+  "textile care echilibrează temperatura camerei", "textile pentru un aer mai curat", "textile pentru reducerea umezelii",
+  "textile care împiedică formarea mucegaiului", "textile pentru reducerea zgomotului", "textile care mențin răcoarea vara",
+  "textile pentru confort maxim", "textile care îmbunătățesc calitatea somnului", "textile pentru protecția pielii sensibile",
+  "întuneric în cameră", "respirație mai bună în cameră", "aer proaspăt în dormitor", "izolare fonică pentru un somn liniștit",
+  "bedspreads", "modern bedspreads", "premium bedspreads", "bedroom bedspreads", "double bed bedspreads",
+  "single bed bedspreads", "children bedspreads", "baby crib bedspreads", "colorful bedspreads for kids",
+  "animated character bedspreads", "thermal insulation bedspreads", "quilted bedspreads",
+  "satin cotton bedspreads", "kitchen bedspreads", "decorative bedspreads for sofas",
+  "stain-resistant bedspreads", "waterproof bedspreads", "premium bedspreads for living rooms",
+  "velvet bedspreads", "thick winter bedspreads", "cooling summer bedspreads", "microfiber bedspreads",
+  "soft-textured bedspreads", "wool bedspreads", "furniture protection bedspreads", "hotel-quality bedspreads",
+  "custom-made bedspreads", "anti-mite bedspreads", "comfortable bedspreads", "embroidered bedspreads",
+  "handmade bedspreads", "blackout curtains", "elegant curtains", "living room curtains",
+  "modern living room curtains", "bedroom curtains", "thermal insulating curtains", "linen curtains",
+  "double-layer curtains", "children curtains", "playful print curtains", "kids room curtains",
+  "Disney character curtains", "crib curtains", "kitchen curtains", "short kitchen curtains",
+  "anti-mold kitchen curtains", "rustic kitchen curtains", "soundproof curtains", "anti-reflection curtains",
+  "total blackout curtains", "UV protection curtains", "office curtains", "water-resistant curtains",
+  "elegant silk curtains", "white curtains", "airy curtains", "privacy-enhancing curtains",
+  "protective layer curtains", "anti-allergy curtains", "double-layer curtains", "thermal insulation curtains",
+  'despre noi magazin textile casă',
+  'firma producătoare de perdele și draperii',
+  'despre brandul nostru de textile casă',
+  'cine suntem și ce oferim',
+  'despre compania noastră de cuverturi și perne',
+  'experiență în producția de textile pentru casă',
+  'valori și misiune în industria textilelor',
+  'producător perdele și draperii de calitate',
+  'istoria companiei noastre',
+  'cumpără perdele direct de la producător',
+  'companie specializată în textile premium',
+  'despre noi cuverturi și perne de lux',
+  'perdele și draperii fabricate cu pasiune',
+  'calitate și tradiție în textile pentru casă',
+  'fabricăm cuverturi și perne de înaltă calitate',
+  'lideri în industria textilelor de casă',
+  'despre noi  perdele și draperii personalizate',
+  'angajamentul nostru față de calitate',
+  'producător românesc de perdele și draperii',
+  'despre brandul nostru premium de textile',
+  'echipa noastră și viziunea brandului',
+  'inovație și design în textile pentru casă',
+  'despre noi  expertiză în textile decorative',
+  'descoperă istoria brandului nostru',
+  'textile casă create cu atenție la detalii',
+  'companie de încredere pentru perdele și cuverturi',
+  'perne și cuverturi pentru un confort suprem',
+  'despre noi  magazin de perdele și perne online',
+  'cine suntem și de ce ne aleg clienții',
+  'firma noastră  specialiști în textile pentru casă',
+  'tradiție și calitate în perdele și draperii',
+  'de ce să alegi perdelele noastre?',
+  'despre noi  experiență de peste X ani',
+  'textile casă premium, direct de la producător',
+  'despre noi  misiunea și valorile noastre',
+  'colaborăm cu cei mai buni producători de textile',
+  'ce ne diferențiază în industria textilelor de casă',
+  'pasiunea noastră pentru design și confort',
+  'servicii personalizate pentru perdele și draperii',
+  'fabricăm textile de casă sustenabile și elegante',
 
+  // **English Keywords**
+  'about us home textiles company',
+  'curtains and drapes manufacturer',
+  'about our home textiles brand',
+  'who we are and what we offer',
+  'about our bedding and pillow company',
+  'experience in home textiles production',
+  'values and mission in the textile industry',
+  'quality curtains and drapes manufacturer',
+  'our company history',
+  'buy curtains directly from the manufacturer',
+  'specialized home textiles company',
+  'about us  premium bedding and pillows',
+  'curtains and drapes made with passion',
+  'tradition and quality in home textiles',
+  'we manufacture high-quality bedding and pillows',
+  'leaders in the home textile industry',
+  'about us  custom-made curtains and drapes',
+  'our commitment to quality',
+  'Romanian manufacturer of curtains and drapes',
+  'about our premium home textile brand',
+  'our team and brand vision',
+  'innovation and design in home textiles',
+  'about us  expertise in decorative textiles',
+  'discover the story behind our brand',
+  'home textiles crafted with attention to detail',
+  'trusted company for curtains and bedding',
+  'pillows and bedspreads for ultimate comfort',
+  'about us  online store for curtains and pillows',
+  'who we are and why customers choose us',
+  'our company  home textiles specialists',
+  'tradition and quality in curtains and drapes',
+  'why choose our curtains?',
+  'about us  over X years of experience',
+  'premium home textiles directly from the manufacturer',
+  'about us  our mission and values',
+  'we collaborate with top home textile producers',
+  'what makes us different in the home textile industry',
+  'our passion for design and comfort',
+  'personalized services for curtains and drapes',
+  'we manufacture sustainable and elegant home textiles'],
+  siteName : 'Texx - Home decor',
+  canonicalUrl : 'http://localhost:3000/home',
+  ogType : 'website',
+  ogDescription : 'La noi puteti gasii cuverturi si perdele de inalta calitate. Va asteptam !!',
+  description : 'Cuverturi si pedele de inalta calitate. Livrare acasa. Livrare la comanda de peste 300 RON. Livrare in toata tara! '
 })
 const {name} = useDisplay()
 const {t} = useI18n()
@@ -459,13 +609,25 @@ const activeSlideMostViewedProducts = ref(0)
 
 const selectedCurrency = useState('selectedCurrency');
 
-useHead({
-  title : 'Acasa',
-})
+const frequentQuestionsArr = [
+  {
+    Q: 'homePage.questions.Q1',
+    A: 'homePage.questions.A1'
+  },
+  {
+    Q: 'homePage.questions.Q2',
+    A: 'homePage.questions.A2'
+  },
+  {
+    Q: 'homePage.questions.Q3',
+    A: 'homePage.questions.A3'
+  }
+]
+
+const carouselImgs = ['cuv1.jpeg','cuv2.jpeg','cuv3.jpeg','cuv4.jpeg','cuv5.jpeg','cuv6.jpeg',]
 
 const getLimitedEditionProducts = (async() => {
   const response = await productService.getLimitedEditionProductsInShop(selectedCurrency.value)
-  console.log(response)
   if(response && response.length > 0){
     limitedEditionProductsRef.value = response
   }

@@ -106,23 +106,11 @@
     ],
     link:
       [
-        { rel: 'icon', type: 'image/png', href: '/favicon-16x16.png' },
-        { rel: 'icon', type: 'image/png', href: '/favicon-32x32.png' },
+        // { rel: 'icon', type: 'image/png', href: 'favicon-16x16.png' },
+        // { rel: 'icon', type: 'image/png', href: 'favicon-32x32.png' },
         { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
       ]
-    // link:
-    // [
-    //   {rel :'canonical' , href: route.meta.canonicalUrl || 'Default'},
-    //   {rel :'dns-prefetch' , href: route.meta.externalAPI_URL || 'Default'},
-    //   {rel :'prefetch' , href: route.meta.externalResource || 'Default'},
-    //   {rel :'alternate', href: route.meta.alternateLang || 'Default'}
-    // ]
+  
   })
 
-  // onMounted(() => {
-  //   const token = useCookie('userLoggedIn').value;
-  //   isLoggedIn.value = token === 1;  // Ensure `1` means the user is logged in
-  //   // Emit the correct login state to update your navigation
-  //   emitter.emit('isLoggedIn', isLoggedIn.value);
-  // });
 </script>

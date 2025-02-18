@@ -81,8 +81,6 @@
         "CheckDeliveryAndBillingAddress" : "Verificati formularul cu detaliile adresei",
         "CheckDeliveryAddress" : "Verificati formularul cu detaliile adresei de livrare",
         "CheckBillingAddress" : "Verificati formularul cu detaliile adresei de facturare"
-
-
     },
     "profile": {
         "generalInfo" : {
@@ -448,7 +446,35 @@
     "homePage" : {
         "welcome" : "Bun venit",
         "orderOver1" : "Comenzile de peste ",
-        "orderOver2" : " beneficiază de transport gratuit"
+        "orderOver2" : " beneficiază de transport gratuit",
+        "text1" : "🌟 Eleganță și rafinament pentru fiecare cameră!",
+        "text2" : "- Descoperă colecția noastră exclusivistă de cuverturi, draperii, perne și perdele, create pentru a aduce un plus de stil și confort în locuința ta. Fie că îți dorești un decor modern, clasic sau extravagant, avem produsele perfecte pentru tine!",
+        "text3" : " 🏠 Decorează-ți casa cu textile premium, alese cu grijă!",
+        "text4" : "- Alege cuverturi luxoase, draperii opace pentru intimitate, perne decorative pentru un plus de personalitate și perdele vaporoase care lasă lumina naturală să îți învăluie casa.",
+        "text5" : " 🚀 Livrare rapidă și prețuri accesibile!",
+        "text6" : " - Comandă online și bucură-te de livrare rapidă oriunde în România! Beneficiază de promoții exclusive și garanția unui decor deosebit, fără compromisuri!",
+        "text7" : " 🎨 Stil și funcționalitate într-un singur loc!",
+        "text8" : "- Fie că îți dorești draperii blackout pentru un somn odihnitor, cuverturi pufoase pentru confort maxim, sau perdele delicate care să ofere un aer sofisticat, pe Texx.ro găsești mereu soluția ideală!",
+        "text9" : " ✅ Materiale premium, durabile și ușor de întreținut",
+        "text10" : "✅ Design-uri variate pentru orice stil de amenajare",
+        "text11" : "✅ Reduceri și oferte speciale pe tot parcursul anului",
+        "text12" : "Nu stii cum sa alegi dimensiunile potrivite?",
+        "text13" : "VEZI AICI GHIDUL NOSTRU",
+        "text14" : "Nu esti convins ?",
+        "text15" : "Mergi la cumparaturi",
+        "text16" : "Inca nu te-ai decis?",
+        "freqQuestions" : "Intrebari frecvente",
+        "questions" : {
+            "Q1" : "Cat timp dureaza livrarea?",
+            "A1" : "Durata unei comenzi este de obicei 7-10 zile lucratoare",
+            "Q2" : "Produsele la comanda se pot returna?",
+            "A2" : "Nu , din pacate , produsule care se fac la comanda (perdele,draperiile) , orice implica o manopera calculabila sau material comandat la metru NU se pot returna. Acest lucru este scris si in politica noastra.",
+            "Q3" : "Ce metode de plata aceptati?",
+            "A3" : "Plata se poate realiza atat cu cardul, cat si ramburs la livrare."
+        },
+        "aboutUs" : "Despre noi",
+        "newItems" : "Noutati in magazin",
+        "limitedEditions" : "Editii limitate"
     },
     "orderHistory" : {
         "order" : "Comanda",
@@ -474,6 +500,14 @@
         "canLeavePage" : "Pagina poate fi parasita",
         "thankYou" : "Multumim de cumparaturi si va mai asteptam pe la noi !",
         "checkMail" : "Poate dura de la 1 pana la 5 minute pana poate ajunge mail-ul. Va rog verificati si la spam! Multumim mult!"
+    },
+    "aboutUs" : {
+        "text1" : "La Texx, ne-am propus să aducem în România cele mai fine și elegante textile pentru casă. Situată în inima Brașovului, compania noastră oferă servicii de manoperă premium pentru perdele și draperii, alături de o gamă exclusivistă de materiale de cea mai înaltă calitate. Pentru noi, fiecare perdea și fiecare draperie reprezintă mai mult decât un simplu element decorativ – ele sunt o expresie a rafinamentului și a bunului gust.",
+        "text2" : "Folosim țesături de top, importate de la cei mai renumiți producători, pentru a crea perdele și draperii elegante, care îmbină armonios frumusețea cu funcționalitatea. De asemenea, ne specializăm în perdele din in, un material nobil, natural și durabil, care adaugă un plus de stil oricărui interior.",
+        "text3" : "Pe lângă perdele și draperii, suntem dedicați și fabricării de perne luxoase, create pentru confortul suprem. Fie că este vorba de perne decorative sau perne pentru odihnă, fiecare produs este confecționat cu atenție la detalii, folosind materiale fine și umpluturi de înaltă calitate. În plus, oferim și o colecție de cuverturi premium, menite să completeze perfect decorul unui dormitor elegant și sofisticat.",
+        "text4" : "Ne dorim să oferim clienților noștri nu doar produse, ci o experiență unică, în care calitatea materialelor și măiestria execuției sunt pe primul loc. Alegând [Numele Companiei], alegeți o echipă pasionată de textile, cu o misiune clară: să transformăm fiecare locuință într-un spațiu cald, elegant și confortabil.",
+        "text5" : "Vă invităm să descoperiți colecțiile noastre și să beneficiați de servicii de manoperă personalizate, create special pentru a vă îndeplini toate dorințele în materie de perdele, draperii, perne și cuverturi. Calitatea ne definește, iar satisfacția clienților noștri este cea mai mare recompensă!"
+
     }
   }
   

@@ -758,7 +758,7 @@
                         <v-card-text>
                             <v-checkbox :true-value="true" :false-value="false"
                                 v-model="sameDeliveryAndBilling"
-                                true-icon="mdi-check" color="green"
+                                :true-icon="mdiCheck" color="green"
                                 
                              >
                             <template v-slot:label>
@@ -882,9 +882,11 @@
                         <div v-if="sameDeliveryAndBilling" >
                             <div v-if="(!deliveryAddressSelected && syncedItems.isLoggedIn) || (!deliveryAddressSelected)">
                                 <p  class="font-weight-light h4 mt-4">{{ $t('checkout.inputAddress') }}</p>
-                                <v-form ref="deliveryAndBillingForm" validate-on="input"
+                                <v-form ref="deliveryAndBillingForm" validate-on="input" 
                                 class="bg-blue-grey-lighten-5 w-100 elevation-12" >
-                                    <div v-for="(data) in filteredDataForm" :key="data.label">
+                                
+                                
+                                    <div v-for="(data) in filteredDataForm('delivery').value" :key="data.label">
                                         <v-text-field
                                             :label="data.label"
                                             :placeholder="data.placeholder"
@@ -896,7 +898,7 @@
                                             variant="outlined"
                                         ></v-text-field>
                                     </div>
-                                
+                               
                                 </v-form>
                             </div>
                            
@@ -904,9 +906,9 @@
                         <div v-else>
                             <div v-if="!deliveryAddressSelected">
                                 <p  class="font-weight-light h4 mt-4">{{ $t('checkout.inputDeliveryAddress') }}</p>
-                                <v-form ref="deliveryAddressForm" validate-on="input"
+                                <v-form ref="deliveryAddressForm" validate-on="input" 
                                 class="bg-blue-grey-lighten-5 elevation-12" >
-                                    <div v-for="(data) in filteredDataForm" :key="data.label">
+                                    <div v-for="(data) in filteredDataForm('delivery').value" :key="data.label">
                                         <v-text-field
                                             :label="data.label"
                                             :placeholder="data.placeholder"
@@ -926,7 +928,7 @@
                                 <p  class="font-weight-light h4 mt-4">{{ $t('checkout.inputBillingAddress') }}</p>
                                 <v-form ref="billingAddressForm" validate-on="input"
                                 class="bg-blue-grey-lighten-5 elevation-12" >
-                                    <div v-for="(data) in dataForm" :key="data.label">
+                                    <div v-for="(data) in dataForm('billing')" :key="data.label">
                                         <v-text-field
                                             :label="data.label"
                                             :placeholder="data.placeholder"
@@ -947,7 +949,7 @@
             </div>
             <v-divider></v-divider>
             <div class="text-center p-2">
-                <v-alert v-if="selectedPaymentMethod.id === 1" class="text-left" variant="tonal" color="black" icon="mdi-information">
+                <v-alert v-if="selectedPaymentMethod.id === 1" class="text-left" variant="tonal" color="black" :icon="mdiInformation">
                     <p>{{ $t('checkout.rambursPaymentInfo') }}</p>
                 </v-alert>
                 <p class="font-weight-light h4 my-4">{{ $t('checkout.paymentMethods') }}</p>
@@ -971,7 +973,7 @@
                            {{ item.price }} {{ currentCurrency === 'RON' ? 'RON' : 'EUR' }}
                         </td>
                         <td >
-                            <v-checkbox-btn true-icon="mdi-check" :true-value="item"
+                            <v-checkbox-btn :true-icon="mdiCheck" :true-value="item"
                             color="green" v-model="selectedPaymentMethod"
                             >
 
@@ -1032,8 +1034,8 @@
                         </v-col>
                         <!-- <v-divider v-if="discountCodeProperties.codVoucherDto !== ''"></v-divider> -->
                         <v-col cols="12" xs="12" sm="2" md="2" class="text-right" >
-                            <span v-if="discountCodeProperties.codVoucherDto === ''" class="font-weight-normal text-h6">{{ syncedItems.pretTotal + selectedPaymentMethod.price }} {{ currentCurrency === "RON" ? "RON" : "EUR" }}</span>
-                            <span v-else class="font-weight-normal text-h6 text-red">{{ (syncedItems.pretTotal * (discountCodeProperties.reducereDto / 100)) + selectedPaymentMethod.price }} {{ currentCurrency === "RON" ? "RON" : "EUR" }}</span>
+                            <span v-if="discountCodeProperties.codVoucherDto === ''" class="font-weight-normal text-h6">{{ syncedItems.pretTotal + selectedPaymentMethod.price + 17}} {{ currentCurrency === "RON" ? "RON" : "EUR" }}</span>
+                            <span v-else class="font-weight-normal text-h6 text-red">{{ (syncedItems.pretTotal * (discountCodeProperties.reducereDto / 100)) + selectedPaymentMethod.price + 17}} {{ currentCurrency === "RON" ? "RON" : "EUR" }}</span>
                         </v-col>
                         <v-divider></v-divider>
                         <v-col cols="12" md="12" sm="12" >
@@ -1201,7 +1203,7 @@ import productService from '~/services/Products';
 import orderService from '~/services/Order';
 import userService from '~/services/User'
 import { useDisplay } from 'vuetify';
-import { mdiArrowLeft, mdiArrowRight, mdiClose, mdiEmoticonSadOutline, mdiFileDocumentPlusOutline, mdiMapMarkerOutline } from '@mdi/js';
+import { mdiArrowLeft, mdiArrowRight, mdiCheck, mdiClose, mdiEmoticonSadOutline, mdiFileDocumentPlusOutline, mdiInformation, mdiMapMarkerOutline } from '@mdi/js';
 
 definePageMeta({
     middleware : ['locale']
@@ -1304,6 +1306,7 @@ const validationRules = {
   exactLength: (length) => v => !v || v.length == length || `${t('textFieldsMessages.exactLength')} ${length}`,
   email: value => (!!value && emailRegex.test(String(value))) || t('textFieldsMessages.email'),
   onlyNumbers: v => /^[0-9]+$/.test(v) || t('textFieldsMessages.onlyNumbers'),
+  checkAliasUsed: (addressType) => (v) => checkIsAliasUsed(v, addressType) || t('profile.useAnotherAlias')
 };
 const lettersRegex = /^[a-zA-Z]+$/;
 
@@ -1342,14 +1345,30 @@ const userForm = [
     rules: [validationRules.email, validationRules.maxLength(50)] // No async rule here
   },
 ];
+
+const checkIsAliasUsed = (alias, addressType) => {
+  if (!alias) return false; // Prevent checking empty alias
+
+  if (addressType === 'billing' && !deliveryAddressSelected.value) {
+    return !syncedItems.value.clientsBillingAddresses.some(address => address.aliasDto === alias);
+  }
+  
+  if (addressType === 'delivery' && !billingAddressSelected.value) {
+    return !syncedItems.value.clientsDeliveryAddresses.some(address => address.aliasDto === alias);
+  }
+  
+  return true;
+};
+
+
 // dataForm definition
-const dataForm = [
+const dataForm = (addressType) => [
   {
     label: 'Alias',
     placeholder: '',
     type: 'text',
     model: 'aliasDto',
-    rules: [validationRules.required, validationRules.maxLength(20)],
+    rules: [validationRules.required, validationRules.maxLength(20),validationRules.checkAliasUsed(addressType)],
     counter: 20
   },
   {
@@ -1433,15 +1452,15 @@ const screenSize = computed(() => {
     }
 })
 
-const filteredDataForm = computed(() => {
-  return dataForm.filter(data => {
-    // Only show 'cif' and 'nume_firma' fields if 'tip_adresa' is 'Facturare'
-    if (data.model === 'cifDto' || data.model === 'numeFirmaDto') {
-      return false; // Exclude these fields if 'tip_adresa' is not 'Facturare'
+const filteredDataForm = (addressType) => computed(() => {
+  return dataForm(addressType).filter(field => {
+    if (addressType === 'delivery' && (field.model === 'cifDto' || field.model === 'numeFirmaDto')) {
+      return false; // Remove company-related fields for delivery
     }
-    return true; // Include all other fields
+    return true;
   });
 });
+
 
 
 const dimensionsForImage = computed(() => {
@@ -1596,7 +1615,7 @@ const orderPayment = (async () => {
         billingUserAddress.value = {...deliveryUserAddress.value}
     }
 
-    console.log(selectedPaymentMethod.value)
+    
 
     if(isOrderDetailsFormValidBoolean){
         if(sameDeliveryAndBilling.value === true){

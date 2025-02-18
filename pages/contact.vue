@@ -62,7 +62,7 @@ definePageMeta({
 })
 
 useHead({
-  title : `Contact - Texx`,
+  title : `Contact`,
   keywords : ['Contact Us', 'Get in Touch', 'Customer Support', 'Reach Us', 'Send a Message', 'Feedback Form', 'Email Support', 'Phone Number', 'Address', 'Contact Form', 
   'Chat with Us', 'Frequently Asked Questions', 'Submit a Request', 'Online Assistance', 'Business Hours', 
   'Contact Page Support', 'Talk to Our Team', '24/7 Customer Service', 'Write to Us', 'Online Contact', 
@@ -72,7 +72,13 @@ useHead({
   'Adresă', 'Formular de feedback', 'Chat cu noi', 'Întrebări frecvente', 
   'Program de lucru', 'Suport online', 'Trimitere cerere', 'Asistență rapidă', 'Pagina de contact', 'Scrie-ne un mesaj', 'Echipa noastră de suport', 'Serviciu clienți 24/7', 'Cere ajutor', 'Suport tehnic',
    'Cum să ne contactați', 'Apel de asistență', 'Solicită un răspuns', 'Asistență imediată', 'Cum ne puteți găsi', 'Centru de ajutor', 'Detalii de contact', 'Vorbește cu un consultant', 'Trimite un feedback', 
-   'Suport prin e-mail', 'Accesează asistența', 'Cerere de suport clienți']
+   'Suport prin e-mail', 'Accesează asistența', 'Cerere de suport clienți'],
+  layout: 'default',
+  siteName : 'Texx - Contact',
+  canonicalUrl : 'http://localhost:3000/contact',
+  ogType : 'website',
+  ogDescription : 'Suport 24/7 cu clientii nostrii. Contacti-ne daca aveti vreo problema',
+  description : 'Contact Texx - Home decor. Suport valabil oricand. Nu ezitati sa ne contacta-ti daca aveti vreo problema. '
 })
 
 
