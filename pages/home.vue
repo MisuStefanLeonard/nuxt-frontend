@@ -426,9 +426,9 @@
       <v-divider opacity="0"></v-divider>
       <v-divider opacity="0"></v-divider>
       <div class="mt-4 text-center">
-        <p class="font-weight-thin h3">Aveti alta intrebare?</p>
+        <p class="font-weight-thin h3">{{ $t('homePage.text18') }}</p>
         <v-btn variant="flat" color="green" class="rounded-xl" @click="navigateTo(localePath('/contact'))">
-          Contactati-ne <v-icon class="ml-3"  :icon="mdiCardAccountMail" size="24"></v-icon></v-btn>
+          {{ $t('homePage.text17') }} <v-icon class="ml-3"  :icon="mdiCardAccountMail" size="24"></v-icon></v-btn>
       </div>
     </div>
   </div>
@@ -624,7 +624,7 @@ const frequentQuestionsArr = [
   }
 ]
 
-const carouselImgs = ['cuv1.jpeg','cuv2.jpeg','cuv3.jpeg','cuv4.jpeg','cuv5.jpeg','cuv6.jpeg',]
+const carouselImgs = ['/cuv1.jpeg','/cuv2.jpeg','/cuv3.jpeg','/cuv4.jpeg','/cuv5.jpeg','/cuv6.jpeg',]
 
 const getLimitedEditionProducts = (async() => {
   const response = await productService.getLimitedEditionProductsInShop(selectedCurrency.value)

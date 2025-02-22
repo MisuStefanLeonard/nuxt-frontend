@@ -21,7 +21,7 @@ ENV NODE_ENV=development
 FROM node:${NODE_VERSION}-alpine as production
 
 WORKDIR /app
-# COPY --from=build /app /app
+
 COPY --from=build /app/ /app/
 
 RUN npm install --omit=dev

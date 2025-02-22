@@ -445,6 +445,8 @@
       "text14": "Not convinced yet?",
       "text15": "Start shopping",
       "text16": "Still undecided?",
+      "text17" : "Contact us",
+      "text18" : "Do you have another question?",
       "freqQuestions": "Frequently Asked Questions",
       "questions": {
           "Q1": "How long does delivery take?",
