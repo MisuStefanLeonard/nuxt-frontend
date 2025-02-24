@@ -125,11 +125,14 @@ const getCartCount = function(){
     if(getItem !== null ){
       localStorage.removeItem('test');
       var cartCountS = localStorage.getItem('cartCount');
+      console.log(cartCountS)
       if(cartCountS === null){
         localStorage.setItem('cartCount' , '0')
       }
-      cartCount.value = String(parseInt(cartCountS))
 
+      cartCountS = localStorage.getItem('cartCount')
+      console.log(cartCountS)
+      cartCount.value = String(parseInt(cartCountS))
     }
   } catch (exception) {
     console.error("Local storage not available" , ex);

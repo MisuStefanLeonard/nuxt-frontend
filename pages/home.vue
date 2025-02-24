@@ -401,12 +401,7 @@
       </div>
     </div>
 
-    <!-- <div class="text-center elevation-24 p-3 mb-2 rounded bg-grey-lighten-5"  id="frequent">
-      <h3 class="text-center pb-2 pt-2 font-weight-thin">{{ $t('homePage.text16') }}</h3>
-      <v-btn variant="flat" color="green-darken-1" class="rounded-xl" @click="navigateTo(localePath('/shop'))">
-        {{ $t('homePage.text15') }} <v-icon class="ml-3"  :icon="mdiShoppingOutline" size="24"></v-icon></v-btn>
-    </div>
-     -->
+
     <div class=" elevation-24 p-3 mb-2 rounded bg-grey-lighten-5"  id="frequent">
       <h3 class="text-center pb-2 pt-2 font-weight-thin">{{ $t('homePage.freqQuestions') }} <v-icon  :icon="mdiFrequentlyAskedQuestions" size="24"></v-icon></h3>
       <v-row>

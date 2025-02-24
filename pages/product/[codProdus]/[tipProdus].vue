@@ -204,6 +204,11 @@
                                 </v-card>
                             </div>
                             <v-divider opacity="70"></v-divider>
+                            <div class="my-2 text-center" v-if="product.tipulProdusuluiDto === 'perdea' || product.tipulProdusuluiDto === 'draperie'" >
+                                <v-alert color="red" :icon="mdiInformation">
+                                    <p class="font-weight-bold h6">{{ $t('shop.curtain.maxMaterialHeight') }} {{ product.inaltimeMaximaDto }} {{ currency === "RON" ? "metri" : "meters" }}</p>
+                                </v-alert>
+                            </div>
                             <div v-if="product.tipulProdusuluiDto === 'perdea' || product.tipulProdusuluiDto === 'draperie'">
                                 <v-stepper v-model="step" elevation="12" class="mb-6"
                                 :mobile="height === true">
@@ -286,8 +291,8 @@
                                                     variant="outlined"
                                                     :label="$t('shop.curtain.onlyWidth')" 
                                                     v-model="onlyWidth" 
-                                                    counter="4"
-                                                    :rules="[rules.onlyNumbers , rules.notEmpty,rules.maxChar(4)]"
+                                                    counter="10"
+                                                    :rules="[rules.onlyNumbers , rules.notEmpty,rules.maxChar(10)]"
                                                     >
                                                     </v-text-field>
                                                     <v-row class="my-4">
@@ -362,15 +367,15 @@
                                                             <v-text-field density="compact"
                                                             :label="$t('shop.width')" 
                                                             v-model="prefferedWidth" 
-                                                            counter="4"
-                                                            :rules="[rules.notEmpty , rules.onlyNumbers , rules.maxChar(4)]" >
+                                                            counter="10"
+                                                            :rules="[rules.notEmpty , rules.onlyNumbers , rules.maxChar(10)]" >
                                                             </v-text-field>
                                                         
                                                             <v-text-field density="compact"
                                                             :label="$t('shop.height')"
-                                                            counter="4"
+                                                            counter="10"
                                                             v-model="prefferedHeight" 
-                                                            :rules="[rules.notEmpty , rules.onlyNumbers ,  rules.maxChar(4)]" >
+                                                            :rules="[rules.notEmpty , rules.onlyNumbers ,  rules.maxChar(10),rules.maxMaterialHeight]" >
                                                             </v-text-field>
 
                                                             <v-checkbox density="compact"
@@ -880,7 +885,7 @@
 
 
 <script setup>
-import { mdiArrowRight, mdiCheck, mdiCloseCircleOutline, mdiEmail, mdiPhone, mdiShoppingOutline, mdiStar } from '@mdi/js';
+import { mdiArrowRight,mdiArrowLeft, mdiCheck, mdiCloseCircleOutline, mdiEmail, mdiInformation, mdiPhone, mdiShoppingOutline, mdiStar } from '@mdi/js';
 import { ref } from 'vue';
 import { useDisplay } from 'vuetify';
 import productService from '~/services/Products';
@@ -899,19 +904,8 @@ definePageMeta({
   layout: 'default',
   ogType : 'product',
 })
+const selectedKeywords = ref('');
 
-useHead({
-    title : `Texx - ${productCode}`,
-    link : [
-        {rel: 'dns-prefetch' , href: 'https://dw45vxtt6tooj.cloudfront.net'},
-        {rel: 'preconnect' , href: 'https://dw45vxtt6tooj.cloudfront.net'},
-    ],
-    keywords : selectedKeywords,
-    siteName : `Texx - ${productCode}`,
-    canonicalUrl : `http://localhost:3000/${productCode}/${productType}`,
-    ogDescription : `${product.value.descriereDto}`,
-    description : `${product.value.descriereDto}`
-})
 
 
 // Add preload links dynamically
@@ -1413,7 +1407,8 @@ const rules = {
     notEmpty : value => !!value || t('textFieldsMessages.notEmpty'),
     onlyNumbers : value => onlyNums.test(String(value)) || t('textFieldsMessages.onlyNumbers'),
     maxChar: maxLength => value => !value || value.length <= maxLength || `${t('textFieldsMessages.maxLength')} ${maxLength}`,
-    stars : value => value <= 5 && value >=0 || t('textFieldsMessages.starsRule')
+    stars : value => value <= 5 && value >=0 || t('textFieldsMessages.starsRule'),
+    maxMaterialHeight: value => value <= product.value.inaltimeMaximaDto || `${t('shop.curtain.maxMaterialHeight')} + ${product.value.inaltimeMaximaDto} + ' m'`
 }
 
 const isPair = ref(false)
@@ -1729,15 +1724,14 @@ const getProductData = async () => {
         reviewsLen.value = product.value.reviewsProdus.length
     }
 
-    let selectedKeywords;
     if(product.value.tipulProdusuluiDto === 'perdea'){
-        selectedKeywords = perdeleKeywords;
+        selectedKeywords.value = perdeleKeywords.value;
     }else if(product.value.tipulProdusuluiDto === 'draperie'){
-        selectedKeywords = draperiiKeywords;
+        selectedKeywords.value = draperiiKeywords.value;
     }else if(product.value.tipulProdusuluiDto === 'cuvertura'){
-        selectedKeywords = cuverturiKeyWords;
+        selectedKeywords.value = cuverturiKeyWords.value;
     }else if(product.value.tipulProdusuluiDto === 'perna'){
-        selectedKeywords = perneKeywords;
+        selectedKeywords.value = perneKeywords.value;
     }
 
     
@@ -1943,6 +1937,20 @@ onMounted(async () => {
    }
    getMostViewedProducts()
    isMounted.value = true
+})
+
+
+useHead({
+    title : `Texx - ${productCode}`,
+    link : [
+        {rel: 'dns-prefetch' , href: 'https://dw45vxtt6tooj.cloudfront.net'},
+        {rel: 'preconnect' , href: 'https://dw45vxtt6tooj.cloudfront.net'},
+    ],
+    keywords : selectedKeywords.value,
+    siteName : `Texx - ${productCode}`,
+    canonicalUrl : `http://localhost:3000/${productCode}/${productType}`,
+    ogDescription : `${product.value.descriereDto}`,
+    description : `${product.value.descriereDto}`
 })
 
 </script>

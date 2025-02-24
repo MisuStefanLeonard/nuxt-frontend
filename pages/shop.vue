@@ -136,6 +136,11 @@
                     </v-col>
                     <v-col cols="12" sm="12" md="12" xs="12" class="p-2">
                       <v-container fluid>
+                         <v-checkbox label="Exclude de la filtrare: "
+                         v-model="excludeFromFiltration" color="green"
+                         >
+
+                         </v-checkbox>
                         <v-switch 
                         :label="`Fata reversibila : ${fataReversibila  ? $t('yes') : $t('no')}`"
                         density="comfortable"
@@ -175,7 +180,7 @@
               <v-row no-gutters id="products">
                 <v-col sm="6" xs="12" md="6" v-for="product in currentProductsOnPage"
                   :key="product.codProdusDto" class="my-2">
-                  <v-card class="bg-grey-lighten-3 p-2 m-2 h-100" elevation="24"
+                  <v-card class="bg-grey-lighten-3 p-3 m-2 h-100" elevation="24"
                     >
                     <v-card-title >
                       <div
@@ -308,7 +313,7 @@
                   </v-card>
                 </v-col>
                 
-                <v-container v-if="currentProductsOnPage.length > 0" fluid class="bg-grey-lighten-4 text-center elevation-24">
+                <v-container v-if="currentProductsOnPage.length > 0" fluid class="bg-grey-lighten-4 text-center elevation-24 my-3">
                   <v-alert v-if="loadNoMoreProductsAlert" type="info" variant="flat" class="mb-2">
                   {{ $t('shop.maxProductsLoaded') }}
                   </v-alert>
@@ -416,7 +421,7 @@ const filterOptions = ref({});
 const dataPage = ref(1);
 const dimensionsValues = ref([]);
 const selectedCurrency = ref('RON');
-
+const excludeFromFiltration = ref(true)
 
 const route = useRoute()
 const router = useRouter()
@@ -457,16 +462,19 @@ const getNextPageOfProducts = (async (pageNumber,productTypes = null,colorOption
 
 
 const getPaginatedProducts = (async (pageNumber,productTypes = null,colorOptions = null,dimensions ,priceRange , reverseFace , currency) => {
+  console.log(colorOptions)
+  console.log(productTypes)
+  console.log(currency)
+
   const responseFromPaginatedProducts = 
     await productService.getProductsForUsers(
       pageNumber,productTypes, 
       colorOptions,dimensions,
       priceRange,reverseFace,
       currency);
-  if(responseFromPaginatedProducts.length !== null || responseFromPaginatedProducts.length > 0){
+      console.log(responseFromPaginatedProducts)
     currentProductsOnPage.value = responseFromPaginatedProducts
     dimensionsValues.value = []
-  }
 })
 
 const openImageModal  = (product) => {
@@ -480,7 +488,9 @@ const getFilterOptions = (async () => {
   Object.assign(filterOptions.value , filterOptionsResponse);
   rangePrice.value[0] = filterOptions.value.pricesRange[0]
   rangePrice.value[1] = filterOptions.value.pricesRange[1]
-
+  // productTypes.value = filterOptions.value.filterProductTypes
+  // productColors.value = filterOptions.value.filterColors
+  console.log(filterOptions.value)
 })
 
 const getPaginationLen = computed(() => {
@@ -502,7 +512,7 @@ const loadMoreProducts = (async () => {
   if(dataPage.value < getPaginationLen.value){
     dataPage.value++
     const nextPageOfProducts = await getNextPageOfProducts(dataPage.value - 1 , productTypes.value , productColors.value
-      ,dimensionsValues.value,rangePrice.value , fataReversibila.value , selectedCurrency.value)
+      ,dimensionsValues.value,rangePrice.value , excludeFromFiltration.value === true ? null : fataReversibila.value === true, selectedCurrency.value)
       currentProductsOnPage.value =  currentProductsOnPage.value.concat(nextPageOfProducts)
     dimensionsValues.value = []
   }else{
@@ -515,10 +525,10 @@ const allImages = ((product) => {
 })
 
 const applyFiltersFromQuery = () => {
-
+ 
   if (route.query.type) {
-    
     productTypes.value = Array.isArray(route.query.type) ? route.query.type : [route.query.type];
+   
   }
   if (route.query.color) {
    
@@ -531,7 +541,7 @@ const applyFiltersFromQuery = () => {
   }
   if(route.query.height){
    
-    rangeHeight.value = route.query.height
+    rangeHeight.value = Array.isArray(route.query.height) ?  route.query.height : [ route.query.height];  
    
   }
   if(route.query.price){
@@ -539,14 +549,15 @@ const applyFiltersFromQuery = () => {
     rangePrice.value = route.query.price
   }
   if(route.query.reverseFace){
-   
+    
     fataReversibila.value = route.query.reverseFace === 'true'
   }
+
   
 
-  getPaginatedProducts(0, productTypes.value, productColors.value , 
-  dimensionsValues.value,rangePrice.value , fataReversibila.value, selectedCurrency.value);
+  getPaginatedProducts(0 , productTypes.value , productColors.value , dimensionsValues.value , rangePrice.value , excludeFromFiltration.value === true ? null : fataReversibila.value === true , selectedCurrency.value);
 };
+
 
 const applyFilters = () => {
 
@@ -557,7 +568,7 @@ const applyFilters = () => {
       width: rangeWidth.value.length ? rangeWidth.value : undefined,
       height: rangeHeight.value.length ? rangeHeight.value : undefined,
       price: rangePrice.value.length ? rangePrice.value : undefined,
-      reverseFace : fataReversibila.value === true,
+      reverseFace : excludeFromFiltration.value === true ? undefined : fataReversibila.value === true,
     }
   });
 
@@ -573,7 +584,7 @@ const applyFilters = () => {
     productColors.value , 
     dimensionsValues.value,
     rangePrice.value , 
-    fataReversibila.value,
+    excludeFromFiltration.value === true ? null : fataReversibila.value === true,
     selectedCurrency.value
   );
 };
@@ -581,13 +592,14 @@ const applyFilters = () => {
 const deleteFilters = () => {
   productTypes.value = [];
   productColors.value = [];
+  excludeFromFiltration.value = true
   router.push({ query: {} });
-  getPaginatedProducts(0);
+  getPaginatedProducts(0 , productTypes.value , productColors.value , dimensionsValues.value , rangePrice.value ,excludeFromFiltration.value === true ? null : fataReversibila.value === true, selectedCurrency.value);
 };
 
-watch(() => route.query, applyFiltersFromQuery, { immediate: true });
+// watch(() => route.query, applyFiltersFromQuery, { immediate: true });
 
-onBeforeMount(async () => {
+onMounted(async () => {
   getCurrentLocale();
   await getFilterOptions()
   applyFiltersFromQuery();

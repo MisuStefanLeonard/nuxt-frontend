@@ -15,7 +15,7 @@
                 v-model="product.codProdusDto"
                 label="Cod Produs"
                 variant="outlined"
-                :rules="[rules.fieldNotEmpty, rules.onlyLetters, validateProductCode,rules.lengthNotAbove(40),rules.checkProductCode]"
+                :rules="[rules.fieldNotEmpty, rules.onlyLetters, rules.checkProductCode,rules.lengthNotAbove(40),rules.checkProductCode]"
                 :counter="40"
               >
                 <template v-slot:counter={max,value}>
@@ -65,7 +65,7 @@
                 :counter="50"
                 variant="outlined"
                 :rules="[rules.fieldNotEmpty]"
-                :items="['cuvertura', 'perdea']"
+                :items="['cuvertura', 'perdea' , 'draperie' , 'perna']"
               >
               <template v-slot:counter={max,value}>
                   <span :style="{ color: value > max ? 'red' : 'white' }">
@@ -89,7 +89,7 @@
                 </template>
             </v-textarea>
             </v-col>
-            <v-col cols="6">
+            <v-col cols="12">
               <v-text-field class="p-2 m-1"
                 v-model="product.compozitieDto"
                 label="Compoziție"
@@ -104,14 +104,14 @@
                 </template>
             </v-text-field>
             </v-col>
-            <v-col cols="6">
+            <!-- <v-col cols="6">
               <v-text-field class="p-2 m-1"
                 v-model="product.greutateDto"
                 label="Greutate (kg)"
                 variant="outlined"
                 :rules="[rules.onlyNumbers]"
               ></v-text-field>
-            </v-col>
+            </v-col> -->
             <v-col cols="6">
               <v-checkbox class="p-2 m-1"
                 v-model="product.activInMagazinDto"
@@ -150,7 +150,7 @@
             </v-textarea>
             </v-col>
             <v-col cols="12">
-              <v-alert color="info" class="text-center">
+              <v-alert color="warning" class="text-center" variant="tonal">
                 Dacă produsul se aduce la comandă, lăsați stocul la 0.
               </v-alert>
             </v-col>
@@ -162,7 +162,7 @@
                 :rules="[rules.fieldNotEmpty, rules.onlyNumbers]"
               ></v-text-field>
             </v-col>
-            <v-alert color="info" class="text-center">
+            <v-alert color="warning" class="text-center" variant="tonal">
                 Daca produsul are pret pe dimensiune , lasati pret baza la 0
             </v-alert>
             <v-col cols="12" xs="12" s="12">
@@ -173,7 +173,7 @@
                     :rules="[rules.fieldNotEmpty, rules.onlyNumbers]"
                 ></v-text-field>
             </v-col>
-            <v-alert color="info" class="text-center">
+            <v-alert color="warning" class="text-center" variant="tonal">
                 Daca produsul are pret pe dimensiune , lasati la 0.
             </v-alert>
             <v-col cols="12" xs="12" s="12">
@@ -183,7 +183,18 @@
                       variant="outlined"
                       :rules="[rules.fieldNotEmpty, rules.onlyNumbers]"
                   ></v-text-field>
-              </v-col>
+            </v-col>
+            <v-alert color="warning" class="text-center" variant="tonal">
+                Daca produsul este perdea/draperie , daca nu lasati la 0.
+            </v-alert>
+            <v-col cols="12">
+                <v-text-field class="p-2"
+                    v-model="product.inaltimeMaximaDto"
+                    label="Inaltime maxima material"
+                    variant="outlined"
+                    :rules="[rules.fieldNotEmpty, rules.onlyNumbers, ]"
+                ></v-text-field>
+            </v-col>
           </v-row>
         </div>
 
@@ -228,15 +239,15 @@
         <!-- Product Dimensions -->
         <div class="bg-grey-darken-4 p-4 mt-4">
           <v-card-title class="font-weight-light text-white">
-            Dimensiuni produs
+            Dimensiuni produs (centimetri)
           </v-card-title>
           <v-row v-for="(dimensiune, index) in product.dimensiuniProduseDto" :key="index">
             <v-col cols="4">
               <v-combobox
                 v-model="dimensiune.lungimeDto"
                 :items="productOptions.lungimiForBox"
-                :rules="[rules.fieldNotEmpty, rules.onlyNumbers]"
-                :counter="4"
+                :rules="[rules.fieldNotEmpty, rules.onlyNumbers,rules.lengthNotAbove(10)]"
+                :counter="10"
                 label="Lungime"
                 outlined
               ></v-combobox>
@@ -245,8 +256,8 @@
               <v-combobox
                 v-model="dimensiune.latimeDto"
                 :items="productOptions.latimiForBox"
-                :rules="[rules.fieldNotEmpty, rules.onlyNumbers]"
-                :counter="4"
+                :rules="[rules.fieldNotEmpty, rules.onlyNumbers, rules.lengthNotAbove(10)]"
+                :counter="10"
                 label="Lățime"
                 outlined
               ></v-combobox>
@@ -382,7 +393,7 @@
 
         <v-btn @click="finalSaveData" color="success" class="font-weight-bold mt-4">
           Salvează modificări
-          <v-icon class="pl-2" size="24" :icon="mdiContentSave">e</v-icon>
+          <v-icon class="pl-2" size="24" :icon="mdiContentSave"></v-icon>
         </v-btn>
       </v-form>
     </v-card>
@@ -420,6 +431,7 @@ const product = reactive({
     pretBazaDto: 0,
     pretBazaRedusDto: 0,
     tipulProdusuluiDto : '',
+    inaltimeMaximaDto : 0,
     justAdded: false,
     tipuriProduseDto: [],
     dimensiuniProduseDto: [],
@@ -443,8 +455,8 @@ const rules = reactive({
   fieldNotEmpty: (value) => !!String(value) || "Campul este obligatoriu",
   lengthNotAbove: (len) => (value) => 
     !value || value.length <= len || `Limita este de ${len} caractere`,
-  onlyNumbers: (value) =>
-    /^[0-9]*\.?[0-9]+$/.test(String(value).trim()) ||
+    onlyNumbers: (value) =>
+    /^\d+(\.\d{2})?$/.test(String(value).trim()) ||
     "Doar numere sunt permise",
   onlyLetters: (value) => /^[a-zA-Z\s]+$/.test(value) || "Doar litere sunt permise",
   recomandarePatRule: (value) =>
@@ -631,7 +643,7 @@ const finalSaveData = async () => {
   console.log(await mainForm.value.validate())
 
   const isValidForm = await mainForm.value.validate()
-  console.log(isValidForm)
+  
   if(isValidForm.valid)
     {
       Swal.fire({
@@ -644,6 +656,17 @@ const finalSaveData = async () => {
           denyButtonText: `Nu`,
       }).then(async (result) => {
           if (result.isConfirmed) {
+              if(product.tipulProdusuluiDto === 'perdea' || product.tipulProdusuluiDto === 'draperie'){
+                if(product.inaltimeMaximaDto <= 0){
+                      Swal.fire({
+                          icon: 'error',
+                          title: 'Eroare',
+                          text: 'Nu ati selectat o dimensiune maxima pe material',
+                          timer: 3000,
+                      });
+                  return;
+                }
+              }
               const addingProductResponse = await adminService.saveProductChanges(product,'empty');
               if(Array.isArray(addingProductResponse)){
                   Swal.fire("Salvat!", "", "success");

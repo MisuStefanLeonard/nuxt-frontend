@@ -239,6 +239,7 @@
       "reviewInfo": "* These reviews help us improve the quality of our product",
       "post": "Post",
       "curtain": {
+          "maxMaterialHeight" : "Maximum material height: ",
           "onlyMaterial": "I only want the material",
           "notOnlyMaterial": "I want both tailoring and material",
           "onlyWidth": "Desired length (cm)",

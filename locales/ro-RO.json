@@ -254,6 +254,7 @@
         "reviewInfo" : "* Aceste recenzii ne ajuta foarte mult sa imbunatatim calitatea produsului",
         "post" : "Posteaza",
         "curtain" : {
+            "maxMaterialHeight" : "Dimensiunea maxima a meterialului: ",
             "onlyMaterial" : "Doresc doar material",
             "notOnlyMaterial" : "Doresc si manopera / croiala",
             "onlyWidth" : "Lungime dorita (cm)",

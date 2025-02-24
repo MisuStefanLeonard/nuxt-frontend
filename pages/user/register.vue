@@ -46,7 +46,7 @@
                 :label="$t('register.labels.password')"
                 placeholder="Password"
                 :type="passwordVisible ? 'text' : 'password'"
-                :append-icon="passwordVisible ? 'mdi-eye-off' : 'mdi-eye'" 
+                :append-icon="passwordVisible ? mdiEyeOff : mdiEye" 
                 @click:append="togglePasswordVisibility"
                 :rules="[rules.required, rules.passwordRule]"
                 variant="outlined"
@@ -57,7 +57,7 @@
                 :label="$t('register.labels.repeatPassword')"
                 placeholder="Password"
                 :type="passwordVisible ? 'text' : 'password'"
-                :append-icon="passwordVisible ? 'mdi-eye-off' : 'mdi-eye'" 
+                :append-icon="passwordVisible ? mdiEyeOff : mdiEye" 
                 @click:append="togglePasswordVisibility"
                 :rules="[rules.required, rules.repeatPasswordRule]"
                 variant="outlined"
@@ -108,7 +108,7 @@
 </template>
 
 <script setup>
-import { mdiAccountPlus, mdiLogin } from '@mdi/js';
+import { mdiAccountPlus, mdiEye, mdiEyeOff, mdiLogin } from '@mdi/js';
 import { ref } from 'vue'
 import RegisterService from '~/services/Register'
 

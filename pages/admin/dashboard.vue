@@ -350,23 +350,7 @@
                           </v-card-text>
                         </v-card>
                       </v-col>
-                      <v-divider ></v-divider>
-                      <!-- <v-col cols="12">
-                        <v-card  class="bg-grey-darken-4">
-                          <v-card-title>
-                            <p class="font-weight-light text-center h5  text-red">IN ASTEPATARE(transfer bancar)</p>
-                          </v-card-title>
-                          <v-card-text v-if="waitingOrders.length > 0">
-                            <div v-for="(orderType,i) in waitingOrders"
-                            :key="i">
-                              <p class="font-weight-light h5">{{ orderType[1] }} </p>
-                            </div>
-                          </v-card-text>
-                          <v-card-text v-else>
-                            <p class="font-weight-light h5 text-center"> N/A </p>
-                          </v-card-text>
-                        </v-card>
-                      </v-col> -->
+                     
                     </v-row>
                   </v-card>
               </v-col>
@@ -374,10 +358,10 @@
                 <v-divider opacity="0"></v-divider>
                 <v-divider opacity="0"></v-divider>
 
-                <p class="font-weight-light h3 text-center">Date Google Analytics</p>
+                <p class="font-weight-light h3 text-center">Date Google Analytics </p>
                 <v-divider></v-divider>
                 <v-container fluid>
-                  <p class="font-weight-light h4 mt-3">Date generale</p>
+                  <p class="font-weight-light h4 mt-3">Date generale <v-btn color="blue" @click="getGAData()"><v-icon :icon="mdiRefresh"  ></v-icon></v-btn></p>
                   <v-divider></v-divider>
                   <v-row no-gutters>
                     <v-col cols="4">
@@ -429,7 +413,7 @@
                   </v-row>
                 </v-container>
                 <v-container fluid>
-                  <p class="font-weight-light h4 mt-3">Date reale</p>
+                  <p class="font-weight-light h4 mt-3">Date reale  <v-btn color="blue" @click="getGAData()"><v-icon :icon="mdiRefresh"  ></v-icon></v-btn></p>
                   <v-divider></v-divider>
                   <v-row no-gutters>
                     <v-col cols="12">
@@ -477,7 +461,7 @@
 <script setup>
 import adminService from '~/services/Admin';
 import { VDateInput } from 'vuetify/labs/components';
-import { mdiEye, mdiMinus, mdiMonitorDashboard, mdiPlus } from '@mdi/js';
+import { mdiEye, mdiMinus, mdiMonitorDashboard, mdiPlus, mdiRefresh, mdiRefreshCircle } from '@mdi/js';
 
 const dashBoardData = ref({})
 const GAData = ref({})
@@ -709,11 +693,9 @@ const getDashboardData = (async () => {
 })
 
 const getGAData = (async () => {
- 
   const response_GA = await adminService.getGoogleAnalyticsData()
   swal.close()
   Object.assign(GAData.value , response_GA);
-  console.log(GAData.value)
 })
 
 const parseTotalRevenuePerProduct = computed(() => {
@@ -739,7 +721,7 @@ const parseinfoPerTop5Product = computed(() => {
 
 
 
-onBeforeMount(async () => {
+onMounted(async () => {
   await getDashboardData()
   await getGAData()
 })

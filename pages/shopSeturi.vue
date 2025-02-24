@@ -14,7 +14,7 @@
                                 :label="$t('shopSeturi.searchAfterProductName')"
                                 variant="outlined" 
                                 v-model="searchSetAfter"
-                                prepend-icon="mdi-magnify" >
+                                :prepend-icon="mdiMagnify">
                                 
                                 </v-text-field>
                             </v-col>
@@ -236,7 +236,7 @@
 
 <script setup>
 
-import { mdiArrowRight, mdiClose, mdiEmoticonSadOutline } from '@mdi/js';
+import { mdiArrowRight, mdiClose, mdiEmoticonSadOutline,mdiMagnify } from '@mdi/js';
 import productService from '~/services/Products'
 
 

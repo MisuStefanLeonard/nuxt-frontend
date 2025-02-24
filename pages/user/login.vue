@@ -22,7 +22,7 @@
                 :label="data.label"
                 :placeholder="data.placeholder"
                 :type="data.model === 'password' ? (passwordVisible ? 'text' : 'password') : data.type" 
-                :append-icon="data.model === 'password' ? (passwordVisible ? 'mdi-eye-off' : 'mdi-eye') : ''"
+                :append-icon="data.model === 'password' ? (passwordVisible ? mdiEyeOff : mdiEye) : ''"
                 @click:append="data.model === 'password' ? togglePasswordVisibility() : ''" 
                 v-model="formData[data.model]"
                 :rules="[rules.required]"
@@ -99,7 +99,7 @@
 </template>
 
 <script setup>
-import { mdiGooglePlus, mdiLockQuestion, mdiLogin } from '@mdi/js';
+import { mdiEye, mdiEyeOff, mdiGooglePlus, mdiLockQuestion, mdiLogin } from '@mdi/js';
 import { ref } from 'vue'
 import RegisterService from '~/services/Register'
 import { useUserStore } from '~/store/user';

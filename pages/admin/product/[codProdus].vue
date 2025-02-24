@@ -4,25 +4,25 @@
             <v-card-title class="font-weight-light text-center text-white">
                 {{ productCode }}
             </v-card-title>
-            <v-alert v-if="watchToSave" v-model="watchToSave" type="warning" closable class="w-100 text-center">
+            <v-alert v-if="watchToSave" v-model="watchToSave" type="warning" variant="tonal" closable class="w-100 text-center">
                 {{ watchToSaveText }}
             </v-alert>
             <v-expansion-panels v-model="defaultExpandedPanels" variant="inset">
                 <v-expansion-panel id="generalProductCharacteristics" class="p-3 m-2 text-center bg-grey-darken-4" >
-                    <v-expansion-panel-title collapse-icon="mdi-minus" expand-icon="mdi-plus"
+                    <v-expansion-panel-title :collapse-icon="mdiMinus" :expand-icon="mdiPlus"
                         class="font-weight-bold text-white">
                         Caracteristici generale
                     </v-expansion-panel-title>
                     <v-expansion-panel-text>
-                        <v-form ref="mainForm" class="text-white text-center">
-                            <v-row class="p-2 m-2 bg-white">
+                        <v-form ref="mainForm" class="text-white text-center bg-grey-darken-3">
+                            <v-row class="p-2 m-2 bg-grey-darken-3">
                                 <v-col cols="6" xs="12" s="12">
                                     <v-text-field class="p-2"
                                         v-model="product.codProdusDto"
                                         label="Cod Produs"
                                         variant="outlined"
                                         counter="40"
-                                        :rules="[rules.checkProductCode,rules.lengthNotAbove_40]"
+                                        :rules="[rules.checkProductCode,rules.maxChar(40)]"
                                     ></v-text-field>
                                 </v-col>
                                 <v-col cols="6" xs="12" s="12">
@@ -42,7 +42,7 @@
                                         label="Nume Produs"
                                         counter="50"
                                         variant="outlined"
-                                        :rules="[rules.lengthNotAbove_50, rules.fieldNotEmpty,rules.checkProductName]"
+                                        :rules="[rules.maxChar(50), rules.fieldNotEmpty,rules.checkProductName]"
                                     ></v-text-field>
                                 </v-col>
                                 <v-col cols="6" xs="12" s="12">
@@ -51,6 +51,7 @@
                                         label= "Tip produs"
                                         variant="outlined"
                                         :items="productOptions.productTypes"
+                                        :rules="[rules.fieldNotEmpty]"
                                     ></v-select>
                                 </v-col>
                                 <v-col cols="12" xs="12" s="12">
@@ -59,7 +60,7 @@
                                         label="Descriere Produs"
                                         counter="150"
                                         variant="outlined"
-                                        :rules="[rules.lengthNotAbove_150, rules.fieldNotEmpty]"
+                                        :rules="[rules.maxChar(150), rules.fieldNotEmpty]"
                                     ></v-textarea>
                                 </v-col>
                                 <v-col cols="12" xs="12" s="12">
@@ -68,7 +69,7 @@
                                         label="Compozitie"
                                         counter="50"
                                         variant="outlined"
-                                        :rules="[rules.lengthNotAbove_50]"
+                                        :rules="[rules.maxChar(50)]"
                                     ></v-text-field>
                                 </v-col>
                                 <v-col cols="6" xs="12" s="12">
@@ -113,10 +114,10 @@
                                         label="Instrucțiuni de îngrijire"
                                         counter="150"
                                         variant="outlined"
-                                        :rules="[rules.lengthNotAbove_150]"
+                                        :rules="[rules.maxChar(150)]"
                                     ></v-textarea>
                                 </v-col>
-                                <v-alert color="info" class="text-center">
+                                <v-alert type="warning" variant="tonal" class="text-center">
                                     Daca produsul se aduce la comanda , lasati stocul la 0
                                 </v-alert>
                                 <v-col cols="12" xs="12" s="12">
@@ -127,7 +128,7 @@
                                         :rules="[rules.fieldNotEmpty, rules.onlyNumbers]"
                                     ></v-text-field>
                                 </v-col>
-                                <v-alert color="info" class="text-center">
+                                <v-alert type="warning" variant="tonal" class="text-center">
                                     Daca produsul are pret pe dimensiune , lasati pret baza la 0
                                 </v-alert>
                                 <v-col cols="12" xs="12" s="12">
@@ -138,7 +139,7 @@
                                         :rules="[rules.fieldNotEmpty, rules.onlyNumbers]"
                                     ></v-text-field>
                                 </v-col>
-                                <v-alert color="info" class="text-center">
+                                <v-alert type="warning" variant="tonal" class="text-center">
                                     Daca produsul are pret pe dimensiune , lasati la 0.
                                 </v-alert>
                                 <v-col cols="12" xs="12" s="12">
@@ -149,13 +150,24 @@
                                         :rules="[rules.fieldNotEmpty, rules.onlyNumbers]"
                                     ></v-text-field>
                                 </v-col>
+                                <v-alert type="warning" variant="tonal" class="text-center">
+                                    Daca produsul este perdea/draperie , daca nu lasati la 0.
+                                </v-alert>
+                                <v-col cols="12">
+                                    <v-text-field class="p-2"
+                                        v-model="product.inaltimeMaximaDto"
+                                        label="Inaltime maxima material"
+                                        variant="outlined"
+                                        :rules="[rules.fieldNotEmpty, rules.onlyNumbers, ]"
+                                    ></v-text-field>
+                                </v-col>
                             </v-row>
                         </v-form>
                     </v-expansion-panel-text>
                 </v-expansion-panel>
 
                 <v-expansion-panel id="productTypes" class="p-3 m-2 text-center bg-grey-darken-4" eager>
-                    <v-expansion-panel-title collapse-icon="mdi-minus" expand-icon="mdi-plus"
+                    <v-expansion-panel-title :collapse-icon="mdiMinus" :expand-icon="mdiPlus"
                         class="font-weight-bold text-white">
                         Tipurile produsului
                     </v-expansion-panel-title>
@@ -212,9 +224,9 @@
 
                 <!-- Dimensiuni Produse Section -->
                 <v-expansion-panel v-if="productType !== 'perdea' && productType !== 'draperie'" id="dimensions" class="p-3 m-2 text-center bg-grey-darken-4" eager>
-                    <v-expansion-panel-title collapse-icon="mdi-minus" expand-icon="mdi-plus"
+                    <v-expansion-panel-title :collapse-icon="mdiMinus" :expand-icon="mdiPlus"
                         class="font-weight-bold text-white">
-                        Dimensiuni
+                        Dimensiuni (centimetri)
                     </v-expansion-panel-title>
                     <v-expansion-panel-text>
                         <v-row v-for="(dimensiune, index) in product.dimensiuniProduseDto" :key="index"
@@ -224,6 +236,7 @@
                                     v-model="dimensiune.lungimeDto"
                                     label="Lungime"
                                     :items="productOptions.lungimiForBox"
+                                    :rules="[rules.onlyNumbers,rules.maxChar(10)]"
                                     variant="outlined"
                                 ></v-combobox>
                             </v-col>
@@ -233,6 +246,7 @@
                                     label="Latime"
                                     :items="productOptions.latimiForBox"
                                     variant="outlined"
+                                    :rules="[rules.onlyNumbers,rules.maxChar(10)]"
                                 ></v-combobox>
                             </v-col>
                             <v-col cols="6">
@@ -297,7 +311,7 @@
 
                 <!-- Culori Produse Section -->
                 <v-expansion-panel id="colors" class="p-3 m-2 text-center bg-grey-darken-4" eager>
-                    <v-expansion-panel-title collapse-icon="mdi-minus" expand-icon="mdi-plus"
+                    <v-expansion-panel-title :collapse-icon="mdiMinus" :expand-icon="mdiPlus"
                         class="font-weight-bold text-white">
                         Culorile produsului
                     </v-expansion-panel-title>
@@ -329,7 +343,7 @@
                             <v-col cols="12">
                                 <v-expansion-panels>
                                     <v-expansion-panel id="images" class="p-3 m-2 bg-grey-darken-4 text-center">
-                                        <v-expansion-panel-title collapse-icon="mdi-minus" expand-icon="mdi-plus"
+                                        <v-expansion-panel-title :collapse-icon="mdiMinus" :expand-icon="mdiPlus"
                                             class="font-weight-bold text-white">
                                             Imaginile culorii
                                         </v-expansion-panel-title>
@@ -466,7 +480,7 @@
 import { ref, reactive,  onMounted, watch } from 'vue';
 import adminService from '~/services/Admin';
 import Swal from 'sweetalert2';
-import { mdiCloseCircle, mdiContentSave, mdiDeleteCircle, mdiPlus } from '@mdi/js';
+import { mdiCloseCircle, mdiContentSave, mdiDeleteCircle, mdiMinus, mdiPlus } from '@mdi/js';
 
 definePageMeta({
     layout: 'admin',
@@ -485,10 +499,12 @@ const defaultExpandedPanels = ref([0,1,2,3]);
 const productCode = ref('');
 const rules = {
     fieldNotEmpty: value => !!String(value) || 'Campul este obligatoriu',
-    lengthNotAbove_150: value => !value || value.length <= 150 || 'Limita este de 150 de caractere',
-    lengthNotAbove_50: value => !value || value.length <= 50 || 'Limita este de 50 de caractere',
-    lengthNotAbove_40: value => !value || value.length <= 40 || 'Limita este de 50 de caractere',
-    onlyNumbers: value => /^[0-9]*\.?[0-9]+$/.test(String(value).trim()) || 'Doar numere sunt permise',
+    maxChar: len => value => !value || value.length <= len || `${t('textFieldsMessages.maxLength')} ${len}`,
+    // lengthNotAbove_150: value => !value || value.length <= 150 || 'Limita este de 150 de caractere',
+    // lengthNotAbove_50: value => !value || value.length <= 50 || 'Limita este de 50 de caractere',
+    // lengthNotAbove_40: value => !value || value.length <= 40 || 'Limita este de 50 de caractere',
+    onlyNumbers: value =>   /^\d+(\.\d{2})?$/.test(String(value).trim()) ||
+    "Doar numere sunt permise",
     onlyLetters: value => /^[a-zA-Z\s]*$/.test(value) || 'Doar litere sunt permise',
     checkProductName: value => {
    
@@ -528,6 +544,7 @@ const product = ref({
     pretBazaDto: 0,
     pretBazaRedusDto: 0,
     tipulProdusuluiDto : '',
+    inaltimeMaximaDto : 0,
     afiseazaInNoutatiDto : false,
     produsLimitatDto : false,
     justAdded: false,
@@ -1281,6 +1298,18 @@ const finalSaveData = async () => {
             if(product.value.tipulProdusuluiDto === 'perdea' || product.value.tipulProdusuluiDto === 'draperie'){
                 product.value.dimensiuniProduseDto = []
             }
+            if(product.value.tipulProdusuluiDto === 'perdea' || product.value.tipulProdusuluiDto === 'draperie'){
+               if(product.value.inaltimeMaximaDto <= 0){
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Eroare',
+                        text: 'Nu ati selectat o dimensiune maxima pe material',
+                        timer: 3000,
+                    });
+                return;
+               }
+            }
+
             const response = await adminService.saveProductChanges(product.value, product.value.oldCodProdusDto);
             if(response === -3){
                 Swal.fire({

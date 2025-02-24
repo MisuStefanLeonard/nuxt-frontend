@@ -8,7 +8,7 @@ class ProductsService extends ApiService{
     /**
      * @param {int?} pageNumber [The page number of with the current products]
      * @param {Array<string>} productTypes [The array of product types to filter]
-     * @param {Array<string>} colorTypes [The array of color types to filter]
+     * @param {Array<string>} productColors [The array of color types to filter]
      * @param {Array<string>} widthRange [The array of product dimensions width to filter]
      * @param {Array<string>} heightRange [The array of product dimension height to filter]
      * @param {Array<int>} priceRange [The array of product price to filter]
@@ -16,11 +16,11 @@ class ProductsService extends ApiService{
      * @returns {List} [The list with a limit of 15 products]
      */
     
-    getProductsForUsers(pageNumber , productTypes , colorTypes, productDimensions, productPrice , productReverseFace, currency){
+    getProductsForUsers(pageNumber , productTypes , productColors, productDimensions, productPrice , productReverseFace, currency){
        
         const params = {
             productTypes,
-            colorTypes,
+            productColors,
             productDimensions,
             productPrice,
             productReverseFace

@@ -72,8 +72,8 @@ export default defineNuxtConfig({
     defaultLocale: "ro",
   },
   routeRules : {
-    // '/:locale?/admin/**' : {ssr: false },
-    '/en/admin/**' : {redirect : '/404'}
+    '/:locale?/admin/**' : {ssr: false },
+    '/en/admin/**' : {redirect : '/404'},
     // '/:locale?/user/profile' : {ssr: false},
     // '/:locale?/user/profile/**' : {ssr: false}
   },
