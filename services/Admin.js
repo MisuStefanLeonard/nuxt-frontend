@@ -4,7 +4,7 @@ import ApiService from "./ApiService";
 class AdminService extends ApiService{
     constructor(){
         // super("http://localhost:5043/api/admin")
-        super(process.env.NODE_ENV === 'development' ? "http://localhost:5043/api/admin" : 'production backend url')
+        super(process.env.NODE_ENV === 'development' ? "http://localhost:5043/api/admin" : 'api/admin')
     }
 
     adminLogin(key){
