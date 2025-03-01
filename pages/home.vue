@@ -546,6 +546,8 @@ const getMinOrderPriceForFreeDelivery = computed(() => {
   return '500'
 })
 
+console.log('NODE ENV FROM .ENV : ' , process.env.NODE_ENV )
+
 onMounted(async () => {
  await getLimitedEditionProducts()
  await getNewProducts()
