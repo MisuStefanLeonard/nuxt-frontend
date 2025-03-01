@@ -71,7 +71,7 @@ export default defineNuxtConfig({
   gtm: {
     id :process.env.NODE_ENV === 'development'
      ? process.env.GTM_ID || 'development-id'
-     : 'production-id',
+     : 'GTM-NWHGHS9Q',
     defer: false,
     compatibility: false,
     enabled: true,
