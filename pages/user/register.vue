@@ -250,7 +250,7 @@ const registerAccount = async () => {
           rol: 'Client',
         }
         let response = await RegisterService.registerAccount(registerData);
-        console.log('in .vue' , response)
+       
         email.value = ''
         username.value = ''
         password.value = ''
