@@ -3,7 +3,9 @@ import ApiService from "./ApiService";
 
 class UserService extends ApiService {
     constructor(){
-        super('http://localhost:5043/api/account')
+        // super('http://localhost:5043/api/account')
+        super(process.env.NODE_ENV === 'development' ?  'http://localhost:5043/api/account' : 'production backend url')
+
     }
 
     /* 

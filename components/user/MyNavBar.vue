@@ -44,7 +44,7 @@
               class="hover:tw-bg-gray-600 dark:hover:tw-bg-gray-600 hover:tw-cursor-pointer" 
               @click="toggleDropdown(item)">
               <v-list-item-title @click="navigateTo(localePath(dropitem.path))">
-                <v-icon class="mr-2" :icon="item.icon"></v-icon>
+                <v-icon class="mr-2" :icon="dropitem.icon"></v-icon>
                 {{ $t(dropitem.title) }} 
               </v-list-item-title>
              
@@ -63,8 +63,7 @@ import { ref, onMounted } from 'vue'
 import NavigationDrawer from './NavigationDrawer.vue' 
 import LanguageSwitcher from './LanguageSwitcher.vue'
 import { cartCount } from '~/middleware/cart'
-import { useDisplay } from 'vuetify'
-import { mdiHome,mdiAccountBox, mdiInformation,mdiAccount,mdiStore,mdiPackageVariant,mdiBedKingOutline,mdiWindowShutterOpen,
+import { mdiHome, mdiInformation,mdiAccount,mdiStore,mdiPackageVariant,mdiBedKingOutline,mdiWindowShutterOpen,
   mdiBlindsHorizontal,mdiBedOutline,mdiGift,mdiShoppingOutline
  } from '@mdi/js'
 // Inject the emitter
@@ -72,15 +71,15 @@ const nuxtApp = useNuxtApp()
 const emitter = nuxtApp.$emitter
 const isClient = ref(false)
 const localePath  = useLocalePath()
-const {name} = useDisplay()
+// const {name} = useDisplay()
 
-const heightComp = computed(() => {
-    switch (name.value) {
-      case 'xs': return true
-      default : return 3
-    }
-})
-// Router instance
+// const heightComp = computed(() => {
+//     switch (name.value) {
+//       case 'xs': return true
+//       default : return 3
+//     }
+// })
+// // Router instance
 
 const sidebar = ref(false)
 const isLoggedIn = ref(false)
@@ -88,7 +87,6 @@ const isLoggedIn = ref(false)
 // Define your menu items with translation keys
 const menuItems = [
   { title: 'menu.home', path: '/home', icon: mdiHome },
-  { title: 'menu.about', path: '/about', icon: mdiAccountBox },
   { title: 'menu.contact', path: '/contact', icon: mdiInformation },
 ]
 
@@ -125,13 +123,13 @@ const getCartCount = function(){
     if(getItem !== null ){
       localStorage.removeItem('test');
       var cartCountS = localStorage.getItem('cartCount');
-      console.log(cartCountS)
+     
       if(cartCountS === null){
         localStorage.setItem('cartCount' , '0')
       }
 
       cartCountS = localStorage.getItem('cartCount')
-      console.log(cartCountS)
+      
       cartCount.value = String(parseInt(cartCountS))
     }
   } catch (exception) {

@@ -67,10 +67,21 @@
   
   <script setup>
   import { mdiArrowRight } from '@mdi/js';
-import { ref, computed, onMounted } from 'vue';
+  import { ref, computed, onMounted } from 'vue';
   import { useRoute } from 'vue-router';
   import RegisterService from '~/services/Register';
   
+  definePageMeta({
+    title : 'Confirmare resetare parola',
+    layout: 'default',
+    keywords:'reset password , resetare parola',
+    siteName : 'Texx - Resetare parola',
+  })
+
+  useHead({
+    title : 'Confirmare resetare parola'
+  })
+
   const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
   
   const waitAlert = ref(false);

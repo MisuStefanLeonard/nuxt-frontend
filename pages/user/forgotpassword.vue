@@ -58,7 +58,18 @@ import { mdiArrowRight } from '@mdi/js'
 
 
 definePageMeta({
-  layout:'default'
+  title : 'Resetare parola',
+  layout: 'default',
+  keywords:'forgot password , uitare parola , am uitat parola',
+  siteName : 'Texx - Resetare',
+  canonicalUrl : 'http://localhost:3000/user/forgotpassword',
+  ogType : 'website',
+  ogDescription : 'Resetare parola pe Texx',
+  description : 'Resetare parola pe Texx'
+})
+
+useHead({
+  title : 'Resetare parola'
 })
 
 // State variables

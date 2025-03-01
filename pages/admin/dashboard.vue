@@ -362,6 +362,12 @@
                 <v-divider></v-divider>
                 <v-container fluid>
                   <p class="font-weight-light h4 mt-3">Date generale <v-btn color="blue" @click="getGAData()"><v-icon :icon="mdiRefresh"  ></v-icon></v-btn></p>
+                  <v-progress-circular
+                    v-if="isLoadingGAData"
+                    indeterminate
+                    color="primary"
+                    class="ma-3"
+                  ></v-progress-circular>
                   <v-divider></v-divider>
                   <v-row no-gutters>
                     <v-col cols="4">
@@ -414,6 +420,12 @@
                 </v-container>
                 <v-container fluid>
                   <p class="font-weight-light h4 mt-3">Date reale  <v-btn color="blue" @click="getGAData()"><v-icon :icon="mdiRefresh"  ></v-icon></v-btn></p>
+                  <v-progress-circular
+                    v-if="isLoadingGAData"
+                    indeterminate
+                    color="primary"
+                    class="ma-3"
+                  ></v-progress-circular>
                   <v-divider></v-divider>
                   <v-row no-gutters>
                     <v-col cols="12">
@@ -470,6 +482,7 @@ const today = new Date().toISOString().substring(0,10)
 const maxDate = ref(today)
 const isLoading = ref(false);
 const loaded = ref(false)
+const isLoadingGAData = ref(false)
 
 definePageMeta({
     layout: 'admin',
@@ -562,12 +575,6 @@ const canceledOrders = computed(() => {
   return []; // Return an empty array if the data is not yet available
 });
 
-const waitingOrders = computed(() => {
-  if (dashBoardData.value.tipuriComenziGeneral) {
-    return Object.entries(dashBoardData.value.tipuriComenziGeneral).filter(([status]) => status === 'InAsteptare');
-  }
-  return []; // Return an empty array if the data is not yet available
-});
 
 const processingOrders = computed(() => {
   if (dashBoardData.value.tipuriComenziGeneral) {
@@ -693,9 +700,11 @@ const getDashboardData = (async () => {
 })
 
 const getGAData = (async () => {
+  isLoadingGAData.value = true;
   const response_GA = await adminService.getGoogleAnalyticsData()
   swal.close()
   Object.assign(GAData.value , response_GA);
+  isLoadingGAData.value = false;
 })
 
 const parseTotalRevenuePerProduct = computed(() => {

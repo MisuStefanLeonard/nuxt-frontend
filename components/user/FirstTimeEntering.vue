@@ -37,7 +37,7 @@
     }else{
         dialog.value = true;
     }
-    console.log(dialog.value)
+   
   });
   
   const getVoucher =  (() => {

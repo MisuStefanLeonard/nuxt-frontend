@@ -532,9 +532,21 @@
 import orderService from '~/services/Order';
 import { useDisplay } from 'vuetify';
 import { mdiArrowLeft, mdiArrowRight, mdiBallotOutline, mdiCardAccountDetailsOutline, mdiFileDocumentPlusOutline, mdiMapMarkerOutline, mdiPackageVariant, mdiProjectorScreenVariantOffOutline, mdiTruckCheckOutline, mdiTruckFast } from '@mdi/js';
+
 definePageMeta({
-    layout: 'default',
-    middleware: ['auth' , 'locale']
+  title : 'Comenzi',
+  layout: 'default',
+  keywords:'comenzi,orders,client orders, comenzi client',
+  siteName : 'Texx - Comenzi',
+  canonicalUrl : 'http://localhost:3000/user/profile/orders',
+  ogType : 'website',
+  middleware: ['auth' , 'locale'],
+  ogDescription : 'Comenzile dumnevoastra pe Texx',
+  description : 'Comenzile dumnevoastra pe Texx'
+})
+
+useHead({
+  title : 'Comenzi'
 })
 
 const clientOrders = ref([])

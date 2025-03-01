@@ -35,6 +35,18 @@
   definePageMeta({
     layout: 'default'
   })
+
+
+  definePageMeta({
+    title : 'Schimbare email',
+    layout: 'default',
+    keywords:'email changing , schimbare email , admin',
+    siteName : 'Texx - Schimbare mail',
+  })
+
+  useHead({
+    title : 'Schimbare mail'
+  })
   
   // Reactive state
   const changedDataSuccess = ref(false)

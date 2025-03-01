@@ -23,8 +23,19 @@
   import RegisterService from '~/services/Register'
 
   definePageMeta({
-    layout: 'default'
-  });
+    title : 'Delogare',
+    layout: 'default',
+    keywords:'log out , delogare',
+    siteName : 'Texx - Delogare',
+    canonicalUrl : 'http://localhost:3000/user/logout',
+    ogType : 'website',
+    ogDescription : 'Delogare de pe Texx',
+    description : 'Delogare de pe Texx'
+  })
+
+useHead({
+  title : 'Delogare'
+})
   
   // Reactive state
   const succesfullLogoutBanner = ref(false)

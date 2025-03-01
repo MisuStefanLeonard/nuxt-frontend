@@ -470,7 +470,7 @@
                                 <v-col cols="12" xs="12" sm="10"  md="10" class="text-left">
                                     <span class="font-weight-normal text-h6">{{ $t('orderHistory.products') }}</span>
                                 </v-col>
-                                <v-col cols="12" xs="12" sm="2" md="2" class="text-right">
+                                <v-col cols="12" xs="12" sm="2" md="2" class="text-right" v-if="currentOrderData.orderVoucher !== null">
                                     <span class="font-weight-normal text-h6">{{(currentOrderData.pretTotal / (1 - currentOrderData.orderVoucher.reducereDto)) }} RON</span>
                                 </v-col>
                                 <v-divider></v-divider>
@@ -599,7 +599,7 @@ const currentOrderData = computed(() => {
     if(indexOfCurrentOrder === -1){
         return null
     }
-
+    console.log(clientData.value.comenziClient[indexOfCurrentOrder.value])
     return clientData.value.comenziClient[indexOfCurrentOrder.value];
 })
 

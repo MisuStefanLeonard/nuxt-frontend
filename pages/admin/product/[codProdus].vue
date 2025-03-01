@@ -46,13 +46,13 @@
                                     ></v-text-field>
                                 </v-col>
                                 <v-col cols="6" xs="12" s="12">
-                                    <v-select class="p-2"
+                                    <v-combobox class="p-2"
                                         v-model="product.tipulProdusuluiDto"
                                         label= "Tip produs"
                                         variant="outlined"
                                         :items="productOptions.productTypes"
                                         :rules="[rules.fieldNotEmpty]"
-                                    ></v-select>
+                                    ></v-combobox>
                                 </v-col>
                                 <v-col cols="12" xs="12" s="12">
                                     <v-textarea class="p-2"
@@ -156,7 +156,7 @@
                                 <v-col cols="12">
                                     <v-text-field class="p-2"
                                         v-model="product.inaltimeMaximaDto"
-                                        label="Inaltime maxima material"
+                                        label="Inaltime maxima material(metri)"
                                         variant="outlined"
                                         :rules="[rules.fieldNotEmpty, rules.onlyNumbers, ]"
                                     ></v-text-field>
@@ -503,8 +503,8 @@ const rules = {
     // lengthNotAbove_150: value => !value || value.length <= 150 || 'Limita este de 150 de caractere',
     // lengthNotAbove_50: value => !value || value.length <= 50 || 'Limita este de 50 de caractere',
     // lengthNotAbove_40: value => !value || value.length <= 40 || 'Limita este de 50 de caractere',
-    onlyNumbers: value =>   /^\d+(\.\d{2})?$/.test(String(value).trim()) ||
-    "Doar numere sunt permise",
+    onlyNumbers: value =>  /^\d+(\.\d{1,2})?$/.test(String(value).trim()) ||
+    "Doar numere sunt permise / Daca folositi . trebuie minim 2 cifre dupa punctul decimal",
     onlyLetters: value => /^[a-zA-Z\s]*$/.test(value) || 'Doar litere sunt permise',
     checkProductName: value => {
    
@@ -1082,6 +1082,16 @@ const saveToDtoArrayType = () => {
 
 const saveToDtoArrayDimension = () => {
     const { lungimeDto, latimeDto, pretDto, recomandarePat, pretRedusDto } = dimensionFormData.value;
+    if(product.value.tipulProdusuluiDto.toLowerCase() === 'perdea' || product.value.tipulProdusuluiDto.toLowerCase() === 'draperie'){
+        Swal.fire({
+            icon: 'error',
+            title: 'Eroare',
+            text: 'Nu puteti adauga o dimensiune la un tip de produs perdea/draperie',
+            footer: '<a href="#dimensions">Vezi eroarea</a>',
+            timer: 3000,
+        });
+        return;
+    }
     if (lungimeDto && latimeDto && pretDto && recomandarePat && pretRedusDto) {
         const newDimensionItem = {
             lungimeDto: lungimeDto.trim(),
@@ -1296,19 +1306,47 @@ const finalSaveData = async () => {
         console.log(isValidMainForm)
         if(isValidMainForm.valid){
             if(product.value.tipulProdusuluiDto === 'perdea' || product.value.tipulProdusuluiDto === 'draperie'){
-                product.value.dimensiuniProduseDto = []
-            }
-            if(product.value.tipulProdusuluiDto === 'perdea' || product.value.tipulProdusuluiDto === 'draperie'){
+               if(product.value.pretBazaDto <= 0){
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Eroare',
+                        text: 'Selectati un pret de baza pentru produs de tip perdea/draperie',
+                        timer: 7000,
+                    });
+                    return;
+               }
                if(product.value.inaltimeMaximaDto <= 0){
                     Swal.fire({
                         icon: 'error',
                         title: 'Eroare',
-                        text: 'Nu ati selectat o dimensiune maxima pe material',
-                        timer: 3000,
+                        text: 'Nu ati selectat o inaltime maxima pe material',
+                        timer: 7000,
                     });
-                return;
+                    return;
                }
+            }else{
+                if(product.dimensiuniProduseDto.length <= 0 && product.pretBazaDto <= 0){
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Eroare',
+                        text: 'Daca produsul nu are nicio dimensiune , completati un pret de baza pentru produs si nu adaugati nicio dimensiune',
+                        timer: 7000,
+                    });
+                    return;
+                }else if(product.dimensiuniProduseDto.length >= 0 && product.pretBazaDto >= 0){
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Eroare',
+                        text: 'Daca produsul are dimensiune , lasati pretul de baza la 0',
+                        timer: 7000,
+                    });
+                    return;
+                }
+                }
+            if(product.value.tipulProdusuluiDto === 'perdea' || product.value.tipulProdusuluiDto === 'draperie'){
+                product.value.dimensiuniProduseDto = []
             }
+          
 
             const response = await adminService.saveProductChanges(product.value, product.value.oldCodProdusDto);
             if(response === -3){

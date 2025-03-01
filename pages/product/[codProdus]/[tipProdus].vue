@@ -594,70 +594,85 @@
                     <v-divider></v-divider>
                     <v-row>
                         <v-col cols="12" xs="12" sm="6">
-                            <v-card class="h-100">
-                                <v-card-title>
-                                    <p class="font-weight-light text-center h5 my-4">{{ $t('shop.generalInfo') }}</p>
-                                </v-card-title>
-                                <v-divider></v-divider>
-                                <v-card-text class="text-center">
-                                    <p class="font-weight-light h6">{{ $t('shop.productGeneralInfo.productType') }}{{ product.tipulProdusuluiDto }}</p>
-                                    <p class="font-weight-light h6">{{ $t('shop.productGeneralInfo.productName') }}{{ product.numeProdusDto }}</p>
-                                    <p class="font-weight-light h6">{{ $t('shop.productGeneralInfo.productCode') }}{{ product.codProdusDto }}</p>
-                                    <p class="font-weight-light h6">{{ $t('shop.productGeneralInfo.composition') }}{{ product.compozitieDto }}</p>
-                                    <p class="font-weight-light h6">{{ $t('shop.productGeneralInfo.productReverse') }}{{ product.fataReversibilaDto === true ? 'Da' : 'Nu' }}</p>
-                                    <p class="font-weight-light h6">{{ $t('shop.productGeneralInfo.availableOnMoreColors') }}{{ product.culoriProdus?.length > 1 ? 'Da' : 'Nu' }}</p>
-                                    <p class="font-weight-light h6">{{ $t('shop.productGeneralInfo.availableOnMoreDimensions') }}{{ product.dimensiuniProdus?.length > 1 ? 'Da' : 'Nu' }}</p>
-                                </v-card-text>
-                                
-                            </v-card>
+                            <section id="infoProdus">
+                                <v-card class="h-100">
+                                    <v-card-title>
+                                        <p class="font-weight-light text-center h5 my-4">{{ $t('shop.generalInfo') }}</p>
+                                    </v-card-title>
+                                    <v-divider></v-divider>
+                                    <v-card-text class="text-center">
+                                        <p class="font-weight-light h6">{{ $t('shop.productGeneralInfo.productType') }}{{ product.tipulProdusuluiDto }}</p>
+                                        <p class="font-weight-light h6">{{ $t('shop.productGeneralInfo.productName') }}{{ product.numeProdusDto }}</p>
+                                        <p class="font-weight-light h6">{{ $t('shop.productGeneralInfo.productCode') }}{{ product.codProdusDto }}</p>
+                                        <p class="font-weight-light h6">{{ $t('shop.productGeneralInfo.composition') }}{{ product.compozitieDto }}</p>
+                                        <p class="font-weight-light h6">{{ $t('shop.productGeneralInfo.productReverse') }}{{ product.fataReversibilaDto === true ? 'Da' : 'Nu' }}</p>
+                                        <p class="font-weight-light h6">{{ $t('shop.productGeneralInfo.availableOnMoreColors') }}{{ product.culoriProdus?.length > 1 ? 'Da' : 'Nu' }}</p>
+                                        <p class="font-weight-light h6">{{ $t('shop.productGeneralInfo.availableOnMoreDimensions') }}{{ product.dimensiuniProdus?.length > 1 ? 'Da' : 'Nu' }}</p>
+                                    </v-card-text>
+                                    
+                                </v-card>
+                            </section>
+                            
                         </v-col>
                         <v-col cols="12" xs="12" sm="6">
-                            <v-card class="h-100">
-                                <v-card-title>
-                                    <p class="font-weight-light text-center h5 my-4">{{ $t('shop.productGeneralInfo.manufacturer') }}</p>
-                                </v-card-title>
-                                <v-divider></v-divider>
-                                <v-card-text class="text-center h-100">
-                                        <p class="font-weight-light h6">{{ product.numeProducatorDto === null ? 'N/A' : product.numeProducatorDto }}</p>
-                                </v-card-text>
-                            </v-card>
+                            <section id="manufacturer">
+                                <v-card class="h-100">
+                                    <v-card-title>
+                                        <p class="font-weight-light text-center h5 my-4">{{ $t('shop.productGeneralInfo.manufacturer') }}</p>
+                                    </v-card-title>
+                                    <v-divider></v-divider>
+                                    <v-card-text class="text-center h-100">
+                                            <p class="font-weight-light h6">{{ product.numeProducatorDto === null ? 'N/A' : product.numeProducatorDto }}</p>
+                                    </v-card-text>
+                                </v-card>
+                            </section>
+                           
                         </v-col>
                         <v-col cols="12" xs="12">
-                            <v-card class="h-100">
-                                <v-card-title>
-                                    <p class="font-weight-light text-center h5 my-4">{{ $t('shop.categories') }}</p>
-                                </v-card-title>
-                                <v-divider></v-divider>
-                                <v-card-text class="text-center h-100">
-                                        <p v-for="(category,index) in product.categoriiProdus"
-                                        :key="index"
-                                         class="font-weight-light h6">
-                                            {{ category }}
-                                        </p>
-                                </v-card-text>
-                            </v-card>
+                            <section id="categories">
+                                <v-card class="h-100">
+                                    <v-card-title>
+                                        <p class="font-weight-light text-center h5 my-4">{{ $t('shop.categories') }}</p>
+                                    </v-card-title>
+                                    <v-divider></v-divider>
+                                    <v-card-text class="text-center h-100">
+                                            <p v-for="(category,index) in product.categoriiProdus"
+                                            :key="index"
+                                            class="font-weight-light h6">
+                                                {{ category }}
+                                            </p>
+                                    </v-card-text>
+                                </v-card>
+                            </section>
+                            
                         </v-col>
                         <v-col cols="12" xs="12" sm="6">
-                            <v-card class="h-100">
-                                <v-card-title>
-                                    <p class="font-weight-light text-center h5 my-4">{{ $t('shop.productGeneralInfo.description') }}</p>
-                                </v-card-title>
-                                <v-divider></v-divider>
-                                <v-card-text class="text-center">
-                                    <p class="font-weight-light h6">{{ product.descriereDto === null ? 'N/A' : product.descriereDto }}</p>
-                                </v-card-text>
-                            </v-card>
+                            <section id="description">
+                                <v-card class="h-100">
+                                    <v-card-title>
+                                        <p class="font-weight-light text-center h5 my-4">{{ $t('shop.productGeneralInfo.description') }}</p>
+                                    </v-card-title>
+                                    <v-divider></v-divider>
+                                    <v-card-text class="text-center">
+                                        <p class="font-weight-light h6">{{ product.descriereDto === null ? 'N/A' : product.descriereDto }}</p>
+                                    </v-card-text>
+                                </v-card>
+                            </section>
+                           
                         </v-col>
                         <v-col cols="12" xs="12" sm="6">
-                            <v-card class="h-100">
-                                <v-card-title>
-                                    <p class="font-weight-light text-center h5 my-4">{{ $t('shop.productGeneralInfo.caring') }}</p>
-                                </v-card-title>
-                                <v-divider></v-divider>
-                                <v-card-text class="text-center">
-                                    <p class="font-weight-light h6">{{ product.ingrijireDto === null ? 'N/A' : product.ingrijireDto }}</p>
-                                </v-card-text>
-                            </v-card>
+                            <section id="productCaring">
+                                <v-card class="h-100">
+                                    <v-card-title>
+                                        <p class="font-weight-light text-center h5 my-4">{{ $t('shop.productGeneralInfo.caring') }}</p>
+                                    </v-card-title>
+                                    <v-divider></v-divider>
+                                    <v-card-text class="text-center">
+                                        <p class="font-weight-light h6">{{ product.ingrijireDto === null ? 'N/A' : product.ingrijireDto }}</p>
+                                    </v-card-text>
+                                </v-card>
+                            </section>
+                           
                         </v-col>
                     </v-row>
                 </v-col>
@@ -889,6 +904,7 @@ import { mdiArrowRight,mdiArrowLeft, mdiCheck, mdiCloseCircleOutline, mdiEmail, 
 import { ref } from 'vue';
 import { useDisplay } from 'vuetify';
 import productService from '~/services/Products';
+import { cartCount } from '~/middleware/cart';
 
 const swal = useNuxtApp().$swal
 const route = useRoute();
@@ -910,443 +926,18 @@ const selectedKeywords = ref('');
 
 // Add preload links dynamically
 
-const cuverturiKeyWords = ref([ 
-    `${productType} de pat`, `${productType} premium`, `${productType} moderne`, 
-    `${productType} matrimoniale`, `${productType} din bumbac`, 
-    `${productType} decorative`, `${productType} termoizolante`, 
-    `${productType} matlasate`, `${productType} elegante`, 
-    `${productType} pentru camera copiilor`, `${productType} cu imprimeuri`, 
-    `${productType} din catifea`, `${productType} rustice`, 
-    `${productType} rezistente la spălare`, `${productType} rezistente la uzură`, 
-    `${productType} pentru canapele`, `${productType} lavabile`, 
-    `${productType} pentru sezon rece`, `${productType} pentru vară`, 
-    `${productType} ușoare`, `${productType} groase`, `${productType} 3D`, 
-    `${productType} anti-alergice`, `${productType} din microfibră`, 
-    `${productType} pentru hoteluri`, `${productType} impermeabile`, 
-    `${productType} vintage`, `${productType} cu model floral`, 
-    `${productType} pentru dormitor de lux`, `${productType} pentru pat de o persoană`, 
-    `${productType} pentru pat dublu`, `${productType} ieftine online`, 
-    `${productType} de lux`, `${productType} personalizate`, 
-    `${productType} colorate`, `${productType} cu broderie`, 
-    `${productType} anti-mucegai`, `${productType} pentru copii`, 
-    `${productType} pentru bebeluși`, `${productType} pentru pensiuni`, 
-    `${productType} pentru case de vacanță`, `${productType} anti-praf`, 
-    `${productType} hipoalergenice`, `${productType} din in`, 
-    `${productType} din bambus`, `${productType} satinate`, 
-    `${productType} pentru călătorii`, `${productType} de colecție`, 
-    `${productType} pentru design interior`, `${productType} scurte`, 
-    `${productType} lungi`, `${productType} personalizabile`, 
-    `${productType} minimaliste`, `${productType} rezistente la pete`, 
-    `${productType} călduroase pentru iarnă`, `${productType} răcoroase pentru vară`, 
-    `${productType} cu dantelă`,'bedspreads', 'luxury bedspreads', 'modern bedspreads', 'cotton bedspreads', 
-    'decorative bedspreads', 'quilted bedspreads', 'premium bedspreads', 'floral bedspreads', 
-    'mattress covers', 'elegant bedspreads', 'hypoallergenic bedspreads', 'seasonal bedspreads', 
-    'lightweight summer bedspreads', 'warm winter bedspreads', 'embroidered bedspreads', 
-    'boho bedspreads', 'vintage bedspreads', 'patterned bedspreads', 'minimalist bedspreads', 
-    'pastel-colored bedspreads', 'children s bedspreads', 'baby bedspreads', 
-    'waterproof bedspreads', 'hotel-quality bedspreads', 'soft touch bedspreads', 
-    'microfiber bedspreads', 'silk bedspreads', 'satin bedspreads', 'reversible bedspreads', 
-    'double bed bedspreads', 'single bed bedspreads', 'discounted bedspreads', 
-    'eco-friendly bedspreads', 'custom bedspreads', 'personalized bedspreads', 
-    'monochrome bedspreads', 'handmade bedspreads', 'rustic bedspreads', 'tropical bedspreads', 
-    'bohemian bedspreads', 'scandinavian bedspreads', 'exclusive designer bedspreads', 
-    'bedspreads for home decor', 'bedspreads for rental properties', 'bedspreads for vacation homes', 
-    'antibacterial bedspreads', 'organic cotton bedspreads', 'softest bedspreads', 
-    'thermo-regulating bedspreads', 'high-quality bedspreads', 'washable bedspreads', 
-    'fade-resistant bedspreads', 'colorful bedspreads', 'extra-large bedspreads', 
-    'cozy bedspreads', 'recycled fabric bedspreads', 'bedspreads for minimalist interiors', 
-    'best bedspreads for comfort', 'cheap bedspreads online', 'bedspreads with lace details'
-])
-
-const draperiiKeywords = ref([
-`${productType} de lux`,
-`${productType} moderne`,
-`${productType} elegante`,
-`${productType} termoizolante`,
-`${productType} opace`,
-`${productType} blackout`,
-`${productType} cu imprimeuri`,
-`${productType} pentru dormitor`,
-`${productType} pentru living`,
-`${productType} pentru bucătărie`,
-`${productType} pentru camera copiilor`,
-`${productType} rustice`,
-`${productType} vintage`,
-`${productType} minimaliste`,
-`${productType} clasice`,
-`${productType} pentru hoteluri`,
-`${productType} pentru pensiuni`,
-`${productType} din catifea`,
-`${productType} din in`,
-`${productType} din bumbac`,
-`${productType} din mătase`,
-`${productType} din poliester`,
-`${productType} lavabile`,
-`${productType} rezistente la soare`,
-`${productType} pentru ferestre mari`,
-`${productType} pentru uși de balcon`,
-`${productType} scurte`,
-`${productType} lungi`,
-`${productType} cu model floral`,
-`${productType} cu dantelă`,
-`${productType} personalizate`,
-`${productType} cu broderie`,
-`${productType} cu rejansă`,
-`${productType} cu inele`,
-`${productType} cu prindere pe șină`,
-`${productType} cu prindere pe galerie`,
-`${productType} rezistente la praf`,
-`${productType} hipoalergenice`,
-`${productType} anti-mucegai`,
-`${productType} pentru izolare fonică`,
-`${productType} pentru design interior`,
-`${productType} de colecție`,
-`${productType} economice`,
-`${productType} premium`,
-`${productType} ieftine online`,
-`${productType} pentru case de vacanță`,
-`${productType} pentru birou`,
-`${productType} pentru spații comerciale`,
-`${productType} pentru restaurante`,
-`${productType} pentru teatre și săli de evenimente`,
-`${productType} pentru sezon rece`,
-`${productType} răcoroase pentru vară`,
-`${productType} călduroase pentru iarnă`,
-`${productType} mate`,
-`${productType} satinate`,
-`${productType} lucioase`,
-`${productType} plisate`,
-`${productType} cu falduri bogate`,
-`${productType} decorative`,
-`${productType} cu modele geometrice`,
-`${productType} cu motive tradiționale`,
-`${productType} cu aspect natural`,
-`${productType} cu textură fină`,
-`${productType} cu textură groasă`,
-`${productType} pentru case smart`,
-`${productType} motorizate`,
-`${productType} controlabile prin aplicație`,
-`${productType} cu iluminare LED integrată`,
-`${productType} din materiale ecologice`,
-`${productType} cu efect de perdea`,
-`luxury curtains`,
-`modern curtains`,
-`elegant curtains `,
-`curtains thermal insulating`,
-`opaque curtains `,
-`blackout curtains `,
-`curtains with prints`,
-`curtains for bedroom`,
-`curtains for living room`,
-`curtains for kitchen`,
-`curtains for kids' room`,
-`rustic curtains `,
-`vintage curtains `,
-`minimalist curtains `,
-`classic curtains `,
-`curtains for hotels`,
-`curtains for guesthouses`,
-`curtains made of velvet`,
-`curtains made of linen`,
-`curtains made of cotton`,
-`curtains made of silk`,
-`curtains made of polyester`,
-`washable curtains `,
-`curtains UV-resistant`,
-`curtains for large windows`,
-`curtains for balcony doors`,
-`short curtains `,
-`long curtains `,
-`curtains with floral pattern`,
-`curtains with lace`,
-`curtains personalized`,
-`curtains with embroidery`,
-`curtains with pleats`,
-`curtains with rings`,
-`curtains for track mounting`,
-`curtains for rod mounting`,
-`curtains dust-resistant`,
-`curtains hypoallergenic`,
-`curtains anti-mold`,
-`curtains for sound insulation`,
-`curtains for interior design`,
-`curtains collectible`,
-`curtains budget-friendly`,
-`premium curtains `,
-`curtains cheap online`,
-`curtains for vacation homes`,
-`curtains for office`,
-`curtains for commercial spaces`,
-`curtains for restaurants`,
-`curtains for theaters and event halls`,
-`curtains for cold seasons`,
-`curtains cool for summer`,
-`curtains warm for winter`,
-`matte curtains `,
-`satin curtains `,
-`glossy curtains `,
-`pleated curtains `,
-`curtains with rich folds`,
-`decorative curtains `,
-`curtains with geometric patterns`,
-`curtains with traditional motifs`,
-`curtains with natural look`,
-`curtains with fine texture`,
-`curtains with thick texture`,
-`curtains for smart homes`,
-`motorized curtains `,
-`curtains app-controlled`,
-`curtains with integrated LED lighting`,
-`curtains made from eco-friendly materials`,
-`curtains with sheer effect`  
-])
+const cuverturiKeyWords = ref(`${productType} de pat, ${productType} premium, ${productType} moderne, ${productType} matrimoniale, ${productType} din bumbac, ${productType} decorative, ${productType} termoizolante, ${productType} matlasate, ${productType} elegante, ${productType} pentru camera copiilor, ${productType} cu imprimeuri, ${productType} din catifea, ${productType} rustice, ${productType} rezistente la spălare, ${productType} rezistente la uzură, ${productType} pentru canapele, ${productType} lavabile, ${productType} pentru sezon rece, ${productType} pentru vară, ${productType} ușoare, ${productType} groase, ${productType} 3D, ${productType} anti-alergice, ${productType} din microfibră, ${productType} pentru hoteluri, ${productType} impermeabile, ${productType} vintage, ${productType} cu model floral, ${productType} pentru dormitor de lux, ${productType} pentru pat de o persoană, ${productType} pentru pat dublu, ${productType} ieftine online, ${productType} de lux, ${productType} personalizate, ${productType} colorate, ${productType} cu broderie, ${productType} anti-mucegai, ${productType} pentru copii, ${productType} pentru bebeluși, ${productType} pentru pensiuni, ${productType} pentru case de vacanță, ${productType} anti-praf, ${productType} hipoalergenice, ${productType} din in, ${productType} din bambus, ${productType} satinate, ${productType} pentru călătorii, ${productType} de colecție, ${productType} pentru design interior, ${productType} scurte, ${productType} lungi, ${productType} personalizabile, ${productType} minimaliste, ${productType} rezistente la pete, ${productType} călduroase pentru iarnă, ${productType} răcoroase pentru vară, ${productType} cu dantelă, bedspreads, luxury bedspreads, modern bedspreads, cotton bedspreads, decorative bedspreads, quilted bedspreads, premium bedspreads, floral bedspreads, mattress covers, elegant bedspreads, hypoallergenic bedspreads, seasonal bedspreads, lightweight summer bedspreads, warm winter bedspreads, embroidered bedspreads, boho bedspreads, vintage bedspreads, patterned bedspreads, minimalist bedspreads, pastel-colored bedspreads, children s bedspreads, baby bedspreads, waterproof bedspreads, hotel-quality bedspreads, soft touch bedspreads, microfiber bedspreads, silk bedspreads, satin bedspreads, reversible bedspreads, double bed bedspreads, single bed bedspreads, discounted bedspreads, eco-friendly bedspreads, custom bedspreads, personalized bedspreads, monochrome bedspreads, handmade bedspreads, rustic bedspreads, tropical bedspreads, bohemian bedspreads, scandinavian bedspreads, exclusive designer bedspreads, bedspreads for home decor, bedspreads for rental properties, bedspreads for vacation homes, antibacterial bedspreads, organic cotton bedspreads, softest bedspreads, thermo-regulating bedspreads, high-quality bedspreads, washable bedspreads, fade-resistant bedspreads, colorful bedspreads, extra-large bedspreads, cozy bedspreads, recycled fabric bedspreads, bedspreads for minimalist interiors, best bedspreads for comfort, cheap bedspreads online, bedspreads with lace details`)
 
 
-const perdeleKeywords = ref([
-`${productType} de lux`,
-`${productType} moderne`,
-`${productType} elegante`,
-`${productType} termoizolante`,
-`${productType} opace`,
-`${productType} blackout`,
-`${productType} cu imprimeuri`,
-`${productType} pentru dormitor`,
-`${productType} pentru living`,
-`${productType} pentru bucătărie`,
-`${productType} pentru camera copiilor`,
-`${productType} rustice`,
-`${productType} vintage`,
-`${productType} minimaliste`,
-`${productType} clasice`,
-`${productType} pentru hoteluri`,
-`${productType} pentru pensiuni`,
-`${productType} din catifea`,
-`${productType} din in`,
-`${productType} din bumbac`,
-`${productType} din mătase`,
-`${productType} din poliester`,
-`${productType} lavabile`,
-`${productType} rezistente la soare`,
-`${productType} pentru ferestre mari`,
-`${productType} pentru uși de balcon`,
-`${productType} scurte`,
-`${productType} lungi`,
-`${productType} cu model floral`,
-`${productType} cu dantelă`,
-`${productType} personalizate`,
-`${productType} cu broderie`,
-`${productType} cu rejansă`,
-`${productType} cu inele`,
-`${productType} cu prindere pe șină`,
-`${productType} cu prindere pe galerie`,
-`${productType} rezistente la praf`,
-`${productType} hipoalergenice`,
-`${productType} anti-mucegai`,
-`${productType} pentru izolare fonică`,
-`${productType} pentru design interior`,
-`${productType} de colecție`,
-`${productType} economice`,
-`${productType} premium`,
-`${productType} ieftine online`,
-`${productType} pentru case de vacanță`,
-`${productType} pentru birou`,
-`${productType} pentru spații comerciale`,
-`${productType} pentru restaurante`,
-`${productType} pentru teatre și săli de evenimente`,
-`${productType} pentru sezon rece`,
-`${productType} răcoroase pentru vară`,
-`${productType} călduroase pentru iarnă`,
-`${productType} mate`,
-`${productType} satinate`,
-`${productType} lucioase`,
-`${productType} plisate`,
-`${productType} cu falduri bogate`,
-`${productType} decorative`,
-`${productType} cu modele geometrice`,
-`${productType} cu motive tradiționale`,
-`${productType} cu aspect natural`,
-`${productType} cu textură fină`,
-`${productType} cu textură groasă`,
-`${productType} pentru case smart`,
-`${productType} motorizate`,
-`${productType} controlabile prin aplicație`,
-`${productType} cu iluminare LED integrată`,
-`${productType} din materiale ecologice`,
-`${productType} cu efect de perdea`,
-`luxury drapes`,
-`modern drapes`,
-`elegant drapes`,
-`drapes thermal insulating`,
-`opaque drapes`,
-`blackout drapes`,
-`drapes with prints`,
-`drapes for bedroom`,
-`drapes for living room`,
-`drapes for kitchen`,
-`drapes for kids' room`,
-`rustic drapes`,
-`vintage drapes`,
-`minimalist drapes`,
-`classic drapes`,
-`drapes for hotels`,
-`drapes for guesthouses`,
-`drapes made of velvet`,
-`drapes made of linen`,
-`drapes made of cotton`,
-`drapes made of silk`,
-`drapes made of polyester`,
-`washable drapes`,
-`drapes UV-resistant`,
-`drapes for large windows`,
-`drapes for balcony doors`,
-`short drapes`,
-`long drapes`,
-`drapes with floral pattern`,
-`drapes with lace`,
-`drapes personalized`,
-`drapes with embroidery`,
-`drapes with pleats`,
-`drapes with rings`,
-`drapes for track mounting`,
-`drapes for rod mounting`,
-`drapes dust-resistant`,
-`drapes hypoallergenic`,
-`drapes anti-mold`,
-`drapes for sound insulation`,
-`drapes for interior design`,
-`drapes collectible`,
-`drapes budget-friendly`,
-`premium drapes`,
-`drapes cheap online`,
-`drapes for vacation homes`,
-`drapes for office`,
-`drapes for commercial spaces`,
-`drapes for restaurants`,
-`drapes for theaters and event halls`,
-`drapes for cold seasons`,
-`drapes cool for summer`,
-`drapes warm for winter`,
-`matte drapes`,
-`satin drapes`,
-`glossy drapes`,
-`pleated drapes`,
-`drapes with rich folds`,
-`decorative drapes`,
-`drapes with geometric patterns`,
-`drapes with traditional motifs`,
-`drapes with natural look`,
-`drapes with fine texture`,
-`drapes with thick texture`,
-`drapes for smart homes`,
-`motorized drapes`,
-`drapes app-controlled`,
-`drapes with integrated LED lighting`,
-`drapes made from eco-friendly materials`,
-`drapes with sheer effect`
-])
+const draperiiKeywords = ref(`${productType} de lux, ${productType} moderne, ${productType} elegante, ${productType} termoizolante, ${productType} opace, ${productType} blackout, ${productType} cu imprimeuri, ${productType} pentru dormitor, ${productType} pentru living, ${productType} pentru bucătărie, ${productType} pentru camera copiilor, ${productType} rustice, ${productType} vintage, ${productType} minimaliste, ${productType} clasice, ${productType} pentru hoteluri, ${productType} pentru pensiuni, ${productType} din catifea, ${productType} din in, ${productType} din bumbac, ${productType} din mătase, ${productType} din poliester, ${productType} lavabile, ${productType} rezistente la soare, ${productType} pentru ferestre mari, ${productType} pentru uși de balcon, ${productType} scurte, ${productType} lungi, ${productType} cu model floral, ${productType} cu dantelă, ${productType} personalizate, ${productType} cu broderie, ${productType} cu rejansă, ${productType} cu inele, ${productType} cu prindere pe șină, ${productType} cu prindere pe galerie, ${productType} rezistente la praf, ${productType} hipoalergenice, ${productType} anti-mucegai, ${productType} pentru izolare fonică, ${productType} pentru design interior, ${productType} de colecție, ${productType} economice, ${productType} premium, ${productType} ieftine online, ${productType} pentru case de vacanță, ${productType} pentru birou, ${productType} pentru spații comerciale, ${productType} pentru restaurante, ${productType} pentru teatre și săli de evenimente, ${productType} pentru sezon rece, ${productType} răcoroase pentru vară, ${productType} călduroase pentru iarnă, ${productType} mate, ${productType} satinate, ${productType} lucioase, ${productType} plisate, ${productType} cu falduri bogate, ${productType} decorative, ${productType} cu modele geometrice, ${productType} cu motive tradiționale, ${productType} cu aspect natural, ${productType} cu textură fină, ${productType} cu textură groasă, ${productType} pentru case smart, ${productType} motorizate, ${productType} controlabile prin aplicație, ${productType} cu iluminare LED integrată, ${productType} din materiale ecologice, ${productType} cu efect de perdea, luxury curtains, modern curtains, elegant curtains, curtains thermal insulating, opaque curtains, blackout curtains, curtains with prints, curtains for bedroom, curtains for living room, curtains for kitchen, curtains for kids' room, rustic curtains, vintage curtains, minimalist curtains, classic curtains, curtains for hotels, curtains for guesthouses, curtains made of velvet, curtains made of linen, curtains made of cotton, curtains made of silk, curtains made of polyester, washable curtains, curtains UV-resistant, curtains for large windows, curtains for balcony doors, short curtains, long curtains, curtains with floral pattern, curtains with lace, curtains personalized, curtains with embroidery, curtains with pleats, curtains with rings, curtains for track mounting, curtains for rod mounting, curtains dust-resistant, curtains hypoallergenic, curtains anti-mold, curtains for sound insulation, curtains for interior design, curtains collectible, curtains budget-friendly, premium curtains, curtains cheap online, curtains for vacation homes, curtains for office, curtains for commercial spaces, curtains for restaurants, curtains for theaters and event halls, curtains for cold seasons, curtains cool for summer, curtains warm for winter, matte curtains, satin curtains, glossy curtains, pleated curtains, curtains with rich folds, decorative curtains, curtains with geometric patterns, curtains with traditional motifs, curtains with natural look, curtains with fine texture, curtains with thick texture, curtains for smart homes, motorized curtains, curtains app-controlled, curtains with integrated LED lighting, curtains made from eco-friendly materials, curtains with sheer effect`)
 
-const perneKeywords = ref([
-`${productType} de lux`,
-`${productType} ergonomice`,
-`${productType} ortopedice`,
-`${productType} pentru dormit`,
-`${productType} premium`,
-`${productType} din spumă cu memorie`,
-`${productType} din puf de gâscă`,
-`${productType} anti-alergice`,
-`${productType} cu aloe vera`,
-`${productType} din bumbac`,
-`${productType} din bambus`,
-`${productType} din microfibră`,
-`${productType} lavabile`,
-`${productType} pentru copii`,
-`${productType} pentru bebeluși`,
-`${productType} pentru călătorii`,
-`${productType} cu efect răcoritor`,
-`${productType} pentru suport cervical`,
-`${productType} personalizate`,
-`${productType} decorative`,
-`${productType} pentru canapea`,
-`${productType} pentru pat`,
-`${productType} pentru hoteluri`,
-`${productType} pentru pensiuni`,
-`${productType} pentru sezon rece`,
-`${productType} răcoroase pentru vară`,
-`${productType} moi și pufoase`,
-`${productType} tari și ferme`,
-`${productType} cu broderie`,
-`${productType} cu imprimeuri`,
-`${productType} cu husă detașabilă`,
-`${productType} impermeabile`,
-`${productType} anti-mucegai`,
-`${productType} pentru relaxare`,
-`${productType} vintage`,
-`${productType} minimaliste`,
-`${productType} pentru spa`,
-`${productType} pentru scaune`,
-`${productType} pentru fotolii`,
-`${productType} pentru yoga`,
-`${productType} pentru camping`,
-`${productType} cu spumă cu gel`,
-`${productType} cu lavandă`,
-`${productType} anti-praf`,
-`${productType} din materiale ecologice`,
-`${productType} smart cu senzori`,
-`${productType} controlate prin aplicație`,
-`${productType} ortopedice pentru gât`,
-`${productType} pentru reducerea sforăitului`,
 
-// English Translations
-`luxury pillows`,
-`ergonomic pillows`,
-`orthopedic pillows`,
-`pillows for sleeping`,
-`premium pillows`,
-`memory foam pillows`,
-`goose down pillows`,
-`anti-allergic pillows`,
-`pillows with aloe vera`,
-`cotton pillows`,
-`bamboo pillows`,
-`microfiber pillows`,
-`washable pillows`,
-`pillows for children`,
-`pillows for babies`,
-`travel pillows`,
-`cooling effect pillows`,
-`neck support pillows`,
-`personalized pillows`,
-`decorative pillows`,
-`pillows for sofa`,
-`pillows for bed`,
-`pillows for hotels`,
-`pillows for guesthouses`,
-`pillows for cold season`,
-`cool pillows for summer`,
-`soft and fluffy pillows`,
-`firm and hard pillows`,
-`embroidered pillows`,
-`pillows with prints`,
-`pillows with removable cover`,
-`waterproof pillows`,
-`anti-mold pillows`,
-`relaxation pillows`,
-`vintage pillows`,
-`minimalist pillows`,
-`pillows for spa`,
-`pillows for chairs`,
-`pillows for armchairs`,
-`pillows for yoga`,
-`pillows for camping`,
-`gel foam pillows`,
-`pillows with lavender`,
-`dust-resistant pillows`,
-`eco-friendly pillows`,
-`smart pillows with sensors`,
-`app-controlled pillows`,
-`orthopedic neck pillows`,
-`pillows for snoring reduction`
-]);
+
+const perdeleKeywords = ref(`${productType} de lux, ${productType} moderne, ${productType} elegante, ${productType} termoizolante, ${productType} opace, ${productType} blackout, ${productType} cu imprimeuri, ${productType} pentru dormitor, ${productType} pentru living, ${productType} pentru bucătărie, ${productType} pentru camera copiilor, ${productType} rustice, ${productType} vintage, ${productType} minimaliste, ${productType} clasice, ${productType} pentru hoteluri, ${productType} pentru pensiuni, ${productType} din catifea, ${productType} din in, ${productType} din bumbac, ${productType} din mătase, ${productType} din poliester, ${productType} lavabile, ${productType} rezistente la soare, ${productType} pentru ferestre mari, ${productType} pentru uși de balcon, ${productType} scurte, ${productType} lungi, ${productType} cu model floral, ${productType} cu dantelă, ${productType} personalizate, ${productType} cu broderie, ${productType} cu rejansă, ${productType} cu inele, ${productType} cu prindere pe șină, ${productType} cu prindere pe galerie, ${productType} rezistente la praf, ${productType} hipoalergenice, ${productType} anti-mucegai, ${productType} pentru izolare fonică, ${productType} pentru design interior, ${productType} de colecție, ${productType} economice, ${productType} premium, ${productType} ieftine online, ${productType} pentru case de vacanță, ${productType} pentru birou, ${productType} pentru spații comerciale, ${productType} pentru restaurante, ${productType} pentru teatre și săli de evenimente, ${productType} pentru sezon rece, ${productType} răcoroase pentru vară, ${productType} călduroase pentru iarnă, ${productType} mate, ${productType} satinate, ${productType} lucioase, ${productType} plisate, ${productType} cu falduri bogate, ${productType} decorative, ${productType} cu modele geometrice, ${productType} cu motive tradiționale, ${productType} cu aspect natural, ${productType} cu textură fină, ${productType} cu textură groasă, ${productType} pentru case smart, ${productType} motorizate, ${productType} controlabile prin aplicație, ${productType} cu iluminare LED integrată, ${productType} din materiale ecologice, ${productType} cu efect de perdea, luxury drapes, modern drapes, elegant drapes, drapes thermal insulating, opaque drapes, blackout drapes, drapes with prints, drapes for bedroom, drapes for living room, drapes for kitchen, drapes for kids' room, rustic drapes, vintage drapes, minimalist drapes, classic drapes, drapes for hotels, drapes for guesthouses, drapes made of velvet, drapes made of linen, drapes made of cotton, drapes made of silk, drapes made of polyester, washable drapes, drapes UV-resistant, drapes for large windows, drapes for balcony doors, short drapes, long drapes, drapes with floral pattern, drapes with lace, drapes personalized, drapes with embroidery, drapes with pleats, drapes with rings, drapes for track mounting, drapes for rod mounting, drapes dust-resistant, drapes hypoallergenic, drapes anti-mold, drapes for sound insulation, drapes for interior design, drapes collectible, drapes budget-friendly, premium drapes, drapes cheap online, drapes for vacation homes, drapes for office, drapes for commercial spaces, drapes for restaurants, drapes for theaters and event halls, drapes for cold seasons, drapes cool for summer, drapes warm for winter, matte drapes, satin drapes, glossy drapes, pleated drapes, drapes with rich folds, decorative drapes, drapes with geometric patterns, drapes with traditional motifs, drapes with natural look, drapes with fine texture, drapes with thick texture, drapes for smart homes, motorized drapes, drapes app-controlled, drapes with integrated LED lighting, drapes made from eco-friendly materials, drapes with sheer effect`)
+
+
+const perneKeywords = ref(`${productType} de lux, ${productType} ergonomice, ${productType} ortopedice, ${productType} pentru dormit, ${productType} premium, ${productType} din spumă cu memorie, ${productType} din puf de gâscă, ${productType} anti-alergice, ${productType} cu aloe vera, ${productType} din bumbac, ${productType} din bambus, ${productType} din microfibră, ${productType} lavabile, ${productType} pentru copii, ${productType} pentru bebeluși, ${productType} pentru călătorii, ${productType} cu efect răcoritor, ${productType} pentru suport cervical, ${productType} personalizate, ${productType} decorative, ${productType} pentru canapea, ${productType} pentru pat, ${productType} pentru hoteluri, ${productType} pentru pensiuni, ${productType} pentru sezon rece, ${productType} răcoroase pentru vară, ${productType} moi și pufoase, ${productType} tari și ferme, ${productType} cu broderie, ${productType} cu imprimeuri, ${productType} cu husă detașabilă, ${productType} impermeabile, ${productType} anti-mucegai, ${productType} pentru relaxare, ${productType} vintage, ${productType} minimaliste, ${productType} pentru spa, ${productType} pentru scaune, ${productType} pentru fotolii, ${productType} pentru yoga, ${productType} pentru camping, ${productType} cu spumă cu gel, ${productType} cu lavandă, ${productType} anti-praf, ${productType} din materiale ecologice, ${productType} smart cu senzori, ${productType} controlate prin aplicație, ${productType} ortopedice pentru gât, ${productType} pentru reducerea sforăitului, luxury pillows, ergonomic pillows, orthopedic pillows, pillows for sleeping, premium pillows, memory foam pillows, goose down pillows, anti-allergic pillows, pillows with aloe vera, cotton pillows, bamboo pillows, microfiber pillows, washable pillows, pillows for children, pillows for babies, travel pillows, cooling effect pillows, neck support pillows, personalized pillows, decorative pillows, pillows for sofa, pillows for bed, pillows for hotels, pillows for guesthouses, pillows for cold season, cool pillows for summer, soft and fluffy pillows, firm and hard pillows, pillows with embroidery, pillows with prints, pillows with removable cover, waterproof pillows, anti-mold pillows, relaxation pillows, vintage pillows, minimalist pillows, pillows for spa, pillows for chairs, pillows for armchairs, pillows for yoga, pillows for camping, gel foam pillows, pillows with lavender, dust-resistant pillows, eco-friendly pillows, smart pillows with sensors, app-controlled pillows, orthopedic neck pillows, pillows for snoring reduction`)
+
 
 
 const isLoggedIn = ref(false)
@@ -1401,6 +992,8 @@ const screenSize = computed(() => {
       default : return { width : 550 , height : 550}
     }
 })
+
+
 
 
 const rules = {
@@ -1605,8 +1198,10 @@ const updateLocalCart = (() => {
         var updateCart = parseInt(getCartCount);
         updateCart++
         localStorage.setItem('cartCount' , String(updateCart))
+        cartCount.value = String(updateCart)
     }else{
         localStorage.setItem('cartCount' , '1');
+        cartCount.value = '1'
     }
 })
 
@@ -1689,9 +1284,9 @@ function toggleButton(index, type) {
 const getProductData = async () => {
     const response = await productService.getProductData(productCode,productType , selectedCurrency.value);
     if(response === -4){
-        navigateTo(localePath('/error/notFound'))
+        navigateTo(localePath('/error/404')) // not found
     }else if(response === -2){
-        navigateTo(localePath('/error/generalError'))
+        navigateTo(localePath('/error/400'))
     }
 
     Object.assign(product.value , response)
@@ -1732,6 +1327,8 @@ const getProductData = async () => {
         selectedKeywords.value = cuverturiKeyWords.value;
     }else if(product.value.tipulProdusuluiDto === 'perna'){
         selectedKeywords.value = perneKeywords.value;
+    }else{
+        selectedKeywords.value = perdeleKeywords.value + draperiiKeywords.value + cuverturiKeyWords.value + perneKeywords.value
     }
 
     

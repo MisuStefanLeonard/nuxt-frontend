@@ -456,7 +456,7 @@ const rules = reactive({
   lengthNotAbove: (len) => (value) => 
     !value || value.length <= len || `Limita este de ${len} caractere`,
     onlyNumbers: (value) =>
-    /^\d+(\.\d{2})?$/.test(String(value).trim()) ||
+    /^\d+(\.\d{1,2})?$/.test(String(value).trim()) ||
     "Doar numere sunt permise",
   onlyLetters: (value) => /^[a-zA-Z\s]+$/.test(value) || "Doar litere sunt permise",
   recomandarePatRule: (value) =>
@@ -658,12 +658,48 @@ const finalSaveData = async () => {
           if (result.isConfirmed) {
               if(product.tipulProdusuluiDto === 'perdea' || product.tipulProdusuluiDto === 'draperie'){
                 if(product.inaltimeMaximaDto <= 0){
-                      Swal.fire({
-                          icon: 'error',
-                          title: 'Eroare',
-                          text: 'Nu ati selectat o dimensiune maxima pe material',
-                          timer: 3000,
-                      });
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Eroare',
+                        text: 'Nu ati selectat o inaltime maxima pe material',
+                        timer: 7000,
+                    });
+                  return;
+                }
+                if(product.dimensiuniProduseDto.length > 0){
+                  Swal.fire({
+                        icon: 'error',
+                        title: 'Eroare',
+                        text: 'Nu puteti avea dimensiune pe o draperie/perdea',
+                        timer: 7000,
+                    });
+                  return;
+                }
+                if(product.pretBazaDto <= 0){
+                  Swal.fire({
+                        icon: 'error',
+                        title: 'Eroare',
+                        text: 'Selectati un pret de baza pentru perdeaua/draperia',
+                        timer: 7000,
+                    });
+                  return;
+                }
+              }else{
+                if(product.dimensiuniProduseDto.length <= 0 && product.pretBazaDto <= 0){
+                  Swal.fire({
+                        icon: 'error',
+                        title: 'Eroare',
+                        text: 'Daca produsul nu are nicio dimensiune , completati un pret de baza pentru produs si nu adaugati nicio dimensiune',
+                        timer: 7000,
+                    });
+                  return;
+                }else if(product.dimensiuniProduseDto.length >= 0 && product.pretBazaDto >= 0){
+                  Swal.fire({
+                        icon: 'error',
+                        title: 'Eroare',
+                        text: 'Daca produsul are dimensiune , lasati pretul de baza la 0',
+                        timer: 7000,
+                    });
                   return;
                 }
               }

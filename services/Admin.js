@@ -3,7 +3,8 @@ import ApiService from "./ApiService";
 
 class AdminService extends ApiService{
     constructor(){
-        super("http://localhost:5043/api/admin")
+        // super("http://localhost:5043/api/admin")
+        super(process.env.NODE_ENV === 'development' ? "http://localhost:5043/api/admin" : 'production backend url')
     }
 
     adminLogin(key){
@@ -386,7 +387,7 @@ class AdminService extends ApiService{
       }
 
       getClientData(encodedIdContDto){
-        return this.get(`customer/${encodedIdContDto}` , true,false)
+        return this.get(`customer/${encodedIdContDto}` , true,false , false)
       }
 
       modifyClientData(form){

@@ -27,8 +27,17 @@
 <script setup>
 import { mdiEmoticonHappyOutline } from '@mdi/js'
 import orderService from '~/services/Order'
+
+
 definePageMeta({
-    layout: 'default',
+  title : 'Confirmare comanda',
+  layout: 'default',
+  keywords:'confirmare comanda , order confirmation',
+  siteName : 'Texx - Confirmare',
+})
+
+useHead({
+  title : 'Confirmare comanda'
 })
 // 
 const route = useRoute()

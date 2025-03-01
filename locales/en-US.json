@@ -11,6 +11,7 @@
       "perdele": "Curtains",
       "draperii": "Drapes",
       "perne": "Pillows",
+      "sets" : "Bundles",
       "profile": "Profile",
       "myProfile": "My Profile",
       "logout": "Log Out",
@@ -493,7 +494,120 @@
       "text3": "In addition to curtains and draperies, we are also dedicated to manufacturing luxurious cushions, crafted for ultimate comfort. Whether decorative or designed for rest, each product is made with meticulous attention to detail, using fine materials and high-quality fillings. Moreover, we offer a collection of premium bedspreads designed to perfectly complement the decor of an elegant and sophisticated bedroom.",
       "text4": "We aim to offer our customers not just products, but a unique experience in which the quality of the materials and the craftsmanship are paramount. By choosing [Company Name], you choose a team passionate about textiles, with a clear mission: to transform every home into a warm, elegant, and comfortable space.",
       "text5": "We invite you to discover our collections and benefit from personalized craftsmanship services, specially created to fulfill all your desires for curtains, draperies, cushions, and bedspreads. Quality defines us, and our customers’ satisfaction is our greatest reward!"
+    },
+    
+    "cookieBanner": {
+      "info": "Our website uses cookies for its proper functioning",
+      "essentials": "Essential cookies",
+      "cookies": {
+        "jwt": "Stores information about the current session",
+        "admin": "Stores information about the current session",
+        "user": "Stores information about the current session",
+        "cartSession": "Stores information about the current shopping session",
+        "i18n": "Stores information about the currently selected language",
+        "session_tok": "Stores information about the current session",
+        "googleAnalytics": "Marketing cookie that improves your user experience",
+        "grecaptacha": "Cookie from Google for bot detection"
+      },
+      "accept": "Accept",
+      "decline": "Decline"
+    },
+    
+    "termsAndConditions": {
+      "title": "Terms and Conditions",
+      "intro1": "Welcome to Texx!",
+      "intro2": "These terms and conditions outline the rules and regulations for the use of texx's Website, located at wesbite url.",
+      "intro3": "By accessing this website we assume you accept these terms and conditions. Do not continue to use texx if you do not agree to take all of the terms and conditions stated on this page.",
+      "terminology": "The following terminology applies to these Terms and Conditions, Privacy Statement and Disclaimer Notice and all Agreements: \"Client\", \"You\" and \"Your\" refers to you, the person logged on this website and compliant with the Company’s terms and conditions. \"The Company\", \"Ourselves\", \"We\", \"Our\" and \"Us\", refer to our Company. \"Party\", \"Parties\", or \"Us\", refer to both the Client and ourselves. All terms refer to the offer, acceptance and consideration of payment necessary to undertake the process of our assistance to the Client in the most appropriate manner for the express purpose of meeting the Client’s needs in respect of provision of the Company’s stated services, in accordance with and subject to prevailing law of Netherlands. Any use of the above terminology or other words in the singular, plural, capitalization and/or he/she or they, are taken as interchangeable and therefore as referring to the same.",
+      "cookiesTitle": "Cookies",
+      "cookiesText1": "We employ the use of cookies. By accessing texx, you agreed to use cookies in agreement with texx's Privacy Policy.",
+      "cookiesText2": "Most interactive websites use cookies to let us retrieve the user's details for each visit. Cookies are used by our website to enable the functionality of certain areas to make it easier for people visiting our website. Some of our affiliate/advertising partners may also use cookies.",
+      "licenseTitle": "License",
+      "licenseText": "Unless otherwise stated, texx and/or its licensors own the intellectual property rights for all material on texx. All intellectual property rights are reserved. You may access this material from texx for your own personal use subject to the restrictions set in these terms and conditions.",
+      "youMustNot": "You must not:",
+      "licenseList": {
+        "text1" : "Republish material from texx",
+        "text2" :"Sell, rent or sub-license material from texx",
+        "text3" :"Reproduce, duplicate or copy material from texx",
+        "text4" :"Redistribute content from texx"
+      },
+      "agreement": "This Agreement shall begin on the date hereof. Our Terms and Conditions were created with the help of the Terms and Conditions Generator.",
+      "comments": "Parts of this website offer an opportunity for users to post and exchange opinions and information. Texx does not filter, edit, publish or review Comments prior to their presence on the website. Comments reflect the views and opinions of the person posting them. Texx shall not be liable for any Comments or any liability, damages or expenses arising as a result of their use or appearance.",
+      "hyperlinkTitle": "Hyperlinking to our Content",
+      "hyperlinkText1": "The following organizations may link to our Website without prior written approval:",
+      "hyperlinkList1": {
+          "text1" : "Government agencies",
+          "text2" :"Search engines",
+          "text3" :"News organizations",
+          "text4" :"Online directory distributors, and",
+          "text5" : "System wide Accredited Businesses (excluding certain non-profits)"
+        },
+      "hyperlinkText2": "These organizations may link to our home page, publications, or other website information as long as the link:",
+      "hyperlinkText3": " (a) is not deceptive, (b) does not falsely imply sponsorship or endorsement, and (c) fits within the context of the linking party’s site.",
+      "hyperlinkList2": {
+          "text1" :  "By using our corporate name",
+          "text2" : "By using the URL being linked to",
+          "text3" : "Or by using any other description that makes sense in context"
+        },
+      "iframesTitle": "iFrames",
+      "iframesText": "Without prior written approval, you may not create frames around our webpages that alter their visual presentation.",
+      "contentLiabilityTitle": "Content Liability",
+      "contentLiabilityText": "We shall not be held responsible for any content that appears on your website. You agree to defend us against any claims arising from content on your site.",
+      "privacyTitle": "Your Privacy",
+      "privacyText": "Please read our Privacy Policy.",
+      "reservationTitle": "Reservation of Rights",
+      "reservationText": "We reserve the right to request removal of all or any specific links to our Website. By continuously linking to our Website, you agree to these terms.",
+      "removalTitle": "Removal of links from our website",
+      "removalText": "If you find any link on our website that is offensive, you may contact us. We will consider requests to remove links, but are not obligated to do so.",
+      "disclaimerTitle": "Disclaimer",
+      "disclaimerText": "To the maximum extent permitted by law, we exclude all representations, warranties and conditions relating to our website and its use. Nothing in this disclaimer will:",
+      "disclaimerList": {
+          "text1" :  "limit or exclude our or your liability for death or personal injury",
+          "text2" :  "limit or exclude our or your liability for fraud or fraudulent misrepresentation",
+          "text3" :   "limit any liabilities in any way not permitted under applicable law",
+          "text4" : "or exclude any liabilities that may not be excluded under applicable law"
+      },
+      "disclaimerConclusion": "The limitations set in this disclaimer govern all liabilities arising from this disclaimer, including those in contract, tort and statutory duty. As long as the website is provided free of charge, we will not be liable for any loss or damage.",
+      "finalNote": "By accessing and using this website, you agree to these Terms and Conditions."
+    },
+    
+    "footer": {
+      "title": "Texx.ro",
+      "clientSupprt": "Customer Support",
+      "info": "Information",
+      "titleSubText": {
+        "termsAndConditions": "Terms and Conditions",
+        "personalData": "Processing of Personal Data",
+        "utilizationPolicy": "Cookie Utilization Policy",
+        "anpc": "Consumer Protection"
+      },
+      "clientSupportSubText": {
+        "delivery": "Order Delivery"
+      },
+      "infoSubText": {
+        "address": "Address:"
+      }
+    },
+    
+    "errorPage": {
+      "404": {
+        "headline": "Oops, 404",
+        "text": "The page/product/set no longer exists",
+        "title": "Page Not Found"
+      },
+      "400": {
+        "headline": "Oops, 400",
+        "text": "You have accessed an invalid resource",
+        "title": "Invalid Access"
+      },
+      "500": {
+        "headline": "Oops, 500",
+        "text": "There are issues connecting to the server, we apologize!",
+        "title": "Server Error"
+      }
     }
+    
+    
   
   }
   

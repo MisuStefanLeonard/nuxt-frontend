@@ -58,9 +58,22 @@ import { ref, onMounted } from 'vue'
 import RegisterService from '~/services/Register'
 import UserService from '~/services/User'
 
+
+
 definePageMeta({
-    layout: 'default',
-    middleware: 'auth'
+  title : 'Date personale',
+  layout: 'default',
+  keywords:'date personale , personal data , client personal data , date personale client',
+  siteName : 'Texx - Date personale',
+  canonicalUrl : 'http://localhost:3000/user/profile/data',
+  ogType : 'website',
+  middleware: 'auth',
+  ogDescription : 'Datele dumnevoastra pe Texx',
+  description : 'Datele dumnevoastra pe Texx'
+})
+
+useHead({
+  title : 'Date personale'
 })
 const swal = useNuxtApp().$swal;
 const {t} = useI18n()

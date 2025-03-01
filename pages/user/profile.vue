@@ -39,8 +39,19 @@ import { mdiCogOutline } from '@mdi/js';
 import { ref } from 'vue'
 
 definePageMeta({
-    layout: 'default',
-    middleware: 'auth'
+  title : 'Profil',
+  layout: 'default',
+  keywords:'profil,profile,dataa,personal data,date personale',
+  middleware: 'auth',
+  siteName : 'Texx - Profil',
+  canonicalUrl : 'http://localhost:3000/user/profile',
+  ogType : 'website',
+  ogDescription : 'Datele profilului dumnevoastra pe Texx',
+  description : 'Modifica si vizualizeaza-ti datele pe Texx'
+})
+
+useHead({
+  title : 'Profil'
 })
 
 const {t} = useI18n();

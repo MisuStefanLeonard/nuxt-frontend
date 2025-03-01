@@ -195,7 +195,24 @@ import UserService from '~/services/User'
 
 definePageMeta({
     layout: 'default',
-    middleware: 'auth',
+   
+})
+
+
+definePageMeta({
+  title : 'Adrese',
+  layout: 'default',
+  keywords:'adrese , addresses , client , user',
+  siteName : 'Texx - Adrese',
+  canonicalUrl : 'http://localhost:3000/user/profile/addresses',
+  ogType : 'website',
+  middleware: 'auth',
+  ogDescription : 'Adresele dumnevoastra pe Texx',
+  description : 'Adresele dumnevoastra pe Texx'
+})
+
+useHead({
+  title : 'Adrese'
 })
 
 const swal = useNuxtApp().$swal

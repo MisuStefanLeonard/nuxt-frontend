@@ -54,9 +54,17 @@ import { ref, onMounted, nextTick } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import RegisterService from '~/services/Register'
 
+
 definePageMeta({
-  layout: 'default'
-})
+    title : 'Confirmare cont',
+    layout: 'default',
+    keywords:'account confirmation , confirmare cont',
+    siteName : 'Texx - Confirmare cont',
+  })
+
+  useHead({
+    title : 'Confirmare cont'
+  })
 
 // Reactive state variables
 const isLoading = ref(true)

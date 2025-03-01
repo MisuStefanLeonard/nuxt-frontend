@@ -214,6 +214,11 @@
                                 <span class="font-weight-normal h6"><v-icon size="24" :icon="mdiStarFourPointsSmall"></v-icon>Pe coloana 19 se afla pretul de baza redus. Se aplica aceleasi reguli ca la pretul de baza al produsului. </span>
                             </v-list-item>
                         </v-list>
+                        <v-list class="my-2 bg-grey-darken-4">
+                            <v-list-item>
+                                <span class="font-weight-normal h6"><v-icon size="24" :icon="mdiStarFourPointsSmall"></v-icon>Pe coloana 20 se afla inaltimea maxima a materialului. Poate fi lasata la "-" daca produsul nu are inaltime maxima. Permite valori cu maxim 2 zecimale dupa virgula. </span>
+                            </v-list-item>
+                        </v-list>
                 </v-alert>
             </v-container>
             <v-container>

@@ -510,7 +510,114 @@
         "text3" : "Pe lângă perdele și draperii, suntem dedicați și fabricării de perne luxoase, create pentru confortul suprem. Fie că este vorba de perne decorative sau perne pentru odihnă, fiecare produs este confecționat cu atenție la detalii, folosind materiale fine și umpluturi de înaltă calitate. În plus, oferim și o colecție de cuverturi premium, menite să completeze perfect decorul unui dormitor elegant și sofisticat.",
         "text4" : "Ne dorim să oferim clienților noștri nu doar produse, ci o experiență unică, în care calitatea materialelor și măiestria execuției sunt pe primul loc. Alegând [Numele Companiei], alegeți o echipă pasionată de textile, cu o misiune clară: să transformăm fiecare locuință într-un spațiu cald, elegant și confortabil.",
         "text5" : "Vă invităm să descoperiți colecțiile noastre și să beneficiați de servicii de manoperă personalizate, create special pentru a vă îndeplini toate dorințele în materie de perdele, draperii, perne și cuverturi. Calitatea ne definește, iar satisfacția clienților noștri este cea mai mare recompensă!"
-
+    },
+    "cookieBanner" : {
+        "info" : "Site-ul nostru foloseste cookie-uri pentru buna functionare a acestuia",
+        "essentials" : "Cookie-uri esentiale" ,
+        "cookies" : {
+            "jwt" : "Stocheaza informatii despre sesiunea curenta",
+            "admin" : "Stocheaza informatii despre sesiunea curenta",
+            "user" : "Stocheza informatii despre sesiunea curenta",
+            "cartSession" : "Stocheaza informatii despre sesiunea curenta de cumparaturi",
+            "i18n" : "Stocheaza informatii despre limba curenta selectata",
+            "session_tok" : "Stocheaza informatii despre sesiunea curenta",
+            "googleAnalytics" : "Cookie de marketing care imbunatateste calitate de user a dumneavoastra",
+            "grecaptacha" : "Cookie din partea Google pentru detectare robotilor"
+        },
+        "accept" : "Accepta",
+        "decline" : "Declina"
+    },
+    
+    "termsAndConditions": {
+        "title": "Termeni și Condiții",
+        "intro1": "Bine ați venit la Texx!",
+        "intro2": "Acești termeni și condiții descriu regulile și prevederile privind utilizarea Website-ului texx, situat la adresa website url.",
+        "intro3": "Prin accesarea acestui website, presupunem că acceptați acești termeni și condiții. Nu continuați să utilizați texx dacă nu sunteți de acord să respectați toți termenii și condițiile enunțate pe această pagină.",
+        "terminology": "Terminologia următoare se aplică acestor Termeni și Condiții, Declarației de Confidențialitate și Notificării de Exonerare de Răspundere, precum și tuturor Acordurilor: \"Client\", \"Dumneavoastră\" și \"Al dvs.\" se referă la dumneavoastră, persoana conectată pe acest website și care respectă termenii și condițiile Companiei. \"Compania\", \"Noi\", \"Al nostru\" și \"Nouă\" se referă la compania noastră. \"Parte\", \"Părți\" sau \"Noi\" se referă atât la Client, cât și la noi. Toți termenii se referă la oferta, acceptarea și contraprestația necesară pentru a efectua procesul de asistență oferit Clientului în cel mai adecvat mod, cu scopul expres de a satisface nevoile Clientului în ceea ce privește furnizarea serviciilor enunțate de Companie, în conformitate cu și sub rezerva legii în vigoare din Țările de Jos. Orice utilizare a terminologiei de mai sus sau a altor cuvinte în formă de singular, plural, cu majuscule și/sau he/she sau they se consideră interschimbabilă și, prin urmare, se referă la același lucru.",
+        "cookiesTitle": "Cookie-uri",
+        "cookiesText1": "Folosim cookie-uri. Prin accesarea texx, ați acceptat utilizarea cookie-urilor conform Politicii de Confidențialitate a texx.",
+        "cookiesText2": "Majoritatea website-urilor interactive folosesc cookie-uri pentru a ne permite să recuperăm detaliile utilizatorului la fiecare vizită. Cookie-urile sunt folosite de website-ul nostru pentru a activa funcționalități în anumite zone, facilitând astfel experiența vizitatorilor. Unii dintre partenerii noștri afiliați sau publicitari pot utiliza, de asemenea, cookie-uri.",
+        "licenseTitle": "Licență",
+        "licenseText": "Cu excepția cazului în care se specifică altfel, texx și/sau licențatorii săi dețin drepturile de proprietate intelectuală pentru toate materialele de pe texx. Toate drepturile de proprietate intelectuală sunt rezervate. Puteți accesa aceste materiale de pe texx pentru uz personal, sub rezerva restricțiilor prevăzute în acești termeni și condiții.",
+        "youMustNot": "Nu trebuie să:",
+        "licenseList": {
+        "text1": "Republicați materiale de pe texx",
+        "text2": "Vindeți, închiriați sau sub-licențiați materiale de pe texx",
+        "text3": "Reproduceți, duplicați sau copiați materiale de pe texx",
+        "text4": "Redistribuiți conținut de pe texx"
+        },
+        "agreement": "Acest Acord începe de la data semnării. Termenii și Condițiile au fost create cu ajutorul Generatorului de Termeni și Condiții.",
+        "comments": "Anumite secțiuni ale acestui website oferă posibilitatea utilizatorilor de a posta și schimba opinii și informații. Texx nu filtrează, editează, publică sau revizuiește Comentariile înainte ca acestea să fie afișate pe site. Comentariile reflectă punctele de vedere ale persoanei care le postează. Texx nu va fi responsabil pentru niciun Comentariu sau pentru orice răspundere, daună sau cheltuială care apare ca urmare a utilizării sau apariției Comentariilor.",
+        "hyperlinkTitle": "Hyperlink-uri către conținutul nostru",
+        "hyperlinkText1": "Următoarele organizații pot crea hyperlink-uri către website-ul nostru fără aprobarea scrisă prealabilă:",
+        "hyperlinkList1": {
+            "text1": "Agenții guvernamentale",
+            "text2": "Motoare de căutare",
+            "text3": "Organizații de știri",
+            "text4": "Distribuitori online de directoare, și",
+            "text5": "Afaceri acreditate la nivel de sistem (cu excepția anumitor organizații non-profit)"
+        },
+        "hyperlinkText2": "Aceste organizații pot crea hyperlink-uri către pagina noastră de start, publicații sau alte informații de pe website atâta timp cât link-ul:",
+        "hyperlinkText3": " (a) nu este în niciun fel înșelător; (b) nu implică în mod fals sponsorizare sau susținere; și (c) se potrivește în contextul site-ului organizației respective.",
+        "hyperlinkList2": {
+            "text1": "Folosind numele nostru corporativ",
+            "text2": "Folosind URL-ul la care se face link",
+            "text3": "Sau folosind orice altă descriere care are sens în context"
+        },
+        "iframesTitle": "iFrames",
+        "iframesText": "Fără aprobarea scrisă prealabilă, nu puteți crea cadre în jurul paginilor noastre web care să modifice prezentarea vizuală.",
+        "contentLiabilityTitle": "Responsabilitatea conținutului",
+        "contentLiabilityText": "Nu vom fi ținuți responsabili pentru orice conținut care apare pe site-ul dumneavoastră. Sunteți de acord să ne apărați împotriva oricăror cereri care apar din conținutul de pe site-ul dumneavoastră.",
+        "privacyTitle": "Confidențialitatea dumneavoastră",
+        "privacyText": "Vă rugăm să citiți Politica noastră de Confidențialitate.",
+        "reservationTitle": "Rezervarea drepturilor",
+        "reservationText": "Ne rezervăm dreptul de a solicita eliminarea tuturor link-urilor sau a oricărui link specific către website-ul nostru. Prin menținerea constantă a hyperlink-urilor către website-ul nostru, sunteți de acord cu acești termeni.",
+        "removalTitle": "Eliminarea link-urilor de pe website-ul nostru",
+        "removalText": "Dacă găsiți orice link pe website-ul nostru care este ofensator, vă puteți adresa nouă. Vom lua în considerare cererile de eliminare a link-urilor, dar nu suntem obligați să le eliminăm.",
+        "disclaimerTitle": "Exonerare de răspundere",
+        "disclaimerText": "În măsura maximă permisă de lege, excludem toate declarațiile, garanțiile și condițiile referitoare la website-ul nostru și la utilizarea acestuia. Nimic din această exonerare nu va:",
+        "disclaimerList": {
+        "text1": "limita sau exclude răspunderea noastră sau a dumneavoastră pentru deces sau vătămări personale",
+        "text2": "limita sau exclude răspunderea noastră sau a dumneavoastră pentru fraudă sau reprezentare frauduloasă",
+        "text3": "limita orice răspunderi într-un mod care nu este permis de lege",
+        "text4": "sau exclude orice răspunderi care nu pot fi excluse conform legii aplicabile"
+        },
+        "disclaimerConclusion": "Limitările și excluderile de răspundere stabilite în această secțiune guvernează toate răspunderile care apar din această exonerare, inclusiv cele din contract, delict și obligații legale. Atâta timp cât website-ul este furnizat gratuit, nu vom fi responsabili pentru nicio pierdere sau daună.",
+        "finalNote": "Prin accesarea și utilizarea acestui website, sunteți de acord cu acești Termeni și Condiții."
+    },
+    "footer" : {
+        "title" : "Texx.ro",
+        "clientSupprt" : "Suport clienti",
+        "info" : "Informatii",
+        "titleSubText" : {
+            "termsAndConditions" : "Termeni si conditii",
+            "personalData" : "Prelucrarea datelor cu caracter personal",
+            "utilizationPolicy" : "Politica de utilizare cookie-uri",
+            "anpc" : "Protectia consumatorului"
+        },
+        "clientSupportSubText" : {
+            "delivery" : "Livrare comenzi"
+        },
+        "infoSubText" : {
+            "address" : "Adresa:"
+        }
+    },
+    "errorPage": {
+        "404" : {
+            "headline" : "Oops, 404",
+            "text" : "Pagina/Produsul/Setul nu mai exista",
+            "title" : "Pagina negasita"
+        },
+        "400" : {
+            "headline" : "Oops, 400",
+            "text" : "Ati accesat o resursa nevalida",
+            "title" : "Accesare nevalida"
+        },
+        "500" : {
+            "headline" : "Oops, 500",
+            "text" : "Probleme cu conexiunea la server, ne scuzati!",
+            "title" : "Eroare server"
+        }
     }
-  }
+  } 
   

@@ -29,17 +29,6 @@
                 variant="outlined"
               ></v-text-field>
               <v-container class="text-center">
-                <!-- <v-container class="d-flex justify-center">
-                  <div>
-                    <v-checkbox
-                      v-model="stayLoggedIn"
-                      color="success"
-                      :label="$t('login.stayLoggedIn')"
-                      value="success"
-                      @click="stayLoggedInFunc"
-                    ></v-checkbox>
-                  </div>
-                </v-container> -->
                 <v-btn
                   rounded="xl"
                   type="submit"
@@ -105,8 +94,20 @@ import RegisterService from '~/services/Register'
 import { useUserStore } from '~/store/user';
 
 definePageMeta({
-  layout: 'default'
+  title : 'Logare',
+  layout: 'default',
+  keywords:'log in , logare',
+  siteName : 'Texx - Logare',
+  canonicalUrl : 'http://localhost:3000/user/login',
+  ogType : 'website',
+  ogDescription : 'Logare pe Texx',
+  description : 'Logare pe Texx'
 })
+
+useHead({
+  title : 'Logare'
+})
+  
 
 const localePath = useLocalePath()
 const {t} = useI18n();

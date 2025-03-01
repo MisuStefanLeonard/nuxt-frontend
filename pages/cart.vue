@@ -482,10 +482,22 @@
 import { mdiArrowLeft, mdiArrowRight, mdiCheck, mdiEmoticonSad, mdiMinus, mdiPlus, mdiTrashCanOutline } from '@mdi/js';
 import { useDisplay } from 'vuetify';
 import productService from '~/services/Products';
-
+import { cartCount } from '~/middleware/cart';
 
 definePageMeta({
-    middleware : ['locale']
+  title : 'Cos cumparaturi',
+  layout: 'default',
+  keywords:'cos cumparaturi , shopping cart , pret afisat',
+  middleware: 'locale',
+  siteName : 'Texx - Magazin seturi',
+  canonicalUrl : 'http://localhost:3000/cart',
+  ogType : 'product',
+  ogDescription : 'Vizualizeaza produsele pe care le ai in cos pe Texx',
+  description : 'Toate produsele tale la un click distanta de cumparare'
+})
+
+useHead({
+    title : 'Cos cumparaturi'
 })
 
 const {name} = useDisplay()
@@ -495,7 +507,6 @@ const itemsInCart = ref({
     items : [],
     pretTotal : 0
 })
-const cartCountRef = useState("cartCountRef")
 const stepValue = ref(0)
 const stepValueSet = ref(0)
 const incremented = ref(false)
@@ -560,27 +571,27 @@ const modifyQuantity = (async (isDecrementing,item) => {
     }
     
     const form = new FormData()
-    console.log('aici')
+   
     form.append('productData',JSON.stringify(body));
     const response = await productService.modifyQuantity(form);
     if(response === 1){
         var itemToDecrementValueIndex = itemsInCart.value.items.findIndex(prod => prod.key === item.key)
         if(isDecrementing){
-            console.log(isDecrementing)
             decremented.value = true;
             setTimeout(() => {
                 decremented.value = false;
             }, 2000);
-            var cartCount = localStorage.getItem('cartCount')
-            if(cartCount){
-                var toIntCartCount = parseInt(cartCount); 
+            var cartCountLocal = localStorage.getItem('cartCount')
+            if(cartCountLocal){
+                var toIntCartCount = parseInt(cartCountLocal); 
                 toIntCartCount--;
-                if(cartCount < 0){
+                if(cartCountLocal < 0){
                     localStorage.setItem('cartCount' , '0');
+                    cartCount.value = '0'
                     return;
                 }
                 localStorage.setItem('cartCount' , String(toIntCartCount))
-                cartCountRef.value--
+                cartCount.value = String(toIntCartCount)
                 itemsInCart.value.totalProduse--;
                 if(itemToDecrementValueIndex !== -1){
                     if(itemsInCart.value.items[itemToDecrementValueIndex].key === 21){
@@ -606,12 +617,12 @@ const modifyQuantity = (async (isDecrementing,item) => {
             setTimeout(() => {
                 incremented.value = false;
             }, 2000);
-            var cartCount = localStorage.getItem('cartCount')
-            if(cartCount){
-                var toIntCartCount = parseInt(cartCount); 
+            var cartCountLocal = localStorage.getItem('cartCount')
+            if(cartCountLocal){
+                var toIntCartCount = parseInt(cartCountLocal); 
                 toIntCartCount++;
-                cartCountRef.value++
                 localStorage.setItem('cartCount' , String(toIntCartCount))
+                cartCount.value = String(toIntCartCount)
                 itemsInCart.value.totalProduse++;
                 itemsInCart.value.pretTotal += item.cartItems[0].pretCurent
                 if(itemToDecrementValueIndex !== -1){
@@ -661,13 +672,14 @@ const deleteItemFromCart = (async (productToDelete) => {
         setTimeout(() => {
             deletedSuccesfully.value = false;
         }, 2000);
-        var cartCount = localStorage.getItem('cartCount')
-        if(cartCount){
-            var toIntCartCount = parseInt(cartCount); 
+        var cartCountLocal = localStorage.getItem('cartCount')
+        if(cartCountLocal){
+            var toIntCartCount = parseInt(cartCountLocal); 
             
             if(toIntCartCount < 0){
                 localStorage.setItem('cartCount' , '0');
                 toIntCartCount = parseInt(localStorage.getItem('cartCount'))
+                cartCount.value = String(toIntCartCount)
             }
             if(itemToDelete !== -1){
                 toIntCartCount -=  itemsInCart.value.items[itemToDelete].cartItems[0].cantitate;
@@ -677,7 +689,7 @@ const deleteItemFromCart = (async (productToDelete) => {
                
             }
             localStorage.setItem('cartCount' , String(toIntCartCount))
-            cartCountRef.value = toIntCartCount
+            cartCount.value = String(toIntCartCount)
         }
     }else if(response === -4){
         fireAlarm('top-end' , 'error' , `${t('general.productMissing')}` , 3000)

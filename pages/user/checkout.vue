@@ -716,7 +716,7 @@
                         <v-card-title class="text-center" >
                             <div >
                                 <v-checkbox-btn density="comfortable"
-                                true-icon="mdi-check" color="blue"
+                                :true-icon="mdiCheck" color="blue"
                                 :true-value="true" 
                                 v-model="personalDetailsSelected"
                                 @change="clearOrSelectUserDetails"
@@ -733,7 +733,7 @@
                         </v-card-text>
                     </v-card>
                 </div>
-                <v-divider></v-divider>
+                
                 <p class="font-weight-light h4 mt-4">{{currentCurrency === 'RON' ? 'Detalii comanda' : 'Order details'}}</p>
                 <v-form ref="userInfoForm" validate-on="input" class="bg-blue-grey-lighten-5 elevation-12">
                 <div v-for="(data, index) in userForm" :key="index">
@@ -781,7 +781,7 @@
                                         <div >
                                             <!-- de adaugat in asa fel in cat cand da check la o adresa , sa se transmute totul in deliveryUserAddress-->
                                             <v-checkbox-btn density="comfortable"
-                                            true-icon="mdi-check" color="blue"
+                                            :true-icon="mdiCheck" color="blue"
                                             :true-value="deliveryAddress" 
                                             :v-model="deliveryAddress"
                                             @change="assignDeliveryUserAddress(deliveryAddress)"
@@ -856,7 +856,7 @@
                                     </v-card-text>
                                 </v-card>
                             </v-col>
-                            <v-col v-else-if="syncedItems.clientsBillingAddresses.length < 0 ">
+                            <v-col v-else-if="syncedItems.clientsBillingAddresses.length <= 0 ">
                                 <p class="font-weight-light h4 mt-4">{{ $t('profile.billing') }}</p>
                                 <v-card class="bg-grey-lighten-5 elevation-6 my-4 mr-2">
                                     <v-card-text>
@@ -883,6 +883,7 @@
                             <div v-if="(!deliveryAddressSelected && syncedItems.isLoggedIn) || (!deliveryAddressSelected)">
                                 <p  class="font-weight-light h4 mt-4">{{ $t('checkout.inputAddress') }}</p>
                                 <v-form ref="deliveryAndBillingForm" validate-on="input" 
+                            
                                 class="bg-blue-grey-lighten-5 w-100 elevation-12" >
                                 
                                 
@@ -1205,8 +1206,21 @@ import userService from '~/services/User'
 import { useDisplay } from 'vuetify';
 import { mdiArrowLeft, mdiArrowRight, mdiCheck, mdiClose, mdiEmoticonSadOutline, mdiFileDocumentPlusOutline, mdiInformation, mdiMapMarkerOutline } from '@mdi/js';
 
+
 definePageMeta({
-    middleware : ['locale']
+  title : 'Finalizare cumparaturi',
+  layout: 'default',
+  keywords:'finalizare cumparaturi , plata , finish shopping , payment',
+  siteName : 'Texx - Finalizare cumparaturi',
+  canonicalUrl : 'http://localhost:3000/user/checkout',
+  ogType : 'website',
+  middleware: ['locale'],
+  ogDescription : 'Finalizare cumparaturi pe Texx',
+  description : 'Finalizare cumparaturi pe Texx'
+})
+
+useHead({
+    title : 'Finalizare cumparaturi'
 })
 
 const {t} = useI18n();
@@ -1525,7 +1539,7 @@ const clearOrSelectUserDetails = () => {
     }
 };
 
-const assignDeliveryUserAddress = (deliveryAddress) => {
+const assignDeliveryUserAddress = async (deliveryAddress) => {
     deliveryAddressSelected.value = !deliveryAddressSelected.value
     if(deliveryAddressSelected.value){
         deliveryUserAddress.value = {...deliveryAddress}
@@ -1539,9 +1553,12 @@ const assignDeliveryUserAddress = (deliveryAddress) => {
         deliveryUserAddress.value.blocDto = ''
         deliveryUserAddress.value.nrBlocDto = ''
     }
+
+   
+    
 }
 
-const assignBillingUserAddress = (billingAddress) => {
+const assignBillingUserAddress = async (billingAddress) => {
     billingAddressSelected.value = !billingAddressSelected.value
     if(billingAddressSelected.value){
         billingUserAddress.value = {...billingAddress}
@@ -1556,8 +1573,10 @@ const assignBillingUserAddress = (billingAddress) => {
         billingUserAddress.value.nrBlocDto = ''
         billingUserAddress.value.cifDto = ''
         billingUserAddress.value.numeFirmaDto = ''
-
+       
     }
+
+   
 }
 
 
@@ -1590,25 +1609,37 @@ const orderPayment = (async () => {
     const isOrderDetailsFormValidObj = await userInfoForm.value.validate()
     isOrderDetailsFormValidBoolean = isOrderDetailsFormValidObj.valid
     //
-    console.log(isOrderDetailsFormValidBoolean)
+   
     if(sameDeliveryAndBilling.value === true){
         // same delivery and billing details validation
-        const isBillingAndDeliveryAddressDetailsFormValidObj= await deliveryAndBillingForm.value.validate()
-        isBillingAndDeliveryAddressDetailsFormValidBoolean = isBillingAndDeliveryAddressDetailsFormValidObj.valid
-        console.log(isBillingAndDeliveryAddressDetailsFormValidBoolean)
+        if(checkDeliveryAddressSelected.value === false){
+            const isBillingAndDeliveryAddressDetailsFormValidObj= await deliveryAndBillingForm.value.validate()
+            isBillingAndDeliveryAddressDetailsFormValidBoolean = isBillingAndDeliveryAddressDetailsFormValidObj.valid
+        }else{
+            isBillingAndDeliveryAddressDetailsFormValidBoolean = true;
+        }
+       
+        
     }else{
         // delivery validation
-        const isDeliveryAddressDetailsFormValidObj = await  deliveryAddressForm.value.validate()
-        isDeliveryAddressDetailsFormValidBoolean = isDeliveryAddressDetailsFormValidObj.valid
-        //
+        if(checkDeliveryAddressSelected.value === false){
+            const isDeliveryAddressDetailsFormValidObj = await  deliveryAddressForm.value.validate()
+            isDeliveryAddressDetailsFormValidBoolean = isDeliveryAddressDetailsFormValidObj.valid
+        }else{
+            isDeliveryAddressDetailsFormValidBoolean = true;
+        }
+     
 
         // billing validation
-        const isBillingAddressDetailsFormValidObj = await billingAddressForm.value.validate()
-        isBillingAddressDetailsFormValidBoolean = isBillingAddressDetailsFormValidObj.valid
+        if(checkBillingAddressSelected.value === false){
+            const isBillingAddressDetailsFormValidObj = await billingAddressForm.value.validate()
+            isBillingAddressDetailsFormValidBoolean = isBillingAddressDetailsFormValidObj.valid
+        }else{
+            isBillingAddressDetailsFormValidBoolean = true;
+        }
+      
         //
 
-        console.log(isDeliveryAddressDetailsFormValidBoolean)
-        console.log(isBillingAddressDetailsFormValidBoolean)
     }
 
     if(sameDeliveryAndBilling.value === true){
@@ -1640,17 +1671,11 @@ const orderPayment = (async () => {
                 const form = new FormData()
                 form.append('orderDto' , JSON.stringify(paymentObj))
                 const responseFromPayment = await orderService.placeOrder(currentCurrency.value , form)
-                // status : response.status,
-                // message : response.data
                 swal.close()
                 if(responseFromPayment.status === 200){
-                    // Token guid|orderid
                     let getTokenAndOrderId = responseFromPayment.message.split(' ')[1];
                     const orderId = getTokenAndOrderId.split('|')[1]
                     const orderConfirmationToken = getTokenAndOrderId.split('|')[0]
-                    // console.log(getTokenAndOrderId)
-                    // console.log(orderId)
-                    // console.log(orderConfirmationToken)
                     await navigateTo(localePath({
                         path: `/user/order/${orderConfirmationToken}`,
                         query: { i : orderId }

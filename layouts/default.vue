@@ -1,13 +1,14 @@
 <template>
- 
     <v-app>
       <FirstTimeEntering />
       <MyNavBar :key="route.fullPath" />
       <v-main>
         <SnackbarExpired />
         <NuxtPage />
+       
       </v-main>
       <FooterComp />
+      <CookieBanner/>
     </v-app>
   </template>
   
@@ -16,13 +17,12 @@
   import SnackbarExpired from '~/components/SnackbarExpired.vue';
   import FooterComp from '~/components/user/FooterComp.vue';
   import FirstTimeEntering from '~/components/user/FirstTimeEntering.vue';
+  import CookieBanner from '~/components/user/CookieBanner.vue';
   import { ref, onMounted } from 'vue';
   import { useNuxtApp } from '#app';
 
   const route = useRoute();
 
-  const isLoggedIn = ref(false);
-  const emitter = useNuxtApp().$emitter;
 
   useSeoMeta({
   })

@@ -3,8 +3,8 @@ import ApiService from "./ApiService";
 
 class RegisterService extends ApiService {
   constructor() {
-    
-    super('http://localhost:5043/api/user');
+    super(process.env.NODE_ENV === 'development' ?  'http://localhost:5043/api/user' : 'production backend url')
+    // super('http://localhost:5043/api/user');
   }
 
    getEmailInDbAsync(email) {

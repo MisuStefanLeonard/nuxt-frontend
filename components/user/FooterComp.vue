@@ -1,7 +1,7 @@
 <template>
   <div>
    <v-footer
-    class="bg-indigo-lighten-1 text-center d-flex flex-column"
+    class="bg-grey-darken-4 text-center d-flex flex-column"
     
   >
     <div>
@@ -16,37 +16,34 @@
     <v-divider></v-divider>
     <v-row>
       <v-col cols="12" xs="12" sm="4">
-        <p class="h4">Texx.ro</p>
-        <p class="h6 font-weight-light">Termeni si conditii</p>
-        <p class="h6 font-weight-light">Despre noi</p>
-        <p class="h6 font-weight-light">Prelucrare datelor cu caracter personal</p>
-        <p class="h6 font-weight-light">Politica de utlizare a cookie-uri</p>
-        <p class="h6 font-weight-light">Protectia consumatorului</p>
+        <p class="h4">{{ $t('footer.title') }}</p>
+        <NuxtLink class="h6 font-weight-light text-display-none" :to="locale('/terms_and_conditions')">{{ $t('footer.titleSubText.termsAndConditions') }}</NuxtLink>
+        <br>
+        <NuxtLink class="h6 font-weight-light text-display-none" :to="locale('/home#aboutUs')">{{ $t('menu.about') }}</NuxtLink>
+        <br>
+        <p class="h6 font-weight-light">{{ $t('footer.titleSubText.personalData') }}</p>
+        <p class="h6 font-weight-normal cursor-pointer text-white" @click="openCookieSection">{{ $t('footer.titleSubText.utilizationPolicy') }}</p>
+        <NuxtLink class="h6 font-weight-light text-display-none" to="https://anpc.ro/">{{ $t('footer.titleSubText.anpc') }}</NuxtLink>
+        <br>
       </v-col>
       <v-col cols="12" xs="12" sm="4">
-        <p class="h4">Suport clienti</p>
-        <p class="h6 font-weight-light">Contacteaza-ne</p>
-        <p class="h6 font-weight-light">Livrare comenzi</p>
-        <NuxtLink class="h6 font-weight-light text-display-none" :to="locale('/measurement')">Cum masor?</NuxtLink>
+        <p class="h4">{{ $t('footer.clientSupprt') }}</p>
+        <NuxtLink class="h6 font-weight-light text-display-none" :to="locale('/contact')">{{ $t('menu.contact') }}</NuxtLink>
+        <br>
+        <NuxtLink class="h6 font-weight-light text-display-none" :to="locale('/home#frequent')">{{$t('footer.clientSupportSubText.delivery') }}</NuxtLink>
+        <br>
+        <NuxtLink class="h6 font-weight-light text-display-none" :to="locale('/measurement')">{{ $t('general.howToMeasure') }}</NuxtLink>
+        <br>
       </v-col>
       <v-col cols="12" xs="12" sm="4">
-        <p class="h4">Informatii</p>
-        <p class="h6 font-weight-light">Adresa: </p>
-        <p class="h6 font-weight-light"><v-icon class="mr-2">mdi-phone</v-icon>07xxxxxxx</p>
+        <p class="h4">{{ $t('footer.info') }}</p>
+        <p class="h6 font-weight-light">{{ $t('footer.infoSubText.address') }} </p>
+        <p class="h6 font-weight-light">
+          <v-icon class="mr-2" :icon="mdiPhone"></v-icon>
+          07xxxxxxx
+        </p>
       </v-col>
     </v-row>
-    <!-- <div class="pt-0">
-         <a href="#frequent" style="color:white;"
-         class="text-decoration-none">FAQ</a>
-    </div>
-    <div class="pt-2">
-        <a href="#welcome" style="color:white;"
-        class="text-decoration-none">Welcome</a>
-    </div>
-    <div class="pt-2">
-        <a href="#getstarted" style="color:white;"
-        class="text-decoration-none">Get started</a>
-    </div> -->
 
    
     <v-divider></v-divider>
@@ -60,9 +57,13 @@
 
 
 <script setup>
-import { mdiFacebook, mdiInstagram, mdiLinkedin, mdiTwitter } from '@mdi/js';
+import { mdiFacebook, mdiInstagram, mdiLinkedin, mdiPhone, mdiTwitter } from '@mdi/js';
 
-
+const emitter = useNuxtApp().$emitter
 const icons = [mdiFacebook,mdiTwitter,mdiLinkedin,mdiInstagram]
 const locale = useLocalePath()
+const openCookieSection = () => {
+  localStorage.setItem('gdpr', '0');
+  emitter.emit('openCookieBanner');
+};
 </script>

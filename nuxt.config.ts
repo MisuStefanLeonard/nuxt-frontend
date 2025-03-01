@@ -1,5 +1,11 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
+  // runtimeConfig : {
+  //   public: {
+  //     backend : process.env.NODE_ENV === 'development' 
+  //         ? process.env.BACKEND_URL : 'prod backend url'
+  //   }
+  // },
   ssr: true,
   vite:{
     build : {
@@ -9,20 +15,49 @@ export default defineNuxtConfig({
       }
     }
   },
+  robots: {
+    blockNonSeoBots:true,
+    blockAiBots: true,
+    disallow : ['/en/admin/*' , '/admin/*' ,'/user/profile/*'
+      , '/en/user/profile/*' , '/user/order/*' , '/en/user/order/*',
+    ]
+  },
   modules: [
     '@pinia/nuxt',
     'pinia-plugin-persistedstate/nuxt',
     '@nuxtjs/i18n',
     '@nuxt/image',
-    '@zadigetvoltaire/nuxt-gtm'
+    '@zadigetvoltaire/nuxt-gtm',
+    '@nuxtjs/robots',
+    '@nuxtjs/sitemap',
+    'nuxt-og-image'
   ],
   app: {
     pageTransition: {name: 'page' , mode:'out-in'},
     head: {
-      link:
-       [
-        { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-       ]
+      link: [
+        { rel: 'apple-touch-icon', sizes: '57x57', href: '/apple-icon-57x57.png' },
+        { rel: 'apple-touch-icon', sizes: '60x60', href: '/apple-icon-60x60.png' },
+        { rel: 'apple-touch-icon', sizes: '72x72', href: '/apple-icon-72x72.png' },
+        { rel: 'apple-touch-icon', sizes: '76x76', href: '/apple-icon-76x76.png' },
+        { rel: 'apple-touch-icon', sizes: '114x114', href: '/apple-icon-114x114.png' },
+        { rel: 'apple-touch-icon', sizes: '120x120', href: '/apple-icon-120x120.png' },
+        { rel: 'apple-touch-icon', sizes: '144x144', href: '/apple-icon-144x144.png' },
+        { rel: 'apple-touch-icon', sizes: '152x152', href: '/apple-icon-152x152.png' },
+        { rel: 'apple-touch-icon', sizes: '180x180', href: '/apple-icon-180x180.png' },
+        { rel: 'icon', type: 'image/png', sizes: '192x192', href: '/android-icon-192x192.png' },
+        { rel: 'icon', type: 'image/png', sizes: '32x32', href: '/favicon-32x32.png' },
+        { rel: 'icon', type: 'image/png', sizes: '96x96', href: '/favicon-96x96.png' },
+        { rel: 'icon', type: 'image/png', sizes: '16x16', href: '/favicon-16x16.png' },
+        { rel: 'manifest', href: '/manifest.json' }
+      ],
+      meta: [
+        { name: 'msapplication-TileColor', content: '#ffffff' },
+        { name: 'msapplication-TileImage', content: '/ms-icon-144x144.png' },
+        { name: 'theme-color', content: '#ffffff' }
+      ]
+      
+      
     }
   },
   image : {
@@ -34,19 +69,21 @@ export default defineNuxtConfig({
   },
   components : false,
   gtm: {
-    id: 'GTM-NWHGHS9Q',
+    id :process.env.NODE_ENV === 'development'
+     ? process.env.GTM_ID || 'development-id'
+     : 'production-id',
     defer: false,
     compatibility: false,
     enabled: true,
-    debug: true , // false for production
+    debug: process.env.NODE_ENV === 'development' , // false for production
     loadScript: true,
     trackOnNextTick: false,
-    devtools: true,
+    devtools: process.env.NODE_ENV === 'development',
     enableRouterSync: true
   },
   i18n: {
     lazy: true,
-    langDir : "locales",
+    langDir : "../locales",
     strategy : "prefix_except_default",
     baseUrl : 'http://localhost:3000',
     detectBrowserLanguage: {
@@ -77,19 +114,14 @@ export default defineNuxtConfig({
     // '/:locale?/user/profile' : {ssr: false},
     // '/:locale?/user/profile/**' : {ssr: false}
   },
-  // nitro: {
-  //   routeRules : {
-  //     // '/:locale?/admin/**' : {ssr: false },
-  //     '/en/admin/**' : {redirect : '/404'}
-  //     // '/:locale?/user/profile' : {ssr: false},
-  //     // '/:locale?/user/profile/**' : {ssr: false}
-  //   }
-  // },
   build: {
     transpile: ['vuetify'],
   },
   compatibilityDate: '2024-04-03',
-  devtools: { enabled: true },
+  devtools: 
+  { 
+    enabled: process.env.NODE_ENV === 'development' 
+  },
   plugins: [
     '~/plugins/SweetAlert.js',
     '~/plugins/vuetify.js',
