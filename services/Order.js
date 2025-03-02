@@ -3,7 +3,7 @@ import ApiService from "./ApiService"
 class OrderService extends ApiService{
     constructor(){
         // super("http://localhost:5043/api/order")
-        super(process.env.NODE_ENV === 'development' ? "http://localhost:5043/api/order" : 'api/order')
+        super(process.env.NODE_ENV === 'development' ? "http://localhost:5043/api/order" : '/api/order')
 
     }
 
