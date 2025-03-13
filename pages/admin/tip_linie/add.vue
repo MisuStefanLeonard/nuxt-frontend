@@ -112,18 +112,23 @@ definePageMeta({
 const swal = useNuxtApp().$swal;
 const store = useUserStore();
 const tipLinieForm = ref(null);
-var namesOfAllTipuriLinie = ref([])
+const namesRo = ref([])
+const namesEn = ref([])
+
 
 async function getTipuriLinieNames(){
     const tipGalerieNames = await adminService.getTipuriLinieNames();
     if(tipGalerieNames !== null){
-        namesOfAllTipuriLinie.value = tipGalerieNames
+        namesRo.value = tipGalerieNames.map(elem => elem.nume_ro)
+        namesEn.value = tipGalerieNames.map(elem => elem.nume_en)
     }
 }
 
 
 const formData = ref({
     numeTipLinieDto: '',
+    nume_ro : '',
+    nume_en : '',
     pretPeTipLinieDto: 0,
     caleRelativa: null,
     presignedUrl: 'empty',
@@ -134,17 +139,35 @@ const formData = ref({
 const tipLinieFormData = ref([
     {
         type: 'text-field',
-        label: 'Nume tip linie',
-        placeholder: 'numele tipului de linie',
-        model: 'numeTipLinieDto',
+        label: 'Nume tip linie (Romana)',
+        placeholder: 'Numele tipului de linie in romana',
+        model: 'nume_ro',
         maxLength: 30,
         rules: [
             value => !!value || 'Numele tipului de linie nu poate fi gol',
             value => value.length <= 30 || 'Sunt permise maxim 30 de caractere',
             value => {
-                let isNameUsed = namesOfAllTipuriLinie.value.find(m => m === String(value).toLowerCase())
+                let isNameUsed = namesRo.value.find(m => m === String(value).toLowerCase())
                 if(isNameUsed !== undefined){
-                    return 'Numele tipului de linie exista exista'
+                    return 'Numele tipului de linie exista in limba romana'
+                }
+                return true
+            }
+        ],
+    },
+    {
+        type: 'text-field',
+        label: 'Nume tip linie (Engleza)',
+        placeholder: 'Numele tipului de linie in engleza',
+        model: 'nume_en',
+        maxLength: 30,
+        rules: [
+            value => !!value || 'Numele tipului de linie nu poate fi gol',
+            value => value.length <= 30 || 'Sunt permise maxim 30 de caractere',
+            value => {
+                let isNameUsed = namesEn.value.find(m => m === String(value).toLowerCase())
+                if(isNameUsed !== undefined){
+                    return 'Numele tipului de linie exista in engleza'
                 }
                 return true
             }
@@ -221,6 +244,10 @@ async function saveNewTipLinie() {
     fireAlarm('info', 'Salvare...', 'Asteptati...', true);
     const newTipLinie = {
         numeTipLinieDto: formData.value.numeTipLinieDto,
+        numeTipLinieJsonDto : {
+            nume_ro : formData.value.nume_ro,
+            nume_en : formData.value.nume_en,
+        },
         pretPeTipLinieDto: formData.value.pretPeTipLinieDto,
         presignedUrl: formData.value.presignedUrl,
         caleRelativa: formData.value.caleRelativa,

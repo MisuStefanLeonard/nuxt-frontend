@@ -24,7 +24,7 @@
             </v-row> 
         </v-container>
         <v-card
-            v-if="tipuriLinieList"
+            v-if="loaded"
             class="bg-blue-grey-darken-4 rounded-xl p-1"
             variant="outlined"
         >
@@ -32,7 +32,7 @@
             <v-text-field
                 v-model="search"
                 label="Cauta dupa numele galeriei"
-                prepend-inner-icon="mdi-magnify"
+                :prepend-inner-icon="mdiMagnify"
                 class="p-3 mx-3"
                 variant="outlined"
             ></v-text-field>
@@ -75,7 +75,7 @@
 </template>
 
 <script setup>
-import { mdiDelete, mdiEye, mdiPlus } from '@mdi/js';
+import { mdiDelete, mdiEye, mdiMagnify, mdiPlus } from '@mdi/js';
 import Swal from 'sweetalert2';
 import adminService from '~/services/Admin'
 import { useUserStore } from '~/store/user';
@@ -89,21 +89,24 @@ const search = ref('')
 const selectedTipuriLinie = ref([])
 const swal = useNuxtApp().$swal;
 const store = useUserStore();
+const loaded = ref(false)
 
-var tipuriLinieList = reactive([])
+const tipuriLinieList = ref([])
 const headers = [
   { title: 'Id tip linie', align: 'center', key: 'encodedIdTipLinie' , sortable: false},
-  { title: 'Nume tip linie', align: 'center', key: 'numeTipLinieDto' },
+  { title: 'Nume tip linie', align: 'center', key: 'numeTipLinieJsonDto.nume_ro' },
   { title: 'Pret tip linie', align: 'center', key: 'pretPeTipLinieDto' , sortable: false},
   { title: 'Actiuni', align: 'center', key: 'actions', sortable: false },
 ]
 
 const filteredTipuriLinie = computed(() => {
-  if (!search.value) return tipuriLinieList;
+  if (!search.value) return tipuriLinieList.value;
   let searchTerm = search.value.toLowerCase();
-  return tipuriLinieList.filter((tip_Linie) => {
+  return tipuriLinieList.value.filter((tip_Linie) => {
     return (
-        tip_Linie.numeTipLinieDto.toLowerCase().includes(searchTerm)
+        tip_Linie.numeTipLinieJsonDto.nume_ro.toLowerCase().includes(searchTerm) ||
+        tip_Linie.numeTipLinieJsonDto.nume_en.toLowerCase().includes(searchTerm)
+
     );
   });
 })
@@ -211,7 +214,7 @@ async function getTipuriLinie(){
     }else if(getTipuriLinie.length !== 0){
         swal.close()
         // Use splice to keep reactivity
-        tipuriLinieList.splice(0, tipuriLinieList.length, ...getTipuriLinie);
+        tipuriLinieList.value = getTipuriLinie
         console.log(tipuriLinieList)
     }else {
         swal.close()
@@ -223,6 +226,10 @@ async function getTipuriLinie(){
 
 onBeforeMount(async () => {
     await getTipuriLinie()
+})
+
+onMounted(() => {
+    loaded.value = true;
 })
 
 

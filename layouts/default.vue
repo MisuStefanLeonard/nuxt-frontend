@@ -22,7 +22,7 @@
   import { useNuxtApp } from '#app';
 
   const route = useRoute();
-
+  const i18n = useI18n()
 
   useSeoMeta({
   })
@@ -32,8 +32,9 @@
       return titleChunk ? `${titleChunk}` : 'Site Title';
     },
     htmlAttrs:{
-      lang: route.path.startsWith('/en') ? 'en' : 'ro',
-      dir: route.meta.ltr
+      // lang: route.path.startsWith('/en') ? 'en' : 'ro',
+      lang: i18n.locale.value
+      // dir: route.meta.ltr
     },
     meta : [
       {

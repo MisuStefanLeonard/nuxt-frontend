@@ -5,11 +5,6 @@
             <v-container fluid class="w-100">
                 <v-alert color="info elevation-24" :icon="mdiInformation" variant="tonal">
                     <p class="font-weigth-bold h6 text-white">
-                        - Daca pretul de baza al produsului este 0 , inseamna ca are dimensiuni asociate cu acesta,
-                    pretul fiind diferit pe diferite dimensiuni.
-                    </p>
-                    
-                    <p class="font-weigth-bold h6 text-white">
                         - Daca un produs nu este activ in magazin, 
                         acesta va fi vizibil in seturile in care se afla
                     </p>
@@ -22,9 +17,9 @@
                     <v-card-title class="bg-blue opacity-80">
                         <p class="font-weight-bold">{{ product.codProdusDto }}</p>
                     </v-card-title>
-                    <v-divider></v-divider>
+                    <v-divider opacity="0"></v-divider>
                     <v-card-subtitle class="p-2">
-                        <p class="font-weight-bold h6">{{ product.tipProdusDto.toUpperCase() }}</p>
+                        <p class="font-weight-bold h6">{{ product.tipProdusJsonDto.tip_ro.toUpperCase() }}</p>
                     </v-card-subtitle>
                     <v-divider></v-divider>
                     <v-card-text>
@@ -45,8 +40,8 @@
                                         <v-checkbox 
                                         v-for="color in product.productOptions.colorsVariaties"
                                             :key="color.codCuloareDto"
-                                            :label="color.numeCuloareDto"
-                                            :value="`${color.numeCuloareDto}-${color.codCuloareDto}`"
+                                            :label="color.numeCuloareJsonDto.culoare_ro"
+                                            :value="`${color.numeCuloareJsonDto.culoare_ro}-${color.codCuloareDto}`"
                                             v-model="product.selectedColors"
                                             color="green"
                                         ></v-checkbox>
@@ -87,8 +82,8 @@
                                         color="green"
                                         label="Alege manopere pentru produs" 
                                         :items="product.productOptions.standardManopere"
-                                        item-title="numeManopera"
-                                        item-value="numeManopera"
+                                        item-title="numeManoperaJson.nume_ro"
+                                        item-value="numeManoperaJson.nume_ro"
                                         v-model="product.selectedManopere"
                                         multiple
                                         chips
@@ -107,14 +102,14 @@
                                                 <v-col cols="12">
                                                     <p>Informatii generale</p>
                                                     <v-divider></v-divider>
-                                                    <p>Nume manopera : {{ manopera.numeManopera || 'N/A' }} </p>
+                                                    <p>Nume manopera : {{ `${manopera.numeManoperaJson.nume_ro} - ${manopera.numeManoperaJson.nume_en}`  || 'N/A' }} </p>
                                                     <p>Metrii totali folositi : {{ manopera.metruTotalFolosit || 'N/A' }}</p>
                                                 </v-col>
                                                 <v-divider></v-divider>
                                                 <v-col cols="4">
                                                     <p>Informatii rejansa</p>
                                                     <v-divider></v-divider>
-                                                    <p>Nume rejansa: {{ manopera.tipGalerie.numeTipRejansa }}</p>
+                                                    <p>Nume rejansa: {{ manopera.tipGalerie.numeTipRejansaDto.nume_ro }}</p>
                                                     <p>Pret rejansa: {{ manopera.tipGalerie.pretTipRejansa }} RON/METRU</p>
                                                     <p>Incretire rejansa: {{ manopera.tipGalerie.incretireRejansa }} </p>
                                                     <p>Prindere inele: {{ manopera.tipGalerie.sePrindeCuInele === true ? 'Da' : 'Nu' }} </p>
@@ -132,7 +127,7 @@
                                                     <p>Informatii inele prindere</p>
                                                     <v-divider></v-divider>
 
-                                                    <p>Culoare inel: {{ manopera?.tipInel?.numeTipInel || 'N/A' }}</p>
+                                                    <p>Culoare inel: {{ manopera?.tipInel?.culoareInelJsonDto.culoare_ro || 'N/A' }}</p>
                                                     <v-img v-if="manopera?.tipInel?.presignedUrl !== 'empty'"
                                                         eager
                                                         :aspect-ratio="16 / 9"
@@ -148,7 +143,7 @@
                                                     <p>Informatii cusatura linie</p>
                                                     <v-divider></v-divider>
 
-                                                    <p>Nume cusatura linie: {{ manopera.tipLinie.numeTipCusaturaColt }}</p>
+                                                    <p>Nume cusatura linie: {{ manopera.tipLinie.numeTipCusaturaColtJson.nume_ro }}</p>
                                                     <p>Pret cusatura linie: {{ manopera.tipLinie.pretTipCusaturaColt }} RON/METRU</p>
                                                     <v-img v-if="manopera.tipLinie.presignedUrl !== 'empty'"
                                                         eager
@@ -204,18 +199,17 @@
                 v-model:activated="selectedProduct"
                 @update:activated="addProductToSet()"
                 item-value="id"
-                color="info"
+                color="red"
                 activatable>
                 </v-treeview>
                 <v-divider opacity="60" thickness="3"></v-divider>
                 <v-container v-if="productLoaded">
-                    <v-alert type="info" class="my-2">
+                    <v-alert color="black" :icon="mdiInformation" class="my-2">
                         Selectati optiunile produsului care sa fie disponibile 
                         care sa se afiseze la customizarea produsului de catre utilizator
                     </v-alert>
-                    <v-divider></v-divider>
 
-                    <p class="font-weight-normal h3 text-info">Datele produsului selectat</p>
+                    <p class="font-weight-normal h3 text-black">Datele produsului selectat</p>
                     <v-divider></v-divider>
 
                     <v-card class="rounded-xl bg-grey-darken-4">
@@ -224,11 +218,11 @@
                         </v-card-title>
                         <v-divider></v-divider>
                         <v-card-subtitle>
-                            <p class="font-weight-light h6">Tipul produsului: {{ selectedProductData.tipProdusDto }}</p>
+                            <p class="font-weight-light h6">Tipul produsului: {{ selectedProductData.tipProdusJsonDto.tip_ro }} - {{ selectedProductData.tipProdusJsonDto.tip_en }}</p>
                         </v-card-subtitle>
                         <v-divider></v-divider>
                         <v-card-text>
-                            <p class="h6 font-weight-light">Nume produs: {{ selectedProductData.numeProdusDto }}</p>
+                            <p class="h6 font-weight-light">Nume produs: {{ selectedProductData.numeProdusJsonDto.nume_ro }} - {{ selectedProductData.numeProdusJsonDto.nume_en  }}</p>
                             <p class="h6 font-weight-light">Activ in magazin: {{ selectedProductData.activInMagazinDto === true ? 'Da' : 'Nu' }}</p>
                             <p class="h6 font-weight-light">Pret de baza: {{ selectedProductData.pretBazaDto }}</p>
                             <v-divider></v-divider>
@@ -242,8 +236,8 @@
                                     <v-checkbox 
                                     v-for="color in selectedProductData.productOptions.colorsVariaties"
                                         :key="color.codCuloareDto"
-                                        :label="color.numeCuloareDto"
-                                        :value="`${color.numeCuloareDto}-${color.codCuloareDto}`"
+                                        :label="color.numeCuloareJsonDto.culoare_ro"
+                                        :value="`${color.numeCuloareJsonDto.culoare_ro}-${color.codCuloareDto}`"
                                         v-model="selectedProductData.selectedColors"
                                         color="green"
                                     ></v-checkbox>
@@ -278,8 +272,8 @@
                                         color="green"
                                         label="Alege manopere pentru produs" 
                                         :items="selectedProductData.productOptions.standardManopere"
-                                        item-title="numeManopera"
-                                        item-value="numeManopera"
+                                        item-title="numeManoperaJson.nume_ro"
+                                        item-value="numeManoperaJson.nume_ro"
                                         v-model="selectedProductData.selectedManopere"
                                         multiple
                                         chips
@@ -298,14 +292,14 @@
                                                 <v-col cols="12">
                                                     <p>Informatii generale</p>
                                                     <v-divider></v-divider>
-                                                    <p>Nume manopera : {{ manopera.numeManopera || 'N/A' }} </p>
+                                                    <p>Nume manopera : {{ `${manopera.numeManoperaJson.nume_ro} - ${manopera.numeManoperaJson.nume_en}`  || 'N/A' }} </p>
                                                     <p>Metrii totali folositi : {{ manopera.metruTotalFolosit || 'N/A' }}</p>
                                                 </v-col>
                                                 <v-divider></v-divider>
                                                 <v-col cols="4">
                                                     <p>Informatii rejansa</p>
                                                     <v-divider></v-divider>
-                                                    <p>Nume rejansa: {{ manopera.tipGalerie.numeTipRejansa }}</p>
+                                                    <p>Nume rejansa: {{ manopera.tipGalerie.numeTipRejansaDto.nume_ro }}</p>
                                                     <p>Pret rejansa: {{ manopera.tipGalerie.pretTipRejansa }} RON/METRU</p>
                                                     <p>Incretire rejansa: {{ manopera.tipGalerie.incretireRejansa }} </p>
                                                     <p>Prindere inele: {{ manopera.tipGalerie.sePrindeCuInele === true ? 'Da' : 'Nu' }} </p>
@@ -323,7 +317,7 @@
                                                     <p>Informatii inele prindere</p>
                                                     <v-divider></v-divider>
 
-                                                    <p>Culoare inel: {{ manopera?.tipInel?.numeTipInel || 'N/A' }}</p>
+                                                    <p>Culoare inel: {{ manopera?.tipInel.culoareInelJsonDto.culoare_ro || 'N/A' }}</p>
                                                     <v-img v-if="manopera?.tipInel?.presignedUrl !== 'empty'"
                                                         eager
                                                         :aspect-ratio="16 / 9"
@@ -339,7 +333,7 @@
                                                     <p>Informatii cusatura linie</p>
                                                     <v-divider></v-divider>
 
-                                                    <p>Nume cusatura linie: {{ manopera.tipLinie.numeTipCusaturaColt }}</p>
+                                                    <p>Nume cusatura linie: {{manopera.tipLinie.numeTipCusaturaColtJson.nume_ro }}</p>
                                                     <p>Pret cusatura linie: {{ manopera.tipLinie.pretTipCusaturaColt }} RON/METRU</p>
                                                     <v-img v-if="manopera.tipLinie.presignedUrl !== 'empty'"
                                                         eager
@@ -371,7 +365,7 @@
                 Adauga produs
             </v-btn>
 
-            <v-container fluid class="text-center w-75">
+            <v-container fluid class="text-center w-100" v-if="loaded">
                 <v-alert variant="tonal" type="info">
                     Daca setul nu are pret redus, lasati la 0.
                 </v-alert>
@@ -436,22 +430,31 @@ definePageMeta({
 })
 
 const swal = useNuxtApp().$swal;
-
+const loaded = ref(false)
 const showSuccesAlert = ref(false);
 const showErrorAlert = ref(false);
 const showPanelToAddProduct = ref(false);
 const showAddingButton = ref(true);
 const productLoaded = ref(false);
 const seturiNames = ref([]);
+const seturiNamesEn = ref([])
 
 const selectedProduct = ref(null);
 const selectedProductData = ref({
     idProdusDto: 0,
     codProdusDto: '',
     numeProdusDto: '',
-    activInMagazinDto: null,
+    numeProdusJsonDto : {
+        nume_ro : '',
+        nume_en : ''
+    },
+    activInMagazinDto: false,
     pretBazaDto: 0,
     tipProdusDto: '',
+    tipProdusJsonDto : {
+        tip_ro : '',
+        tip_en : ''
+    },
     productOptions: {
         dimensionVariaties : [],
         colorsVariaties: [],
@@ -460,22 +463,32 @@ const selectedProductData = ref({
     temporar: true,
     selectedColors: [],
     selectedDimensions: [],
-    selectedManopere: []
+    selectedManopere: [],
 });
 
 var setToCreate = ref({
-   descriereSetDto: '',
-   numeSetDto: '',
-   pretRedusSetDto: 0,
-   pretSetDto: 0,
-   productsOnSet : []
+    descriereSetJsonDto : {
+    descriere_en : '',
+    descriere_ro : ''
+    },
+    descriereSetDto: '',
+    numeSetDto: '',
+    numeSetJsonDto : {
+            nume_ro : '',
+            nume_en : ''
+        },
+    pretRedusSetDto: 0,
+    pretSetDto: 0,
+    productsOnSet : []
 })
 
 const generalSetForm = ref(null);
 const productCodes = ref([])
 const formData = ref({
-    numeSetDto: '',
-    descriereSetDto: '',
+    nume_ro: '',
+    nume_en: '',
+    descriere_ro: '',
+    descriere_en: '',
     pretSetDto: 0,
     pretRedusSetDto: 0
 })
@@ -483,10 +496,10 @@ const formData = ref({
 const formStructure = ref([
   {
     field: 'text-field',
-    label: 'Nume set',
-    placeholder: 'Numele setului',
+    label: 'Nume set (Romana)',
+    placeholder: 'Numele setului (Romana)',
     type: 'text',
-    model: 'numeSetDto',
+    model: 'nume_ro',
     maxLength: 100, 
     rules: [
       v => !!v || 'Numele setului nu poate fi gol', 
@@ -494,7 +507,26 @@ const formStructure = ref([
       v => {
         let isNameUsed = seturiNames.value.find(m => m === String(v).toLowerCase())
         if(isNameUsed !== undefined){
-            return 'Numele setului deja exista exista'
+            return 'Numele setului deja exista in romana'
+        }
+            return true
+        }
+    ]
+  },
+  {
+    field: 'text-field',
+    label: 'Nume set (Engleza)',
+    placeholder: 'Numele setului (Engleza)',
+    type: 'text',
+    model: 'nume_en',
+    maxLength: 100, 
+    rules: [
+      v => !!v || 'Numele setului nu poate fi gol', 
+      v =>  v.length <= 100 || 'Numele setului trebuie sa fie de maxim 100 de caractere',
+      v => {
+        let isNameUsed = seturiNamesEn.value.find(m => m === String(v).toLowerCase())
+        if(isNameUsed !== undefined){
+            return 'Numele setului deja exista in limba engleza'
         }
             return true
         }
@@ -502,10 +534,22 @@ const formStructure = ref([
   },
   {
     field: 'text-area',
-    label: 'Descriere set',
+    label: 'Descriere set (Romana)',
     placeholder: 'Descriere setului',
     type: 'text',
-    model: 'descriereSetDto',
+    model: 'descriere_ro',
+    maxLength: 150, 
+    rules: [
+      v => !!v || 'Descriere setului nu poate fi goala',
+      v => (v && v.length <= 150) || 'Descriere setului trebuie sa fie de maxim 150 de caractere'
+    ]
+  },
+  {
+    field: 'text-area',
+    label: 'Descriere set (Engleza)',
+    placeholder: 'Descriere setului',
+    type: 'text',
+    model: 'descriere_en',
     maxLength: 150, 
     rules: [
       v => !!v || 'Descriere setului nu poate fi goala',
@@ -545,7 +589,6 @@ function validateSet() {
 
     for (const product of setToCreate.value.productsOnSet) {
         // Check if at least one product has a selected color
-        console.log('nume' , product.numeProdusDto , 'culoare' , product.selectedColors)
         if (product.selectedColors.length > 0) {
             hasColor = true;
             productNameWithError = product.numeProdusDto
@@ -556,7 +599,7 @@ function validateSet() {
         console.log(product.selectedManopere)
         // Check if 'perdea' or 'draperie' has at least one manopera
         if (
-            (product.tipProdusDto.toLowerCase() === 'perdea' || product.tipProdusDto.toLowerCase() === 'draperie') &&
+            (product.tipProdusJsonDto.tip_ro.toLowerCase() === 'perdea' || product.tipProdusJsonDto.tip_ro.toLowerCase() === 'draperie') &&
             (product.selectedManopere.length === 0)
         ) {
             productNameWithError = product.numeProdusDto
@@ -568,8 +611,8 @@ function validateSet() {
         // Check if a product with dimensions has at least one dimension selected
         if (
             product.productOptions.dimensionVariaties.length > 0 && // The product has dimensions
-            product.tipProdusDto.toLowerCase() !== 'perdea' && // Skip perdea
-            product.tipProdusDto.toLowerCase() !== 'draperie' && // Skip draperie
+            product.tipProdusJsonDto.tip_ro.toLowerCase() !== 'perdea' && // Skip perdea
+            product.tipProdusJsonDto.tip_ro.toLowerCase() !== 'draperie' && // Skip draperie
             (product.selectedDimensions.length === 0) // No dimension selected
         ) {
             productNameWithError = product.numeProdusDto
@@ -610,13 +653,14 @@ function validateSet() {
 const getFullSelectedManopere = (product) => {
     if(product === 'passed'){
         return selectedProductData.value.selectedManopere.map((name) =>
-            selectedProductData.value.productOptions.standardManopere.find((manopera) => manopera.numeManopera === name)
+            selectedProductData.value.productOptions.standardManopere.find((manopera) => manopera.numeManoperaJson.nume_ro === name)
         );
     }
     return product.selectedManopere.map((name) =>
-        product.productOptions.standardManopere.find((manopera) => manopera.numeManopera === name)
+        product.productOptions.standardManopere.find((manopera) => manopera.numeManoperaJson.nume_ro === name)
     );
 };
+
 
 function fireVAlert(timer , response){
     response.value = true
@@ -677,16 +721,20 @@ const addProductToSet = (async () => {
         selectedProductData.value.idProdusDto = getSelectedProductData.idProdusDto;
         selectedProductData.value.codProdusDto = getSelectedProductData.codProdusDto;
         selectedProductData.value.numeProdusDto = getSelectedProductData.numeProdusDto;
+        selectedProductData.value.numeProdusJsonDto =  getSelectedProductData.numeProdusJsonDto,
         selectedProductData.value.activInMagazinDto = getSelectedProductData.activInMagazinDto;
         selectedProductData.value.pretBazaDto = getSelectedProductData.pretBazaDto;
         selectedProductData.value.tipProdusDto = getSelectedProductData.tipProdusDto;
-        selectedProductData.value.productOptions = getSelectedProductData.productOptions;
-        selectedProductData.value.productOptions.temporar = false;
+        selectedProductData.value.tipProdusJsonDto =  getSelectedProductData.tipProdusJsonDto,
+        selectedProductData.value.productOptions = getSelectedProductData.productOptions
+        selectedProductData.value.temporar = true;
         selectedProductData.value.selectedColors = [];
         selectedProductData.value.selectedDimensions = [];
-        selectedProductData.value.selectedManopere = [];
-        productLoaded.value = true;
+        // selectedProductData.value.selectedManopere = []
+        selectedProductData.value.selectedManopere = []
 
+        productLoaded.value = true;
+        console.log('Date produs',selectedProductData.value)
     }else{
         fireVAlert(3000 , showErrorAlert)
     }
@@ -704,19 +752,22 @@ function saveProductToSet(){
         idProdusDto : selectedProductData.value.idProdusDto,
         codProdusDto : selectedProductData.value.codProdusDto,
         numeProdusDto : selectedProductData.value.numeProdusDto,
+        numeProdusJsonDto : selectedProductData.value.numeProdusJsonDto,
         activInMagazinDto : selectedProductData.value.activInMagazinDto,
         pretBazaDto : selectedProductData.value.pretBazaDto,
         tipProdusDto : selectedProductData.value.tipProdusDto,
+        tipProdusJsonDto : selectedProductData.value.tipProdusJsonDto,
         productOptions : selectedProductData.value.productOptions,
         temporar: selectedProductData.value.temporar,
         selectedColors : selectedProductData.value.selectedColors,
         selectedDimensions : selectedProductData.value.selectedDimensions,
+        // selectedManopere : selectedProductData.value.selectedManopere,
         selectedManopere : selectedProductData.value.selectedManopere
-    }
 
+    }
     setToCreate.value.productsOnSet.push(newProductToSet);
-    console.log(setToCreate.value)
     closeAddProductToSet();
+
 }
 
 async function saveNewSet(){
@@ -731,8 +782,10 @@ async function saveNewSet(){
     const isSetValid = validateSet();
     if(isSetValid){
         if(isValid.valid){
-            setToCreate.value.numeSetDto = formData.value.numeSetDto
-            setToCreate.value.descriereSetDto = formData.value.descriereSetDto
+            setToCreate.value.numeSetJsonDto.nume_ro = formData.value.nume_ro
+            setToCreate.value.numeSetJsonDto.nume_en = formData.value.nume_en
+            setToCreate.value.descriereSetJsonDto.descriere_ro = formData.value.descriere_ro
+            setToCreate.value.descriereSetJsonDto.descriere_en = formData.value.descriere_en
             setToCreate.value.pretSetDto = formData.value.pretSetDto
             setToCreate.value.pretRedusSetDto = formData.value.pretRedusSetDto
         
@@ -779,13 +832,17 @@ const getProductCodes = (async () => {
 const getSeturiNames = (async () => {
     const getSeturiNames = await adminService.getSeturiNames()
     if(getSeturiNames.length !== 0){
-        seturiNames.value = getSeturiNames
-        
+        const seturi = getSeturiNames
+        seturiNames.value =  seturi.map(elem => elem.nume_ro)
+                .filter(m => m !== formData.value.nume_ro)
+        seturiNamesEn.value =  seturi.map(elem => elem.nume_en)
+                .filter(m => m !== formData.value.nume_en)
     }
 })
 
 onMounted(async () => {
     await getProductCodes()
     await getSeturiNames()
+    loaded.value = true;
 })
 </script>

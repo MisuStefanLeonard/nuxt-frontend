@@ -15,7 +15,15 @@
     </div>
     <v-divider></v-divider>
     <v-row>
-      <v-col cols="12" xs="12" sm="4">
+      <v-col cols="12" xs="12" sm="3">
+        <NuxtImg
+        src="/LogoTexx.png"
+        width="150"
+        height="150">
+
+        </NuxtImg>
+      </v-col>
+      <v-col cols="12" xs="12" sm="3">
         <p class="h4">{{ $t('footer.title') }}</p>
         <NuxtLink class="h6 font-weight-light text-display-none" :to="locale('/terms_and_conditions')">{{ $t('footer.titleSubText.termsAndConditions') }}</NuxtLink>
         <br>
@@ -23,10 +31,13 @@
         <br>
         <p class="h6 font-weight-light">{{ $t('footer.titleSubText.personalData') }}</p>
         <p class="h6 font-weight-normal cursor-pointer text-white" @click="openCookieSection">{{ $t('footer.titleSubText.utilizationPolicy') }}</p>
+        <NuxtLink class="h6 font-weight-light text-display-none" :to="locale('/return_policy')">{{ $t('footer.returnPolicy') }}</NuxtLink>
+        <br>
         <NuxtLink class="h6 font-weight-light text-display-none" to="https://anpc.ro/">{{ $t('footer.titleSubText.anpc') }}</NuxtLink>
+
         <br>
       </v-col>
-      <v-col cols="12" xs="12" sm="4">
+      <v-col cols="12" xs="12" sm="3">
         <p class="h4">{{ $t('footer.clientSupprt') }}</p>
         <NuxtLink class="h6 font-weight-light text-display-none" :to="locale('/contact')">{{ $t('menu.contact') }}</NuxtLink>
         <br>
@@ -35,7 +46,7 @@
         <NuxtLink class="h6 font-weight-light text-display-none" :to="locale('/measurement')">{{ $t('general.howToMeasure') }}</NuxtLink>
         <br>
       </v-col>
-      <v-col cols="12" xs="12" sm="4">
+      <v-col cols="12" xs="12" sm="3">
         <p class="h4">{{ $t('footer.info') }}</p>
         <p class="h6 font-weight-light">{{ $t('footer.infoSubText.address') }} </p>
         <p class="h6 font-weight-light">
@@ -57,6 +68,7 @@
 
 
 <script setup>
+import { NuxtImg } from '#components';
 import { mdiFacebook, mdiInstagram, mdiLinkedin, mdiPhone, mdiTwitter } from '@mdi/js';
 
 const emitter = useNuxtApp().$emitter

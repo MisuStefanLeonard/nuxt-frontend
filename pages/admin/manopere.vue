@@ -39,7 +39,7 @@
             <v-text-field
                 v-model="search"
                 label="Cauta "
-                prepend-inner-icon="mdi-magnify"
+                :prepend-inner-icon="mdiMagnify"
                 class="p-3 mx-3"
                 variant="outlined"
             ></v-text-field>
@@ -83,7 +83,7 @@
 </template>
 
 <script setup>
-import { mdiEye, mdiPlus } from '@mdi/js';
+import { mdiEye, mdiMagnify, mdiPlus } from '@mdi/js';
 import adminService from '~/services/Admin'
 
 definePageMeta({
@@ -147,7 +147,7 @@ function fireAlarm(icon,title,text,isLoading){
 }
 
 
-const getTipuriGalerie = async () => {
+const getManopere = async () => {
     fireAlarm('info' , 'Loading...' , 'Asteptati..' , true)
     const getManopere = await adminService.getManopere();
     if(getManopere.length === 0){
@@ -166,7 +166,7 @@ const getTipuriGalerie = async () => {
 
 
 onMounted(async () => {
-    await getTipuriGalerie()
+    await getManopere()
 })
 
 

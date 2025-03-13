@@ -1,43 +1,47 @@
 <template>
     <div class="background-wrapper">
         <div class="background"></div>
-        <v-container class="content" fluid>
+        <div class="content" fluid>
             <v-container fluid>
                 <p class="font-weight-light h1 text-center">{{ $t('shopSeturi.sets') }}</p>
             </v-container>
-            <div fluid class="mt-3">
-                <v-sheet elevation="24" color="grey-lighten-4 pt-1">
-                    <v-sheet elevation="24" class="p-2 m-3">
+            <div fluid class="mt-3 ">
+                <v-sheet elevation="24" color="grey-lighten-4">
+                    <v-sheet elevation="24" class="">
                         <v-row no-gutters class="p-2">
+                            <v-col cols="12" class="mb-3">
+                                <p class="font-weight-light h5 text-center">{{ $t('shop.filters') }}</p>
+                            </v-col>
                             <v-col cols="12">
                                 <v-text-field
                                 :label="$t('shopSeturi.searchAfterProductName')"
                                 variant="outlined" 
                                 v-model="searchSetAfter"
-                                :prepend-icon="mdiMagnify">
+                                :prepend-inner-icon="mdiMagnify">
                                 
                                 </v-text-field>
                             </v-col>
-                            <v-col cols="12">
-                                <p class="font-weight-light h5 text-center">{{ $t('shop.filters') }}</p>
+                            <v-col cols="12" class="mt-2">
                                 <v-row no-gutters>
-                                    <v-col cols="12" class="p-3">
+                                    <v-col cols="12" class="">
                                         <v-select
                                             item-color="primary"
                                             multiple
                                             variant="outlined"
                                             :label="`${$t('shop.productType')}`"
                                             density="comfortable"
+                                            :item-title="selectedCurrency === 'RON' ? 'tip_ro' : 'tip_en'"
+                                            item-value="tip_ro"
                                             v-model="productTypes"
                                             chips
                                             closable-chips
                                             clearable
-                                            :items="filterOptions.filterProductTypes">
+                                            :items="filterOptions.filterProductTypesJson">
                                         </v-select>
                                     </v-col>
-                                    <v-col cols="12" class="p-2">
+                                    <v-col cols="12" class="mt-2">
                                         <v-row no-gutters>
-                                            <v-col cols="12" class="p-2">
+                                            <v-col cols="12" class="">
                                                 <v-row>
                                                     <v-col cols="6">
                                                         <v-text-field
@@ -75,7 +79,7 @@
                                 <v-row no-gutters>
                                     <v-col cols="12" xs="12" sm="12" md="6" class="my-1">
                                         <v-btn variant="flat" color="success"
-                                        @click="applyFilters" append-icon="mdi-filter">
+                                        @click="applyFilters" :append-icon="mdiFilter">
                                             {{ $t('shop.applyFilters') }}
                                         </v-btn>
                                     </v-col>
@@ -94,17 +98,17 @@
                     <!-- DE ADAUGAT SETURILE! -->
                     <v-row>
                         <v-col sm="6" xs="12" md="6" v-for="set in currentSetsOnPage.shopSets"
-                        :key="set.numeSetDto">
-                        <v-card class="bg-grey-lighten-3 p-2 m-3 h-100" elevation="24"
+                        :key="selectedCurrency === 'RON' ? set.numeSetJsonDto.nume_ro : set.numeSetJsonDto.nume_en">
+                        <v-card class="bg-grey-lighten-3 p-2 my-3  h-100" elevation="24"
                             >
                             <v-card-title >
                             <div class="ribbon" v-if="set.pretRedusSetDto > 0" >{{ $t('shop.discount') }}</div>
-                            <p  class="font-weight-thin h5 text-center">{{ set.numeSetDto.toUpperCase() }}</p>
+                            <p  class="font-weight-thin h5 text-center">{{ selectedCurrency === "RON" ?  set.numeSetJsonDto.nume_ro.toUpperCase() : set.numeSetJsonDto.nume_en.toUpperCase() }}</p>
                             </v-card-title>
                             <v-card-subtitle >
                             <v-row>
                                 <v-col cols="12" class="text-center">
-                                <span>CULORI DISPONIBILE IN SET</span>
+                                <span>{{selectedCurrency === "RON" ? 'CULORI DISPONIBILE IN SET' : 'COLORS IN SET'}}</span>
                                 </v-col>
                                 <v-col cols="12" class="text-center">
                                 <span v-for="(product,index) in set.setProductsDto"
@@ -189,7 +193,7 @@
                             <v-row no-gutters>
                                 <v-col cols="12" class="my-1">
                                     <NuxtLink prefetch :prefetch-on="{interaction: true}"
-                                     :to="localPath(`/set/${set.encodedIdSet}/${set.numeSetDto}`)">
+                                     :to="localPath(`/set/${set.encodedIdSet}/${set.numeSetJsonDto.nume_ro}`)">
                                         <v-btn variant="flat" color="primary" >
                                             {{ $t('shop.seeDetails') }} <v-icon class="ml-1" size="24" :icon="mdiArrowRight"></v-icon>
                                         </v-btn>
@@ -221,7 +225,7 @@
                             <v-pagination  v-model="dataPage" :length="getPaginationLen" class="d-none"></v-pagination>
                             <v-btn @click="loadMoreSets" variant="flat" color="primary">{{ $t('shop.loadMoreProducts') }}</v-btn>
                         </v-container>
-                        <v-container v-else fluid class="bg-grey-lighten-4 text-center m-3 p-2 elevation-24">
+                        <v-container v-else fluid class="bg-grey-lighten-4 text-center mt-5  elevation-24">
                             <p class="font-weight-light h5">{{ $t('shop.noProductFound') }}</p>
                             <v-icon size="24" :icon="mdiEmoticonSadOutline"></v-icon>
                         </v-container>
@@ -229,14 +233,14 @@
                     
                 </v-sheet>
             </div>
-        </v-container>
+        </div>
     </div>
 </template>
 
 
 <script setup>
 
-import { mdiArrowRight, mdiClose, mdiEmoticonSadOutline,mdiMagnify } from '@mdi/js';
+import { mdiArrowRight, mdiClose, mdiEmoticonSadOutline,mdiFilter,mdiMagnify } from '@mdi/js';
 import productService from '~/services/Products'
 
 
@@ -291,7 +295,7 @@ const getPaginatedSets = (async (pageNumber,productTypes = null ,priceRange ,pro
       priceRange,productName,
       currency);
 
-  
+    console.log(responseFromPaginatedProducts)
   if(responseFromPaginatedProducts.shopSets.length !== null || responseFromPaginatedProducts.shopSets.length > 0){
     currentSetsOnPage.value = responseFromPaginatedProducts
   }
@@ -400,15 +404,14 @@ const applyFilters = () => {
 const deleteFilters = () => {
     productTypes.value = [];
     searchSetAfter.value = '';
+    rangePrice.value = selectedCurrency.value === "RON" ? [0,2000] : [0,400]
+    console.log(rangePrice.value)
     router.push({ query: {} });
     getPaginatedSets(0, productTypes.value , rangePrice.value,searchSetAfter.value, selectedCurrency.value);
 };
 
-// const seeSetPage = (encodedIdSet,numeSet) => {
-//   navigateTo(localPath(`/set/${encodedIdSet}/${numeSet}`))
-// }
 
-watch(() => route.query, applyFiltersFromQuery, { immediate: true });
+// watch(() => route.query, applyFiltersFromQuery, { immediate: true });
 
 
 

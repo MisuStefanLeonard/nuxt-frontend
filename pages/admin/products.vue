@@ -116,12 +116,12 @@
         <v-text-field
           v-model="search"
           label="Cauta"
-          prepend-inner-icon="mdi-magnify"
+          :prepend-inner-icon="mdiMagnify"
           class="p-3 mx-3"
           variant="outlined"
         ></v-text-field>
 
-        <v-data-table
+        <v-data-table v-if="isLoaded"
           :headers="headers"
           :items="filteredProducts"
           :items-per-page="15"
@@ -170,9 +170,8 @@
 </template>
 
 <script setup>
-import { mdiDelete, mdiEye, mdiFileUpload, mdiInformation, mdiPlus, mdiToggleSwitchOutline } from '@mdi/js'
+import { mdiDelete, mdiEye, mdiFileUpload, mdiInformation, mdiMagnify, mdiPlus, mdiToggleSwitchOutline } from '@mdi/js'
 import { ref, computed, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
 import adminService from '~/services/Admin'
 
 definePageMeta({
@@ -191,6 +190,7 @@ const succesWhenParsing = ref(false)
 const errorWhenParsing = ref(false)
 const products = ref([])
 const selectedProducts = ref([])
+const isLoaded = ref(false)
 
 // Static text
 const fileErrorMessage = 'Extensia incorecta! Extensia trebuie sa fie .xlsx'
@@ -236,6 +236,9 @@ const filteredProducts = computed(() => {
 // Fetch products on component creation
 onBeforeMount(() => {
   getProducts()
+})
+onMounted(() => {
+  isLoaded.value = true;
 })
 
 // Methods

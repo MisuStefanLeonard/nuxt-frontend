@@ -5,11 +5,11 @@
                 <v-col cols="12" xs="12" md="7" sm="12" class="p-1">
                     <v-card class="bg-grey-lighten-4 h-100 " elevation="12">
                         <v-card-text>
-                            <v-alert v-if="selectedImage" class="text-center" color="blue" variant="tonal" icon="mdi-information">
+                            <v-alert v-if="selectedImage" class="text-center my-2" color="blue" variant="tonal" :icon="mdiInformation" >
                                 {{ $t('shopSeturi.showImageForProduct') }} <b class="text-black">{{ selectedImage.productName.toUpperCase() }} </b>
                                 {{ $t('shopSeturi.showImageForColor') }} <b class="text-black">{{ selectedImage.colorName.toUpperCase() }} </b>
                             </v-alert>
-                            <v-alert v-if="setData.pretRedusSetDto > 0" class="text-center mt-2 mb-2" color="red" variant="flat" icon="mdi-sale">
+                            <v-alert v-if="setData.pretRedusSetDto > 0" class="text-center mt-2 mb-2" color="red" variant="flat" :icon="mdiSale">
                                 <span class="font-weight-bold h6">{{ Math.ceil(
                                     ((setData.pretSetDto - setData.pretRedusSetDto) / setData.pretSetDto) * 100
                                 ) }}% {{$t('shop.discount')}}</span>
@@ -169,7 +169,7 @@
                             </v-row>
                             <v-divider opacity="30" ></v-divider>
                             <div v-if=" selectedProduct !== null">
-                                <div v-if="selectedProduct.tipulProdusuluiDto !== 'draperie' && selectProduct.tipulProdusuluiDto !== 'perdea'">
+                                <div v-if="selectedProduct.tipulProdusuluiDto !== 'draperie' && selectedProduct.tipulProdusuluiDto !== 'perdea'">
                                     <div v-if="selectedProduct.selectedDimensions.length > 0">
                                         <v-card class="elevation-12 p-1">
                                             <v-card-title class="text-center">
@@ -314,11 +314,13 @@
                                                                             <p class="font-weight-light h6">{{ $t('shopSeturi.maximumHeight') }}<b>{{ printManoperaInformation.manoperaSelected.inaltimeMaxima }}</b></p>
                                                                         </v-col>
                                                                         <v-col cols="12">
-                                                                            <v-img eager
-                                                                            :aspect-ratio="16 / 5"
+                                                                            <v-img eager v-if="printManoperaInformation.manoperaSelected.tipGalerie.presignedUrl !== 'empty'"
+                                                                            :aspect-ratio="16 / 5" :alt="selectedCurrency === 'RON' ? 'Imagine cusatura colt' : 'Corner stich image'"
                                                                             :src="printManoperaInformation.manoperaSelected.tipGalerie.presignedUrl" >
 
                                                                             </v-img>
+                                                                            <v-img v-else src="/notFound.png" aspect-ratio="16 / 5"
+                                                                            :alt="selectedCurrency === 'RON' ? 'Imagine cusatura colt' : 'Corner stich image'"> </v-img>
                                                                         </v-col>
                                                                     </v-row>
                                                                 </v-col>
@@ -336,10 +338,14 @@
                                                                     <v-row>
                                                                         <v-col cols="12">
                                                                             <p class="font-weight-normal h6">{{ $t('shopSeturi.ringColor') }} <b>{{ printManoperaInformation.manoperaSelected.tipInel.numeTipInel }}</b></p>
-                                                                            <v-img eager
-                                                                            :aspect-ratio="16 / 5"
+                                                                            <v-img eager v-if="printManoperaInformation.manoperaSelected.tipInel.presignedUrl !== 'empty'"
+                                                                            :aspect-ratio="16 / 5" :alt="selectedCurrency === 'RON' ? 'Imagine cusatura colt' : 'Corner stich image'"
                                                                             :src="printManoperaInformation.manoperaSelected.tipInel.presignedUrl" >
                                                                             </v-img>
+
+                                                                            <v-img v-else src="/notFound.png"
+                                                                             aspect-ratio="16 / 5"
+                                                                             :alt="selectedCurrency === 'RON' ? 'Imagine cusatura colt' : 'Corner stich image'"> </v-img>
                                                                         </v-col>
                                                                     </v-row>
                                                                 </v-col>
@@ -359,11 +365,15 @@
                                                                             <p class="font-weight-normal h6">{{ $t('shopSeturi.liningTypeName') }} <b>{{ printManoperaInformation.manoperaSelected.tipLinie.numeTipCusaturaColt }}</b></p>
                                                                         </v-col>
                                                                         <v-col cols="12">
-                                                                            <v-img eager
+                                                                            <v-img eager v-if="printManoperaInformation.manoperaSelected.tipLinie.presignedUrl !== 'empty'"
                                                                             :aspect-ratio="16 / 5"
+                                                                            :alt="selectedCurrency === 'RON' ? 'Imagine cusatura colt' : 'Corner stich image'"
                                                                             :src="printManoperaInformation.manoperaSelected.tipLinie.presignedUrl" >
 
                                                                             </v-img>
+                                                                            <v-img v-else src="/notFound.png" aspect-ratio="16 / 5" 
+                                                                            :alt="selectedCurrency === 'RON' ? 'Imagine cusatura colt' : 'Corner stich image'"
+                                                                            > </v-img>
                                                                         </v-col>
                                                                         
                                                                     </v-row>
@@ -684,7 +694,7 @@
 
 
 <script setup>
-import { mdiArrowLeft, mdiCheck, mdiCloseCircleOutline, mdiEmail, mdiPhone, mdiShoppingOutline, mdiStar } from '@mdi/js';
+import { mdiArrowLeft, mdiCheck, mdiCloseCircleOutline, mdiEmail, mdiPhone, mdiSale, mdiShoppingOutline, mdiStar , mdiArrowRight , mdiInformation } from '@mdi/js';
 import { useDisplay } from 'vuetify';
 import productService from '~/services/Products'
 import { cartCount } from '~/middleware/cart';
@@ -790,12 +800,13 @@ const getReviewCount = (rating) => {
 const getSetData =  async () => {
     const responseFromSetDataFetch = await productService.getSetData(encodedIdSet,setName,selectedCurrency.value)
     if(responseFromSetDataFetch === -4){
-        navigateTo(localePath('/error/notFound'))
+        navigateTo(localePath('/error/404'))
     }else if(responseFromSetDataFetch === -2){
-        navigateTo(localePath('/error/generalError'))
+        navigateTo(localePath('/error/400'))
     }
    
     Object.assign(setData.value , responseFromSetDataFetch)
+    console.log(setData.value)
     // Extract all image URLs
     
     useHead({
@@ -862,9 +873,9 @@ const postReview =  async () => {
             })
             return;
         }else if(responseFromPostReview === -4){
-            navigateTo(localePath('/error/NotFound'))
+            navigateTo(localePath('/error/404'))
         }else {
-            navigateTo(localePath('/error/generalError'))
+            navigateTo(localePath('/error/400'))
         }
 
     }else{

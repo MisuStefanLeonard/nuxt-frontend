@@ -18,7 +18,8 @@
       "login": "Autentificare",
       "register": "Înregistrare",
       "language" : "Limba",
-      "shoppingCart" : "Cos cumparaturi"
+      "shoppingCart" : "Cos cumparaturi",
+      "admin" : "Interfata admin"
     },
     "messages": {
         "logoutSuccess": "Ati fost delogat",
@@ -181,7 +182,8 @@
     "logout" : {
         "title" : "Pagina pentru delogare",
         "succesfullLogoutMessage" : "Ati fost delogat cu succes, redirectionare spre pagina principala.",
-        "logoutMessage" : "Va asteptam din nou pe la noi!"
+        "logoutMessage" : "Va asteptam din nou pe la noi!",
+        "expiredLoginToken" : "Token-ul a expirat/Access neautorizat!"
     },
     "register" : {
         "title1" : "CLIENT NOU",
@@ -206,6 +208,7 @@
         "applyFilters" : "Aplica filtre",
         "deleteFilters" : "Sterge filtre",
         "filters" : "Filtre",
+        "productCategories" : "Categorii",
         "loadMoreProducts" : "INCARCA MAI MULTE PRODUSE",
         "seeDetails" : "VEZI DETALII",
         "addToCart" : "ADAUGA IN COS",
@@ -424,7 +427,7 @@
         "discountCode" : "Aveti un cupon/cod de reducere?",
         "applyDiscountCode" : "Aplica cuponul",
         "appliedSuccesfully" : "Voucher aplicat cu succes!",
-        "productsPriceChanged" : "Cateva preturi au fost modificate in timp ce dumneavoastra faceati cumparaturi.Iata noile preturi pentru toate produsule schimbate." ,
+        "productsPriceChanged" : "Cateva preturi au fost modificate in timp ce dumneavoastra faceati cumparaturi" ,
         "productsDeleted" : "Daca unele produse pe care le-ati adaugat in cos nu mai sunt, inseamna ca au fost dezactivate/sterse din magazin. Ne pare rau pentru incovenienta.",
         "orderSummary" : "Sumar comanda",
         "deliveryFee" : "Plata transport",
@@ -530,61 +533,42 @@
     
     "termsAndConditions": {
         "title": "Termeni și Condiții",
-        "intro1": "Bine ați venit la Texx!",
-        "intro2": "Acești termeni și condiții descriu regulile și prevederile privind utilizarea Website-ului texx, situat la adresa website url.",
-        "intro3": "Prin accesarea acestui website, presupunem că acceptați acești termeni și condiții. Nu continuați să utilizați texx dacă nu sunteți de acord să respectați toți termenii și condițiile enunțate pe această pagină.",
-        "terminology": "Terminologia următoare se aplică acestor Termeni și Condiții, Declarației de Confidențialitate și Notificării de Exonerare de Răspundere, precum și tuturor Acordurilor: \"Client\", \"Dumneavoastră\" și \"Al dvs.\" se referă la dumneavoastră, persoana conectată pe acest website și care respectă termenii și condițiile Companiei. \"Compania\", \"Noi\", \"Al nostru\" și \"Nouă\" se referă la compania noastră. \"Parte\", \"Părți\" sau \"Noi\" se referă atât la Client, cât și la noi. Toți termenii se referă la oferta, acceptarea și contraprestația necesară pentru a efectua procesul de asistență oferit Clientului în cel mai adecvat mod, cu scopul expres de a satisface nevoile Clientului în ceea ce privește furnizarea serviciilor enunțate de Companie, în conformitate cu și sub rezerva legii în vigoare din Țările de Jos. Orice utilizare a terminologiei de mai sus sau a altor cuvinte în formă de singular, plural, cu majuscule și/sau he/she sau they se consideră interschimbabilă și, prin urmare, se referă la același lucru.",
-        "cookiesTitle": "Cookie-uri",
-        "cookiesText1": "Folosim cookie-uri. Prin accesarea texx, ați acceptat utilizarea cookie-urilor conform Politicii de Confidențialitate a texx.",
-        "cookiesText2": "Majoritatea website-urilor interactive folosesc cookie-uri pentru a ne permite să recuperăm detaliile utilizatorului la fiecare vizită. Cookie-urile sunt folosite de website-ul nostru pentru a activa funcționalități în anumite zone, facilitând astfel experiența vizitatorilor. Unii dintre partenerii noștri afiliați sau publicitari pot utiliza, de asemenea, cookie-uri.",
-        "licenseTitle": "Licență",
-        "licenseText": "Cu excepția cazului în care se specifică altfel, texx și/sau licențatorii săi dețin drepturile de proprietate intelectuală pentru toate materialele de pe texx. Toate drepturile de proprietate intelectuală sunt rezervate. Puteți accesa aceste materiale de pe texx pentru uz personal, sub rezerva restricțiilor prevăzute în acești termeni și condiții.",
-        "youMustNot": "Nu trebuie să:",
-        "licenseList": {
-        "text1": "Republicați materiale de pe texx",
-        "text2": "Vindeți, închiriați sau sub-licențiați materiale de pe texx",
-        "text3": "Reproduceți, duplicați sau copiați materiale de pe texx",
-        "text4": "Redistribuiți conținut de pe texx"
+        "intro1": "Utilizarea site-ului www.perdele-online.ro implica acceptarea termenilor si conditiilor de mai jos. Recomandam citirea cu atentie a acestora. Compania isi asuma dreptul de a modifica aceste prevederi fara o alta notificare.",
+        "section1": {
+            "header": "1. Date generale",
+            "content": "Site-ul www.perdele-online.ro este administrat de compania SC TAK HOME DECORATION SRL, inregistrata la Reg. Com sub nr. J08/1722/2008, CUI RO24085721, cu sediul in Brasov, str. Harmanului nr.61, punct de lucru Bd Grivitei nr.85.Persoana fizica sau juridica care comanda si achizitioneaza produse prin intermediul site-ului este denumita in continuare “client”.SC TAK HOME DECORATION SRL nu este responsabila pentru nici un fel de prejudiciu care a survenit ca urmare a unor disfunctionalitati de orice fel ale site-ului."
         },
-        "agreement": "Acest Acord începe de la data semnării. Termenii și Condițiile au fost create cu ajutorul Generatorului de Termeni și Condiții.",
-        "comments": "Anumite secțiuni ale acestui website oferă posibilitatea utilizatorilor de a posta și schimba opinii și informații. Texx nu filtrează, editează, publică sau revizuiește Comentariile înainte ca acestea să fie afișate pe site. Comentariile reflectă punctele de vedere ale persoanei care le postează. Texx nu va fi responsabil pentru niciun Comentariu sau pentru orice răspundere, daună sau cheltuială care apare ca urmare a utilizării sau apariției Comentariilor.",
-        "hyperlinkTitle": "Hyperlink-uri către conținutul nostru",
-        "hyperlinkText1": "Următoarele organizații pot crea hyperlink-uri către website-ul nostru fără aprobarea scrisă prealabilă:",
-        "hyperlinkList1": {
-            "text1": "Agenții guvernamentale",
-            "text2": "Motoare de căutare",
-            "text3": "Organizații de știri",
-            "text4": "Distribuitori online de directoare, și",
-            "text5": "Afaceri acreditate la nivel de sistem (cu excepția anumitor organizații non-profit)"
+        "section2": {
+            "header": "2. Preturile produselor",
+            "content": "Toate preturile afisate pe acest site sunt exprimate in lei (RON) sau (EUR) si contin TVA (24%) si pot fi modificate in functie de: modificarea taxelor vamale, a altor taxe percepute de statul roman sau a cursurilor de schimb leu/euro si leu/dolar."
         },
-        "hyperlinkText2": "Aceste organizații pot crea hyperlink-uri către pagina noastră de start, publicații sau alte informații de pe website atâta timp cât link-ul:",
-        "hyperlinkText3": " (a) nu este în niciun fel înșelător; (b) nu implică în mod fals sponsorizare sau susținere; și (c) se potrivește în contextul site-ului organizației respective.",
-        "hyperlinkList2": {
-            "text1": "Folosind numele nostru corporativ",
-            "text2": "Folosind URL-ul la care se face link",
-            "text3": "Sau folosind orice altă descriere care are sens în context"
+        "section3": {
+            "header": "3. Drepturile de autor",
+            "content": "Drepturile de autor asupra intregului continut al acestui website sunt proprietatea SC TAK HOME DECORATION SRL. Continutul site-ului nu poate fi reprodus, modificat, distribuit, republicat, transferat, copiat sau transmis in orice forma, fara permisiunea anterioara scrisa a SC TAK HOME DECORATION SRL. Pentru probleme legate de drepturile de proprietate intelectuala sau pentru a raporta incalcari, contactati ."
         },
-        "iframesTitle": "iFrames",
-        "iframesText": "Fără aprobarea scrisă prealabilă, nu puteți crea cadre în jurul paginilor noastre web care să modifice prezentarea vizuală.",
-        "contentLiabilityTitle": "Responsabilitatea conținutului",
-        "contentLiabilityText": "Nu vom fi ținuți responsabili pentru orice conținut care apare pe site-ul dumneavoastră. Sunteți de acord să ne apărați împotriva oricăror cereri care apar din conținutul de pe site-ul dumneavoastră.",
-        "privacyTitle": "Confidențialitatea dumneavoastră",
-        "privacyText": "Vă rugăm să citiți Politica noastră de Confidențialitate.",
-        "reservationTitle": "Rezervarea drepturilor",
-        "reservationText": "Ne rezervăm dreptul de a solicita eliminarea tuturor link-urilor sau a oricărui link specific către website-ul nostru. Prin menținerea constantă a hyperlink-urilor către website-ul nostru, sunteți de acord cu acești termeni.",
-        "removalTitle": "Eliminarea link-urilor de pe website-ul nostru",
-        "removalText": "Dacă găsiți orice link pe website-ul nostru care este ofensator, vă puteți adresa nouă. Vom lua în considerare cererile de eliminare a link-urilor, dar nu suntem obligați să le eliminăm.",
-        "disclaimerTitle": "Exonerare de răspundere",
-        "disclaimerText": "În măsura maximă permisă de lege, excludem toate declarațiile, garanțiile și condițiile referitoare la website-ul nostru și la utilizarea acestuia. Nimic din această exonerare nu va:",
-        "disclaimerList": {
-        "text1": "limita sau exclude răspunderea noastră sau a dumneavoastră pentru deces sau vătămări personale",
-        "text2": "limita sau exclude răspunderea noastră sau a dumneavoastră pentru fraudă sau reprezentare frauduloasă",
-        "text3": "limita orice răspunderi într-un mod care nu este permis de lege",
-        "text4": "sau exclude orice răspunderi care nu pot fi excluse conform legii aplicabile"
+        "section4": {
+            "header": "4. Securitatea datelor personale si a informatiilor",
+            "content": "Magazinul online www.perdele-online.ro are o politica stricta de respectare a confidentialitatii datelor clientilor. Administratorul site-ului se angajeaza sa nu transmita datele personale ale clientilor catre terte persoane si sa le foloseasca numai in scopul pentru care au fost transmise. Datele personale introduce de catre client for fi folosite numai in scopul declarat al acestui site."
         },
-        "disclaimerConclusion": "Limitările și excluderile de răspundere stabilite în această secțiune guvernează toate răspunderile care apar din această exonerare, inclusiv cele din contract, delict și obligații legale. Atâta timp cât website-ul este furnizat gratuit, nu vom fi responsabili pentru nicio pierdere sau daună.",
-        "finalNote": "Prin accesarea și utilizarea acestui website, sunteți de acord cu acești Termeni și Condiții."
+        "section5": {
+            "header": "5. Produsele comercializate pe site",
+            "content": "Produsele comercializate pe www.perdele-online.ro sunt noi. SC TAK HOME DECORATION SRL are contracte si intelegeri comerciale de revanzare cu producatori autohtoni sau cu importatori ai marcilor prezentate pe site-ul propriu. Compania nu garanteaza disponibilitatea in stoc a tuturor produselor afisate, motiv pentru care va avea dreptul de a nu livra partial sau integral o anumita comanda in cazul in care anumite produse nu mai apar in oferta curenta a furnizorului sau nu sunt disponibile din alte motive (lipsa momentana din stoc, epuizarea stocului, etc). Clientul va fi anuntat in cel mai scurt timp de disponibilitatea produselor comandate. Valoarea maxima a obligatiilor companiei fata de client, in cazul nelivrarii produselor, este valoarea sumei incasate de companie de la clientul respectiv, suma care ii va fi returnata in maxim 30 de zile. Produsele (atunci cand este cazul) sunt insotite de Certificate de calitate si conformitate ale producatorilor sau importatorilor. Orice reclamatie va fi adusa la cunostinta companiei in maximum 48 de ore de la receptia produselor, urmand ca aceasta sa fie transmisa producatorului/importatorului produselor respective, spre solutionare. Compania nu garanteaza si nici nu va putea fi considerata responsabila in cazul in care produsele achizitionate nu sunt utilizate in scopurile pentru care ele au fost proiectate / fabricate. De asemenea, compania nu raspunde de eventualele defectiuni ale produselor cumparate de pe site. Toata responsabilitatea acestor defectiuni si repararea lor revine in sarcina producatorului/importatorului sau a service-ului autorizat de acesta."
+        },
+        "section6": {
+            "header": "6. Litigii",
+            "content": "Eventualele probleme privind natura sau cantitatile livrate trebuie formulate in timp de 48 de ore de la receptia coletului. www.perdele-online.ro va incerca sa le rezolve in cel mai scurt timp si favorabil. In caz de litigii nerezolvabile se va apela la instantele competente."
+        },
+        "section7": {
+            "header": "7. Garantia produselor",
+            "content": "Garantii oferite de www.perdele-online.ro: primiti banii inapoi garantat in 10 zile, daca produsul nu corespunde cerintelor. Garantii oferite de producator sunt prezentate in pagina fiecarui produs: 6, 12 sau 24 luni."
+        },
+        "section8": {
+            "header": "8. Returul produselor",
+            "content": "In cazul in care produsul comandat de Dvs. nu corespunde prezentarii de pe site-ul www.perdele-online.ro, prezinta defecte de fabricatie sau de alta natura sau nu se ridica la asteptarile dvs. conform legislatiei in vigoare puteti solicita inlocuirea acestuia sau returnarea contravalorii lui in termen de 10 zile de la primire. Costul de transport al produsului si cel al returului sunt suportate in intregime de catre cumparator. Produsul poate fi returnat numai daca se afla in conditii perfecte, inclusiv ambalajul si nu prezinta semne de uzura sau consum. Cheltuielile de returnare sunt suportate in intregime de catre cumparator. In cazul refuzarii produsului va rugam sa ne contactati in termen de 24 de ore de la primirea lui prin e-mail la . Aceasta adresa de e-mail este protejata de spamboti; aveti nevoie de activarea JavaScript-ului pentru a o vizualiza. Returul produselor se supune OUG nr 130/13 august 2000 completata prin Legea 51/2003 privind regimul juridic al contractelor la distanta numai pentru produsele livrate din posta sau firma de curierat: Ord. 130/2000. Cap. 1, Art 2, a) Contract la distanta - contractul de furnizare de produse sau servicii incheiat intre un comerciant si un consumator, in cadrul unui sistem de vanzare organizat de catre comerciant, care utilizeaza in mod exclusiv, inainte si la incheierea acestui contract, una sau mai multe tehnici de comunicatie la distanta."
+        },
+        "finalNote": "Prin utilizarea site-ului www.perdele-online.ro, sunteti de acord cu acesti termeni si conditii."
     },
+    
     "footer" : {
         "title" : "Texx.ro",
         "clientSupprt" : "Suport clienti",
@@ -600,7 +584,8 @@
         },
         "infoSubText" : {
             "address" : "Adresa:"
-        }
+        },
+        "returnPolicy" : "Politica de returnare"
     },
     "errorPage": {
         "404" : {
@@ -618,6 +603,11 @@
             "text" : "Probleme cu conexiunea la server, ne scuzati!",
             "title" : "Eroare server"
         }
+    },
+    "returnPolicy" : {
+        "title" : "Politica de retur",
+        "text" : "Produsele facute la comanda precum draperiile, perdelele sau doar material comandat nu pot fi returnate  ",
+        "text2" : "Pentru retur va rugam sa ne contactati folosind formularul de contact."
     }
   } 
   

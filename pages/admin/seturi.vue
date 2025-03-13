@@ -10,7 +10,7 @@
                     <p class="h5 font-weight-light text-white">Sectiunea de adaugare set</p>
                     <v-btn rounded class="m-2 " color="primary" @click="redirectToAddingSet()">
                         Adauga set
-                        <v-icon size="24" class="pl-3" right :icon="mdiPlus" ></v-icon>
+                        <v-icon size="24" class="pl-3" right :icon="mdiPlus"></v-icon>
                     </v-btn>
                 </v-col>
                 <v-divider class="border-opacity-50" color="success" vertical></v-divider>
@@ -36,12 +36,12 @@
             <v-text-field
                 v-model="search"
                 label="Cauta dupa numele setului sau starea produsului in magazin"
-                prepend-inner-icon="mdi-magnify"
+                :prepend-inner-icon="mdiMagnify"
                 class="p-3 mx-3"
                 variant="outlined"
             ></v-text-field>
             
-            <v-data-table
+            <v-data-table v-if="loaded"
                 :headers="headers"
                 :items="filteredSets"
                 :items-per-page="15"
@@ -91,7 +91,7 @@
 <script setup>
 import adminService from '~/services/Admin'
 import {ref,onBeforeMount} from 'vue'
-import { mdiDelete, mdiEye, mdiToggleSwitchOutline } from '@mdi/js'
+import { mdiDelete, mdiEye, mdiMagnify, mdiToggleSwitchOutline ,mdiPlus} from '@mdi/js'
 
 definePageMeta({
     layout: 'admin',
@@ -102,6 +102,7 @@ const search = ref('')
 const selectedSets = ref([])
 const swal = useNuxtApp().$swal;
 const seturiList = ref([])
+const loaded = ref(false)
 const headers = [
   { title: 'Id set', align: 'center', key: 'encodedIdSetDto' , sortable: false},
   { title: 'Nume set', align: 'center', key: 'numeSetDto' },
@@ -288,6 +289,7 @@ async function getSeturi(){
 
 onMounted(async () => {
     await getSeturi()
+    loaded.value = true;
 })
 
 

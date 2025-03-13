@@ -1,14 +1,14 @@
 <template>
-    <div fluid>
-        <v-sheet color="grey-lighten-2" class="p-3">
+    <div fluid >
+        <v-sheet color="grey-lighten-2" class="p-3" v-if="product.tipulProdusuluiJsonDto">
             <v-row>
                 <v-col cols="12" xs="12" md="7" sm="12" class="p-1">
                     <v-card class="bg-grey-lighten-4 h-100" elevation="12">
                         <v-card-text>
-                            <v-alert class="text-center" color="blue" variant="tonal" icon="mdi-information">
+                            <v-alert class="text-center my-2" color="blue" variant="tonal" :icon="mdiInformation" >
                                 {{ $t('shop.productsImagesShownFor') }} {{ imgColor}}
                             </v-alert>
-                            <v-alert v-if="product.pretBazaRedusDto > 0 || selectedDimension.priceDiscount > 0" class="text-center mt-2 mb-2" color="red" variant="flat" icon="mdi-sale">
+                            <v-alert v-if="product.pretBazaRedusDto > 0 || selectedDimension.priceDiscount > 0" class="text-center mt-2 mb-2" color="red" variant="flat" :icon="mdiSale">
                                 <span v-if="dimensionsLength <= 0" class="font-weight-bold h6">{{ Math.ceil(
                                     ((product.pretBazaDto - product.pretBazaRedusDto) / product.pretBazaDto) * 100
                                 ) }}% {{$t('shop.discount')}}</span>
@@ -125,9 +125,10 @@
                         </v-card-subtitle>
                         <v-card-text>
                             <div class="my-2">
-                                <v-alert class="text-justify" color="blue-darken-4" variant="tonal" icon="mdi-information">
+                                <v-alert class="text-justify" color="blue-darken-4" variant="tonal" :icon="mdiInformation" >
                                     <span class="">{{ $t('shop.colorSelected') }}
                                         <b class="text-black">
+                                           
                                             <v-btn color="blue" class="m-1">{{ selectedColor.name || '' }}</v-btn>
                                         </b>
                                     </span>
@@ -194,7 +195,7 @@
                                                     active-color="blue"
                                                     @click="toggleButton(index,'color')"
                                                 >
-                                                    {{ color.numeCuloareDto }}
+                                                    {{ selectedCurrency === "RON" ?  color.numeCuloareJsonDto.culoare_ro : color.numeCuloareJsonDto.culoare_en }}
                                                 </v-btn>
                                             </div>
                                             
@@ -204,12 +205,12 @@
                                 </v-card>
                             </div>
                             <v-divider opacity="70"></v-divider>
-                            <div class="my-2 text-center" v-if="product.tipulProdusuluiDto === 'perdea' || product.tipulProdusuluiDto === 'draperie'" >
+                            <div class="my-2 text-center" v-if="product.tipulProdusuluiJsonDto.tip_ro === 'perdea' || product.tipulProdusuluiJsonDto.tip_ro === 'draperie'" >
                                 <v-alert color="red" :icon="mdiInformation">
                                     <p class="font-weight-bold h6">{{ $t('shop.curtain.maxMaterialHeight') }} {{ product.inaltimeMaximaDto }} {{ currency === "RON" ? "metri" : "meters" }}</p>
                                 </v-alert>
                             </div>
-                            <div v-if="product.tipulProdusuluiDto === 'perdea' || product.tipulProdusuluiDto === 'draperie'">
+                            <div v-if="product.tipulProdusuluiJsonDto.tip_ro === 'perdea' || product.tipulProdusuluiJsonDto.tip_ro === 'draperie'">
                                 <v-stepper v-model="step" elevation="12" class="mb-6"
                                 :mobile="height === true">
                                     <v-stepper-header v-if="selectedOption === 'onlyMaterial' ">
@@ -405,7 +406,8 @@
                                                             <span class="font-weight-light h6">{{ rejansa.pretTipRejansa }} <b>{{ selectedCurrency === 'RON' ? 'RON/METRU' : 'EUR/METER' }}</b></span>
                                                         </div>
                                                         <span class="font-weight-light h6"> {{ $t('shop.curtain.incretire')}}: <b>{{ rejansa.incretireRejansa }}</b> </span>
-                                                        <v-img eager class="h-100 border-sm ml-1"
+                                                        {{console.log(rejansa)}}
+                                                        <v-img eager class="h-100 border-sm ml-1" v-if="rejansa.presignedUrl !== null"
                                                         :aspect-ratio="1 / 1"
                                                          cover
                                                         color="black"
@@ -415,6 +417,20 @@
                                                             density="compact"
                                                             base-color="black"
                                                             color="primary">
+
+                                                            </v-checkbox>
+                                                        </v-img>
+                                                        <v-img v-else
+                                                            :aspect-ratio="1 / 1"
+                                                            class="mx-1"
+                                                            cover
+                                                            color="black"
+                                                            src="/notFound.png" >
+                                                            <v-checkbox v-model="chosenRejansaType"
+                                                                :value="rejansa"
+                                                                density="compact"
+                                                                base-color="black"
+                                                                color="primary">
 
                                                             </v-checkbox>
                                                         </v-img>
@@ -434,8 +450,8 @@
                                                 <v-divider></v-divider>
                                                 <v-row no-gutters>
                                                     <v-col v-for="(ringType,index) in product.tipuriInele"
-                                                    :key="index" cols="6" xs="6" sm="4" >
-                                                        <v-img eager class="h-100 border-sm ml-1"
+                                                    :key="index" cols="6" xs="3" sm="4" >
+                                                        <v-img eager class="h-100 border-sm ml-1" v-if="ringType.presignedUrl !== null"
                                                         aspect-ratio="1:1"
                                                         cover 
                                                         color="black"
@@ -445,6 +461,20 @@
                                                             density="compact"
                                                             base-color="black"
                                                             color="primary">
+
+                                                            </v-checkbox>
+                                                        </v-img>
+                                                        <v-img v-else
+                                                            :aspect-ratio="1 / 1"
+                                                            class="mx-1"
+                                                            cover
+                                                            color="black"
+                                                            src="/notFound.png" >
+                                                            <v-checkbox v-model="chosenRingType"
+                                                                :value="ringType"
+                                                                density="compact"
+                                                                base-color="black"
+                                                                color="primary">
 
                                                             </v-checkbox>
                                                         </v-img>
@@ -466,9 +496,9 @@
                                                 </v-alert>
                                                 <v-row no-gutters>
                                                     <v-col v-for="(liningType,index) in product.tipuriLinie"
-                                                    :key="index" cols="6" xs="6" sm="6" >
+                                                    :key="index" cols="6" xs="3" sm="4" >
                                                     <span class="font-weight-thin h6">{{ liningType.pretTipCusaturaColt }} {{ selectedCurrency === 'RON' ? 'RON/METRU' : 'EUR/METER' }}</span>
-                                                        <v-img eager class=" border-sm ml-1"
+                                                        <v-img eager class=" border-sm ml-1" v-if="liningType.presignedUrl !== null"
                                                         aspect-ratio="1:1"
                                                         cover 
                                                         :src="liningType.presignedUrl">
@@ -477,6 +507,21 @@
                                                             density="compact"
                                                             base-color="black"
                                                             color="primary">
+
+                                                            </v-checkbox>
+                                                        </v-img>
+                                                        <!-- SETURI SHOP PAGE , SETURI OWN PAGE + CART -->
+                                                        <v-img v-else
+                                                            :aspect-ratio="1 / 1"
+                                                            class="mx-1"
+                                                            cover
+                                                            color="black"
+                                                            src="/notFound.png" >
+                                                            <v-checkbox v-model="chosenLiningType"
+                                                                :value="liningType"
+                                                                density="compact"
+                                                                base-color="black"
+                                                                color="primary">
 
                                                             </v-checkbox>
                                                         </v-img>
@@ -520,14 +565,14 @@
                                 <p class="text-center h6 font-weight-light"  v-if="prefferedHeight !== ''">{{ $t('shop.curtain.heightUntilBottom') }}: {{ prefferedHeight }}</p>
                                 <p class="text-center h6 font-weight-light"  v-if="prefferedHeight !== ''">{{ $t('shop.pair') }}: {{ isPair === false ? 'Nu' : 'Da' }}</p>
                                 <v-divider></v-divider>
-                                <p class="text-center h6 font-weight-light" v-if="chosenRejansaType">{{ $t('shop.curtain.rejansa') }} : {{ chosenRejansaType.numeTipRejansa }}</p>
+                                <p class="text-center h6 font-weight-light" v-if="chosenRejansaType">{{ $t('shop.curtain.rejansa') }} : {{ selectedCurrency === "RON" ? chosenRejansaType.numeTipRejansaDto.nume_ro : chosenRejansaType.numeTipRejansaDto.nume_en }}</p>
                                 <p class="text-center h6 font-weight-light" v-if="chosenRejansaType">{{ $t('shop.curtain.incretire') }} : {{ chosenRejansaType.incretireRejansa }}</p>
                                 <v-divider></v-divider>
-                                <p class="text-center h6 font-weight-light" v-if="chosenRingType">{{ $t('shop.curtain.rings') }} : {{ chosenRingType.numeTipInel }}</p>
+                                <p class="text-center h6 font-weight-light" v-if="chosenRingType">{{ $t('shop.curtain.rings') }} : {{ selectedCurrency === "RON" ? chosenRingType.culoareInelJsonDto.culoare_ro :  chosenRingType.culoareInelJsonDto.culoare_en}}</p>
                                 <v-divider></v-divider>
-                                <p class="text-center h6 font-weight-light" v-if="chosenLiningType " >{{ $t('shop.curtain.lineType') }} : {{ chosenLiningType.numeTipCusaturaColt }}</p>
+                                <p class="text-center h6 font-weight-light" v-if="chosenLiningType " >{{ $t('shop.curtain.lineType') }} : {{ selectedCurrency === "RON" ?  chosenLiningType.numeTipCusaturaColtJson.nume_ro : chosenLiningType.numeTipCusaturaColtJson.nume_en }}</p>
                             </v-alert>
-                            <div v-if="product.tipulProdusuluiDto !== 'perdea' && product.tipulProdusuluiDto !== 'draperie'" class="text-center">
+                            <div v-if="product.tipulProdusuluiJsonDto.tip_ro !== 'perdea' && product.tipulProdusuluiJsonDto.tip_ro !== 'draperie'" class="text-center">
                                 <p v-if="dimensionsLength > 0" class="font-weight-light h5">
                                     <span class="font-weight-thin h5">
                                         <b v-if="selectedDimension.priceDiscount > 0">
@@ -559,7 +604,7 @@
                                     :class="{'button-clicked': isClicked}"
                                     variant="flat"
                                     color="primary"
-                                    :disabled="(product.tipulProdusuluiDto === 'perdea' || product.tipulProdusuluiDto === 'draperie') && !readyToAddToCart"
+                                    :disabled="(product.tipulProdusuluiJsonDto.tip_ro === 'perdea' || product.tipulProdusuluiJsonDto.tip_ro === 'draperie') && !readyToAddToCart"
                                     @click="addOrUpdateCart"
                                 >
                                     <template v-if="!isClicked">
@@ -601,13 +646,13 @@
                                     </v-card-title>
                                     <v-divider></v-divider>
                                     <v-card-text class="text-center">
-                                        <p class="font-weight-light h6">{{ $t('shop.productGeneralInfo.productType') }}{{ product.tipulProdusuluiDto }}</p>
+                                        <p class="font-weight-light h6">{{ $t('shop.productGeneralInfo.productType') }}{{ selectedCurrency === "RON" ? product.tipulProdusuluiJsonDto.tip_ro :   product.tipulProdusuluiJsonDto.tip_en}}</p>
                                         <p class="font-weight-light h6">{{ $t('shop.productGeneralInfo.productName') }}{{ product.numeProdusDto }}</p>
                                         <p class="font-weight-light h6">{{ $t('shop.productGeneralInfo.productCode') }}{{ product.codProdusDto }}</p>
                                         <p class="font-weight-light h6">{{ $t('shop.productGeneralInfo.composition') }}{{ product.compozitieDto }}</p>
-                                        <p class="font-weight-light h6">{{ $t('shop.productGeneralInfo.productReverse') }}{{ product.fataReversibilaDto === true ? 'Da' : 'Nu' }}</p>
-                                        <p class="font-weight-light h6">{{ $t('shop.productGeneralInfo.availableOnMoreColors') }}{{ product.culoriProdus?.length > 1 ? 'Da' : 'Nu' }}</p>
-                                        <p class="font-weight-light h6">{{ $t('shop.productGeneralInfo.availableOnMoreDimensions') }}{{ product.dimensiuniProdus?.length > 1 ? 'Da' : 'Nu' }}</p>
+                                        <p class="font-weight-light h6">{{ $t('shop.productGeneralInfo.productReverse') }}{{ product.fataReversibilaDto === true ? t('yes') : t('no') }}</p>
+                                        <p class="font-weight-light h6">{{ $t('shop.productGeneralInfo.availableOnMoreColors') }}{{ product.culoriProdus?.length > 1 ? t('yes') : t('no') }}</p>
+                                        <p class="font-weight-light h6">{{ $t('shop.productGeneralInfo.availableOnMoreDimensions') }}{{ product.dimensiuniProdus?.length > 1 ? t('yes') : t('no') }}</p>
                                     </v-card-text>
                                     
                                 </v-card>
@@ -834,7 +879,7 @@
                                             <p class="text-center font-weight-light h5 mx-2">{{ product.numeProdusDto }}</p>
                                         </v-card-title>
                                         <v-card-subtitle>
-                                            <p class="text-center font-weight-thin h6 mx-2">({{ product.tipulProdusuluiDto }})</p>
+                                            <p class="text-center font-weight-thin h6 mx-2">({{ product.tipulProdusuluiJsonDto.tip_ro }})</p>
                                         </v-card-subtitle>
                                         <v-card-text class="h-100">
                                             <v-row>
@@ -845,7 +890,7 @@
                                                         eager class=" h-75 p-2 cursor-pointer  "
                                                         :alt="`${product.numeProdusDto} + culoare ${product.culoriProdusDto[0].numeCuloareDto}`"
                                                         :src="findFirstColorWithImage(product)" 
-                                                        @click="navigateTo(localePath(`/product/${product.codProdusDto}/${product.tipulProdusuluiDto}`))" 
+                                                        @click="navigateTo(localePath(`/product/${product.codProdusDto}/${product.tipulProdusuluiJsonDto.tip_ro}`))" 
                                                         v-bind="props">
                                                     
                                                     </v-img>
@@ -854,7 +899,7 @@
                                                         :aspect-ratio="10 / 9"
                                                         eager class="h-75 p-2 cursor-pointer "
                                                         :alt="`Image ${product.numeProdusDto}`"
-                                                        @click="navigateTo(localePath(`/product/${product.codProdusDto}/${product.tipulProdusuluiDto}`))" 
+                                                        @click="navigateTo(localePath(`/product/${product.codProdusDto}/${product.tipulProdusuluiJsonDto.tip_ro}`))" 
                                                         src="/notFound.png" 
                                                         v-bind="props" >
                                                     </v-img>
@@ -866,7 +911,7 @@
                                                 </v-col>
                                                 <v-col cols="12">
                                                     <NuxtLink prefetch :prefetch-on="{interaction: true}"
-                                                        :to="localePath(`/product/${product.codProdusDto}/${product.tipulProdusuluiDto}`)">
+                                                        :to="localePath(`/product/${product.codProdusDto}/${product.tipulProdusuluiJsonDto.tip_ro}`)">
                                                         <v-btn variant="flat"
                                                         color="primary">
                                                             {{ $t('shop.seeDetails') }}
@@ -900,7 +945,7 @@
 
 
 <script setup>
-import { mdiArrowRight,mdiArrowLeft, mdiCheck, mdiCloseCircleOutline, mdiEmail, mdiInformation, mdiPhone, mdiShoppingOutline, mdiStar } from '@mdi/js';
+import { mdiArrowRight,mdiArrowLeft, mdiCheck, mdiCloseCircleOutline, mdiEmail, mdiInformation, mdiPhone, mdiShoppingOutline, mdiStar ,mdiSale} from '@mdi/js';
 import { ref } from 'vue';
 import { useDisplay } from 'vuetify';
 import productService from '~/services/Products';
@@ -1001,7 +1046,7 @@ const rules = {
     onlyNumbers : value => onlyNums.test(String(value)) || t('textFieldsMessages.onlyNumbers'),
     maxChar: maxLength => value => !value || value.length <= maxLength || `${t('textFieldsMessages.maxLength')} ${maxLength}`,
     stars : value => value <= 5 && value >=0 || t('textFieldsMessages.starsRule'),
-    maxMaterialHeight: value => value <= product.value.inaltimeMaximaDto || `${t('shop.curtain.maxMaterialHeight')} + ${product.value.inaltimeMaximaDto} + ' m'`
+    maxMaterialHeight: value => value <= product.value.inaltimeMaximaDto * 100 || `${t('shop.curtain.maxMaterialHeight') + product.value.inaltimeMaximaDto + ' m'}  `
 }
 
 const isPair = ref(false)
@@ -1032,14 +1077,21 @@ const height = computed(() => {
 })
 
 const allImages = computed(() => {
-    if (!product.value.culoriProdus) return [];
-    // Group images by color
-    return product.value.culoriProdus.flatMap(color => 
-        color.imaginiProdusDto.map(image => ({
-            imageUrl: image.presignedUrl,
-            colorName: color.numeCuloareDto
-        }))
-    );
+    if(product.value){
+        if (!product.value.culoriProdus){
+            console.log('no colors found')
+            return [];
+        }
+        // Group images by color
+       
+        return product.value.culoriProdus.flatMap(color => 
+            color.imaginiProdusDto.map(image => ({
+                imageUrl: image.presignedUrl,
+                colorName: selectedCurrency.value === "RON" ? color.numeCuloareJsonDto.culoare_ro :  color.numeCuloareJsonDto.culoare_en
+            }))
+        );
+    }
+   
 });
 
 
@@ -1083,7 +1135,7 @@ const getReviewCount = (rating) => {
 
 
 function filterImagesByColor(color) {
-    const colorData = product.value.culoriProdus.find(c => c.numeCuloareDto === color);
+    const colorData = selectedCurrency.value === "RON" ? product.value.culoriProdus.find(c => c.numeCuloareJsonDto.culoare_ro === color) :  product.value.culoriProdus.find(c => c.numeCuloareJsonDto.culoare_en === color);
     filteredImages.value = colorData ? colorData.imaginiProdusDto.map(image => ({
         imageUrl: image.presignedUrl,
     })) : [];
@@ -1095,7 +1147,7 @@ const selectImage = ((imageObj) => {
 })
 
 const constructFormDataToSend = () => {
-    const materialNeededMeters = product.value.tipulProdusuluiDto === 'perdea' || product.value.tipulProdusuluiDto === 'draperie'
+    const materialNeededMeters = product.value.tipulProdusuluiJsonDto.tip_ro === 'perdea' || product.value.tipulProdusuluiJsonDto.tip_ro === 'draperie'
         ? onlyWidth.value === 0
              ? (prefferedWidth.value / 100)  * chosenRejansaType.value.incretireRejansa
              : (onlyWidth.value / 100)
@@ -1105,14 +1157,14 @@ const constructFormDataToSend = () => {
         idProdus: product.value.idProdus,
         idCuloare: selectedColor.value.idCuloare,
         idDimensiune: selectedDimension.value.idDimensiune === 0 ? null : selectedDimension.value.idDimensiune,
-        lungimeSina : product.value.tipulProdusuluiDto === 'perdea' || product.value.tipulProdusuluiDto === 'draperie' ? 
+        lungimeSina : product.value.tipulProdusuluiJsonDto.tip_ro === 'perdea' || product.value.tipulProdusuluiJsonDto.tip_ro === 'draperie' ? 
                 chosenRejansaType.value !== null ?  prefferedWidth.value : null
                 : 'notPerdeaOrDraperie'
            , // only material was selected
-        inaltime : product.value.tipulProdusuluiDto === 'perdea' || product.value.tipulProdusuluiDto === 'draperie' ? 
+        inaltime : product.value.tipulProdusuluiJsonDto.tip_ro === 'perdea' || product.value.tipulProdusuluiJsonDto.tip_ro === 'draperie' ? 
                 chosenRejansaType.value !== null ?  prefferedHeight.value : null
                 : 'notPerdeaOrDraperie', // only material was selected
-        perechePerdea : product.value.tipulProdusuluiDto === 'perdea' || product.value.tipulProdusuluiDto === 'draperie' ? 
+        perechePerdea : product.value.tipulProdusuluiJsonDto.tip_ro === 'perdea' || product.value.tipulProdusuluiJsonDto.tip_ro === 'draperie' ? 
             chosenRejansaType.value !== null ? isPair.value : null
             : 'notPerdeaOrDraperie',//  only maaterial was selected
         idRejansa : chosenRejansaType.value === null ? -11 : chosenRejansaType.value.idRejansa, // if null 
@@ -1122,7 +1174,7 @@ const constructFormDataToSend = () => {
         pretCurentTipLinie : chosenLiningType.value === null ? -11 : chosenLiningType.value.pretTipCusaturaColt ,
         pretCurentTipGalerie : chosenRejansaType.value === null ? -11 : chosenRejansaType.value.pretTipRejansa,
         currentCurrency : selectedCurrency.value,
-        pretCurent : product.value.tipulProdusuluiDto === 'perdea' || product.value.tipulProdusuluiDto === 'draperie' 
+        pretCurent : product.value.tipulProdusuluiJsonDto.tip_ro === 'perdea' || product.value.tipulProdusuluiJsonDto.tip_ro === 'draperie' 
                 ? finalPrice.value : dimensionsLength.value > 0 ? 
                     (selectedDimension.value.priceDiscount > 0 ? 
                         selectedDimension.value.priceDiscount : selectedDimension.value.price)
@@ -1139,7 +1191,7 @@ const constructFormDataToSend = () => {
 
 
 function validateProduct(){
-    if(product.value.tipulProdusuluiDto === 'perdea' || product.value.tipulProdusuluiDto === 'draperie'){
+    if(product.value.tipulProdusuluiJsonDto.tip_ro === 'perdea' || product.value.tipulProdusuluiJsonDto.tip_ro === 'draperie'){
         if(onlyWidth.value === 0){
             if(chosenRejansaType.value === null){
                 return {
@@ -1265,11 +1317,13 @@ function toggleButton(index, type) {
             price :  product.value.dimensiuniProdus[index].pretDto,
             priceDiscount:  product.value.dimensiuniProdus[index].pretRedusDto
         }
-        console.log(selectedDimension.value)
+       
     } else if (type === 'color') {
+       
         activeButtonColors.value = index;
         selectedColor.value.idCuloare = product.value.culoriProdus[index].idCuloare
-        selectedColor.value.name = product.value.culoriProdus[index].numeCuloareDto
+        selectedColor.value.name = selectedCurrency.value === "RON" ?  product.value.culoriProdus[index].numeCuloareJsonDto.culoare_ro 
+            :  product.value.culoriProdus[index].numeCuloareJsonDto.culoare_en 
         selectedColor.value.colorCode = product.value.culoriProdus[index].codCuloareDto
         if(product.value.culoriProdus[index].imaginiProdusDto.length > 0){
             selectedColor.value.imgUrl = product.value.culoriProdus[index].imaginiProdusDto[0].presignedUrl
@@ -1277,7 +1331,7 @@ function toggleButton(index, type) {
         if(allImages&&allImages.value){
             selectedImage.value = allImages.value.find(img => img.colorName === selectedColor.value.name)
         }
-        console.log(selectedColor.value)
+       
     }
 }
 
@@ -1288,6 +1342,7 @@ const getProductData = async () => {
     }else if(response === -2){
         navigateTo(localePath('/error/400'))
     }
+   
 
     Object.assign(product.value , response)
    
@@ -1295,12 +1350,13 @@ const getProductData = async () => {
         // Set the default color as the first color available
         selectedColor.value = {
            idCuloare : product.value.culoriProdus[0].idCuloare,
-           name : product.value.culoriProdus[0].numeCuloareDto,
+           name : selectedCurrency.value === "RON" ?  product.value.culoriProdus[0].numeCuloareJsonDto.culoare_ro :  product.value.culoriProdus[0].numeCuloareJsonDto.culoare_en,
            colorCode: product.value.culoriProdus[0].codCuloareDto,
            imgUrl : product.value.culoriProdus[0].imaginiProdusDto.length > 0 ?
              product.value.culoriProdus[0].imaginiProdusDto[0].presignedUrl : ''
         };
         activeButtonColors.value = 0;
+       
         filterImagesByColor(selectedColor.value.name);
     }
     if(product.value.dimensiuniProdus && product.value.dimensiuniProdus.length > 0){
@@ -1319,19 +1375,19 @@ const getProductData = async () => {
         reviewsLen.value = product.value.reviewsProdus.length
     }
 
-    if(product.value.tipulProdusuluiDto === 'perdea'){
+    if(product.value.tipulProdusuluiJsonDto.tip_ro === 'perdea'){
         selectedKeywords.value = perdeleKeywords.value;
-    }else if(product.value.tipulProdusuluiDto === 'draperie'){
+    }else if(product.value.tipulProdusuluiJsonDto.tip_ro === 'draperie'){
         selectedKeywords.value = draperiiKeywords.value;
-    }else if(product.value.tipulProdusuluiDto === 'cuvertura'){
+    }else if(product.value.tipulProdusuluiJsonDto.tip_ro === 'cuvertura'){
         selectedKeywords.value = cuverturiKeyWords.value;
-    }else if(product.value.tipulProdusuluiDto === 'perna'){
+    }else if(product.value.tipulProdusuluiJsonDto.tip_ro === 'perna'){
         selectedKeywords.value = perneKeywords.value;
     }else{
         selectedKeywords.value = perdeleKeywords.value + draperiiKeywords.value + cuverturiKeyWords.value + perneKeywords.value
     }
 
-    
+   
     
 }
 
@@ -1535,6 +1591,7 @@ onMounted(async () => {
    getMostViewedProducts()
    isMounted.value = true
 })
+
 
 
 useHead({

@@ -17,14 +17,22 @@
                         </v-list>
                         <v-list class="my-2 bg-grey-darken-4">
                             <v-list-item>
-                                <span class="font-weight-normal h6"><v-icon size="24" :icon="mdiStarFourPointsSmall"></v-icon>Pe a doua coloana se afla descriere produsului curent.Aceasta trebuie sa fie in maxim 150 de caractere.' +
+                                <span class="font-weight-normal h6"><v-icon size="24" :icon="mdiStarFourPointsSmall"></v-icon>Pe a doua coloana se afla descriere produsului  curent in romana.Aceasta trebuie sa fie in maxim 150 de caractere.' +
         Nu este obligatorie! Daca produsului nu are descriere lasati caracterul -</span>
                             </v-list-item>
                         </v-list>
                         <v-list class="my-2 bg-grey-darken-4">
                             <v-list-item>
-                                <span class="font-weight-normal h6"><v-icon size="24" :icon="mdiStarFourPointsSmall"></v-icon>Pe a treia coloana se afla numele produsului curent. Acesta trebuie sa fie in maxim 50 de caractere.' +
-        Este obligatoriu si nu neaparat unic!</span>
+                                <span class="font-weight-normal h6"><v-icon size="24" :icon="mdiStarFourPointsSmall"></v-icon>Este de forma: Cuvertura Aylin-Aylin Douvete</span>
+                            </v-list-item>
+                            <v-list-item>
+                                <span class="font-weight-normal h6"><v-icon size="24" :icon="mdiStarFourPointsSmall"></v-icon>Primul nume este in romana , al doilea traducerea in engleza , separate prin "-"</span>
+                            </v-list-item>
+                            <v-list-item>
+                                <span class="font-weight-normal h6"><v-icon size="24" :icon="mdiStarFourPointsSmall"></v-icon>Pe a treia coloana se afla numele produsului curent.</span>
+                            </v-list-item>
+                            <v-list-item>
+                                <span class="font-weight-normal h6"><v-icon size="24" :icon="mdiStarFourPointsSmall"></v-icon> Este obligatoriu si unic!</span>
                             </v-list-item>
                         </v-list>
                         <v-list class="my-2 bg-grey-darken-4">
@@ -61,19 +69,14 @@
                         </v-list>
                         <v-list class="my-2 bg-grey-darken-4">
                             <v-list-item>
-                                <span class="font-weight-normal h6"><v-icon size="24" :icon="mdiStarFourPointsSmall"></v-icon>Pe  coloana 6 se afla TVA-ul . De regula la 20 lasat , fara simbolul (%)</span>
+                                <span class="font-weight-normal h6"><v-icon size="24" :icon="mdiStarFourPointsSmall"></v-icon>Pe  coloana 6 se afla TVA-ul . Numar fara simbolul (%)</span>
                             </v-list-item>
                         </v-list>
                         <v-list class="my-2 bg-grey-darken-4">
                             <v-list-item>
-                                <span class="font-weight-normal h6"><v-icon size="24" :icon="mdiStarFourPointsSmall"></v-icon>Pe coloana 7 se afla Ingrijirea produsului. Nu este obligatorie si daca nu are poate fi lasata cu simbolul -</span>
+                                <span class="font-weight-normal h6"><v-icon size="24" :icon="mdiStarFourPointsSmall"></v-icon>Pe coloana 7 se afla ingrijirea produsului in romana. Nu este obligatorie si daca nu are poate fi lasata cu simbolul -</span>
                             </v-list-item>
                         </v-list>
-                        <!-- <v-list>
-                            <v-list-item>
-                                <span class="font-weight-normal h6"><v-icon size="24" :icon="mdiStarFourPointsSmall"></v-icon>Pe  coloana 8 se afla Greutatea produsului.Un numar decimal , cu virgula (ex. 2.1 , 2.5) in KG .Nu este obligatorie si daca nu are poate fi lasata cu simbolul -</span>
-                            </v-list-item>
-                        </v-list> -->
                         <v-list class="my-2 bg-grey-darken-4">
                             <v-list-item>
                                 <span class="font-weight-normal h6"><v-icon size="24" :icon="mdiStarFourPointsSmall"></v-icon>Pe coloana 8 se afla posibilatea de fata reversibila a  produsului. Daca produsul are fata reversibila lasati TRUE , daca nu , lasati FALSE.</span>
@@ -120,7 +123,7 @@
                                 <span class="font-weight-normal h6"><v-icon size="24" :icon="mdiStarFourPointsSmall"></v-icon>Pe coloana 13 se afla culori si codurile de culori.Aceasta este OBLIGATORIE!.</span>
                                 <v-list class="m-1 bg-grey-darken-1">
                                     <v-list-item>
-                                        <span class="font-weight-normal h6" ><v-icon :icon="mdiArrowRight" size="24"></v-icon>Acestea se vor scrie in formatul (Numele culorii-codul culorii) -> EXEMPLU: Grey blue-05,alpin-green-04.</span>
+                                        <span class="font-weight-normal h6" ><v-icon :icon="mdiArrowRight" size="24"></v-icon>Acestea se vor scrie in formatul (NUME_CULOARE_ROMANA-COD_CULOARE-NUME_CULOARE_ENGLEZA) -> EXEMPLU: verde alpin-04-alpine green.</span>
                                     </v-list-item>
                                     <v-list-item>
                                         <span class="font-weight-normal h6" ><v-icon :icon="mdiArrowRight" size="24"></v-icon>Acestea vor fi separate prin caracterul ",".Daca coloana este goala , programul va afisa o eroare si importul nu se va realiza.</span>
@@ -133,14 +136,14 @@
                                 <span class="font-weight-normal h6"><v-icon size="24" :icon="mdiStarFourPointsSmall"></v-icon>Pe coloana 14 se afla categoriile produsului. Acestea vor fi separate printr-o virgula(",").</span>
                                 <v-list class="m-1 bg-grey-darken-1">
                                     <v-list-item>
-                                        <span class="font-weight-normal h6" ><v-icon :icon="mdiArrowRight" size="24"></v-icon>Coloana este obligatorie si va fi in formatul urmator: EXEMPLU: Copii,Bucatarie,Premium.</span>
+                                        <span class="font-weight-normal h6" ><v-icon :icon="mdiArrowRight" size="24"></v-icon>Coloana este obligatorie si va fi in formatul (NUME_CATEGORIE_ROMANA-NUME_CATEGORIE_ENGLEZA) : Copii-Kids , Bucatarie-Kitchen</span>
                                     </v-list-item>
                                 </v-list>
                             </v-list-item>
                         </v-list>
                         <v-list class="my-2 bg-grey-darken-4">
                             <v-list-item>
-                                <span class="font-weight-normal h6"><v-icon size="24" :icon="mdiStarFourPointsSmall"></v-icon>Pe coloana 15 se afla tipul produsului. Acesta este OBLIGATORIU! Exemplu: Cuvertura, Perna </span>
+                                <span class="font-weight-normal h6"><v-icon size="24" :icon="mdiStarFourPointsSmall"></v-icon>Pe coloana 15 se afla tipul produsului. Acesta este OBLIGATORIU! Se foloseste formatul (TIP_ROMANA-TIP_ENGLEZA): Cuvertura-Douvete , Perdea-Curtain </span>
                             </v-list-item>
                         </v-list>
                         <v-list class="my-2 bg-grey-darken-4">
@@ -217,6 +220,21 @@
                         <v-list class="my-2 bg-grey-darken-4">
                             <v-list-item>
                                 <span class="font-weight-normal h6"><v-icon size="24" :icon="mdiStarFourPointsSmall"></v-icon>Pe coloana 20 se afla inaltimea maxima a materialului. Poate fi lasata la "-" daca produsul nu are inaltime maxima. Permite valori cu maxim 2 zecimale dupa virgula. </span>
+                            </v-list-item>
+                        </v-list>
+                        <v-list class="my-2 bg-grey-darken-4">
+                            <v-list-item>
+                                <span class="font-weight-normal h6"><v-icon size="24" :icon="mdiStarFourPointsSmall"></v-icon>Pe coloana 21 se afla descrierea in engleza a produsului. Lasati spatiu gol daca nu aveti o descriere , dar ar trebuii completata. </span>
+                            </v-list-item>
+                        </v-list>
+                        <v-list class="my-2 bg-grey-darken-4">
+                            <v-list-item>
+                                <span class="font-weight-normal h6"><v-icon size="24" :icon="mdiStarFourPointsSmall"></v-icon>Pe coloana 22 se afla compozitia in engleza a produsului. Lasati spatiu gol daca nu aveti o compozitie , dar ar trebuii completata. </span>
+                            </v-list-item>
+                        </v-list>
+                        <v-list class="my-2 bg-grey-darken-4">
+                            <v-list-item>
+                                <span class="font-weight-normal h6"><v-icon size="24" :icon="mdiStarFourPointsSmall"></v-icon>Pe coloana 23 se afla compozitia in engleza a produsului. Lasati spatiu gol daca nu aveti o ingrijire , dar ar trebuii completata. </span>
                             </v-list-item>
                         </v-list>
                 </v-alert>

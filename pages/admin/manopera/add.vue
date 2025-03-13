@@ -10,8 +10,20 @@
                             <v-text-field
                                 v-model="numeManoperaDto"
                                 :rules="[rules.nonEmpty,rules.checkManoperaName,rules.maxLen]"
-                                label="Nume manopera"
-                                placeholder="Numele manoperei"
+                                label="Nume manopera (Romana)"
+                                placeholder="Numele manoperei in romana"
+                                counter="70"
+                                variant="outlined"
+                                color="black"
+                                class="p-2 m-1"
+                            ></v-text-field>
+                        </v-col>
+                        <v-col cols="12">
+                            <v-text-field
+                                v-model="numeManoperaDtoEn"
+                                :rules="[rules.nonEmpty,rules.checkManoperaNameEn,rules.maxLen]"
+                                label="Nume manopera (Engleza)"
+                                placeholder="Numele manoperei in engleza"
                                 counter="70"
                                 variant="outlined"
                                 color="black"
@@ -29,10 +41,20 @@
                             ></v-text-field>
                         </v-col>
                         <v-col cols="12">
+                            <v-text-field
+                                v-model="maxHeight"
+                                :rules="[rules.nonEmpty, rules.numeric]"
+                                label="Inaltime maxima material (centimetri)"
+                                variant="outlined"
+                                color="black"
+                                class="p-2 m-1"
+                            ></v-text-field>
+                        </v-col>
+                        <v-col cols="12">
                             <v-select
                                 :items="options.rejanseDisponibile"
                                 :rules="[rules.required]"
-                                item-title="numeTipRejansa"
+                                item-title="numeTipRejansaDto.nume_ro"
                                 :item-value="item => item"
                                 label="Alege cusatura galeriei"
                                 variant="outlined"
@@ -41,19 +63,19 @@
                                 v-model="selectedRejansa"
                             ></v-select>
                         </v-col>
-                        <v-col cols="12" v-if="Object.keys(selectedRejansa).length > 0 && selectedRejansa.numeTipRejansa !== '-' ">
+                        <v-col cols="12" v-if="Object.keys(selectedRejansa).length > 0 && selectedRejansa.numeTipRejansaDto.nume_ro !== '-' ">
                             <v-card class="bg-grey-darken-4 p-2">
                                 <v-alert type="info" variant="tonal">
-                                    <p class="font-weight-light h6">Se afiseaza informatii despre rejansa <b class="text-white">{{ selectedRejansa.numeTipRejansa }}</b></p>
+                                    <p class="font-weight-light h6">Se afiseaza informatii despre rejansa <b class="text-white">{{ selectedRejansa.numeTipRejansaDto.nume_ro  }}</b></p>
                                 </v-alert>
                                 <v-card-title class="font-weight-light">
-                                    {{ selectedRejansa.numeTipRejansa }}
+                                    {{ selectedRejansa.numeTipRejansaDto.nume_ro  }}
                                 </v-card-title>
                                 <v-divider></v-divider>
                                 <v-card-text>
                                     <v-row>
                                         <v-col cols="6">
-                                            <p class="font-weight-light h6">Nume rejansa: {{ selectedRejansa.numeTipRejansa }}</p>
+                                            <p class="font-weight-light h6">Nume rejansa: {{ selectedRejansa.numeTipRejansaDto.nume_ro  }}</p>
                                             <p class="font-weight-light h6">Incretire rejansa: {{ selectedRejansa.incretireRejansa }}</p>
                                         </v-col>
                                         <v-col cols="6">
@@ -80,7 +102,7 @@
                             <v-select
                                 :items="options.ineleDisponibile"
                                 :rules="[rules.required]"
-                                item-title="numeTipInel"
+                                item-title="culoareInelJsonDto.culoare_ro"
                                 :item-value="item => item"
                                 label="Alege inelul de prindere"
                                 variant="outlined"
@@ -89,15 +111,15 @@
                                 v-model="selectedRingType"
                             ></v-select>
                         </v-col>
-                        <v-col cols="12" v-if="Object.keys(selectedRingType).length > 0 && selectedRingType.numeTipInel !== '-' ">
+                        <v-col cols="12" v-if="Object.keys(selectedRingType).length > 0 && selectedRejansa.sePrindeCuInele === true">
                             <v-card class="bg-grey-darken-4 p-2">
                                 <v-alert type="info" variant="tonal">
-                                    <p class="font-weight-light h6">Se afiseaza informatii despre inelul de prindere <b class="text-white">{{ selectedRingType.numeTipInel }}</b></p>
+                                    <p class="font-weight-light h6">Se afiseaza informatii despre inelul de prindere <b class="text-white">{{ selectedRingType.culoareInelJsonDto.culoare_ro  }}</b></p>
                                 </v-alert>
                                 <v-card-text>
                                     <v-row>
                                         <v-col cols="12">
-                                            <p class="font-weight-light h6">Culoare inel: {{ selectedRingType.numeTipInel }}</p>
+                                            <p class="font-weight-light h6">Culoare inel: {{ selectedRingType.culoareInelJsonDto.culoare_ro }}</p>
                                         </v-col>
                                         <v-divider></v-divider>
                                         <v-col cols="12">
@@ -119,7 +141,7 @@
                             <v-select
                                 :items="options.cusaturiLiniiDisponibile"
                                 :rules="[rules.required]"
-                                item-title="numeTipCusaturaColt"
+                                item-title="numeTipCusaturaColtJson.nume_ro"
                                 :item-value="item => item"
                                 label="Alege tipul cusaturii de colt"
                                 variant="outlined"
@@ -128,15 +150,15 @@
                                 v-model="selectedLiningType"
                             ></v-select>
                         </v-col>
-                        <v-col cols="12" v-if="Object.keys(selectedLiningType).length > 0 && selectedLiningType.numeTipCusaturaColt !== '-' ">
+                        <v-col cols="12" v-if="Object.keys(selectedLiningType).length > 0 && selectedLiningType.numeTipCusaturaColtJson.nume_ro !== '-' ">
                             <v-card class="bg-grey-darken-4 p-2">
                                 <v-alert type="info" variant="tonal">
-                                    <p class="font-weight-light h6">Se afiseaza informatii despre cusatura de linie <b class="text-white">{{ selectedLiningType.numeTipCusaturaColt }}</b></p>
+                                    <p class="font-weight-light h6">Se afiseaza informatii despre cusatura de linie <b class="text-white">{{selectedLiningType.numeTipCusaturaColtJson.nume_ro }}</b></p>
                                 </v-alert>
                                 <v-card-text>
                                     <v-row>
                                         <v-col cols="12">
-                                            <p class="font-weight-light h6">Nume tip cusatura colt: {{ selectedLiningType.numeTipCusaturaColt }}</p>
+                                            <p class="font-weight-light h6">Nume tip cusatura colt: {{selectedLiningType.numeTipCusaturaColtJson.nume_ro }}</p>
                                             <p class="font-weight-light h6">Pret manopera: {{ selectedLiningType.pretTipCusaturaColt }} RON/METRU</p>
                                         </v-col>
                                         <v-divider></v-divider>
@@ -190,15 +212,43 @@ const manoperaForm = ref(null);
 const options = ref({})
 
 const numeManoperaDto = ref('')
+const numeManoperaDtoEn = ref('')
+const maxHeight = ref(0);
+
+const namesRo = ref([])
+const namesEn = ref([])
+
 const nrTotalMetri = ref(0)
 const selectedRejansa = ref({
-    numeTipRejansa : '-'
+    numeTipRejansa : '-',
+    numeTipRejansaDto : {
+        nume_ro : '',
+        nume_en : ''
+    },
+    pretTipRejansa: 0,
+    incretireRejansa: 0,
+    presignedUrl: "empty",
+    caleRelativa: "empty",
+    sePrindeCuInele: false
 })
 const selectedRingType = ref({
-    numeTipInel : '-'
+    numeTipInel: '',
+    culoareInelJsonDto : {
+        culoare_ro : '',
+        culoare_en : '',
+    },
+    caleRelativa: "empty",
+    presignedUrl: "empty"
 })
 const selectedLiningType = ref({
-    numeTipCusaturaColt : '-'
+    numeTipCusaturaColtJson : {
+        nume_ro : '',
+        nume_en : '',
+    },
+    numeTipCusaturaColt: '',
+    pretTipCusaturaColt: 0,
+    caleRelativa: "empty",
+    presignedUrl:  "empty"
 })
 
 const rules = {
@@ -210,14 +260,18 @@ const rules = {
   numeric: (v) => /^[0-9]+(\.[0-9]+)?$/.test(v) || "Introduceți un număr valid (e.g. 2, 3, 3.5, 2.5).",
   nonEmpty: (v) => (v && String(v).trim().length > 0) || "Acest câmp nu poate fi gol.",
   checkManoperaName: (v) => {
-    if(options.value.numeManopereFolosite){
-        let isNameUsed = options.value.numeManopereFolosite.find(name => name.toLowerCase() === String(v).toLowerCase())
-        if(isNameUsed === undefined){
-            return true
-        }
-        return 'Numele de manopera exista deja. Alegeti altul.';
+    let isNameUsed = namesRo.value.find(name => name === String(v))
+    if(isNameUsed === undefined){
+        return true
     }
-    
+    return 'Numele de manopera exista deja in limba romana. Alegeti altul.';
+  },
+  checkManoperaNameEn: (v) => {
+    let isNameUsed = namesEn.value.find(name => name === String(v))
+    if(isNameUsed === undefined){
+        return true
+    }
+    return 'Numele de manopera exista deja in limba engleza. Alegeti altul.';
   }
 };
 
@@ -236,6 +290,10 @@ const getManopereOptions = (async () => {
     }
     if(options.value.cusaturiLiniiDisponibile?.length > 0){
         selectedLiningType.value = options.value.cusaturiLiniiDisponibile[0]
+    }
+    if(options.value.numeManopereFolosite.length > 0){
+        namesRo.value = options.value.numeManopereFolosite.map(elem => elem.nume_ro)
+        namesEn.value = options.value.numeManopereFolosite.map(elem => elem.nume_en)
     }
 })
 
@@ -268,13 +326,27 @@ function fireAlarm(icon, title, text, isLoading) {
 async function saveNewManopera() {
     fireAlarm('info', 'Salvare...', 'Asteptati...', true);
     const manoperaDto = {
-        numeManopera: numeManoperaDto.value,
-        tipInel: selectedRingType.value?.numeTipInel !== '-' ? {
+        // numeManopera: numeManoperaDto.value,
+        // numeManopera: numeManoperaDto.value,
+        numeManoperaJson : {
+            nume_ro : numeManoperaDto.value,
+            nume_en : numeManoperaDtoEn.value
+        },
+        inaltimeMaxima : maxHeight.value,
+        tipInel: selectedRejansa.value.sePrindeCuInele === true ? {
             numeTipInel: selectedRingType.value.numeTipInel,
+            culoareInelJsonDto : {
+                culoare_ro : selectedRingType.value.culoareInelJsonDto.culoare_ro,
+                culoare_en : selectedRingType.value.culoareInelJsonDto.culoare_en,
+            },
             caleRelativa: selectedRingType.value.caleRelativa,
             presignedUrl: selectedRingType.value.presignedUrl
         } : null,
         tipGalerie: {
+            numeTipRejansaDto : {
+                nume_ro : selectedRejansa.value.numeTipRejansaDto.nume_ro,
+                nume_en : selectedRejansa.value.numeTipRejansaDto.nume_en,
+            },
             numeTipRejansa: selectedRejansa.value.numeTipRejansa,
             pretTipRejansa: selectedRejansa.value.pretTipRejansa,
             incretireRejansa: selectedRejansa.value.incretireRejansa,
@@ -283,6 +355,10 @@ async function saveNewManopera() {
             sePrindeCuInele: selectedRejansa.value.sePrindeCuInele
         },
         tipLinie: {
+            numeTipCusaturaColtJson : {
+                nume_ro : selectedLiningType.value.numeTipCusaturaColtJson.nume_ro,
+                nume_en : selectedLiningType.value.numeTipCusaturaColtJson.nume_en
+            },
             numeTipCusaturaColt: selectedLiningType.value.numeTipCusaturaColt,
             pretTipCusaturaColt: selectedLiningType.value.pretTipCusaturaColt,
             caleRelativa: selectedLiningType.value.caleRelativa,
@@ -290,8 +366,8 @@ async function saveNewManopera() {
             
         },
         metruTotalFolosit: parseFloat(nrTotalMetri.value),
-        numeDeManopere: options.value.numeManopereFolosite, 
-        optiuniDisponibile: options.value.optiuniDisponibile 
+        numeDeManopere: [], 
+        optiuniDisponibile: null,
     };
     const isValid = await manoperaForm.value.validate();
     if(isValid.valid){

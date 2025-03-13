@@ -43,7 +43,39 @@
               </template>
             </v-combobox>
             </v-col>
-            <v-col cols="6">
+            <v-col cols="6" xs="12" s="12">
+                <v-text-field class="p-2"
+                    v-model="product.numeProdusJsonDto.nume_ro"
+                    
+                    label="Nume Produs (Romana)"
+                    counter="50"
+                    variant="outlined"
+                    :rules="[rules.lengthNotAbove(50), rules.fieldNotEmpty,rules.checkProductName]"
+                >
+                <template v-slot:counter={max,value}>
+                  <span :style="{ color: value > max ? 'red' : 'white' }">
+                      {{ value }} / {{ max }}
+                  </span>
+                </template>
+              </v-text-field>
+            </v-col>
+            <v-col cols="6" xs="12" s="12">
+                <v-text-field class="p-2"
+                    v-model="product.numeProdusJsonDto.nume_en"
+                    
+                    label="Nume Produs (Engleza)"
+                    :counter="50"
+                    variant="outlined"
+                    :rules="[rules.lengthNotAbove(50), rules.fieldNotEmpty,rules.checkProductNameEn]"
+                >
+                <template v-slot:counter={max,value}>
+                  <span :style="{ color: value > max ? 'red' : 'white' }">
+                      {{ value }} / {{ max }}
+                  </span>
+                </template>
+                </v-text-field>
+            </v-col>
+            <!-- <v-col cols="6">
               <v-text-field class="p-2 m-1"
                 v-model="product.numeProdusDto"
                 label="Nume Produs"
@@ -51,14 +83,44 @@
                 variant="outlined"
                 :rules="[rules.lengthNotAbove(50), rules.fieldNotEmpty,rules.checkProductName]"
               >
-              <template v-slot:counter={max,value}>
+             
+              </v-text-field>
+            </v-col> -->
+            <v-col cols="6" xs="12" s="12" v-if="!isLoading">
+                <v-combobox class="p-2"
+                    @update:search="mapTypeRoToEn(product , product.tipulProdusuluiJsonDto.tip_ro)"
+                    v-model="product.tipulProdusuluiJsonDto.tip_ro"
+                    label= "Tip produs (Romana)"
+                    variant="outlined"
+                    :items="getProductTypesRo"
+                    :counter="20"
+                    :rules="[rules.fieldNotEmpty]"
+                >
+                <template v-slot:counter={max,value}>
                   <span :style="{ color: value > max ? 'red' : 'white' }">
                       {{ value }} / {{ max }}
                   </span>
                 </template>
-              </v-text-field>
+              </v-combobox>
             </v-col>
-            <v-col cols="6">
+            <v-col cols="6" xs="12" s="12" v-if="!isLoading">
+                <v-combobox class="p-2"
+                    @update:search="mapTypeEnToRo(product , product.tipulProdusuluiJsonDto.tip_en)"
+                    v-model="product.tipulProdusuluiJsonDto.tip_en"
+                    label= "Tip produs (Engleza)"
+                    variant="outlined"
+                    :items="getProductTypesEn"
+                    :counter="20"
+                    :rules="[rules.fieldNotEmpty]"
+                >
+                <template v-slot:counter={max,value}>
+                  <span :style="{ color: value > max ? 'red' : 'white' }">
+                      {{ value }} / {{ max }}
+                  </span>
+                </template>
+              </v-combobox>
+            </v-col>
+            <!-- <v-col cols="6">
               <v-combobox class="p-2 m-1"
                 v-model="product.tipulProdusuluiDto"
                 label="Tipul produsului"
@@ -72,9 +134,39 @@
                       {{ value }} / {{ max }}
                   </span>
                 </template>
-            </v-combobox>
+              </v-combobox>
+            </v-col> -->
+            <v-col cols="12" xs="12" s="12" v-if="!isLoading">
+                <v-textarea class="p-2"
+                    v-model="product.descriereJsonDto.descriere_ro"
+                    label="Descriere Produs (Romana)"
+                    counter="150"
+                    variant="outlined"
+                    :rules="[rules.lengthNotAbove(150), rules.fieldNotEmpty]"
+                >
+                <template v-slot:counter={max,value}>
+                  <span :style="{ color: value > max ? 'red' : 'white' }">
+                      {{ value }} / {{ max }}
+                  </span>
+                </template>
+              </v-textarea>
             </v-col>
-            <v-col cols="12">
+            <v-col cols="12" xs="12" s="12" v-if="!isLoading">
+                <v-textarea class="p-2"
+                v-model="product.descriereJsonDto.descriere_en"
+                    label="Descriere Produs (Engleza)"
+                    counter="150"
+                    variant="outlined"
+                    :rules="[rules.lengthNotAbove(150), rules.fieldNotEmpty]"
+                >
+                <template v-slot:counter={max,value}>
+                  <span :style="{ color: value > max ? 'red' : 'white' }">
+                      {{ value }} / {{ max }}
+                  </span>
+                </template>
+              </v-textarea>
+            </v-col>
+            <!-- <v-col cols="12">
               <v-textarea class="p-2 m-1"
                 v-model="product.descriereDto"
                 label="Descriere Produs"
@@ -88,30 +180,37 @@
                   </span>
                 </template>
             </v-textarea>
+            </v-col> -->
+            <v-col cols="12" xs="12" s="12" v-if="!isLoading">
+                <v-text-field class="p-2"
+                    v-model="product.compozitieJsonDto.compozitie_ro"
+                    label="Compozitie (Romana)"
+                    counter="50"
+                    variant="outlined"
+                    :rules="[rules.lengthNotAbove(50)]"
+                >
+                  <template v-slot:counter={max,value}>
+                    <span :style="{ color: value > max ? 'red' : 'white' }">
+                        {{ value }} / {{ max }}
+                    </span>
+                  </template>
+                </v-text-field>
             </v-col>
-            <v-col cols="12">
-              <v-text-field class="p-2 m-1"
-                v-model="product.compozitieDto"
-                label="Compoziție"
-                :counter="50"
-                variant="outlined"
-                :rules="[rules.lengthNotAbove(50)]"
-              >
-              <template v-slot:counter={max,value}>
+            <v-col cols="12" xs="12" s="12" v-if="!isLoading">
+                <v-text-field class="p-2"
+                    v-model="product.compozitieJsonDto.compozitie_en"
+                    label="Compozitie (Engleza)"
+                    counter="50"
+                    variant="outlined"
+                    :rules="[rules.lengthNotAbove(50)]"
+                >
+                <template v-slot:counter={max,value}>
                   <span :style="{ color: value > max ? 'red' : 'white' }">
                       {{ value }} / {{ max }}
                   </span>
                 </template>
-            </v-text-field>
+              </v-text-field>
             </v-col>
-            <!-- <v-col cols="6">
-              <v-text-field class="p-2 m-1"
-                v-model="product.greutateDto"
-                label="Greutate (kg)"
-                variant="outlined"
-                :rules="[rules.onlyNumbers]"
-              ></v-text-field>
-            </v-col> -->
             <v-col cols="6">
               <v-checkbox class="p-2 m-1"
                 v-model="product.activInMagazinDto"
@@ -126,6 +225,20 @@
                 variant="outlined"
               ></v-checkbox>
             </v-col>
+            <v-col cols="6" xs="12" s="12">
+              <v-checkbox class="p-2"
+                    v-model="product.afiseazaInNoutatiDto"
+                    label="Afiseaza in Noutati"
+                    variant="outlined"
+              ></v-checkbox>
+            </v-col>
+            <v-col cols="6" xs="12" s="12">
+              <v-checkbox class="p-2"
+                    v-model="product.produsLimitatDto"
+                    label="Afiseaza la Produse Limitate"
+                    variant="outlined"
+              ></v-checkbox>
+            </v-col>
             <v-col cols="6"> 
               <v-text-field class="p-2 m-1"
                 v-model="product.tvaDto"
@@ -134,20 +247,35 @@
                 :rules="[rules.fieldNotEmpty, rules.onlyNumbers]"
               ></v-text-field>
             </v-col>
-            <v-col cols="12">
-              <v-textarea class="p-2 m-1"
-                v-model="product.ingrijireDto"
-                label="Instrucțiuni de îngrijire"
-                :counter="150"
-                variant="outlined"
-                :rules="[rules.lengthNotAbove(150)]"
-              >
-              <template v-slot:counter={max,value}>
+            <v-col cols="12" xs="12" s="12" v-if="!isLoading">
+                <v-textarea class="p-2"
+                    v-model="product.ingrijireJsonDto.ingrijire_ro"
+                    label="Instrucțiuni de îngrijire (Romana)"
+                    counter="150"
+                    variant="outlined"
+                    :rules="[rules.lengthNotAbove(150)]"
+                >
+                <template v-slot:counter={max,value}>
                   <span :style="{ color: value > max ? 'red' : 'white' }">
                       {{ value }} / {{ max }}
                   </span>
-                </template>
-            </v-textarea>
+              </template>
+              </v-textarea>
+            </v-col>
+            <v-col cols="12" xs="12" s="12" v-if="!isLoading">
+                <v-textarea class="p-2"
+                    v-model="product.ingrijireJsonDto.ingrijire_en"
+                    label="Instrucțiuni de îngrijire (Engleza)"
+                    counter="150"
+                    variant="outlined"
+                    :rules="[rules.lengthNotAbove(150)]"
+                >
+                <template v-slot:counter={max,value}>
+                  <span :style="{ color: value > max ? 'red' : 'white' }">
+                      {{ value }} / {{ max }}
+                  </span>
+              </template>
+              </v-textarea>
             </v-col>
             <v-col cols="12">
               <v-alert color="warning" class="text-center" variant="tonal">
@@ -204,7 +332,46 @@
             Categoriile produsului
           </v-card-title>
           <v-row v-for="(tipProdus, index) in product.tipuriProduseDto" :key="index">
-            <v-col cols="10">
+            <v-col cols="12">
+                <v-combobox
+                    @update:search="mapCategoryRoToEn(tipProdus , tipProdus.categorieJsonDto.categorie_ro )"
+                    class="mx-2"
+                    v-model="tipProdus.categorieJsonDto.categorie_ro"
+                    :items="getProductCategoriesRo"
+                    label="Categorie (Romana)"
+                    :counter="40"
+                    outlined
+                    clearable
+                >
+                <template v-slot:counter={max,value}>
+                  <span :style="{ color: value > max ? 'red' : 'white' }">
+                      {{ value }} / {{ max }}
+                  </span>
+                </template>
+              </v-combobox>
+            </v-col>
+            <v-col cols="12">
+                <v-combobox
+                    @update:search="mapCategoryEnToRo(tipProdus,tipProdus.categorieJsonDto.categorie_en )"
+                    class="mx-2"
+                    v-model="tipProdus.categorieJsonDto.categorie_en"
+                    :items="getProductCategoriesEn"
+                    label="Categorie (Engleza)"
+                    :counter="40"
+                    outlined
+                    clearable
+                >
+                <template v-slot:counter={max,value}>
+                  <span :style="{ color: value > max ? 'red' : 'white' }">
+                      {{ value }} / {{ max }}
+                  </span>
+                </template>
+              </v-combobox>
+            </v-col>
+            <v-col cols="12" class="d-flex align-center justify-center">
+                <v-icon :icon="mdiDeleteCircle" @click="deleteType(tipProdus.categorieJsonDto.categorie_ro ,tipProdus.categorieJsonDto.categorie_en )" color="error" size="32"></v-icon>
+            </v-col>
+            <!-- <v-col cols="10">
               <v-combobox
                 v-model="tipProdus.categorieDto"
                 :items="productOptions.productCategoriesForBox"
@@ -214,11 +381,7 @@
                 outlined
                 clearable
               >
-              <template v-slot:counter={max,value}>
-                  <span :style="{ color: value > max ? 'red' : 'white' }">
-                      {{ value }} / {{ max }}
-                  </span>
-                </template>
+             
             </v-combobox>
             </v-col>
             <v-col cols="2" class="d-flex align-center justify-center">
@@ -227,7 +390,7 @@
                 color="error"
                 size="32" :icon="mdiDeleteCircle"
               ></v-icon>
-            </v-col>
+            </v-col> -->
             <v-divider :thickness="3"></v-divider>
           </v-row>
           <v-btn @click="showTypeForm()" color="white" class="mt-4 rounded-xl" variant="outlined">
@@ -309,30 +472,35 @@
             Culorile produsului
           </v-card-title>
           <v-row v-for="(culoare, index) in product.culoriProdusDto" :key="index">
-            <v-col cols="5">
-              <v-combobox
-                v-model="culoare.numeCuloareDto"
-                :items="productOptions.culoriForBox"
-                :rules="[rules.fieldNotEmpty, rules.onlyLetters]"
-                label="Nume Culoare"
-                outlined
-              ></v-combobox>
+            <v-col cols="12">
+                <v-combobox
+                    v-model="culoare.codCuloareDto"
+                    label="Cod Culoare"
+                    :items="productOptions.coduriCuloriForBox"
+                    variant="outlined"
+                ></v-combobox>
             </v-col>
-            <v-col cols="5">
-              <v-combobox
-                v-model="culoare.codCuloareDto"
-                :items="productOptions.coduriCuloriForBox"
-                :rules="[rules.fieldNotEmpty, rules.onlyNumbers]"
-                label="Cod Culoare"
-                outlined
-              ></v-combobox>
+            <v-col cols="12">
+                <v-combobox
+                    @update:search="mapColorRoToEn(culoare , culoare.numeCuloareJsonDto.culoare_ro)"
+                    v-model="culoare.numeCuloareJsonDto.culoare_ro"
+                    label="Nume Culoare (Romana)"
+                    :items="getColorsRo"
+                    variant="outlined"
+                ></v-combobox>
             </v-col>
-            <v-col cols="2" class="d-flex align-center justify-center">
-              <v-icon
-                @click="deleteColor(culoare.numeCuloareDto, culoare.codCuloareDto)"
-                color="error"
-                size="32" :icon="mdiDeleteCircle"
-              ></v-icon>
+            <v-col cols="12">
+                <v-combobox
+                    @update:search="mapColorEnToRo(culoare , culoare.numeCuloareJsonDto.culoare_en)"
+                    v-model="culoare.numeCuloareJsonDto.culoare_en"
+                    label="Nume Culoare (Engleza)"
+                    :items="getColorsEn"
+                    variant="outlined"
+                ></v-combobox>
+            </v-col>
+            <v-col cols="12" class="d-flex align-center justify-center">
+                <v-icon :icon="mdiDeleteCircle" @click="deleteColor(culoare.numeCuloareJsonDto.culoare_ro, culoare.codCuloareDto)"
+                    color="error" size="32"></v-icon>
             </v-col>
             <v-divider :thickness="3"></v-divider>
             <!-- Images for each color -->
@@ -371,7 +539,7 @@
                 </v-col>
                 <v-col cols="12" class="d-flex align-center justify-center">
                   <v-icon
-                    @click="deleteImage(culoare.numeCuloareDto, culoare.codCuloareDto, imagine.caleImagineDto, imagine.fisierInBucketDto)"
+                    @click="deleteImage(culoare.numeCuloareJsonDto.culoare_ro, culoare.codCuloareDto, imagine.caleImagineDto, imagine.fisierInBucketDto)"
                     color="error"
                     class="mb-2"
                     size="32" :icon="mdiDeleteCircle"
@@ -410,46 +578,73 @@ definePageMeta({
   layout: 'admin',
   middleware: 'admin'
 })
-
+const isLoading = ref(true)
 const productCodesAndNames = ref([]);
 const codProdusArray = ref([])
-const numeProdusArray = ref([])
+const numeProdusArrayRo = ref([])
+const numeProdusArrayEn = ref([])
 
 const product = reactive({
     codProdusDto: '',
     oldCodProdusDto : '',
     descriereDto: '',
+    descriereJsonDto: {
+        descriere_ro: "",
+        descriere_en: ""
+    },
     numeProdusDto: '',
+    numeProdusJsonDto: {
+        nume_ro : "",
+        nume_en : ""
+    },
     compozitieDto: '',
+    compozitieJsonDto: {
+        compozitie_ro : "",
+        compozitie_en : ""
+    },
     tvaDto: 0,
     ingrijireDto: '',
-    greutateDto: 0,
-    fataReversibilaDto: null,
+    ingrijireJsonDto : {
+        ingrijire_ro : "",
+        ingrijire_en : ""
+    },
+    fataReversibilaDto: false,
     stocDto: 0,
     numeProducatorDto: '',
-    activInMagazinDto: null,
+    activInMagazinDto: false,
     pretBazaDto: 0,
     pretBazaRedusDto: 0,
     tipulProdusuluiDto : '',
+    tipulProdusuluiJsonDto : {
+        tip_ro : "",
+        tip_en : ""
+    },
     inaltimeMaximaDto : 0,
+    afiseazaInNoutatiDto : false,
+    produsLimitatDto : false,
     justAdded: false,
     tipuriProduseDto: [],
+    tipuriProduseJsonDto: [],
     dimensiuniProduseDto: [],
     culoriProdusDto: [],
+    culoriProdusJsonDto: [],
+
 });
 
-const productOptions = reactive({
+const productOptions = ref({
   coduriCuloriForBox: [],
   culoriForBox: [],
+  culoriForBoxJson : [],
   latimiForBox: [],
   lungimiForBox: [],
   productCategoriesForBox: [],
+  productCategoriesForBoxJson : [],
   recomandariForBox: [],
   directoriesInBucket: [],
   manuFacturersDto: [],
-  productTypes : []
-})
-
+  productTypes : [],
+  productTypesJson : [],
+});
 
 const rules = reactive({
   fieldNotEmpty: (value) => !!String(value) || "Campul este obligatoriu",
@@ -462,13 +657,20 @@ const rules = reactive({
   recomandarePatRule: (value) =>
     /^[0-9]+x[0-9]+$/.test(String(value).trim()) ||
     "Recomandarea pat trebuie sa fie in format 130x270",
+
   checkProductName: value => {
-   
-    let isNameAlreadyUsed = numeProdusArray.value.find(name => name === value.toUpperCase());
+    let isNameAlreadyUsed = numeProdusArrayRo.value.find(name => name.toUpperCase() === value.toUpperCase());
     if (isNameAlreadyUsed === undefined) {
         return true;
     }
     return 'Numele de produs exista deja'; // Return the error message if the name is found
+  },
+  checkProductNameEn: value => {
+      let isNameAlreadyUsed = numeProdusArrayEn.value.find(name => name.toUpperCase() === value.toUpperCase());
+      if (isNameAlreadyUsed === undefined) {
+          return true;
+      }
+      return 'Numele de produs in engleza exista deja'; // Return the error message if the name is found
   },
 
   checkProductCode: value => {
@@ -484,44 +686,156 @@ const rules = reactive({
 })
 
 
+const getProductCategoriesRo = computed(() => {
+  return productOptions.value.productCategoriesForBoxJson
+    ? productOptions.value.productCategoriesForBoxJson.map(item => item.categorie_ro)
+    : [];
+});
 
-onMounted(async () => {
-  await assignProductOptionsFromDb();
-  await assingProductCodesAndNamesFromDb();
+const getProductCategoriesEn = computed(() => {
+  return productOptions.value.productCategoriesForBoxJson
+    ? productOptions.value.productCategoriesForBoxJson.map(item => item.categorie_en)
+    : [];
+});
+
+const getColorsRo = computed(() => {
+    return productOptions.value.culoriForBoxJson 
+    ? productOptions.value.culoriForBoxJson.map(item => item.culoare_ro)
+    : [];
 })
 
-onBeforeUnmount(() => {
-  product.culoriProdusDto.forEach(color => {
-    color.imaginiProdusDto.forEach(image => {
-      if (image.presignedUrl) {
-        URL.revokeObjectURL(image.presignedUrl);
-      }
-    });
-  });
+const getColorsEn = computed(() => {
+    return productOptions.value.culoriForBoxJson 
+    ? productOptions.value.culoriForBoxJson.map(item => item.culoare_en)
+    : [];
 })
+
+
+const getProductTypesRo = computed(() => {
+    return productOptions.value.productTypesJson ?
+        productOptions.value.productTypesJson.map(item => item.tip_ro)
+    : [];
+})
+
+const getProductTypesEn = computed(() => {
+    return productOptions.value.productTypesJson ?
+        productOptions.value.productTypesJson.map(item => item.tip_en)
+    : [];
+})
+
+
+
+const mapColorRoToEn = (color , roValue ) => {
+  if(roValue !== null){
+    const index = getColorsRo.value.findIndex(category => category === roValue.toLowerCase());
+    if (index !== -1) {
+      color.numeCuloareJsonDto.culoare_en = getColorsEn.value[index];
+    }
+  }
+};
+
+const mapColorEnToRo = (color , enValue ) => {
+  if(enValue !== null){
+    const index = getColorsEn.value.findIndex(category => category === enValue.toLowerCase());
+    if (index !== -1) {
+      color.numeCuloareJsonDto.culoare_ro = getColorsRo.value[index];
+    } 
+  }
+};
+
+const mapCategoryRoToEn = (category , roValue) => {
+  if(roValue !== null){
+    const index = getProductCategoriesRo.value.findIndex(category => category === roValue.toUpperCase());
+    if (index !== -1) {
+      category.categorieJsonDto.categorie_en = getProductCategoriesEn.value[index];
+    } 
+  }
+};
+
+const mapCategoryEnToRo = (category ,enValue) => {
+  if(enValue !== null){
+    const index = getProductCategoriesEn.value.findIndex(category => category === enValue.toUpperCase());
+    if (index !== -1) {
+      category.categorieJsonDto.categorie_ro = getProductCategoriesRo.value[index];
+    } 
+  }
+  
+};
+
+
+const mapTypeRoToEn = (tipProdus , roValue) => {
+  if(roValue !== null){  
+    const index = getProductTypesRo.value.findIndex(type => type === roValue.toLowerCase());
+    if (index !== -1) {
+        tipProdus.tipulProdusuluiJsonDto.tip_en = getProductTypesEn.value[index];
+    } 
+  }
+};
+
+const mapTypeEnToRo = (tipProdus ,enValue ) => {
+  if(enValue !== null ){
+    const index = getProductTypesEn.value.findIndex(type => type === enValue.toLowerCase());
+    if (index !== -1) {
+        tipProdus.tipulProdusuluiJsonDto.tip_ro = getProductTypesRo.value[index];
+    } 
+  }
+  
+};
+
 
 const assignProductOptionsFromDb = async () => {
-  const responseForOptions = await adminService.getProductOptions();
-  
-  if (responseForOptions === 0) {
-    console.log("No options for products in db");
-  } else {
-    Object.assign(productOptions, responseForOptions);
-  }
+    const responseForOptions = await adminService.getProductOptions();
+    
+    if (responseForOptions === 0) {
+        console.log('No options for products in db');
+    } else if (responseForOptions === -2) {
+        navigateTo('/user/logout');
+    } else {
+        Object.assign(productOptions.value, responseForOptions);
+        console.log(productOptions.value)
+    }
+};
+
+const assingProductCodesAndNamesFromDb = async () => {
+    const response = await adminService.getProductCodesAndNames();
+
+    if(response.length === 0){
+        console.log("No products in db");
+    }else {
+        productCodesAndNames.value = response;
+        numeProdusArrayRo.value = productCodesAndNames.value
+            .map(elem => elem.numeProdusJson.nume_ro)
+            .filter(numeRo => numeRo !== product.numeProdusJsonDto.nume_ro);
+        numeProdusArrayEn.value = productCodesAndNames.value
+            .map(elem => elem.numeProdusJson.nume_en)
+            .filter(numeEn => numeEn !== product.numeProdusJsonDto.nume_en);
+        codProdusArray.value = productCodesAndNames.value
+            .map(elem => elem.codProdus)
+            .filter(elem => elem !== product.codProdusDto);
+
+        console.log(numeProdusArrayEn.value)
+        console.log(numeProdusArrayRo.value)
+        console.log(codProdusArray.value)
+
+    }
 }
 
 const showTypeForm = () => {
   product.tipuriProduseDto.push({
     categorieDto: "",
+    categorieJsonDto : {
+      categorie_ro : "",
+      categorie_en: "",
+    },
     justAdded: true,
   });
 }
 
-const deleteType = (categorie) => {
+const deleteType = (categorie,categorieEn) => {
   product.tipuriProduseDto = product.tipuriProduseDto.filter(
     (type) =>
       !(
-        type.categorieDto === categorie
+        type.categorieJsonDto.categorie_ro === categorie &&  type.categorieJsonDto.categorie_en === categorieEn
       )
   );
 }
@@ -530,8 +844,8 @@ const showDimensionForm = () => {
   product.dimensiuniProduseDto.push({
     lungimeDto: "",
     latimeDto: "",
-    pretDto: "",
-    pretRedusDto: "",
+    pretDto: 0,
+    pretRedusDto: 0,
     recomandarePat: "",
     justAdded: true,
   });
@@ -560,6 +874,10 @@ const deleteDimension = (
 const showColorForm = () => {
   product.culoriProdusDto.push({
     numeCuloareDto: "",
+    numeCuloareJsonDto : {
+      culoare_ro : "",
+      culoare_en : ""
+    },
     codCuloareDto: "",
     imaginiProdusDto: [],
     justAdded: true,
@@ -570,7 +888,7 @@ const deleteColor = (numeCuloare, codCuloare) => {
   product.culoriProdusDto = product.culoriProdusDto.filter(
     (color) =>
       !(
-        color.numeCuloareDto === numeCuloare &&
+        color.numeCuloareJsonDto.culoare_ro === numeCuloare &&
         color.codCuloareDto === codCuloare
       )
   );
@@ -597,7 +915,7 @@ const handleFileChange = (imagine) => {
 const deleteImage = (numeCuloare, codCuloare, caleImagineDto, fisierInBucket) => {
   const currentColor = product.culoriProdusDto.find(
     (color) =>
-      color.numeCuloareDto === numeCuloare &&
+      color.numeCuloareJsonDto.culoare_ro === numeCuloare &&
       color.codCuloareDto === codCuloare
   );
   if (currentColor) {
@@ -621,22 +939,6 @@ const deleteImage = (numeCuloare, codCuloare, caleImagineDto, fisierInBucket) =>
   }
 }
 
-const assingProductCodesAndNamesFromDb = async () => {
-    const response = await adminService.getProductCodesAndNames();
-
-    if(response.length === 0){
-        console.log("No products in db");
-    }else {
-        productCodesAndNames.value = response;
-        numeProdusArray.value = productCodesAndNames.value
-            .map(elem => elem.numeProdus)
-        codProdusArray.value = productCodesAndNames.value
-            .map(elem => elem.codProdus)
-
-    }
-}
-
-
 const mainForm = ref(null);
 
 const finalSaveData = async () => {
@@ -656,7 +958,8 @@ const finalSaveData = async () => {
           denyButtonText: `Nu`,
       }).then(async (result) => {
           if (result.isConfirmed) {
-              if(product.tipulProdusuluiDto === 'perdea' || product.tipulProdusuluiDto === 'draperie'){
+
+              if(product.tipulProdusuluiJsonDto.tip_ro.toLowerCase() === 'perdea' || product.tipulProdusuluiJsonDto.tip_ro.toLowerCase() === 'draperie'){
                 if(product.inaltimeMaximaDto <= 0){
                     Swal.fire({
                         icon: 'error',
@@ -693,7 +996,7 @@ const finalSaveData = async () => {
                         timer: 7000,
                     });
                   return;
-                }else if(product.dimensiuniProduseDto.length >= 0 && product.pretBazaDto >= 0){
+                }else if(product.dimensiuniProduseDto.length > 0 && product.pretBazaDto > 0){
                   Swal.fire({
                         icon: 'error',
                         title: 'Eroare',
@@ -703,6 +1006,14 @@ const finalSaveData = async () => {
                   return;
                 }
               }
+              product.tipuriProduseDto = product.tipuriProduseDto.filter(type => type.categorieJsonDto.categorie_ro !== ""
+                  &&  type.categorieJsonDto.categorie_en !== ""
+              )
+              product.culoriProdusDto = product.culoriProdusDto.filter(color => color.numeCuloareJsonDto.culoare_ro !== ""
+                  &&  color.numeCuloareJsonDto.culoare_en !== "" && color.codCuloare !== ""
+              )
+              product.dimensiuniProduseDto = product.dimensiuniProduseDto.filter(dimension => dimension.lungimeDto !== "" &&
+                dimension.latimeDto !== "" && dimension.pretDto !== "" && dimension.pretDto !== 0 )
               const addingProductResponse = await adminService.saveProductChanges(product,'empty');
               if(Array.isArray(addingProductResponse)){
                   Swal.fire("Salvat!", "", "success");
@@ -736,6 +1047,25 @@ const finalSaveData = async () => {
       return
     }
 }
+
+onMounted(async () => {
+  await assingProductCodesAndNamesFromDb();
+  isLoading.value = false;
+})
+
+onBeforeMount(async() => {
+    await assignProductOptionsFromDb();
+})
+
+// onBeforeUnmount(() => {
+//   product.forEach(color => {
+//     color.imaginiProdusDto.forEach(image => {
+//       if (image.presignedUrl) {
+//         URL.revokeObjectURL(image.presignedUrl);
+//       }
+//     });
+//   });
+// })
 
 </script>
 

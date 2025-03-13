@@ -7,6 +7,10 @@ class AdminService extends ApiService{
         super(process.env.NODE_ENV === 'development' ? "http://localhost:5043/api/admin" : '/api/admin')
     }
 
+    getAdminLogin(redirect){
+        return this.get(`login/${redirect}` , false , false , false)
+    }
+
     adminLogin(key){
         return this.post('login' , {Key : key} , false);
     }

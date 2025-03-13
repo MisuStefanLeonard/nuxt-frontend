@@ -13,9 +13,6 @@ export default defineNuxtRouteMiddleware((to, from) => {
   userStore.setUser(user)
 
   console.log(userStore.isAuthenticated,userStore.isAdmin)
-  console.log('AICI')
-  const cookies = useRequestHeaders(['cookie']).cookie
-  console.log(cookies)
 
 
   if (!userStore.isAuthenticated || !userStore.isAdmin) {

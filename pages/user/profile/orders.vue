@@ -454,9 +454,13 @@
                                             </v-col>
                                             <v-col cols="12" xs="12" sm="2">
                                                 <div class="h-100  d-flex align-center justify-center">
-                                                    <p v-if="order.orderVoucher === null" class="font-weight-light h5 text-center">{{ item.cartItems[0].pretCurent * item.cartItems[0].cantitate }}
+                                                    {{ console.log(order.orderVoucher) }}
+                                                    <div v-if="order.orderVoucher === null">
+                                                        <p  class="font-weight-light h5 text-center">{{ item.cartItems[0].pretCurent * item.cartItems[0].cantitate }}
                                                         {{ selectedCurrency === 'RON' ? 'RON' : 'EUR' }}
-                                                    </p>
+                                                        </p>
+                                                    </div>
+                                                   
                                                     <div v-else >
                                                         <p class="font-weight-light h5 text-center text-decoration-line-through">{{ (item.cartItems[0].pretCurent * item.cartItems[0].cantitate) / (1 - order.orderVoucher.reducereDto) }}
                                                         {{ selectedCurrency === 'RON' ? 'RON' : 'EUR' }}</p>
@@ -484,8 +488,11 @@
                                                 <v-col cols="12" xs="12" sm="10"  md="10" class="text-left">
                                                     <span class="font-weight-normal text-h6">{{ $t('orderHistory.products') }}</span>
                                                 </v-col>
-                                                <v-col cols="12" xs="12" sm="2" md="2" class="text-right">
+                                                <v-col cols="12" xs="12" sm="2" md="2" class="text-right" v-if="order.orderVoucher !== null">
                                                     <span class="font-weight-normal text-h6">{{(order.pretTotal / (1 - order.orderVoucher.reducereDto)) }} {{ selectedCurrency === "RON" ? "RON" : "EUR" }}</span>
+                                                </v-col>
+                                                <v-col cols="12" xs="12" sm="2" md="2" class="text-right" v-else>
+                                                    <span class="font-weight-normal text-h6">{{order.pretTotal }} {{ selectedCurrency === "RON" ? "RON" : "EUR" }}</span>
                                                 </v-col>
                                                 <v-divider></v-divider>
                                                 <v-col cols="12" xs="12" sm="10" md="10" class="text-left">

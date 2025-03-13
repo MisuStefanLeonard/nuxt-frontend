@@ -1786,7 +1786,11 @@ const checkKey = ((key) => {
 });
 
 const checkProductType = ((type) => {
-    return type === 'perdea' ||  type === 'draperie'
+    if(currentCurrency.value === "RON"){
+        return type === 'perdea' ||  type === 'draperie'
+    }else {
+        return type === 'curtain' || type === 'drapery'
+    }
 })
 
 const getFirstImageFromSet = ((productsInSet) => {

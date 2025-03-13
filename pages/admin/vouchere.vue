@@ -45,7 +45,7 @@
             <v-text-field
                 v-model="search"
                 label="Cauta dupa codul voucherului sau starea de validitate"
-                prepend-inner-icon="mdi-magnify"
+                :prepend-inner-icon="mdiMagnify"
                 class="p-3 mx-3"
                 variant="outlined"
             ></v-text-field>
@@ -100,7 +100,7 @@
 </template>
 
 <script setup>
-import { mdiDelete, mdiEye, mdiInformation, mdiPlus } from '@mdi/js';
+import { mdiDelete, mdiEye, mdiInformation, mdiMagnify, mdiPlus } from '@mdi/js';
 import Swal from 'sweetalert2';
 import adminService from '~/services/Admin'
 import { useUserStore } from '~/store/user';

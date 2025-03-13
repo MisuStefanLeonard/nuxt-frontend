@@ -1,5 +1,5 @@
 <template>
-    <div class="background-wrapper">
+    <div class="background-wrapper" >
         <div class="background"></div>
         <div class="content" fluid>
           <v-container fluid>
@@ -21,10 +21,28 @@
                         :label="`${$t('shop.productType')}`"
                         density="comfortable"
                         v-model="productTypes"
+                        :item-title="selectedCurrency === 'RON' ? 'tip_ro' : 'tip_en'"
+                        item-value="tip_ro"
                         chips
                         closable-chips
                         clearable
-                        :items="filterOptions.filterProductTypes">
+                        :items="filterOptions.filterProductTypesJson">
+                      </v-select>
+                    </v-col>
+                    <v-col cols="12" sm="12" md="12" xs="12" class="p-3 ">
+                      <v-select
+                        item-color="primary"
+                        multiple
+                        variant="outlined"
+                        :label="`${$t('shop.productCategories')}`"
+                        density="comfortable"
+                        v-model="productCategories"
+                        :item-title="selectedCurrency === 'RON' ? 'categorie_ro' : 'categorie_en'"
+                        item-value="categorie_ro"
+                        chips
+                        closable-chips
+                        clearable
+                        :items="filterOptions.filterProductCategoriesJson">
                       </v-select>
                     </v-col>
                     <v-col cols="12" sm="12" md="12" xs="12" class="p-3 ">
@@ -35,9 +53,11 @@
                         :label="`${$t('shop.color')}`"
                         density="comfortable"
                         v-model="productColors"
+                        :item-title="selectedCurrency === 'RON' ? 'culoare_ro' : 'culoare_en'"
+                        item-value="culoare_ro"
                         chips
                         clearable
-                        :items="filterOptions.filterColors">
+                        :items="filterOptions.filterColorsJson">
                       </v-select>
                     </v-col>
                     <v-col cols="12" sm="12" md="12" xs="12"  class="p-2">
@@ -136,13 +156,13 @@
                     </v-col>
                     <v-col cols="12" sm="12" md="12" xs="12" class="p-2">
                       <v-container fluid>
-                         <v-checkbox label="Exclude de la filtrare: "
+                         <v-checkbox :label="selectedCurrency === 'RON' ? 'Exclude de la filtrare:' : 'Exclude from filters: '"
                          v-model="excludeFromFiltration" color="green"
                          >
 
                          </v-checkbox>
                         <v-switch 
-                        :label="`Fata reversibila : ${fataReversibila  ? $t('yes') : $t('no')}`"
+                        :label="`${selectedCurrency === 'RON' ? 'Fata reversibila' : 'Two face'} : ${fataReversibila  ? $t('yes') : $t('no')}`"
                         density="comfortable"
                         v-model="fataReversibila"
                         inset
@@ -242,6 +262,7 @@
                               class="mb-2"
                               >
                               <template v-if="imagesInModal.length > 0">
+                              
                                   <v-carousel-item v-for="(image,index) in imagesInModal"
                                   :key="index" :src="image.presignedUrl" :aspect-ratio="4/3"  eager>
                                   </v-carousel-item>
@@ -287,7 +308,8 @@
                       <v-row no-gutters>
                         <v-col cols="12" class="my-1">
                           <NuxtLink prefetch :prefetch-on="{interaction: true}"
-                            :to="localPath(`/product/${product.codProdusDto}/${product.tipulProdusuluiDto}`)">
+                            :to="localPath(`/product/${product.codProdusDto}/${product.tipulProdusuluiDto}`)"
+                            @click="storeUserScreenPosition()">
                               <v-btn variant="flat" color="primary" >
                                   {{ $t('shop.seeDetails') }} <v-icon class="ml-1" :icon="mdiArrowRight" size="24"></v-icon>
                               </v-btn>
@@ -366,7 +388,7 @@ const pageSize = 15;
 const currentProductsOnPage = ref([]);
 const filterOptions = ref({});
 const dataPage = ref(1);
-const dimensionsValues = ref([]);
+const dimensionsValues = ref([0,300,0,300]);
 const selectedCurrency = ref('RON');
 const excludeFromFiltration = ref(true)
 
@@ -380,6 +402,7 @@ const rangeHeight = ref([0,300])
 const rangePrice = ref([0,2000])
 
 const productTypes = ref([]);
+const productCategories = ref([]);
 const productColors = ref([]);
 const fataReversibila = ref(true)
 const isImageModalOpen = ref(false);
@@ -395,10 +418,10 @@ const getCurrentLocale = () => {
   }
 }
 
-const getNextPageOfProducts = (async (pageNumber,productTypes = null,colorOptions = null,dimensions ,priceRange , reverseFace , currency) => {
+const getNextPageOfProducts = (async (pageNumber,productTypes = null,productCategories = null,colorOptions = null,dimensions ,priceRange , reverseFace , currency) => {
   const responseFromPaginatedProducts = 
     await productService.getProductsForUsers(
-      pageNumber,productTypes, 
+      pageNumber,productTypes, productCategories,
       colorOptions,dimensions,
       priceRange,reverseFace,
       currency);
@@ -408,19 +431,23 @@ const getNextPageOfProducts = (async (pageNumber,productTypes = null,colorOption
 })
 
 
-const getPaginatedProducts = (async (pageNumber,productTypes = null,colorOptions = null,dimensions ,priceRange , reverseFace , currency) => {
-  console.log(colorOptions)
-  console.log(productTypes)
-  console.log(currency)
-
+const getPaginatedProducts = (async (pageNumber,productTypes = null,productCategories = null,colorOptions = null,dimensions ,priceRange , reverseFace , currency) => {
+  console.log('pagenum' , pageNumber)
   const responseFromPaginatedProducts = 
     await productService.getProductsForUsers(
-      pageNumber,productTypes, 
+      pageNumber,productTypes,productCategories, 
       colorOptions,dimensions,
       priceRange,reverseFace,
       currency);
       console.log(responseFromPaginatedProducts)
-    currentProductsOnPage.value = responseFromPaginatedProducts
+
+    if(pageNumber === 0){
+      currentProductsOnPage.value = responseFromPaginatedProducts
+    }else{
+      currentProductsOnPage.value = currentProductsOnPage.value.concat(responseFromPaginatedProducts)
+      console.log(currentProductsOnPage.value)
+    }
+    
     dimensionsValues.value = []
 })
 
@@ -435,8 +462,6 @@ const getFilterOptions = (async () => {
   Object.assign(filterOptions.value , filterOptionsResponse);
   rangePrice.value[0] = filterOptions.value.pricesRange[0]
   rangePrice.value[1] = filterOptions.value.pricesRange[1]
-  // productTypes.value = filterOptions.value.filterProductTypes
-  // productColors.value = filterOptions.value.filterColors
   console.log(filterOptions.value)
 })
 
@@ -458,10 +483,11 @@ const fireAlert = (alertType,timer) => {
 const loadMoreProducts = (async () => {
   if(dataPage.value < getPaginationLen.value){
     dataPage.value++
-    const nextPageOfProducts = await getNextPageOfProducts(dataPage.value - 1 , productTypes.value , productColors.value
+    const nextPageOfProducts = await getNextPageOfProducts(dataPage.value - 1 , productTypes.value ,productCategories.value ,productColors.value
       ,dimensionsValues.value,rangePrice.value , excludeFromFiltration.value === true ? null : fataReversibila.value === true, selectedCurrency.value)
       currentProductsOnPage.value =  currentProductsOnPage.value.concat(nextPageOfProducts)
     dimensionsValues.value = []
+    sessionStorage.setItem('page_products' , dataPage.value)
   }else{
     fireAlert(loadNoMoreProductsAlert, 1500)
   }
@@ -471,10 +497,15 @@ const allImages = ((product) => {
   return product.culoriProdusDto.flatMap(color => color.imaginiProdusDto)
 })
 
-const applyFiltersFromQuery = () => {
+const applyFiltersFromQuery = async () => {
  
   if (route.query.type) {
     productTypes.value = Array.isArray(route.query.type) ? route.query.type : [route.query.type];
+   
+  }
+
+  if (route.query.category) {
+    productCategories.value = Array.isArray(route.query.category) ? route.query.category : [route.query.category];
    
   }
   if (route.query.color) {
@@ -500,17 +531,110 @@ const applyFiltersFromQuery = () => {
     fataReversibila.value = route.query.reverseFace === 'true'
   }
 
-  
+  // const savedQueryParams = sessionStorage.getItem('queryParams')
+  // if(savedQueryParams !== null){
+  //   restoreQueryParams()
+  // }
+  if(typeof sessionStorage !== 'undefined'){
+    const getProductsPage = sessionStorage.getItem('page_products')
+    if(getProductsPage !== null){
+      dataPage.value = parseInt(getProductsPage)
+    }else{
+      dataPage.value = 1
+    }
+    sessionStorage.setItem('page_products' , dataPage.value)
 
-  getPaginatedProducts(0 , productTypes.value , productColors.value , dimensionsValues.value , rangePrice.value , excludeFromFiltration.value === true ? null : fataReversibila.value === true , selectedCurrency.value);
+    const getScrollPositionProducts = sessionStorage.getItem('scroll_pos_products')
+    if(getScrollPositionProducts !== null){
+      window.scrollTo({
+        top: parseInt(getScrollPositionProducts,10),
+        left: 0,
+        behavior: 'smooth'
+      })
+    }
+  }
+  console.log(dataPage.value)
+  for(let i = 1 ; i <= dataPage.value ; i++){
+    await getPaginatedProducts(i - 1 , productTypes.value , productCategories.value ,productColors.value , dimensionsValues.value , rangePrice.value , excludeFromFiltration.value === true ? null : fataReversibila.value === true , selectedCurrency.value);
+  }
+  // await getPaginatedProducts(dataPage.value -1 , productTypes.value , productCategories.value,productColors.value , dimensionsValues.value , rangePrice.value , excludeFromFiltration.value === true ? null : fataReversibila.value === true , selectedCurrency.value);
+   
 };
+
+const restoreQueryParams = async () => {
+    const savedQueryParams = sessionStorage.getItem('queryParams')
+    if(savedQueryParams !== null){
+      const queryObj = JSON.parse(savedQueryParams)
+      if (queryObj.type) {
+      productTypes.value = Array.isArray(queryObj.type) ? queryObj.type : [queryObj.type];
+      }
+      if (queryObj.color) {
+        productColors.value = Array.isArray(queryObj.color) ? queryObj.color : [queryObj.color];
+      }
+      if (queryObj.width) {
+        rangeWidth.value = Array.isArray(queryObj.width) ? queryObj.width : [queryObj.width];
+      }
+      if (queryObj.height) {
+        rangeHeight.value = Array.isArray(queryObj.height) ? queryObj.height : [queryObj.height];
+      }
+      if (queryObj.price) {
+        rangePrice.value = queryObj.price;
+      }
+      if (queryObj.reverseFace !== undefined) {
+        fataReversibila.value = queryObj.reverseFace === 'true'
+      }
+      excludeFromFiltration.value = queryObj.excludeFromFiltration
+      dimensionsValues.value = queryObj.dimensionValues
+
+      router.push({ query: {} });
+      router.push({
+        query: {
+          type: productTypes.value.length ? productTypes.value : undefined,
+          category: productCategories.value.length ? productCategories.value : undefined,
+          color: productColors.value.length ? productColors.value : undefined,
+          width: rangeWidth.value.length ? rangeWidth.value : undefined,
+          height: rangeHeight.value.length ? rangeHeight.value : undefined,
+          price: rangePrice.value.length ? rangePrice.value : undefined,
+          reverseFace : excludeFromFiltration.value === true ? undefined : fataReversibila.value === true,
+        }
+      });
+    }
+
+    const getProductsPage = sessionStorage.getItem('page_products')
+    if(getProductsPage !== null){
+      dataPage.value = parseInt(getProductsPage)
+    }else{
+      dataPage.value = 1
+    }
+    sessionStorage.setItem('page_products' , dataPage.value)
+    console.log('in restorequery',dataPage.value)
+
+    // for(let i = 1 ; i <= dataPage.value ; i++){
+    //   await getPaginatedProducts(i - 1 , productTypes.value , productCategories.value ,productColors.value , dimensionsValues.value , rangePrice.value , excludeFromFiltration.value === true ? null : fataReversibila.value === true , selectedCurrency.value);
+    // }
+   
+    const getScrollPositionProducts = sessionStorage.getItem('scroll_pos_products')
+    if(getScrollPositionProducts !== null){
+      window.scrollTo({
+        top: parseInt(getScrollPositionProducts,10),
+        left: 0,
+        behavior: 'smooth'
+      })
+    }
+}
+
+
+const storeUserScreenPosition = () => {
+  sessionStorage.setItem('page_products' , dataPage.value)
+  sessionStorage.setItem('scroll_pos_products' , window.scrollY)
+}
 
 
 const applyFilters = () => {
-
   router.push({
     query: {
       type: productTypes.value.length ? productTypes.value : undefined,
+      category: productCategories.value.length ? productCategories.value : undefined,
       color: productColors.value.length ? productColors.value : undefined,
       width: rangeWidth.value.length ? rangeWidth.value : undefined,
       height: rangeHeight.value.length ? rangeHeight.value : undefined,
@@ -524,34 +648,64 @@ const applyFilters = () => {
   dimensionsValues.value.push(rangeHeight.value[0])
   dimensionsValues.value.push(rangeHeight.value[1])
 
+  const queryObj = {
+    type: productTypes.value.length ? productTypes.value : undefined,
+    category: productCategories.value.length ? productCategories.value : undefined,
+    color: productColors.value.length ? productColors.value : undefined,
+    width: rangeWidth.value.length ? rangeWidth.value : undefined,
+    height: rangeHeight.value.length ? rangeHeight.value : undefined,
+    price: rangePrice.value.length ? rangePrice.value : undefined,
+    excludeFromFiltration: excludeFromFiltration.value,
+    reverseFace : excludeFromFiltration.value === true ? undefined : fataReversibila.value === true,
+    dimensionValues : dimensionsValues.value
+  }
 
-  
-  getPaginatedProducts(0, 
-    productTypes.value, 
-    productColors.value , 
-    dimensionsValues.value,
-    rangePrice.value , 
-    excludeFromFiltration.value === true ? null : fataReversibila.value === true,
-    selectedCurrency.value
-  );
+  sessionStorage.setItem('queryParams' , JSON.stringify(queryObj))
+
+  dataPage.value = 1
+  sessionStorage.setItem('page_products' , dataPage.value)
+  // getPaginatedProducts(dataPage.value -1, 
+  //   productTypes.value, 
+  //   productCategories.value,
+  //   productColors.value , 
+  //   dimensionsValues.value,
+  //   rangePrice.value , 
+  //   excludeFromFiltration.value === true ? null : fataReversibila.value === true,
+  //   selectedCurrency.value
+  // );
 };
 
 const deleteFilters = () => {
   productTypes.value = [];
   productColors.value = [];
+  productCategories.value = [];
+  rangeHeight.value = [0,300]
+  rangeWidth.value = [0,300]
+  dimensionsValues.value = [0,300,0,300]
+  rangePrice.value = selectedCurrency.value === "RON" ? [0,2000] : [0,400]
   excludeFromFiltration.value = true
   router.push({ query: {} });
-  getPaginatedProducts(0 , productTypes.value , productColors.value , dimensionsValues.value , rangePrice.value ,excludeFromFiltration.value === true ? null : fataReversibila.value === true, selectedCurrency.value);
+  dataPage.value = 1
+  sessionStorage.setItem('page_products' , dataPage.value)
+  sessionStorage.removeItem('queryParams' )
+  // getPaginatedProducts( dataPage.value-1 , productTypes.value ,productCategories.value ,productColors.value , dimensionsValues.value , rangePrice.value ,excludeFromFiltration.value === true ? null : fataReversibila.value === true, selectedCurrency.value);
 };
 
-// watch(() => route.query, applyFiltersFromQuery, { immediate: true });
+watch(() => route.query, async () => {
+  await applyFiltersFromQuery();
+}, { immediate: true, deep: true });
+
+onBeforeMount(async () => {
+  await getFilterOptions()
+})
 
 onMounted(async () => {
   getCurrentLocale();
-  await getFilterOptions()
-  applyFiltersFromQuery();
  
+  // await applyFiltersFromQuery();
+  await restoreQueryParams()
 })
+
 
 </script>
 
