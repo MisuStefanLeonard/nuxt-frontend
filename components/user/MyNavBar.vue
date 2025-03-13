@@ -5,6 +5,7 @@
       :sidebar="sidebar" 
       :menu-items="menuItems" 
       :menu-items2="menuItems2" 
+      :admin-items="adminItems"
     />
     <v-toolbar style="z-index: 2;">
       <v-app-bar-nav-icon @click="sidebar = !sidebar">
@@ -25,7 +26,7 @@
           v-model="item.showItems"
         >
           <template v-slot:activator="{ props }">
-            <v-btn @click="navigateTo(localePath(item.path))"
+            <v-btn @click="handleMenuClick(item)"
              text v-bind="props" density="compact" size="50" >
               <v-badge 
                 v-if="item.title === 'menu.shoppingCart' && isClient"
@@ -36,7 +37,7 @@
               >
                 <v-icon class="mr-2" :icon="item.icon"></v-icon>
               </v-badge>
-              <v-icon @click="navigateTo(localePath(item.path))" :icon="item.icon" v-else></v-icon>
+              <v-icon  :icon="item.icon" v-else></v-icon>
             </v-btn>
           </template>
           <v-list v-if="item.dropdown.length > 0">
@@ -45,7 +46,7 @@
               @click="toggleDropdown(item)">
               <v-list-item-title @click="navigateTo(localePath(dropitem.path))">
                 <v-icon class="mr-2" :icon="dropitem.icon"></v-icon>
-                {{ $t(dropitem.title) }} 
+                {{dropitem.dynamic === true ? `${dropitem.title}`  :`${ $t(dropitem.title) }` }}
               </v-list-item-title>
              
             </v-list-item>
@@ -63,26 +64,33 @@ import { ref, onMounted } from 'vue'
 import NavigationDrawer from './NavigationDrawer.vue' 
 import LanguageSwitcher from './LanguageSwitcher.vue'
 import { cartCount } from '~/middleware/cart'
+import productService from '~/services/Products'
 import { mdiHome, mdiInformation,mdiAccount,mdiStore,mdiPackageVariant,mdiBedKingOutline,mdiWindowShutterOpen,
-  mdiBlindsHorizontal,mdiBedOutline,mdiGift,mdiShoppingOutline
+  mdiBlindsHorizontal,mdiBedOutline,mdiGift,mdiShoppingOutline,
+  mdiSecurity,
+  mdiArrowRight
  } from '@mdi/js'
 // Inject the emitter
 const nuxtApp = useNuxtApp()
 const emitter = nuxtApp.$emitter
 const isClient = ref(false)
 const localePath  = useLocalePath()
-// const {name} = useDisplay()
-
-// const heightComp = computed(() => {
-//     switch (name.value) {
-//       case 'xs': return true
-//       default : return 3
-//     }
-// })
-// // Router instance
+const productTypesRo= ref([])
+const productTypesEn= ref([])
+const { locale} = useI18n()
 
 const sidebar = ref(false)
 const isLoggedIn = ref(false)
+
+function handleMenuClick(item) {
+  // If the item has a dropdown (dynamic), toggle it instead of navigating.
+  if (item.dropdown && item.dropdown.length > 0) {
+    item.showItems = !item.showItems;
+  } else {
+    navigateTo(localePath(item.path));
+  }
+}
+
 
 // Define your menu items with translation keys
 const menuItems = [
@@ -91,23 +99,19 @@ const menuItems = [
 ]
 
 const menuItems2 = ref([
-{ title: 'menu.profile' , path: '/user/profile' , icon:mdiAccount , dropdown : []},
+  { title: 'menu.profile', path: '/user/profile', icon: mdiAccount, dropdown: [] , dynamic : false },
   { 
     title: 'menu.shop', 
     path: '/shop', 
     icon: mdiStore,
-    dropdown: [
-        { title: 'menu.allProducts', path: '/shop', icon: mdiPackageVariant , query : {} },
-        { title: 'menu.cuverturi', path: '/shop', icon: mdiBedKingOutline, query: {type : 'cuvertura'}},
-        { title: 'menu.perdele', path: '/shop', icon: mdiWindowShutterOpen, query: {type : 'perdea'} },
-        { title: 'menu.draperii', path: '/shop', icon: mdiBlindsHorizontal,query: {type : 'draperie'} },
-        { title: 'menu.perne', path: '/shop', icon: mdiBedOutline , query: {type : 'perna'} },
-        { title: 'menu.sets', path: '/shopSeturi', icon: mdiGift , query: {} },
-        
-    ]
+    // initially empty; will be updated dynamically
+    dropdown: [] 
   },
-  
-  { title: 'menu.shoppingCart' , path: '/cart' , icon: mdiShoppingOutline , dropdown : []}
+  { title: 'menu.shoppingCart', path: '/cart', icon: mdiShoppingOutline, dropdown: [] ,dynamic : false }
+])
+
+const adminItems = ref([
+  {title: 'menu.admin' , path: '/admin/login' , icon: mdiSecurity,dynamic : false  }
 ])
 
 
@@ -138,6 +142,47 @@ const getCartCount = function(){
   }
 }
 
+const getProductTypesAndCategories = (async () => {
+  const productTypesAndCategories = await productService.getProductTypesAndCategoriesForUser()
+  console.log(productTypesAndCategories)
+  productTypesRo.value = productTypesAndCategories.productTypesJson.map(elem => elem.tip_ro)
+  productTypesEn.value = productTypesAndCategories.productTypesJson.map(elem => elem.tip_en)
+  
+})
+
+const shopDropdown = computed(() => {
+  // Always include a static "all products" option and "sets"
+  const staticItems = [
+    { title: 'menu.allProducts', path: '/shop', icon: mdiPackageVariant, query: {} ,dynamic : false },
+    { title: 'menu.sets', path: '/shopSeturi', icon: mdiGift, query: {} ,dynamic : false }
+  ]
+  // Build dynamic items from productTypes arrays
+  const dynamicItems = productTypesRo.value.map((tipRo, index) => {
+    const tipEn = productTypesEn.value[index] || tipRo;
+    return {
+      // Display the appropriate title based on the locale
+      title: (locale.value === 'ro' ? tipRo : tipEn).toUpperCase(),
+      // Always store the Romanian version as the "value" field
+      value: tipRo,
+      path: '/shop',
+      icon: mdiArrowRight,
+      query: { type: tipRo.toLowerCase() },
+      dynamic: true,
+    }
+  })
+  return [...staticItems, ...dynamicItems]
+})
+
+
+// Watch the computed shopDropdown and update only the shop part of menuItems2
+watch(shopDropdown, (newDropdown) => {
+  const shopItem = menuItems2.value.find(item => item.title === 'menu.shop')
+  if (shopItem) {
+    shopItem.dropdown = newDropdown
+  }
+}, { immediate: true })
+
+
 
 function toggleDropdown(item) {
   item.expand = !item.expand;
@@ -154,10 +199,11 @@ function isAuthenticated() {
 }
 
 // Run this once the component is mounted
-onMounted(() => {
+onMounted(async () => {
   isLoggedIn.value = isAuthenticated();
   isClient.value = true;
   getCartCount()
+  await getProductTypesAndCategories()
 })
 
 

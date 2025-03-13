@@ -93,7 +93,7 @@
                         <p class="h5 font-weight-light">VENIT PER PRODUS</p>
                       </v-expansion-panel-title>
                       <v-expansion-panel-text>
-                        <v-data-table
+                        <v-data-table v-if="mounted"
                             :headers="filteredHeaders"
                             :items="parseTotalRevenuePerProduct"
                             :items-per-page="15"
@@ -195,7 +195,7 @@
                         <p class="h5 font-weight-light">5 CELE MAI VANDUTE PRODUSE</p>
                       </v-expansion-panel-title>
                       <v-expansion-panel-text>
-                        <v-data-table
+                        <v-data-table v-if="mounted"
                             :headers="headers"
                             :items="parseinfoPerTop5Product"
                             :items-per-page="5"
@@ -405,7 +405,7 @@
                         </v-card-title>
                         <v-divider></v-divider>
                         <v-card-text>
-                          <v-data-table
+                          <v-data-table  v-if="mounted"
                             :headers="usersPerPageHeaders"
                             :items="parsedUsersPerPageData"
                             :items-per-page="15"
@@ -449,7 +449,7 @@
                         </v-card-title>
                         <v-divider></v-divider>
                         <v-card-text>
-                          <v-data-table
+                          <v-data-table  v-if="mounted"
                             :headers="filteredHeadersReal"
                             :items="parsedUsersPerPageDataReal"
                             :items-per-page="15"
@@ -483,6 +483,7 @@ const maxDate = ref(today)
 const isLoading = ref(false);
 const loaded = ref(false)
 const isLoadingGAData = ref(false)
+const mounted = ref(false)
 
 definePageMeta({
     layout: 'admin',
@@ -733,6 +734,7 @@ const parseinfoPerTop5Product = computed(() => {
 onMounted(async () => {
   await getDashboardData()
   await getGAData()
+  mounted.value = true
 })
 
 

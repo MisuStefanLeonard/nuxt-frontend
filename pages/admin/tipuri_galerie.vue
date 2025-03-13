@@ -40,12 +40,12 @@
             <v-text-field
                 v-model="search"
                 label="Cauta dupa numele galeriei"
-                prepend-inner-icon="mdi-magnify"
+                :prepend-inner-icon="mdiMagnify"
                 class="p-3 mx-3"
                 variant="outlined"
             ></v-text-field>
             
-            <v-data-table
+            <v-data-table v-if="loaded"
                 :headers="headers"
                 :items="filteredTipuriGalerie"
                 :items-per-page="15"
@@ -90,7 +90,7 @@
 </template>
 
 <script setup>
-import { mdiEye } from '@mdi/js';
+import { mdiEye, mdiMagnify , mdiDelete , mdiPlus} from '@mdi/js';
 import Swal from 'sweetalert2';
 import adminService from '~/services/Admin'
 import { useUserStore } from '~/store/user';
@@ -104,11 +104,12 @@ const search = ref('')
 const selectedTipuriGalerie = ref([])
 const swal = useNuxtApp().$swal;
 const store = useUserStore();
+const loaded = ref(false)
 
-var tipuriGalerieList = reactive([])
+var tipuriGalerieList = ref([])
 const headers = [
   { title: 'Id tip galerie', align: 'center', key: 'encodedIdTipGalerieDto' , sortable: false},
-  { title: 'Nume tip galerie', align: 'center', key: 'numeTipGalerieDto' },
+  { title: 'Nume tip galerie', align: 'center', key: 'numeTipGalerieJsonDto.nume_ro' },
   { title: 'Pret/metru tip galerie', align: 'center', key: 'pretTipGalerieDto' , sortable: false},
   { title: 'Prindere inele', align: 'center', key: 'sePrindeCuIneleDto'},
   { title: 'Incretire' , align: 'cetner' , key:'incretireDto'},
@@ -116,16 +117,16 @@ const headers = [
 ]
 
 const filteredTipuriGalerie = computed(() => {
-  if (!search.value) return tipuriGalerieList;
+  if (!search.value) return tipuriGalerieList.value;
   let searchTerm = search.value.toLowerCase();
   if(searchTerm === 'prindere_inele'){
     searchTerm = true;
   }else if(searchTerm === 'fara_prindere_inele'){
     searchTerm = false;
   }
-  return tipuriGalerieList.filter((tip_galerie) => {
+  return tipuriGalerieList.value.filter((tip_galerie) => {
     return (
-        tip_galerie.numeTipGalerieDto.toLowerCase().includes(searchTerm),
+        tip_galerie.numeTipGalerieJsonDto.nume_ro.toLowerCase().includes(searchTerm) || tip_galerie.numeTipGalerieJsonDto.nume_en.toLowerCase().includes(searchTerm),
         tip_galerie.sePrindeCuIneleDto === searchTerm
     );
   });
@@ -234,7 +235,8 @@ async function getTipuriGalerie(){
     }else if(getTipuriGalerie.length !== 0){
         swal.close()
         // Use splice to keep reactivity
-        tipuriGalerieList.splice(0, tipuriGalerieList.length, ...getTipuriGalerie);
+        tipuriGalerieList.value = getTipuriGalerie
+        // tipuriGalerieList.splice(0, tipuriGalerieList.length, ...getTipuriGalerie);
         console.log(tipuriGalerieList)
     }else {
         swal.close()
@@ -242,7 +244,9 @@ async function getTipuriGalerie(){
     }
 }
 
-
+onMounted(() => {
+    loaded.value = true;
+})
 
 onBeforeMount(async () => {
     await getTipuriGalerie()

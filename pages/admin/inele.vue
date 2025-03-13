@@ -24,7 +24,7 @@
             </v-row> 
         </v-container>
         <v-card
-            v-if="inelePrindereList"
+            v-if="loaded"
             class="bg-blue-grey-darken-4 rounded-xl p-1"
             variant="outlined"
         >
@@ -32,7 +32,7 @@
             <v-text-field
                 v-model="search"
                 label="Cauta dupa numele culorii"
-                prepend-inner-icon="mdi-magnify"
+                :prepend-inner-icon="mdiMagnify"
                 class="p-3 mx-3"
                 variant="outlined"
             ></v-text-field>
@@ -74,7 +74,7 @@
 </template>
 
 <script setup>
-import { mdiDelete, mdiEye, mdiPlus } from '@mdi/js';
+import { mdiDelete, mdiEye, mdiMagnify, mdiPlus } from '@mdi/js';
 import Swal from 'sweetalert2';
 import adminService from '~/services/Admin'
 import { useUserStore } from '~/store/user';
@@ -88,20 +88,22 @@ const search = ref('')
 const selectedInele = ref([])
 const swal = useNuxtApp().$swal;
 const store = useUserStore();
+const loaded = ref(false);
 
-var inelePrindereList = reactive([])
+const inelePrindereList = ref([])
 const headers = [
   { title: 'Id inel', align: 'center', key: 'encodedIdInelDto' , sortable: false},
-  { title: 'Culoare inel', align: 'center', key: 'culoareInelDto' },
+  { title: 'Culoare inel', align: 'center', key: 'culoareInelJsonDto.culoare_ro' },
   { title: 'Actiuni', align: 'center', key: 'actions', sortable: false },
 ]
 
 const filteredInele = computed(() => {
-  if (!search.value) return inelePrindereList;
+  if (!search.value) return inelePrindereList.value;
   let searchTerm = search.value.toLowerCase();
-  return inelePrindereList.filter((inele) => {
+  return inelePrindereList.value.filter((inele) => {
     return (
-        inele.culoareInelDto.toLowerCase().includes(searchTerm)
+        inele.culoareInelJsonDto.culoare_ro.toLowerCase().includes(searchTerm) || 
+        inele.culoareInelJsonDto.culoare_en.toLowerCase().includes(searchTerm)
     );
   });
 })
@@ -206,10 +208,10 @@ async function getInele(){
         swal.close()
         fireAlarm('warning','Avertizare' , 'Nu aveti inele de prindere in baza de date', null)
     }else if(getInele.length !== 0){
+        console.log(getInele)
         swal.close()
-        // Use splice to keep reactivity
-        inelePrindereList.splice(0, inelePrindereList.length, ...getInele);
-        console.log(inelePrindereList)
+        inelePrindereList.value = getInele
+        console.log(inelePrindereList.value)
     }else {
         swal.close()
         fireAlarm('error' , 'Eroare' , 'O eroare a avut loc' , null)
@@ -220,6 +222,10 @@ async function getInele(){
 
 onBeforeMount(async () => {
     await getInele()
+})
+
+onMounted(() => {
+    loaded.value = true;
 })
 
 

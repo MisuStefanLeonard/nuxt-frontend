@@ -165,7 +165,7 @@ function fireAlarm(icon, title, text, isLoading = null) {
 // Regular expressions for validation
 const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
 const usernameRegex = /^[a-zA-Z0-9]{6,}$/
-const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
+const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!"#$%&'()*+,\-./:;<=>?@\[\\\]\^_`{|}~])[A-Za-z\d!"#$%&'()*+,\-./:;<=>?@\[\\\]\^_`{|}~]{8,}$/
 
 const email = ref('')
 const username = ref('')

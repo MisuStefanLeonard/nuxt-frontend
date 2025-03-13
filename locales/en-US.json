@@ -1,5 +1,5 @@
 {
-  " yes" : "Yes",
+   "yes" : "Yes",
     "no" : "No",
     "menu": {
       "home": "Home",
@@ -18,7 +18,8 @@
       "login": "Log In",
       "register": "Register",
       "language" : "Language",
-      "shoppingCart" : "Shopping cart"
+      "shoppingCart" : "Shopping cart",
+      "admin" : "Interfata admin"
     },
     "messages": {
       "logoutSuccess": "You have been logged out",
@@ -168,7 +169,8 @@
     "logout": {
       "title": "Logout Page",
       "succesfullLogoutMessage": "You have successfully logged out, redirecting to the main page.",
-      "logoutMessage": "We look forward to seeing you again!"
+      "logoutMessage": "We look forward to seeing you again!",
+      "expiredLoginToken" : "Expired token / Unauthorized access"
     },
     "register": {
       "title1": "NEW CUSTOMER",
@@ -194,6 +196,7 @@
       "deleteFilters": "Clear filters",
       "filters": "Filters",
       "loadMoreProducts": "LOAD MORE PRODUCTS",
+      "productCategories" : "Categories",
       "seeDetails": "VIEW DETAILS",
       "addToCart": "ADD TO CART",
       "noProductFound": "No products found",
@@ -407,7 +410,7 @@
         "discountCode": "Do you have a discount code?",
         "applyDiscountCode": "Apply coupon",
         "appliedSuccesfully": "Voucher successfully applied!",
-        "productsPriceChanged": "Some product prices have changed while you were shopping. Here are the updated prices for the affected products.",
+        "productsPriceChanged": "Some product prices have changed while you were shopping.",
         "productsDeleted": "If some products in your cart are no longer available, they have been deactivated or removed from the store. We apologize for the inconvenience.",
         "orderSummary": "Order Summary",
         "deliveryFee": "Shipping Fee",
@@ -515,60 +518,40 @@
     
     "termsAndConditions": {
       "title": "Terms and Conditions",
-      "intro1": "Welcome to Texx!",
-      "intro2": "These terms and conditions outline the rules and regulations for the use of texx's Website, located at wesbite url.",
-      "intro3": "By accessing this website we assume you accept these terms and conditions. Do not continue to use texx if you do not agree to take all of the terms and conditions stated on this page.",
-      "terminology": "The following terminology applies to these Terms and Conditions, Privacy Statement and Disclaimer Notice and all Agreements: \"Client\", \"You\" and \"Your\" refers to you, the person logged on this website and compliant with the Company’s terms and conditions. \"The Company\", \"Ourselves\", \"We\", \"Our\" and \"Us\", refer to our Company. \"Party\", \"Parties\", or \"Us\", refer to both the Client and ourselves. All terms refer to the offer, acceptance and consideration of payment necessary to undertake the process of our assistance to the Client in the most appropriate manner for the express purpose of meeting the Client’s needs in respect of provision of the Company’s stated services, in accordance with and subject to prevailing law of Netherlands. Any use of the above terminology or other words in the singular, plural, capitalization and/or he/she or they, are taken as interchangeable and therefore as referring to the same.",
-      "cookiesTitle": "Cookies",
-      "cookiesText1": "We employ the use of cookies. By accessing texx, you agreed to use cookies in agreement with texx's Privacy Policy.",
-      "cookiesText2": "Most interactive websites use cookies to let us retrieve the user's details for each visit. Cookies are used by our website to enable the functionality of certain areas to make it easier for people visiting our website. Some of our affiliate/advertising partners may also use cookies.",
-      "licenseTitle": "License",
-      "licenseText": "Unless otherwise stated, texx and/or its licensors own the intellectual property rights for all material on texx. All intellectual property rights are reserved. You may access this material from texx for your own personal use subject to the restrictions set in these terms and conditions.",
-      "youMustNot": "You must not:",
-      "licenseList": {
-        "text1" : "Republish material from texx",
-        "text2" :"Sell, rent or sub-license material from texx",
-        "text3" :"Reproduce, duplicate or copy material from texx",
-        "text4" :"Redistribute content from texx"
+      "intro1": "The use of the website www.perdele-online.ro implies acceptance of the following terms and conditions. We recommend reading them carefully. The Company reserves the right to modify these provisions without further notice.",
+      "section1": {
+        "header": "1. General Information",
+        "content": "The website www.perdele-online.ro is managed by the company SC TAK HOME DECORATION SRL, registered with the Trade Register under no. J08/1722/2008, CUI RO24085721, headquartered in Brașov, str. Harmanului no. 61, branch office Bd Grivitei no. 85. The natural or legal person who orders and purchases products through the website is hereinafter referred to as the 'client'. SC TAK HOME DECORATION SRL is not responsible for any damages resulting from any malfunction of the website."
       },
-      "agreement": "This Agreement shall begin on the date hereof. Our Terms and Conditions were created with the help of the Terms and Conditions Generator.",
-      "comments": "Parts of this website offer an opportunity for users to post and exchange opinions and information. Texx does not filter, edit, publish or review Comments prior to their presence on the website. Comments reflect the views and opinions of the person posting them. Texx shall not be liable for any Comments or any liability, damages or expenses arising as a result of their use or appearance.",
-      "hyperlinkTitle": "Hyperlinking to our Content",
-      "hyperlinkText1": "The following organizations may link to our Website without prior written approval:",
-      "hyperlinkList1": {
-          "text1" : "Government agencies",
-          "text2" :"Search engines",
-          "text3" :"News organizations",
-          "text4" :"Online directory distributors, and",
-          "text5" : "System wide Accredited Businesses (excluding certain non-profits)"
-        },
-      "hyperlinkText2": "These organizations may link to our home page, publications, or other website information as long as the link:",
-      "hyperlinkText3": " (a) is not deceptive, (b) does not falsely imply sponsorship or endorsement, and (c) fits within the context of the linking party’s site.",
-      "hyperlinkList2": {
-          "text1" :  "By using our corporate name",
-          "text2" : "By using the URL being linked to",
-          "text3" : "Or by using any other description that makes sense in context"
-        },
-      "iframesTitle": "iFrames",
-      "iframesText": "Without prior written approval, you may not create frames around our webpages that alter their visual presentation.",
-      "contentLiabilityTitle": "Content Liability",
-      "contentLiabilityText": "We shall not be held responsible for any content that appears on your website. You agree to defend us against any claims arising from content on your site.",
-      "privacyTitle": "Your Privacy",
-      "privacyText": "Please read our Privacy Policy.",
-      "reservationTitle": "Reservation of Rights",
-      "reservationText": "We reserve the right to request removal of all or any specific links to our Website. By continuously linking to our Website, you agree to these terms.",
-      "removalTitle": "Removal of links from our website",
-      "removalText": "If you find any link on our website that is offensive, you may contact us. We will consider requests to remove links, but are not obligated to do so.",
-      "disclaimerTitle": "Disclaimer",
-      "disclaimerText": "To the maximum extent permitted by law, we exclude all representations, warranties and conditions relating to our website and its use. Nothing in this disclaimer will:",
-      "disclaimerList": {
-          "text1" :  "limit or exclude our or your liability for death or personal injury",
-          "text2" :  "limit or exclude our or your liability for fraud or fraudulent misrepresentation",
-          "text3" :   "limit any liabilities in any way not permitted under applicable law",
-          "text4" : "or exclude any liabilities that may not be excluded under applicable law"
+      "section2": {
+        "header": "2. Product Prices",
+        "content": "All prices displayed on this website are expressed in RON or EUR, include VAT (24%), and may be modified based on changes in customs duties, other taxes imposed by the Romanian state, or exchange rates of RON to euro and RON to dollar."
       },
-      "disclaimerConclusion": "The limitations set in this disclaimer govern all liabilities arising from this disclaimer, including those in contract, tort and statutory duty. As long as the website is provided free of charge, we will not be liable for any loss or damage.",
-      "finalNote": "By accessing and using this website, you agree to these Terms and Conditions."
+      "section3": {
+        "header": "3. Copyright",
+        "content": "Copyright on all the content of this website is owned by SC TAK HOME DECORATION SRL. The website's content may not be reproduced, modified, distributed, republished, transferred, copied, or transmitted in any form without the prior written permission of SC TAK HOME DECORATION SRL. For issues related to intellectual property rights or to report violations, please contact ."
+      },
+      "section4": {
+        "header": "4. Data Security and Information",
+        "content": "The online store www.perdele-online.ro adheres to a strict policy regarding the confidentiality of its customers' data. The site administrator undertakes not to transmit customers' personal data to third parties and to use such data only for the purposes for which it was provided. The personal data entered by the client may be used solely for the declared purpose of this website."
+      },
+      "section5": {
+        "header": "5. Products Sold on the Website",
+        "content": "The products sold on www.perdele-online.ro are new. SC TAK HOME DECORATION SRL has resale contracts and commercial understandings with domestic manufacturers or importers of the brands presented on its website. The Company does not guarantee the availability of all displayed products and reserves the right not to deliver part or all of an order if certain products are no longer available in the current supplier offer or are unavailable for other reasons (temporary stock shortage, stock depletion, etc.). The client will be notified as soon as possible about product availability. The maximum liability of the Company in case of non-delivery is limited to the amount received from the client, which will be refunded within a maximum of 30 days. When applicable, the products are accompanied by quality and conformity certificates issued by the manufacturers or importers. Any complaint must be reported to the Company within 48 hours of product receipt and will be forwarded to the manufacturer/importer for resolution. The Company does not guarantee and cannot be held responsible if the purchased products are not used for their intended purpose. Furthermore, the Company is not liable for any defects in the products purchased from the website; all responsibility for such defects and their repair lies with the manufacturer/importer or the authorized service provider."
+      },
+      "section6": {
+        "header": "6. Disputes",
+        "content": "Any issues regarding the nature or quantities delivered must be reported within 48 hours of receiving the package. www.perdele-online.ro will try to resolve such issues as quickly and favorably as possible. In the event of unresolved disputes, the competent courts will be approached."
+      },
+      "section7": {
+        "header": "7. Product Warranty",
+        "content": "Warranties offered by www.perdele-online.ro: you are guaranteed a refund within 10 days if the product does not meet your requirements. Warranties provided by the manufacturer are indicated on each product’s page (6, 12, or 24 months)."
+      },
+      "section8": {
+        "header": "8. Product Returns",
+        "content": "If the product you ordered does not match the description on www.perdele-online.ro, has manufacturing or other defects, or does not meet your expectations according to applicable law, you may request a replacement or a refund within 10 days of receipt. The shipping cost for both the product and its return is entirely borne by the buyer. The product may only be returned if it is in perfect condition, including its packaging, and shows no signs of wear or use. All return expenses are borne by the buyer. In case of product refusal, please contact us within 24 hours of receipt by e-mail. (This e-mail address is protected from spambots; you need to enable JavaScript to view it.) Returns are subject to Government Ordinance no. 130/13 August 2000, as amended by Law no. 51/2003 concerning the legal regime of distance contracts, but only for products delivered by post or courier service: Ord. 130/2000, Chapter 1, Article 2, (a) Distance Contract – the contract for the supply of products or services entered into between a trader and a consumer, within a system of sale organized by the trader, which exclusively uses one or more means of distance communication before and at the conclusion of the contract."
+      },
+      "finalNote": "By using the website www.perdele-online.ro, you agree to these Terms and Conditions."
     },
     
     "footer": {
@@ -586,7 +569,8 @@
       },
       "infoSubText": {
         "address": "Address:"
-      }
+      },
+      "returnPolicy" : "Return policy"
     },
     
     "errorPage": {
@@ -605,8 +589,14 @@
         "text": "There are issues connecting to the server, we apologize!",
         "title": "Server Error"
       }
-    }
+    },
     
+    "returnPolicy": {
+      "title": "Return Policy",
+      "text": "Custom-made products, such as drapes, curtains, or simply ordered material, cannot be returned.",
+      "text2": "For returns, please contact us using the contact form."
+    }
+
     
   
   }

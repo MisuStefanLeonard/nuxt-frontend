@@ -18,10 +18,11 @@ class ProductsService extends ApiService{
      * @returns {List} [The list with a limit of 15 products]
      */
     
-    getProductsForUsers(pageNumber , productTypes , productColors, productDimensions, productPrice , productReverseFace, currency){
+    getProductsForUsers(pageNumber , productTypes ,productCategories ,productColors, productDimensions, productPrice , productReverseFace, currency){
        
         const params = {
             productTypes,
+            productCategories,
             productColors,
             productDimensions,
             productPrice,

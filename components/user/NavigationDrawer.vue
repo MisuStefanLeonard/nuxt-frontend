@@ -10,7 +10,7 @@
       <v-list-item v-for="item in menuItems2" :key="item.title" @click="item.dropdown.length > 0 ? toggleDropdown(item) : goTo(item.path)" >
         <v-list-item-title>
           <v-icon class="mr-2" :icon="item.icon"></v-icon>
-          {{ $t(item.title) }}
+          {{ $t(item.title)}}
           <v-badge inline
             v-if="item.title === 'menu.shoppingCart' && isClient"
             :content="cartCount"
@@ -24,16 +24,22 @@
         <template v-if="item.dropdown.length > 0">
           <v-expand-transition>
             <v-list v-if="item.expand" >
-              <v-list-item v-for="dropitem in item.dropdown" :key="dropitem.title" @click="handleDropDown(dropitem)">
+              <v-list-item v-for="dropitem in item.dropdown" :key="dropitem.title" @click="handleDropDown(dropitem )">
                 <v-list-item-title>
                   <v-icon class="mr-2" :icon="dropitem.icon"></v-icon>
-                  {{ $t(dropitem.title) }}
+                  {{dropitem.dynamic === true ? `${dropitem.title}`  :`${ $t(dropitem.title) }` }}
                 </v-list-item-title>
               </v-list-item>
             </v-list>
           </v-expand-transition>
         </template>
       </v-list-item>
+      <div v-if="useCookie('admin').value === 1">
+        <v-list-item v-for="item in adminItems" :key="item.title" @click="goToQuery(item.path)">
+          <v-list-item-title> <v-icon class="mr-2" :icon="item.icon"></v-icon>{{$t(item.title)  }}</v-list-item-title>
+        </v-list-item>
+      </div>
+      
       <v-spacer></v-spacer>
       <v-container fluid class="text-center" >
         <v-row no-gutters>
@@ -76,7 +82,8 @@ import { mdiAccountPlus, mdiArrowLeft, mdiArrowRight } from '@mdi/js';
 const props = defineProps({
   sidebar: Boolean,
   menuItems: Array,
-  menuItems2: Array
+  menuItems2: Array,
+  adminItems: Array
 })
 
 const isClient = ref(false)
@@ -132,8 +139,18 @@ const goTo = (path) => {
   navigateTo(localePath(path))
 }
 
-const handleDropDown = (dropitem) => {
-  currentDropDown(t(dropitem.title))
+const goToQuery = (pathP) => {
+  navigateTo({path : localePath(pathP) , query : {redirect: 'redirect'}})
+}
+
+const handleDropDown = (dropitem ) => {
+  console.log(dropitem , dropitem.dynamic , dropitem.value)
+  if(dropitem.dynamic === true){
+    currentDropDown(dropitem.title , dropitem.dynamic , dropitem.value)
+  }else{
+    currentDropDown(t(dropitem.title), 'none' )
+  }
+ 
 }
 
 function toggleDropdown(item) {
@@ -165,62 +182,26 @@ const getCartCount = function(){
   }
 }
 
-const getAllProductCategoriesAndTypes = (async () => {
-  const response = await Products.getProductTypesAndCategoriesForUser();
-  console.log(response)
-})
 
-
-const currentDropDown = (option) => {
+const currentDropDown = (option , isDynamic , valueRo) => {
   const translatedGeneralShop = t('menu.allProducts') 
-  const translatedCuverturi = t('menu.cuverturi') 
-  const translatedPerdele = t('menu.perdele') 
-  const translatedDraperii = t('menu.draperii')
-  const translatedPerne = t('menu.perne')
+  // const translatedCuverturi = t('menu.cuverturi') 
+  // const translatedPerdele = t('menu.perdele') 
+  // const translatedDraperii = t('menu.draperii')
+  // const translatedPerne = t('menu.perne')
   const translatedSets = t('menu.sets')
   const translatedCart = t('menu.shoppingCart')
+
+  if(isDynamic === true){
+    navigateTo({path: localePath('/shop') , query : {type: valueRo}})
+  }
   
   switch (option) {
     case translatedGeneralShop: {
       navigateTo(localePath('/shop'))
       break
     }
-    case translatedCuverturi: {
-      navigateTo({
-        path: localePath('/shop'),
-        query: {
-          type: 'CUVERTURA'
-        }
-      })
-      break
-    }
-    case translatedPerdele: { 
-      navigateTo({
-        path: localePath('/shop'),
-        query: {
-          type: 'PERDEA'
-        }
-      })
-      break
-    }
-    case translatedDraperii: {
-      navigateTo({
-        path: localePath('/shop'),
-        query: {
-          type: 'DRAPERIE'
-        }
-      })
-      break
-    }
-    case translatedPerne: { 
-      navigateTo({
-        path: localePath('/shop'),
-        query: {
-          type: 'PERNA'
-        }
-      })
-      break
-    }
+   
     case translatedSets: { 
       navigateTo({
         path: localePath('/shopSeturi')

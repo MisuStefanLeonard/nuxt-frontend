@@ -21,7 +21,7 @@
                   <v-icon :icon="card_item.card_icon" size="24"></v-icon>
                 </v-col>
                 <v-col cols="auto">
-                  <span class="font-weight-thin">{{ card_item.card_title }}</span>
+                  <span class="font-weight-thin text-center">{{ card_item.card_title }}</span>
                 </v-col>
               </v-row>
             </v-card-title>
@@ -35,7 +35,7 @@
   
 
 <script setup>
-import { mdiCogOutline } from '@mdi/js';
+import { mdiAccountBoxOutline, mdiCogOutline, mdiMapMarkerOutline, mdiTruckFast } from '@mdi/js';
 import { ref } from 'vue'
 
 definePageMeta({
@@ -61,19 +61,19 @@ const localePath = useLocalePath()
 const cardData = ref([
     { 
         card_title: t('profile.generalInfo.accountData'), 
-        card_icon: 'mdi-account-box-outline', 
+        card_icon: mdiAccountBoxOutline, 
         card_path: '/user/profile/data',
         card_text: t('profile.generalInfo.info')
     },
     { 
         card_title: t('profile.generalInfo.addresses'), 
-        card_icon: 'mdi-map-marker-outline', 
+        card_icon: mdiMapMarkerOutline, 
         card_path: '/user/profile/addresses', 
         card_text: t('profile.generalInfo.infoAddresses')
     },
     { 
         card_title: t('profile.generalInfo.orders'), 
-        card_icon: 'mdi-truck-fast', 
+        card_icon: mdiTruckFast, 
         card_path: '/user/profile/orders',
         card_text: t('profile.generalInfo.infoOrders')
     }

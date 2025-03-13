@@ -125,7 +125,10 @@ const store = useUserStore();
 var originalInel = ref({});
 const encodedIdInel = route.params.encodedIdInelDto;
 const ineleForm = ref(null);
-var colorsOfAllInele = ref([]);
+// var colorsOfAllInele = ref([]);
+const namesRo = ref([])
+const namesEn = ref([])
+
 
 const isLenOfFileValid = computed(() => {
     if(formData.value.image === null){
@@ -136,6 +139,8 @@ const isLenOfFileValid = computed(() => {
 
 const formData = ref({
     culoareInelDto: '',
+    culoare_ro : '',
+    culoare_en : '',
     caleRelativa: null,
     presignedUrl: 'empty',
     image: null, // Used for the image file
@@ -145,17 +150,35 @@ const formData = ref({
 const imageFormData = ref([
     {
         type: 'text-field',
-        label: 'Culoare inel',
+        label: 'Culoare inel (Romana)',
         placeholder: 'culoara inelului',
-        model: 'culoareInelDto',
+        model: 'culoare_ro',
         maxLength: 20,
         rules: [
             value => !!value || 'Culoarea inelului nu poate fi gol',
             value => value.length <= 20 || 'Sunt permise maxim 20 de caractere',
             value => {
-                let isColorUsed = colorsOfAllInele.value.find(m => m === String(value).toLowerCase())
+                let isColorUsed = namesRo.value.find(m => m === String(value).toLowerCase())
                 if(isColorUsed !== undefined){
-                    return 'Culoarea inelului exista'
+                    return 'Culoarea inelului exista in limba romana'
+                }
+                return true
+            }
+        ],
+    },
+    {
+        type: 'text-field',
+        label: 'Culoare inel (Engleza)',
+        placeholder: 'Culoara inelului in limba engleza',
+        model: 'culoare_en',
+        maxLength: 20,
+        rules: [
+            value => !!value || 'Culoarea inelului nu poate fi gol',
+            value => value.length <= 20 || 'Sunt permise maxim 20 de caractere',
+            value => {
+                let isColorUsed = namesEn.value.find(m => m === String(value).toLowerCase())
+                if(isColorUsed !== undefined){
+                    return 'Culoarea inelului exista in limba engleza'
                 }
                 return true
             }
@@ -217,22 +240,28 @@ async function getCurrentInel() {
         swal.close();
         console.log(response)
         formData.value.culoareInelDto = response.culoareInelDto || '';
+        formData.value.culoare_ro = response.culoareInelJsonDto.culoare_ro,
+        formData.value.culoare_en = response.culoareInelJsonDto.culoare_en,
         formData.value.caleRelativa = response.caleRelativa || null;
         formData.value.presignedUrl = response.presignedUrl || 'empty';
         const inelObj = {
             culoareInelDto: formData.value.culoareInelDto,
+            culoareInelJsonDto : {
+                culoare_ro : formData.value.culoare_ro,
+                culoare_en : formData.value.culoare_en,
+            },
             presignedUrl:  formData.value.presignedUrl,
             caleRelativa: formData.value.caleRelativa
         };
-        originalInel = JSON.parse(JSON.stringify(inelObj))
+        originalInel.value = JSON.parse(JSON.stringify(inelObj))
     }
 }
 
 async function getIneleColors(){
     const ineleColors = await adminService.getInelePrindereColors();
     if(ineleColors !== null){
-        colorsOfAllInele.value = ineleColors
-        colorsOfAllInele.value =  colorsOfAllInele.value.filter(m => m !== formData.value.culoareInelDto)
+        namesRo.value = ineleColors.map(elem => elem.nume_ro).filter(elem => elem !== formData.value.culoare_ro)
+        namesEn.value = ineleColors.map(elem => elem.nume_en).filter(elem => elem !== formData.value.culoare_en)
     }
 }
 
@@ -270,13 +299,16 @@ async function saveIneleModification(){
     if(isValidForm.valid){
         const modifiedInel = {
             culoareInelDto: formData.value.culoareInelDto,
+            culoareInelJsonDto : {
+                culoare_ro : formData.value.culoare_ro,
+                culoare_en : formData.value.culoare_en,
+            },
             presignedUrl:  formData.value.presignedUrl,
             caleRelativa: formData.value.caleRelativa
         };
-
     
 
-        if(JSON.stringify(modifiedInel) === JSON.stringify(originalInel)){
+        if(JSON.stringify(modifiedInel) === JSON.stringify(originalInel.value)){
             console.log('aici')
             fireAlarm('info' , 'Atentie' , 'Nu ati modificat nimic' , null)
             return

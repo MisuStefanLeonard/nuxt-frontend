@@ -1,6 +1,9 @@
 <template>
     <div>
         <v-container>
+            <v-alert v-if="authorizeAgain" type="error" v-model="authorizeAgain" closable>
+                Va rog sa va autorizati din nou
+            </v-alert>
             <v-alert v-if="invalidKeyAlert" type="error" v-model="invalidKeyAlert" closable>
                 {{ invalidKeyAlertText }}
             </v-alert>
@@ -42,6 +45,7 @@ definePageMeta({
 const key = ref('')
 const invalidKeyAlert = ref(false)
 const waitAlert = ref(false)
+const authorizeAgain = ref(false)
 
 const rules = {
     required: value => !!value || "Completati campul cu cheia de acces"
@@ -52,25 +56,20 @@ const swal = useNuxtApp().$swal;
 const waitAlertText = 'Asteptati...'
 const invalidKeyAlertText = 'Cheie de acces gresita! Incercati din nou!'
 const adminForm = ref(null)
-
-// Router instance
-const router = useRouter()
+const route = useRoute()
 
 // Methods
 const authAdmin = async () => {
     waitAlert.value = true
     const isValid = await adminForm.value.validate()
-    console.log(isValid.valid)
     if(isValid.valid){
         const response = await AdminService.adminLogin(key.value)
         console.log(response)
         if (response === -1) {
-            console.log("Unauthorized")
             invalidKeyAlert.value = true
             waitAlert.value = false
         } else if (response === 1) {
             waitAlert.value = false
-            console.log("authorized")
             navigateTo('/admin/dashboard')
         }
     }else{
@@ -86,6 +85,23 @@ const authAdmin = async () => {
    
 }
 
+const getAdminPage = async () => {
+    if(route.query.redirect === "redirect"){
+        const response = await AdminService.getAdminLogin('redirect');
+        if(response === 1){
+            console.log('authorize again')
+            authorizeAgain.value = true;
+            // authorize yourself
+            return;
+        }else if(response === 0){
+            navigateTo('/admin/dashboard')
+        }
+    }
+}
+
+onMounted(async() => {
+    await getAdminPage()
+})
 
 </script>
 

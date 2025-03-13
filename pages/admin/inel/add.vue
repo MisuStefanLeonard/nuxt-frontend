@@ -112,18 +112,23 @@ definePageMeta({
 const swal = useNuxtApp().$swal;
 const store = useUserStore();
 const ineleForm = ref(null);
-var colorNamesOfAllInele = ref([])
+// var colorNamesOfAllInele = ref([])
+const namesRo = ref([])
+const namesEn = ref([])
 
 async function getIneleColors(){
     const colorNames = await adminService.getInelePrindereColors();
     if(colorNames !== null){
-        colorNamesOfAllInele.value = colorNames
+        namesRo.value = colorNames.map(elem => elem.culoare_ro)
+        namesEn.value = colorNames.map(elem => elem.culoare_en)
     }
 }
 
 
 const formData = ref({
     culoareInelDto: '',
+    culoare_ro: '',
+    culoare_en: '',
     caleRelativa: null,
     presignedUrl: 'empty',
     image: null, // Used for the image file
@@ -133,17 +138,35 @@ const formData = ref({
 const ineleFormData = ref([
     {
         type: 'text-field',
-        label: 'Nume culoare',
-        placeholder: 'Numele culorii',
-        model: 'culoareInelDto',
+        label: 'Nume culoare (Romana)',
+        placeholder: 'Numele culorii in romana',
+        model: 'culoare_ro',
         maxLength: 20,
         rules: [
             value => !!value || 'Numele culorii nu poate fi gol',
             value => value.length <= 20 || 'Sunt permise maxim 20 de caractere',
             value => {
-                let isNameUsed = colorNamesOfAllInele.value.find(m => m === String(value).trim())
+                let isNameUsed = namesRo.value.find(m => m === String(value).trim())
                 if(isNameUsed !== undefined){
-                    return 'Numele culorii exista'
+                    return 'Numele culorii exista in limba romana'
+                }
+                return true
+            }
+        ],
+    },
+    {
+        type: 'text-field',
+        label: 'Nume culoare (Engleza)',
+        placeholder: 'Numele culorii in engleza',
+        model: 'culoare_en',
+        maxLength: 20,
+        rules: [
+            value => !!value || 'Numele culorii nu poate fi gol',
+            value => value.length <= 20 || 'Sunt permise maxim 20 de caractere',
+            value => {
+                let isNameUsed = namesEn.value.find(m => m === String(value).trim())
+                if(isNameUsed !== undefined){
+                    return 'Numele culorii exista in limba engleza'
                 }
                 return true
             }
@@ -208,6 +231,10 @@ const isLenOfFileValid = computed(() => {
 async function saveNewInel() {
     fireAlarm('info', 'Salvare...', 'Asteptati...', true);
     const newMaterial = {
+        culoareInelJsonDto : {
+            culoare_ro : formData.value.culoare_ro ,
+            culoare_en : formData.value.culoare_en,
+        },
         culoareInelDto: formData.value.culoareInelDto,
         presignedUrl: formData.value.presignedUrl,
         caleRelativa: formData.value.caleRelativa,

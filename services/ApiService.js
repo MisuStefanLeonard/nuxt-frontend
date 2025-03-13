@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useUserStore } from "~/store/user";
 import qs from "qs"
+import { useI18n } from "#imports";
 class ApiService {
     constructor(baseURL) {
         this.baseURL = baseURL;
@@ -53,9 +54,8 @@ class ApiService {
                 message : error.response?.data
             }
             if (errorStatus === 401) {
-                console.error("Expired token");
-                store.showSnackbar("Token-ul a expirat/Access neautorizat!");
-                navigateTo(localePath('/user/logout'));
+                store.showSnackbar(useI18n('logout.expiredLoginToken'));
+                navigateTo(localePath('/user/login'));
             } else if (errorStatus === 400) {
                 if(returnData === null){
                     return  errorReturnObJ;

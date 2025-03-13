@@ -119,18 +119,23 @@ definePageMeta({
 const swal = useNuxtApp().$swal;
 const store = useUserStore();
 const tipGalerieForm = ref(null);
-var namesOfAllTipuriGalerie = ref([])
+const namesRo = ref([])
+const namesEn = ref([])
+
 
 async function getTipuriGalerieNames(){
     const tipGalerieNames = await adminService.getTipuriGalerieNames();
     if(tipGalerieNames !== null){
-        namesOfAllTipuriGalerie.value = tipGalerieNames
+        namesRo.value = tipGalerieNames.map(elem => elem.nume_ro)
+        namesEn.value = tipGalerieNames.map(elem => elem.nume_en)
     }
 }
 
 
 const formData = ref({
     numeTipGalerieDto: '',
+    nume_ro : '',
+    nume_en : '',
     pretTipGalerieDto: 0,
     incretireDto: 0,
     caleRelativa: null,
@@ -143,17 +148,35 @@ const formData = ref({
 const tipGalerieFormData = ref([
     {
         type: 'text-field',
-        label: 'Nume tip galerie',
+        label: 'Nume tip galerie (Romana)',
         placeholder: 'numele tipului de galerie',
-        model: 'numeTipGalerieDto',
+        model: 'nume_ro',
         maxLength: 30,
         rules: [
             value => !!value || 'Numele tipului de galerie nu poate fi gol',
             value => value.length <= 30 || 'Sunt permise maxim 30 de caractere',
             value => {
-                let isNameUsed = namesOfAllTipuriGalerie.value.find(m => m === String(value).toLowerCase())
+                let isNameUsed = namesRo.value.find(m => m === String(value).toLowerCase())
                 if(isNameUsed !== undefined){
-                    return 'Numele tipului de galerie exista exista'
+                    return 'Numele tipului de galerie exista deja'
+                }
+                return true
+            }
+        ],
+    },
+    {
+        type: 'text-field',
+        label: 'Nume tip galerie (Engleza)',
+        placeholder: 'numele tipului de galerie',
+        model: 'nume_en',
+        maxLength: 30,
+        rules: [
+            value => !!value || 'Numele tipului de galerie nu poate fi gol',
+            value => value.length <= 30 || 'Sunt permise maxim 30 de caractere',
+            value => {
+                let isNameUsed = namesEn.value.find(m => m === String(value).toLowerCase())
+                if(isNameUsed !== undefined){
+                    return 'Numele tipului de galerie in engleza exista deja'
                 }
                 return true
             }
@@ -173,11 +196,11 @@ const tipGalerieFormData = ref([
     },
     {
         type: 'text-field',
-        label: 'Incretire(metri)',
+        label: 'Incretire',
         model: 'incretireDto',
         placeholder: 'Incretire (precizie de 1 zecimala)',
         rules: [
-            value => !!value || 'Pretul tipului de galerie nu poate fi gol',
+            value => !!value || 'Incretirea nu poate fi goala',
             value =>
                 !!value && /^[0-9]*\.?[0-9]+$/.test(String(value)) ||
                 'Introduceți un număr valid (doar cifre și un singur punct zecimal) si fara spatii',
@@ -249,8 +272,13 @@ async function deleteImage() {
 async function saveNewTipGalerie() {
     fireAlarm('info', 'Salvare...', 'Asteptati...', true);
     const newTipGalerie = {
+        numeTipGalerieJsonDto : {
+            nume_ro : formData.value.nume_ro,
+            nume_en : formData.value.nume_en,
+        },
         numeTipGalerieDto: formData.value.numeTipGalerieDto,
         pretTipGalerieDto: formData.value.pretTipGalerieDto,
+        incretireDto : formData.value.incretireDto,
         presignedUrl: formData.value.presignedUrl,
         caleRelativa: formData.value.caleRelativa,
         sePrindeCuIneleDto: formData.value.sePrindeCuIneleDto

@@ -1,8 +1,8 @@
 <template>
-    <v-container fluid class="bg-grey-darken-4 p-4">
-        <div class="text-center m-4 p-4">
+    <div fluid class="bg-grey-darken-4 p-4">
+        <div class="text-center  p-4">
             <p class="font-weight-light h3 ">Clienti</p>
-            <v-divider class="border-opacity-50" color="success"></v-divider>
+            <v-divider opacity="0" color="success"></v-divider>
             <v-text-field
                 v-model="search"
                 label="Cauta dupa numele/prenumele/email/tipul contului/username a clientului"
@@ -18,7 +18,7 @@
                 item-value="idContDto"
                 v-model="selectedClients"
                 show-select
-                class="bg-blue-grey-darken-4 p-4 m-1"
+                class="bg-blue-grey-darken-4 p-3 "
             >
                 <!-- Toggle Activation/Deactivation for Each Row -->
                 <template v-slot:[`item.contActivDto`]="{ item }">
@@ -62,7 +62,7 @@
                 </template>
             </v-data-table>
         </div>
-    </v-container>
+    </div>
 </template>
 
 <script setup>

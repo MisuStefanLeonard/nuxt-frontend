@@ -123,16 +123,20 @@ const store = useUserStore();
 var originalTipGalerie = ref({});
 const encodedIdTipGalerieDto = route.params.encodedIdTipGalerieDto;
 const tipGalerieForm = ref(null);
-var namesOfAllTipuriGalerie = ref([]);
+const namesRo = ref([])
+const namesEn = ref([])
+
 
 
 const formData = ref({
     numeTipGalerieDto: '',
+    nume_ro : '',
+    nume_en : '',
     pretTipGalerieDto: 0,
     incretireDto: 0,
     caleRelativa: null,
-    presignedUrl: 'empty',
     sePrindeCuIneleDto: false,
+    presignedUrl: 'empty',
     image: null, // Used for the image file
     imageJustAdded: false
 });
@@ -140,17 +144,35 @@ const formData = ref({
 const tipGalerieFormData = ref([
     {
         type: 'text-field',
-        label: 'Nume tip galerie',
+        label: 'Nume tip galerie (Romana)',
         placeholder: 'numele tipului de galerie',
-        model: 'numeTipGalerieDto',
+        model: 'nume_ro',
         maxLength: 30,
         rules: [
             value => !!value || 'Numele tipului de galerie nu poate fi gol',
             value => value.length <= 30 || 'Sunt permise maxim 30 de caractere',
             value => {
-                let isNameUsed = namesOfAllTipuriGalerie.value.find(m => m === String(value).toLowerCase())
+                let isNameUsed = namesRo.value.find(m => m === String(value).toLowerCase())
                 if(isNameUsed !== undefined){
-                    return 'Numele tipului de galerie exista exista'
+                    return 'Numele tipului de galerie exista deja'
+                }
+                return true
+            }
+        ],
+    },
+    {
+        type: 'text-field',
+        label: 'Nume tip galerie (Engleza)',
+        placeholder: 'numele tipului de galerie',
+        model: 'nume_en',
+        maxLength: 30,
+        rules: [
+            value => !!value || 'Numele tipului de galerie nu poate fi gol',
+            value => value.length <= 30 || 'Sunt permise maxim 30 de caractere',
+            value => {
+                let isNameUsed = namesEn.value.find(m => m === String(value).toLowerCase())
+                if(isNameUsed !== undefined){
+                    return 'Numele tipului de galerie in engleza exista deja'
                 }
                 return true
             }
@@ -170,11 +192,11 @@ const tipGalerieFormData = ref([
     },
     {
         type: 'text-field',
-        label: 'Incretire(metri)',
+        label: 'Incretire',
         model: 'incretireDto',
         placeholder: 'Incretire (precizie de 1 zecimala)',
         rules: [
-            value => !!value || 'Pretul tipului de galerie nu poate fi gol',
+            value => !!value || 'Incretirea tipului de galerie nu poate fi gol',
             value =>
                 !!value && /^[0-9]*\.?[0-9]+$/.test(String(value)) ||
                 'Introduceți un număr valid (doar cifre și un singur punct zecimal) si fara spatii',
@@ -250,6 +272,8 @@ async function getCurrentTipGalerie() {
         swal.close();
         console.log(response)
         formData.value.numeTipGalerieDto = response.numeTipGalerieDto || '';
+        formData.value.nume_ro = response.numeTipGalerieJsonDto.nume_ro || '';
+        formData.value.nume_en = response.numeTipGalerieJsonDto.nume_en|| '';
         formData.value.pretTipGalerieDto = response.pretTipGalerieDto || 0;
         formData.value.incretireDto = response.incretireDto || 0;
         formData.value.caleRelativa = response.caleRelativa || null;
@@ -260,19 +284,20 @@ async function getCurrentTipGalerie() {
             pretTipGalerieDto: formData.value.pretTipGalerieDto,
             incretireDto : formData.value.incretireDto,
             numeTipGalerieDto: formData.value.numeTipGalerieDto,
+            numeTipGalerieJsonDto: formData.value.numeTipGalerieJsonDto,
             presignedUrl:  formData.value.presignedUrl,
             caleRelativa: formData.value.caleRelativa,
             sePrindeCuIneleDto: formData.value.sePrindeCuIneleDto
         };
-        originalTipGalerie = JSON.parse(JSON.stringify(tipGalerieObj))
+        originalTipGalerie.value = JSON.parse(JSON.stringify(tipGalerieObj))
     }
 }
 
 async function getTipuriGalerieNames(){
     const tipGalerieNames = await adminService.getTipuriGalerieNames();
     if(tipGalerieNames !== null){
-        namesOfAllTipuriGalerie.value = tipGalerieNames
-        namesOfAllTipuriGalerie.value =  namesOfAllTipuriGalerie.value.filter(m => m !== formData.value.numeTipGalerieDto)
+        namesRo.value = tipGalerieNames.map(elem => elem.nume_ro).filter(elem => elem !== formData.value.nume_ro)
+        namesEn.value = tipGalerieNames.map(elem => elem.nume_en).filter(elem => elem !== formData.value.nume_en)
     }
 }
 
@@ -314,12 +339,16 @@ async function saveTipGalerieModification(){
             pretTipGalerieDto: formData.value.pretTipGalerieDto,
             incretireDto : formData.value.incretireDto,
             numeTipGalerieDto: formData.value.numeTipGalerieDto,
+            numeTipGalerieJsonDto: {
+                nume_ro : formData.value.nume_ro,
+                nume_en : formData.value.nume_en,
+            },
             presignedUrl: formData.value.presignedUrl,
             caleRelativa: formData.value.caleRelativa ,
             sePrindeCuIneleDto: formData.value.sePrindeCuIneleDto
         };
        
-        if(JSON.stringify(modifiedTipGalerie) === JSON.stringify(originalTipGalerie)){
+        if(JSON.stringify(modifiedTipGalerie) === JSON.stringify(originalTipGalerie.value)){
             fireAlarm('info' , 'Atentie' , 'Nu ati modificat nimic' , null)
             return
         }else{
@@ -340,7 +369,7 @@ async function saveTipGalerieModification(){
             if (response === 1) {
                 swal.close()
                 fireAlarm('success', 'Succes', 'Cusatura galeriei a fost actualizat cu succes', null);
-                originalTipGalerie = modifiedTipGalerie
+                originalTipGalerie.value = modifiedTipGalerie
                 
             }else if(response === 0){
                 swal.close()
