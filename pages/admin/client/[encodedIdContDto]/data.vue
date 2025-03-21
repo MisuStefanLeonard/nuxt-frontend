@@ -5,6 +5,7 @@
             :email-dto="accountData.emailDto"
             :encoded-id-account-dto="encodedIdAccountDto"
             :account-data="accountData"
+            type="client"
         ></AdminNavDrawerOnClient>
       <v-main class="bg-grey-darken-3" >
         <v-container fluid>

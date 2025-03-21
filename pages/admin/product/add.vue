@@ -1,578 +1,865 @@
 <template>
-  <div>
-    <v-card class="p-4 elevation-24 bg-grey-darken-3">
-      <v-card-title class="font-weight-light text-center text-white">
-        Adăugați un produs nou
-      </v-card-title>
-
-      <!-- Product General Information -->
-      <v-form ref="mainForm" class="text-white text-center">
-        <div>
-          <v-row class="p-2 m-2 bg-grey-darken-4">
-            <!-- General Fields -->
-            <v-col cols="6">
-              <v-text-field class="p-2 m-1"
-                v-model="product.codProdusDto"
-                label="Cod Produs"
-                variant="outlined"
-                :rules="[rules.fieldNotEmpty, rules.onlyLetters, rules.checkProductCode,rules.lengthNotAbove(40),rules.checkProductCode]"
-                :counter="40"
+  <v-app class="bg-grey-darken-3 " fluid>
+    <AdminNavDrawerOnClient
+        v-if="productCode"
+        :product-code="productCode"
+        type="product"
+    ></AdminNavDrawerOnClient>
+    <v-main class="h-100" v-if="!isLoading">
+        <v-snackbar :timeout="3000" color="red" v-model="categoryExists" >
+            Categoria deja exista !
+        </v-snackbar>
+        <v-snackbar :timeout="3000" color="red" v-model="dimensionExists" >
+            Dimensiunea deja exista !
+        </v-snackbar>
+        <v-snackbar :timeout="3000" color="red" v-model="colorExists" >
+            Culoarea deja exista !
+        </v-snackbar>
+        <v-snackbar :timeout="3000" color="red" v-model="imageExists" >
+            Imaginea deja exista !
+        </v-snackbar>
+        <v-snackbar :timeout="3000" color="red" v-model="noProductTypeSelected" >
+            Nu ati selectat tipul produsului !
+        </v-snackbar>
+        <v-fade-transition>
+            <div>
+                <v-alert v-if="watchToSave && route.query.general === '1'" v-model="watchToSave" type="warning" variant="tonal"  class="w-100 text-center">
+                    <p>{{ watchToSaveText }}</p>
+                    <p>
+                        <v-btn @click="finalSaveData()" type="button" color="success" variant="flat"
+                            class="font-weight-bold mt-2">
+                            Salveaza modificari
+                            <v-icon class="pl-2" :icon="mdiContentSave"></v-icon>
+                        </v-btn>
+                    </p>
+                </v-alert>
+                <v-card-title  v-if="route.query.general === '1'"  class="font-weight-light text-left text-white" >
+                    <v-icon :icon="mdiCog" class="mr-2"></v-icon>Caracteristici generale
+                </v-card-title>
+            </div>
+        </v-fade-transition>
+        <v-fade-transition>
+            <v-card-title  v-if="route.query.category === '1'"  class="font-weight-light text-left text-white" >
+                <v-icon :icon="mdiShape" class="mr-2"></v-icon>Categorii
+            </v-card-title>
+        </v-fade-transition>
+        <v-fade-transition>
+            <v-card-title  v-if="route.query.dimension === '1'"  class="font-weight-light text-left text-white" >
+                <v-icon :icon="mdiAlphaDBoxOutline" class="mr-2"></v-icon>Dimensiuni (centimetri)
+            </v-card-title>
+        </v-fade-transition>
+        <v-fade-transition>
+            <v-card-title v-if="route.query.color === '1'"  class="font-weight-light text-left text-white" >
+                <v-icon :icon="mdiFormatColorFill" class="mr-2"></v-icon>Culori
+            </v-card-title>
+        </v-fade-transition>
+        <!-- Product General Information -->
+        <v-fade-transition>
+            <v-card-text v-if="route.query.general === '1'">
+                <v-form ref="mainForm" class="text-white text-center bg-grey-darken-4" >
+                    <v-row class="p-2 m-2 bg-grey-darken-4">
+                        <v-col cols="6" xs="12" s="12">
+                            <v-text-field 
+                                v-model="product.codProdusDto"
+                                label="Cod Produs"
+                                variant="outlined"
+                                :counter="40"
+                                density="compact"
+                                :rules="[rules.checkProductCode,rules.maxChar(40)]"
+                            >
+                            <template v-slot:counter={max,value}>
+                              <span :style="{ color: value > max ? 'red' : 'white' }">
+                                  {{ value }} / {{ max }}
+                              </span>
+                            </template>
+                          </v-text-field>
+                        </v-col>
+                        <v-col cols="6" xs="12" s="12">
+                            <v-combobox 
+                                v-model="product.numeProducatorDto"
+                                label="Producator"
+                                variant="outlined"
+                                :items="productOptions.manuFacturersDto"
+                                item-title="key"
+                                item-value="value"
+                                :counter="30"
+                                density="compact"
+                                :rules="[rules.onlyLetters,rules.maxChar(30)]"
+                            >
+                              <template v-slot:counter={max,value}>
+                                <span :style="{ color: value > max ? 'red' : 'white' }">
+                                    {{ value }} / {{ max }}
+                                </span>
+                              </template>
+                            </v-combobox>
+                        </v-col>
+                        <v-col cols="6" xs="12" s="12">
+                            <v-text-field 
+                                v-model="product.numeProdusJsonDto.nume_ro"
+                                density="compact"
+                                label="Nume Produs (Romana)"
+                                :counter="50"
+                                variant="outlined"
+                                :rules="[rules.maxChar(50), rules.fieldNotEmpty,rules.checkProductName]"
+                            >
+                            <template v-slot:counter={max,value}>
+                              <span :style="{ color: value > max ? 'red' : 'white' }">
+                                  {{ value }} / {{ max }}
+                              </span>
+                            </template>
+                          </v-text-field>
+                        </v-col>
+                        <v-col cols="6" xs="12" s="12">
+                            <v-text-field 
+                                v-model="product.numeProdusJsonDto.nume_en"
+                                density="compact"
+                                label="Nume Produs (Engleza)"
+                                :counter="50"
+                                variant="outlined"
+                                :rules="[rules.maxChar(50), rules.fieldNotEmpty,rules.checkProductNameEn]"
+                            >
+                            <template v-slot:counter={max,value}>
+                              <span :style="{ color: value > max ? 'red' : 'white' }">
+                                  {{ value }} / {{ max }}
+                              </span>
+                            </template>
+                          </v-text-field>
+                        </v-col>
+                        <v-col cols="6" xs="12" s="12" v-if="!isLoading">
+                            <v-combobox
+                                @update:search="mapTypeRoToEn(product , product.tipulProdusuluiJsonDto.tip_ro)"
+                                v-model="product.tipulProdusuluiJsonDto.tip_ro"
+                                label= "Tip produs (Romana)"
+                                variant="outlined"
+                                :counter="40"
+                                :items="getProductTypesRo"
+                                :rules="[rules.fieldNotEmpty,rules.maxChar(40)]"
+                                    density="compact"
+                            >
+                            <template v-slot:counter={max,value}>
+                              <span :style="{ color: value > max ? 'red' : 'white' }">
+                                  {{ value }} / {{ max }}
+                              </span>
+                            </template>
+                          </v-combobox>
+                        </v-col>
+                        <v-col cols="6" xs="12" s="12" v-if="!isLoading">
+                            <v-combobox 
+                                @update:search="mapTypeEnToRo(product , product.tipulProdusuluiJsonDto.tip_en)"
+                                v-model="product.tipulProdusuluiJsonDto.tip_en"
+                                label= "Tip produs (Engleza)"
+                                variant="outlined"
+                                :counter="40"
+                                :items="getProductTypesEn"
+                                :rules="[rules.fieldNotEmpty, rules.maxChar(40)]"
+                                density="compact"
+                            >
+                            <template v-slot:counter={max,value}>
+                              <span :style="{ color: value > max ? 'red' : 'white' }">
+                                  {{ value }} / {{ max }}
+                              </span>
+                            </template>
+                          </v-combobox>
+                        </v-col>
+                        <v-col cols="12" xs="12" s="12" v-if="!isLoading">
+                            <v-textarea
+                                v-model="product.descriereJsonDto.descriere_ro"
+                                label="Descriere Produs (Romana)"
+                                :counter="150"
+                                variant="outlined"
+                                :rules="[rules.maxChar(150), rules.fieldNotEmpty]"
+                                    density="compact"
+                                rows="2"
+                                auto-grow
+                            >
+                            <template v-slot:counter={max,value}>
+                              <span :style="{ color: value > max ? 'red' : 'white' }">
+                                  {{ value }} / {{ max }}
+                              </span>
+                            </template>
+                          </v-textarea>
+                        </v-col>
+                        <v-col cols="12" xs="12" s="12" v-if="!isLoading">
+                            <v-textarea 
+                            v-model="product.descriereJsonDto.descriere_en"
+                                label="Descriere Produs (Engleza)"
+                                :counter="150"
+                                variant="outlined"
+                                :rules="[rules.maxChar(150), rules.fieldNotEmpty]"
+                                density="compact"
+                                  rows="2"
+                                auto-grow
+                            >
+                            <template v-slot:counter={max,value}>
+                              <span :style="{ color: value > max ? 'red' : 'white' }">
+                                  {{ value }} / {{ max }}
+                              </span>
+                            </template>
+                          </v-textarea>
+                        </v-col>
+                        <v-col cols="12" xs="12" s="12" v-if="!isLoading">
+                            <v-text-field 
+                                v-model="product.compozitieJsonDto.compozitie_ro"
+                                label="Compozitie (Romana)"
+                                :counter="50"
+                                variant="outlined"
+                                :rules="[rules.maxChar(50)]"
+                                density="compact"
+                            >
+                            <template v-slot:counter={max,value}>
+                              <span :style="{ color: value > max ? 'red' : 'white' }">
+                                  {{ value }} / {{ max }}
+                              </span>
+                            </template>
+                          </v-text-field>
+                        </v-col>
+                        <v-col cols="12" xs="12" s="12" v-if="!isLoading">
+                            <v-text-field 
+                                v-model="product.compozitieJsonDto.compozitie_en"
+                                label="Compozitie (Engleza)"
+                                :counter="50"
+                                variant="outlined"
+                                :rules="[rules.maxChar(50)]"
+                                density="compact"
+                            >
+                            <template v-slot:counter={max,value}>
+                              <span :style="{ color: value > max ? 'red' : 'white' }">
+                                  {{ value }} / {{ max }}
+                              </span>
+                            </template>
+                          </v-text-field>
+                        </v-col>
+                        <v-col cols="4" xs="12" s="12">
+                            <v-checkbox 
+                                v-model="product.activInMagazinDto"
+                                label="Activ in magazin"
+                                variant="outlined"
+                                density="compact"
+                            ></v-checkbox>
+                        </v-col>
+                        <v-col cols="4" xs="12" s="12">
+                            <v-checkbox 
+                                v-model="product.fataReversibilaDto"
+                                label="Față reversibilă"
+                                variant="outlined"
+                                density="compact"
+                            ></v-checkbox>
+                        </v-col>
+                        <v-col cols="4" xs="12" s="12">
+                            <v-checkbox
+                                v-model="product.afiseazaInNoutatiDto"
+                                label="Afiseaza in Noutati"
+                                variant="outlined"
+                                density="compact"
+                            ></v-checkbox>
+                        </v-col>
+                        <v-col cols="6" xs="12" s="12">
+                            <v-checkbox 
+                                v-model="product.produsLimitatDto"
+                                label="Afiseaza la Produse Limitate"
+                                variant="outlined"
+                                density="compact"
+                            ></v-checkbox>
+                        </v-col>
+                        <v-col cols="6" xs="12" s="12">
+                            <v-text-field 
+                                v-model="product.tvaDto"
+                                label="TVA (%)"
+                                variant="outlined"
+                                :rules="[rules.fieldNotEmpty, rules.onlyNumbers]"
+                                density="compact"
+                            >
+                            <template v-slot:counter={max,value}>
+                              <span :style="{ color: value > max ? 'red' : 'white' }">
+                                  {{ value }} / {{ max }}
+                              </span>
+                            </template>
+                          </v-text-field>
+                        </v-col>
+                        <v-col cols="12" xs="12" s="12" v-if="!isLoading">
+                            <v-textarea 
+                                v-model="product.ingrijireJsonDto.ingrijire_ro"
+                                label="Instrucțiuni de îngrijire (Romana)"
+                                :counter="150"
+                                variant="outlined"
+                                :rules="[rules.maxChar(150)]"
+                                density="compact"
+                                  rows="2"
+                                auto-grow
+                            >
+                            <template v-slot:counter={max,value}>
+                              <span :style="{ color: value > max ? 'red' : 'white' }">
+                                  {{ value }} / {{ max }}
+                              </span>
+                            </template>
+                          </v-textarea>
+                        </v-col>
+                        <v-col cols="12" xs="12" s="12" v-if="!isLoading">
+                            <v-textarea 
+                                v-model="product.ingrijireJsonDto.ingrijire_en"
+                                label="Instrucțiuni de îngrijire (Engleza)"
+                                :counter="150"
+                                variant="outlined"
+                                :rules="[rules.maxChar(150)]"
+                                density="compact"
+                                rows="2"
+                                auto-grow
+                            >
+                            <template v-slot:counter={max,value}>
+                              <span :style="{ color: value > max ? 'red' : 'white' }">
+                                  {{ value }} / {{ max }}
+                              </span>
+                            </template>
+                          </v-textarea>
+                        </v-col>
+                        <v-alert type="warning" variant="tonal" class="text-center" density="compact">
+                            Daca produsul se aduce la comanda , lasati stocul la 0
+                        </v-alert>
+                        <v-col cols="12" xs="12" s="12">
+                            <v-text-field 
+                                v-model="product.stocDto"
+                                label="Stoc produs"
+                                variant="outlined"
+                                :rules="[rules.fieldNotEmpty, rules.onlyNumbers]"
+                                density="compact"
+                            >
+                            <template v-slot:counter={max,value}>
+                              <span :style="{ color: value > max ? 'red' : 'white' }">
+                                  {{ value }} / {{ max }}
+                              </span>
+                            </template>
+                          </v-text-field>
+                        </v-col>
+                        <v-alert type="warning" variant="tonal" class="text-center" density="compact">
+                            Daca produsul are pret pe dimensiune , lasati pret baza la 0
+                        </v-alert>
+                        <v-col cols="12" xs="12" s="12">
+                            <v-text-field 
+                            density="compact"
+                                v-model="product.pretBazaDto"
+                                label="Pret baza produs (lei/m daca este perdea/draperie)"
+                                variant="outlined"
+                                :rules="[rules.fieldNotEmpty, rules.onlyNumbers]"
+                            >
+                            <template v-slot:counter={max,value}>
+                              <span :style="{ color: value > max ? 'red' : 'white' }">
+                                  {{ value }} / {{ max }}
+                              </span>
+                            </template>
+                          </v-text-field>
+                        </v-col>
+                        <v-alert type="warning" variant="tonal" class="text-center" density="compact">
+                            Daca produsul are pret pe dimensiune , lasati la 0.
+                        </v-alert>
+                        <v-col cols="12" xs="12" s="12">
+                            <v-text-field
+                            density="compact"
+                                v-model="product.pretBazaRedusDto"
+                                label="Pret baza produs redus (lei/m daca este perdea/draperie)"
+                                variant="outlined"
+                                :rules="[rules.fieldNotEmpty, rules.onlyNumbers]"
+                            >
+                            <template v-slot:counter={max,value}>
+                              <span :style="{ color: value > max ? 'red' : 'white' }">
+                                  {{ value }} / {{ max }}
+                              </span>
+                            </template>
+                          </v-text-field>
+                        </v-col>
+                        <v-alert type="warning" variant="tonal" class="text-center" density="compact">
+                            Daca produsul este perdea/draperie , daca nu lasati la 0.
+                        </v-alert>
+                        <v-col cols="12">
+                            <v-text-field 
+                                density="compact"
+                                v-model="product.inaltimeMaximaDto"
+                                label="Inaltime maxima material(metri)"
+                                variant="outlined"
+                                :rules="[rules.fieldNotEmpty, rules.onlyNumbers, ]"
+                            >
+                            <template v-slot:counter={max,value}>
+                              <span :style="{ color: value > max ? 'red' : 'white' }">
+                                  {{ value }} / {{ max }}
+                              </span>
+                            </template>
+                          </v-text-field>
+                        </v-col>
+                    </v-row>
+                </v-form>
+              </v-card-text>
+          </v-fade-transition>
+          <v-fade-transition >
+            <v-card-text   v-if="route.query.category === '1'">
+            <v-dialog v-model="openCategoryModification" persistent
+            max-width="500"
+            max-height="700" scrollable>
+                <v-card class="bg-grey-darken-4" max-width="500" max-height="700" >
+                    <v-card-text>
+                        <v-form ref="modifyCategoryForm" validate-on="input">
+                            <v-row class="p-2 bg-grey-darken-4">
+                                <v-col cols="12">
+                                    <v-combobox
+                                        @update:search="mapCategoryRoToEn(productCategoryToModify , productCategoryToModify.categorieJsonDto.categorie_ro ,false)"
+                                        class="mx-2"
+                                        v-model="productCategoryToModify.categorieJsonDto.categorie_ro"
+                                        :items="getProductCategoriesRo"
+                                        label="Categorie (Romana)"
+                                        :rules="[rules.maxChar(40) , rules.fieldNotEmpty,rules.onlyLetters]"
+                                        :counter="40"
+                                        outlined
+                                        clearable
+                                    ></v-combobox>
+                                </v-col>
+                                <v-col cols="12">
+                                    <v-combobox
+                                        @update:search="mapCategoryEnToRo(productCategoryToModify, productCategoryToModify.categorieJsonDto.categorie_en , false)"
+                                        class="mx-2"
+                                        v-model="productCategoryToModify.categorieJsonDto.categorie_en"
+                                        :items="getProductCategoriesEn"
+                                        label="Categorie (Engleza)"
+                                        :rules="[rules.maxChar(40) , rules.fieldNotEmpty,rules.onlyLetters]"
+                                        :counter="40"
+                                        outlined
+                                        clearable
+                                    ></v-combobox>
+                                </v-col> 
+                            </v-row>
+                        </v-form>
+                    </v-card-text>
+                    <v-card-actions>
+                        <v-row>
+                            <v-col cols="6" class="text-center">
+                                    <v-btn class="bg-green" type="button" @click="saveCategoryModification()">
+                                        Salveaza
+                                    </v-btn>
+                                </v-col>
+                                <v-col cols="6" @click="closeCategoryModification()" class="text-center">
+                                    <v-btn class="bg-red" type="button">
+                                        Inchide
+                                    </v-btn>
+                                </v-col>
+                        </v-row>
+                    </v-card-actions>
+                </v-card>
+            </v-dialog>
+            <v-data-table
+            :headers="categoryHeaders"
+            :items="product.tipuriProduseDto"
+            items-per-page="10"
+            item-value="categorieJsonDto.categorie_ro"
+            class="bg-grey-darken-4"
+        
+            >
+            <template v-slot:top>
+                <v-toolbar flat class="bg-grey-darken-4 text-center">
+                    <v-row class="text-center">
+                        <v-col cols="12">
+                            <v-btn color="white" class="bg-primary" @click="showTypeForm">
+                                Adauga categorie <v-icon :icon=mdiPlus></v-icon>
+                            </v-btn>
+                        </v-col>
+                    </v-row>
+                </v-toolbar>
+                <v-divider></v-divider>
+            </template>
+            <template #[`item.actions`]="{ item }">
+                <v-icon
+                    :disabled="!item.canDelete"
+                    color="red"
+                    size="28"
+                    class="mr-2"
+                    @click="deleteType(item.categorieJsonDto.categorie_ro,item.categorieJsonDto.categorie_en)" :icon="mdiTrashCan"
+                    >
+                </v-icon>
+                <v-icon
+                    color="white"
+                    size="28"
+                    class="mr-2"
+                    @click="modifyType(item)" :icon="mdiPen"
+                    >
+                </v-icon>
+            </template>
+            <template #[`item.justAdded`]="{item}">
+                <div v-if="item.justAdded === true">
+                    <span class="text-red">Nu</span>
+                </div> 
+                <div v-else>
+                    <span class="text-green">Da</span>
+                </div>
+            </template>
+            </v-data-table>
+          </v-card-text>
+        </v-fade-transition>
+        <v-fade-transition>
+          <v-card-text  v-if="route.query.dimension === '1'" >
+                  <v-dialog v-model="openDimensionModification" persistent
+                  max-width="500"
+                  max-height="700" scrollable>
+                  <v-card class="bg-grey-darken-4" max-width="500" max-height="700" >
+                      <v-card-text>
+                          <v-form ref="modifyDimensionForm" validate-on="input">
+                              <v-row class="p-2 bg-grey-darken-4">
+                                  <v-col cols="6">
+                                      <v-combobox
+                                          v-model="productDimensionToModify.lungimeDto"
+                                          label="Lungime"
+                                          :items="productOptions.lungimiForBox"
+                                          :rules="[rules.onlyNumbers,rules.maxChar(10),rules.fieldNotEmpty]"
+                                          variant="outlined"
+                                      ></v-combobox>
+                                  </v-col>
+                                  <v-col cols="6">
+                                      <v-combobox
+                                          v-model="productDimensionToModify.latimeDto"
+                                          label="Latime"
+                                          :items="productOptions.latimiForBox"
+                                          variant="outlined"
+                                          :rules="[rules.onlyNumbers,rules.maxChar(10),rules.fieldNotEmpty]"
+                                      ></v-combobox>
+                                  </v-col>
+                                  <v-col cols="6">
+                                      <v-text-field
+                                          v-model="productDimensionToModify.pretDto"
+                                          label="Pret(RON)"
+                                          variant="outlined"
+                                          :rules="[rules.onlyNumbers,rules.fieldNotEmpty]"
+                                      ></v-text-field>
+                                  </v-col>
+                                  <v-col cols="6">
+                                      <v-combobox
+                                          v-model="productDimensionToModify.recomandarePat"
+                                          label="Recomandare pat"
+                                          :items="productOptions.recomandariForBox"
+                                          variant="outlined"
+                                          :rules="[rules.recomandarePatRule]"
+                                      ></v-combobox>
+                                  </v-col>
+                                  <v-col cols="12">
+                                      <v-text-field
+                                          v-model="productDimensionToModify.pretRedusDto"
+                                          label="Pret redus(RON)"
+                                          variant="outlined"
+                                          :rules="[rules.onlyNumbers,rules.fieldNotEmpty]"
+                                      ></v-text-field>
+                                  </v-col>
+                              </v-row>
+                          </v-form>
+                      </v-card-text>
+                      <v-card-actions>
+                          <v-row>
+                              <v-col cols="6" class="text-center">
+                                      <v-btn class="bg-green" type="button" @click="saveDimensionModification()">
+                                          Salveaza
+                                      </v-btn>
+                                  </v-col>
+                                  <v-col cols="6" @click="closeDimensionModification()" class="text-center">
+                                      <v-btn class="bg-red" type="button">
+                                          Inchide
+                                      </v-btn>
+                                  </v-col>
+                          </v-row>
+                      </v-card-actions>
+                  </v-card>
+              
+              </v-dialog>
+              <v-data-table
+              :headers="dimensionHeaders"
+              :items="product.dimensiuniProduseDto"
+              items-per-page="10"
+              :item-value="item => item"
+              class="bg-grey-darken-4"
+          
               >
-                <template v-slot:counter={max,value}>
-                  <span :style="{ color: value > max ? 'red' : 'white' }">
-                      {{ value }} / {{ max }}
-                  </span>
-                </template>
-              </v-text-field>
-            </v-col>
-            <v-col cols="6">
-              <v-combobox class="p-2 m-1"
-                v-model="product.numeProducatorDto"
-                label="Producător"
-                variant="outlined"
-                :items="productOptions.manuFacturersDto"
-                item-title="key"
-                item-value="value"
-                :rules="[rules.onlyLetters]"
-                :counter="30"
-              >
-              <template v-slot:counter={max,value}>
-                  <span :style="{ color: value > max ? 'red' : 'white' }">
-                      {{ value }} / {{ max }}
-                  </span>
+              <template v-slot:top>
+                  <v-toolbar flat class="bg-grey-darken-4 text-center">
+                      <v-row class="text-center">
+                          <v-col cols="12">
+                              <v-btn color="white" class="bg-primary" @click="showDimensionForm()" :readonly="product.tipulProdusuluiJsonDto.tip_ro === 'perdea' || product.tipulProdusuluiJsonDto.tip_ro === 'draperie'">
+                                  Adauga dimensiune <v-icon :icon=mdiPlus></v-icon>
+                              </v-btn>
+                          </v-col>
+                      </v-row>
+                  </v-toolbar>
+                  <v-divider></v-divider>
               </template>
-            </v-combobox>
-            </v-col>
-            <v-col cols="6" xs="12" s="12">
-                <v-text-field class="p-2"
-                    v-model="product.numeProdusJsonDto.nume_ro"
-                    
-                    label="Nume Produs (Romana)"
-                    counter="50"
-                    variant="outlined"
-                    :rules="[rules.lengthNotAbove(50), rules.fieldNotEmpty,rules.checkProductName]"
-                >
-                <template v-slot:counter={max,value}>
-                  <span :style="{ color: value > max ? 'red' : 'white' }">
-                      {{ value }} / {{ max }}
-                  </span>
-                </template>
-              </v-text-field>
-            </v-col>
-            <v-col cols="6" xs="12" s="12">
-                <v-text-field class="p-2"
-                    v-model="product.numeProdusJsonDto.nume_en"
-                    
-                    label="Nume Produs (Engleza)"
-                    :counter="50"
-                    variant="outlined"
-                    :rules="[rules.lengthNotAbove(50), rules.fieldNotEmpty,rules.checkProductNameEn]"
-                >
-                <template v-slot:counter={max,value}>
-                  <span :style="{ color: value > max ? 'red' : 'white' }">
-                      {{ value }} / {{ max }}
-                  </span>
-                </template>
-                </v-text-field>
-            </v-col>
-            <!-- <v-col cols="6">
-              <v-text-field class="p-2 m-1"
-                v-model="product.numeProdusDto"
-                label="Nume Produs"
-                :counter="50"
-                variant="outlined"
-                :rules="[rules.lengthNotAbove(50), rules.fieldNotEmpty,rules.checkProductName]"
-              >
-             
-              </v-text-field>
-            </v-col> -->
-            <v-col cols="6" xs="12" s="12" v-if="!isLoading">
-                <v-combobox class="p-2"
-                    @update:search="mapTypeRoToEn(product , product.tipulProdusuluiJsonDto.tip_ro)"
-                    v-model="product.tipulProdusuluiJsonDto.tip_ro"
-                    label= "Tip produs (Romana)"
-                    variant="outlined"
-                    :items="getProductTypesRo"
-                    :counter="20"
-                    :rules="[rules.fieldNotEmpty]"
-                >
-                <template v-slot:counter={max,value}>
-                  <span :style="{ color: value > max ? 'red' : 'white' }">
-                      {{ value }} / {{ max }}
-                  </span>
-                </template>
-              </v-combobox>
-            </v-col>
-            <v-col cols="6" xs="12" s="12" v-if="!isLoading">
-                <v-combobox class="p-2"
-                    @update:search="mapTypeEnToRo(product , product.tipulProdusuluiJsonDto.tip_en)"
-                    v-model="product.tipulProdusuluiJsonDto.tip_en"
-                    label= "Tip produs (Engleza)"
-                    variant="outlined"
-                    :items="getProductTypesEn"
-                    :counter="20"
-                    :rules="[rules.fieldNotEmpty]"
-                >
-                <template v-slot:counter={max,value}>
-                  <span :style="{ color: value > max ? 'red' : 'white' }">
-                      {{ value }} / {{ max }}
-                  </span>
-                </template>
-              </v-combobox>
-            </v-col>
-            <!-- <v-col cols="6">
-              <v-combobox class="p-2 m-1"
-                v-model="product.tipulProdusuluiDto"
-                label="Tipul produsului"
-                :counter="50"
-                variant="outlined"
-                :rules="[rules.fieldNotEmpty]"
-                :items="['cuvertura', 'perdea' , 'draperie' , 'perna']"
-              >
-              <template v-slot:counter={max,value}>
-                  <span :style="{ color: value > max ? 'red' : 'white' }">
-                      {{ value }} / {{ max }}
-                  </span>
-                </template>
-              </v-combobox>
-            </v-col> -->
-            <v-col cols="12" xs="12" s="12" v-if="!isLoading">
-                <v-textarea class="p-2"
-                    v-model="product.descriereJsonDto.descriere_ro"
-                    label="Descriere Produs (Romana)"
-                    counter="150"
-                    variant="outlined"
-                    :rules="[rules.lengthNotAbove(150), rules.fieldNotEmpty]"
-                >
-                <template v-slot:counter={max,value}>
-                  <span :style="{ color: value > max ? 'red' : 'white' }">
-                      {{ value }} / {{ max }}
-                  </span>
-                </template>
-              </v-textarea>
-            </v-col>
-            <v-col cols="12" xs="12" s="12" v-if="!isLoading">
-                <v-textarea class="p-2"
-                v-model="product.descriereJsonDto.descriere_en"
-                    label="Descriere Produs (Engleza)"
-                    counter="150"
-                    variant="outlined"
-                    :rules="[rules.lengthNotAbove(150), rules.fieldNotEmpty]"
-                >
-                <template v-slot:counter={max,value}>
-                  <span :style="{ color: value > max ? 'red' : 'white' }">
-                      {{ value }} / {{ max }}
-                  </span>
-                </template>
-              </v-textarea>
-            </v-col>
-            <!-- <v-col cols="12">
-              <v-textarea class="p-2 m-1"
-                v-model="product.descriereDto"
-                label="Descriere Produs"
-                :counter="150"
-                variant="outlined"
-                :rules="[rules.lengthNotAbove(150), rules.fieldNotEmpty]"
-              >
-              <template v-slot:counter={max,value}>
-                  <span :style="{ color: value > max ? 'red' : 'white' }">
-                      {{ value }} / {{ max }}
-                  </span>
-                </template>
-            </v-textarea>
-            </v-col> -->
-            <v-col cols="12" xs="12" s="12" v-if="!isLoading">
-                <v-text-field class="p-2"
-                    v-model="product.compozitieJsonDto.compozitie_ro"
-                    label="Compozitie (Romana)"
-                    counter="50"
-                    variant="outlined"
-                    :rules="[rules.lengthNotAbove(50)]"
-                >
-                  <template v-slot:counter={max,value}>
-                    <span :style="{ color: value > max ? 'red' : 'white' }">
-                        {{ value }} / {{ max }}
-                    </span>
-                  </template>
-                </v-text-field>
-            </v-col>
-            <v-col cols="12" xs="12" s="12" v-if="!isLoading">
-                <v-text-field class="p-2"
-                    v-model="product.compozitieJsonDto.compozitie_en"
-                    label="Compozitie (Engleza)"
-                    counter="50"
-                    variant="outlined"
-                    :rules="[rules.lengthNotAbove(50)]"
-                >
-                <template v-slot:counter={max,value}>
-                  <span :style="{ color: value > max ? 'red' : 'white' }">
-                      {{ value }} / {{ max }}
-                  </span>
-                </template>
-              </v-text-field>
-            </v-col>
-            <v-col cols="6">
-              <v-checkbox class="p-2 m-1"
-                v-model="product.activInMagazinDto"
-                label="Activ în magazin"
-                variant="outlined"
-              ></v-checkbox>
-            </v-col>
-            <v-col cols="6">
-              <v-checkbox class="p-2 m-1"
-                v-model="product.fataReversibilaDto"
-                label="Față reversibilă"
-                variant="outlined"
-              ></v-checkbox>
-            </v-col>
-            <v-col cols="6" xs="12" s="12">
-              <v-checkbox class="p-2"
-                    v-model="product.afiseazaInNoutatiDto"
-                    label="Afiseaza in Noutati"
-                    variant="outlined"
-              ></v-checkbox>
-            </v-col>
-            <v-col cols="6" xs="12" s="12">
-              <v-checkbox class="p-2"
-                    v-model="product.produsLimitatDto"
-                    label="Afiseaza la Produse Limitate"
-                    variant="outlined"
-              ></v-checkbox>
-            </v-col>
-            <v-col cols="6"> 
-              <v-text-field class="p-2 m-1"
-                v-model="product.tvaDto"
-                label="TVA (%)"
-                variant="outlined"
-                :rules="[rules.fieldNotEmpty, rules.onlyNumbers]"
-              ></v-text-field>
-            </v-col>
-            <v-col cols="12" xs="12" s="12" v-if="!isLoading">
-                <v-textarea class="p-2"
-                    v-model="product.ingrijireJsonDto.ingrijire_ro"
-                    label="Instrucțiuni de îngrijire (Romana)"
-                    counter="150"
-                    variant="outlined"
-                    :rules="[rules.lengthNotAbove(150)]"
-                >
-                <template v-slot:counter={max,value}>
-                  <span :style="{ color: value > max ? 'red' : 'white' }">
-                      {{ value }} / {{ max }}
-                  </span>
-              </template>
-              </v-textarea>
-            </v-col>
-            <v-col cols="12" xs="12" s="12" v-if="!isLoading">
-                <v-textarea class="p-2"
-                    v-model="product.ingrijireJsonDto.ingrijire_en"
-                    label="Instrucțiuni de îngrijire (Engleza)"
-                    counter="150"
-                    variant="outlined"
-                    :rules="[rules.lengthNotAbove(150)]"
-                >
-                <template v-slot:counter={max,value}>
-                  <span :style="{ color: value > max ? 'red' : 'white' }">
-                      {{ value }} / {{ max }}
-                  </span>
-              </template>
-              </v-textarea>
-            </v-col>
-            <v-col cols="12">
-              <v-alert color="warning" class="text-center" variant="tonal">
-                Dacă produsul se aduce la comandă, lăsați stocul la 0.
-              </v-alert>
-            </v-col>
-            <v-col cols="12">
-              <v-text-field class="p-2 m-1"
-                v-model="product.stocDto"
-                label="Stoc produs"
-                variant="outlined"
-                :rules="[rules.fieldNotEmpty, rules.onlyNumbers]"
-              ></v-text-field>
-            </v-col>
-            <v-alert color="warning" class="text-center" variant="tonal">
-                Daca produsul are pret pe dimensiune , lasati pret baza la 0
-            </v-alert>
-            <v-col cols="12" xs="12" s="12">
-                <v-text-field class="p-2 m-1"
-                    v-model="product.pretBazaDto"
-                    label="Pret baza produs (lei/m daca este perdea/draperie)"
-                    variant="outlined"
-                    :rules="[rules.fieldNotEmpty, rules.onlyNumbers]"
-                ></v-text-field>
-            </v-col>
-            <v-alert color="warning" class="text-center" variant="tonal">
-                Daca produsul are pret pe dimensiune , lasati la 0.
-            </v-alert>
-            <v-col cols="12" xs="12" s="12">
-                  <v-text-field class="p-2 m-1"
-                      v-model="product.pretBazaRedusDto"
-                      label="Pret baza produs redus (lei/m daca este perdea/draperie)"
-                      variant="outlined"
-                      :rules="[rules.fieldNotEmpty, rules.onlyNumbers]"
-                  ></v-text-field>
-            </v-col>
-            <v-alert color="warning" class="text-center" variant="tonal">
-                Daca produsul este perdea/draperie , daca nu lasati la 0.
-            </v-alert>
-            <v-col cols="12">
-                <v-text-field class="p-2"
-                    v-model="product.inaltimeMaximaDto"
-                    label="Inaltime maxima material"
-                    variant="outlined"
-                    :rules="[rules.fieldNotEmpty, rules.onlyNumbers, ]"
-                ></v-text-field>
-            </v-col>
-          </v-row>
-        </div>
-
-        <!-- Product Types -->
-        <div class="bg-grey-darken-4 p-4 mt-4">
-          <v-card-title class="font-weight-light text-white">
-            Categoriile produsului
-          </v-card-title>
-          <v-row v-for="(tipProdus, index) in product.tipuriProduseDto" :key="index">
-            <v-col cols="12">
-                <v-combobox
-                    @update:search="mapCategoryRoToEn(tipProdus , tipProdus.categorieJsonDto.categorie_ro )"
-                    class="mx-2"
-                    v-model="tipProdus.categorieJsonDto.categorie_ro"
-                    :items="getProductCategoriesRo"
-                    label="Categorie (Romana)"
-                    :counter="40"
-                    outlined
-                    clearable
-                >
-                <template v-slot:counter={max,value}>
-                  <span :style="{ color: value > max ? 'red' : 'white' }">
-                      {{ value }} / {{ max }}
-                  </span>
-                </template>
-              </v-combobox>
-            </v-col>
-            <v-col cols="12">
-                <v-combobox
-                    @update:search="mapCategoryEnToRo(tipProdus,tipProdus.categorieJsonDto.categorie_en )"
-                    class="mx-2"
-                    v-model="tipProdus.categorieJsonDto.categorie_en"
-                    :items="getProductCategoriesEn"
-                    label="Categorie (Engleza)"
-                    :counter="40"
-                    outlined
-                    clearable
-                >
-                <template v-slot:counter={max,value}>
-                  <span :style="{ color: value > max ? 'red' : 'white' }">
-                      {{ value }} / {{ max }}
-                  </span>
-                </template>
-              </v-combobox>
-            </v-col>
-            <v-col cols="12" class="d-flex align-center justify-center">
-                <v-icon :icon="mdiDeleteCircle" @click="deleteType(tipProdus.categorieJsonDto.categorie_ro ,tipProdus.categorieJsonDto.categorie_en )" color="error" size="32"></v-icon>
-            </v-col>
-            <!-- <v-col cols="10">
-              <v-combobox
-                v-model="tipProdus.categorieDto"
-                :items="productOptions.productCategoriesForBox"
-                :rules="[rules.fieldNotEmpty, rules.onlyLetters]"
-                :counter="40"
-                label="Categorie"
-                outlined
-                clearable
-              >
-             
-            </v-combobox>
-            </v-col>
-            <v-col cols="2" class="d-flex align-center justify-center">
-              <v-icon
-                @click="deleteType(tipProdus.categorieDto)"
-                color="error"
-                size="32" :icon="mdiDeleteCircle"
-              ></v-icon>
-            </v-col> -->
-            <v-divider :thickness="3"></v-divider>
-          </v-row>
-          <v-btn @click="showTypeForm()" color="white" class="mt-4 rounded-xl" variant="outlined">
-            Adaugă tip produs 
-            <v-icon class="pl-2" size="24" :icon="mdiPlus"></v-icon>
-          </v-btn>
-        </div>
-
-        <!-- Product Dimensions -->
-        <div class="bg-grey-darken-4 p-4 mt-4">
-          <v-card-title class="font-weight-light text-white">
-            Dimensiuni produs (centimetri)
-          </v-card-title>
-          <v-row v-for="(dimensiune, index) in product.dimensiuniProduseDto" :key="index">
-            <v-col cols="4">
-              <v-combobox
-                v-model="dimensiune.lungimeDto"
-                :items="productOptions.lungimiForBox"
-                :rules="[rules.fieldNotEmpty, rules.onlyNumbers,rules.lengthNotAbove(10)]"
-                :counter="10"
-                label="Lungime"
-                outlined
-              ></v-combobox>
-            </v-col>
-            <v-col cols="4">
-              <v-combobox
-                v-model="dimensiune.latimeDto"
-                :items="productOptions.latimiForBox"
-                :rules="[rules.fieldNotEmpty, rules.onlyNumbers, rules.lengthNotAbove(10)]"
-                :counter="10"
-                label="Lățime"
-                outlined
-              ></v-combobox>
-            </v-col>
-            <v-col cols="4">
-              <v-text-field
-                v-model="dimensiune.pretDto"
-                :rules="[rules.fieldNotEmpty, rules.onlyNumbers]"
-                label="Preț (RON)"
-                outlined
-              ></v-text-field>
-            </v-col>
-            <v-col cols="4">
-              <v-text-field
-                v-model="dimensiune.pretRedusDto"
-                :rules="[rules.fieldNotEmpty, rules.onlyNumbers]"
-                label="Preț redus (RON)"
-                outlined
-              ></v-text-field>
-            </v-col>
-            <v-col cols="4">
-              <v-combobox
-                v-model="dimensiune.recomandarePat"
-                :items="productOptions.recomandariForBox"
-                :rules="[rules.recomandarePatRule ]"
-                :counter="15"
-                label="Recomandare pat"
-                outlined
-              ></v-combobox>
-            </v-col>
-            <v-col cols="4" class="d-flex align-center justify-center">
-              <v-icon
-                @click="deleteDimension(dimensiune.lungimeDto, dimensiune.latimeDto, dimensiune.pretDto, dimensiune.pretRedusDto, dimensiune.recomandarePat)"
-                color="error"
-                size="32" :icon="mdiDeleteCircle"
-              ></v-icon>
-            </v-col>
-            <v-divider :thickness="3"></v-divider>
-          </v-row>
-          <v-btn @click="showDimensionForm()" color="white" class="mt-4 rounded-xl" variant="outlined">
-            Adaugă dimensiune produs
-            <v-icon class="pl-2" :icon="mdiPlus" size="24"></v-icon>
-          </v-btn>
-        </div>
-
-        <!-- Product Colors -->
-        <div class="bg-grey-darken-4 p-4 mt-4">
-          <v-card-title class="font-weight-light text-white">
-            Culorile produsului
-          </v-card-title>
-          <v-row v-for="(culoare, index) in product.culoriProdusDto" :key="index">
-            <v-col cols="12">
-                <v-combobox
-                    v-model="culoare.codCuloareDto"
-                    label="Cod Culoare"
-                    :items="productOptions.coduriCuloriForBox"
-                    variant="outlined"
-                ></v-combobox>
-            </v-col>
-            <v-col cols="12">
-                <v-combobox
-                    @update:search="mapColorRoToEn(culoare , culoare.numeCuloareJsonDto.culoare_ro)"
-                    v-model="culoare.numeCuloareJsonDto.culoare_ro"
-                    label="Nume Culoare (Romana)"
-                    :items="getColorsRo"
-                    variant="outlined"
-                ></v-combobox>
-            </v-col>
-            <v-col cols="12">
-                <v-combobox
-                    @update:search="mapColorEnToRo(culoare , culoare.numeCuloareJsonDto.culoare_en)"
-                    v-model="culoare.numeCuloareJsonDto.culoare_en"
-                    label="Nume Culoare (Engleza)"
-                    :items="getColorsEn"
-                    variant="outlined"
-                ></v-combobox>
-            </v-col>
-            <v-col cols="12" class="d-flex align-center justify-center">
-                <v-icon :icon="mdiDeleteCircle" @click="deleteColor(culoare.numeCuloareJsonDto.culoare_ro, culoare.codCuloareDto)"
-                    color="error" size="32"></v-icon>
-            </v-col>
-            <v-divider :thickness="3"></v-divider>
-            <!-- Images for each color -->
-            <v-col cols="12">
-              <v-row v-for="(imagine, imgIndex) in culoare.imaginiProdusDto" :key="imgIndex">
-                <v-col cols="12">
-                  <v-combobox
-                    v-model="imagine.fisierInBucketDto"
-                    label="Categorie fișier"
-                    :items="productOptions.directoriesInBucket"
-                    outlined
-                  ></v-combobox>
-                </v-col>
-                <v-col cols="12">
-                  <v-file-input
-                    v-model="imagine.file"
-                    label="Imagine"
-                    :prepend-icon="mdiImage"
-                    accept="image/*"
-                    outlined
-                    dense
-                    clearable
-                    @change="handleFileChange(imagine)"
-                  ></v-file-input>
-                </v-col>
-                <v-col cols="12" class="text-center">
-                  <v-img
-                    v-if="imagine.presignedUrl"
-                    :src="imagine.presignedUrl"
-                    aspect-ratio="16/9"
-                    width="400"
-                    height="400"
-                    
-                    class="text-center w-100"
-                  ></v-img>
-                </v-col>
-                <v-col cols="12" class="d-flex align-center justify-center">
+              <template #[`item.actions`]="{ item }">
                   <v-icon
-                    @click="deleteImage(culoare.numeCuloareJsonDto.culoare_ro, culoare.codCuloareDto, imagine.caleImagineDto, imagine.fisierInBucketDto)"
-                    color="error"
-                    class="mb-2"
-                    size="32" :icon="mdiDeleteCircle"
-                  ></v-icon>
-                </v-col>
-              </v-row>
-              <v-btn @click="addImageField(culoare)" color="white" class="mb-4 mt-3 rounded-xl" variant="outlined">
-                Adaugă imagine
-                <v-icon class="pl-2" :icon="mdiPlus" size="24"></v-icon>
-              </v-btn>
-            </v-col>
-            <v-divider :thickness="3"></v-divider>
-          </v-row>
-          <v-btn @click="showColorForm()" color="white" class="mt-4 rounded-xl" variant="outlined">
-            Adaugă culoare produs
-            <v-icon class="pl-2" :icon="mdiPlus" size="24"></v-icon>
-          </v-btn>
-        </div>
+                      :disabled="!item.canDelete"
+                      color="red"
+                      size="28"
+                      class="mr-2"
+                      @click="deleteDimension(item.lungimeDto, item.latimeDto, item.pretDto, item.pretRedusDto, item.recomandarePat)" :icon="mdiTrashCan"
+                      >
+                  </v-icon>
+                  <v-icon
+                      color="white"
+                      size="28"
+                      class="mr-2"
+                      @click="modifyDimension(item)" :icon="mdiPen"
+                      >
+                  </v-icon>
+              </template>
+              <template #[`item.justAdded`]="{item}">
+                  <div v-if="item.justAdded === true">
+                      <span class="text-red">Nu</span>
+                  </div> 
+                  <div v-else>
+                      <span class="text-green">Da</span>
+                  </div>
+              </template>
+              </v-data-table>
+          </v-card-text>
+        </v-fade-transition>
+        <v-fade-transition>
+          <v-card-text v-if="route.query.color === '1'">
+              <v-dialog v-model="openColorModification" persistent
+                  max-width="500"
+                  max-height="700" scrollable>
+                  <v-card class="bg-grey-darken-4" max-width="500" max-height="700" >
+                      <v-card-text>
+                          <v-form ref="modifyColorForm" validate-on="input">
+                              <v-row class="p-2 bg-grey-darken-4">
+                                  <v-col cols="12">
+                                      <v-combobox
+                                          v-model="productColorToModify.codCuloareDto"
+                                          label="Cod Culoare"
+                                          :items="productOptions.coduriCuloriForBox"
+                                          variant="outlined"
+                                          :rules="[rules.fieldNotEmpty , rules.onlyNumbers]"
+                                      ></v-combobox>
+                                  </v-col>
+                                  <v-col cols="12">
+                                      <v-combobox
+                                          @update:search="mapColorRoToEn(productColorToModify , productColorToModify.numeCuloareJsonDto.culoare_ro)"
+                                          v-model="productColorToModify.numeCuloareJsonDto.culoare_ro"
+                                          label="Nume Culoare (Romana)"
+                                          :rules="[rules.fieldNotEmpty]"
+                                          :items="getColorsRo"
+                                          variant="outlined"
+                                      ></v-combobox>
+                                  </v-col>
+                                  <v-col cols="12">
+                                      <v-combobox
+                                          @update:search="mapColorEnToRo(productColorToModify , productColorToModify.numeCuloareJsonDto.culoare_en)"
+                                          v-model="productColorToModify.numeCuloareJsonDto.culoare_en"
+                                          label="Nume Culoare (Engleza)"
+                                          :rules="[rules.fieldNotEmpty]"
+                                          :items="getColorsEn"
+                                          variant="outlined"
+                                      ></v-combobox>
+                                  </v-col>
+                              </v-row>
+                          </v-form>
+                      </v-card-text>
+                      <v-card-actions>
+                          <v-row>
+                              <v-col cols="6" class="text-center">
+                                  <v-btn class="bg-green" type="button" @click="saveColorModification()">
+                                      Salveaza
+                                  </v-btn>
+                              </v-col>
+                              <v-col cols="6" @click="closeColorModification()" class="text-center">
+                                  <v-btn class="bg-red" type="button">
+                                      Inchide
+                                  </v-btn>
+                              </v-col>
+                          </v-row>
+                      </v-card-actions>
+                  </v-card>
+              
+              </v-dialog>
+              <v-dialog v-model="openImageDialog" persistent
+                  max-width="500"
+                  max-height="700" scrollable>
+                <v-card class="bg-grey-darken-4" max-width="500" max-height="700" >
+                  <v-card-text>
+                    <v-form ref="modifyImageForm">
+                      <v-row>
+                        <v-col cols="12">
+                          <v-combobox
+                            density="compact"
+                            v-model="imageToModify.fisierInBucketDto"
+                            label="Categorie fișier"
+                            :items="productOptions.directoriesInBucket"
+                            outlined
+                          ></v-combobox>
+                        </v-col>
+                        <v-col cols="12">
+                          <v-file-input
+                            density="compact"
+                            v-model="imageToModify.file"
+                            label="Imagine"
+                            :prepend-icon="mdiImage"
+                            accept="image/*"
+                            outlined
+                            dense
+                            clearable
+                            @change="handleFileChange(imageToModify)"
+                          ></v-file-input>
+                        </v-col>
+                        <v-col cols="12" class="text-center">
+                          <NuxtImg
+                            v-if="imageToModify.presignedUrl"
+                            :src="imageToModify.presignedUrl"
+                            :width="100"
+                            :height="100"
+                            class="text-center"
+                          ></NuxtImg>
+                        </v-col>
+                      </v-row>
+                    </v-form>
+                  </v-card-text>
+                  <v-card-actions>
+                          <v-row>
+                              <v-col cols="6" class="text-center">
+                                  <v-btn class="bg-green" type="button" @click="saveImageModification()">
+                                      Salveaza
+                                  </v-btn>
+                              </v-col>
+                              <v-col cols="6" @click="closeImageModification()" class="text-center">
+                                  <v-btn class="bg-red" type="button">
+                                      Inchide
+                                  </v-btn>
+                              </v-col>
+                          </v-row>
+                      </v-card-actions>
+                </v-card>
+              </v-dialog>
+              <v-data-table 
+                  :headers="colorImagesHeaders"
+                  :items="product.culoriProdusDto"
+                  item-value="numeCuloareJsonDto.culoare_ro"
+                  class="bg-grey-darken-4"
+                  show-expand
+              > 
+                  <template v-slot:top>
+                      <v-toolbar flat class="bg-grey-darken-4 text-center">
+                          <v-row class="text-center">
+                              <v-col cols="12">
+                                  <v-btn  rounded="xl" @click="showColorForm()" type="button" color="white"
+                                      variant="outlined" class="font-weight-bold mt-2">
+                                      Adauga culoare
+                                      <v-icon class="pl-2" :icon="mdiPlus"></v-icon>
+                                  </v-btn>
+                              </v-col>
+                          </v-row>
+                      </v-toolbar>
+                      <v-divider></v-divider>
+                  </template>
+                  <template #[`item.actions`]="{ item }">
+                      <v-icon
+                          :disabled="!item.canDelete"
+                          color="red"
+                          size="28"
+                          class="mr-2"
+                          @click="deleteColor(item.numeCuloareJsonDto.culoare_ro, item.codCuloareDto)" :icon="mdiTrashCan"
+                          >
+                      </v-icon>
+                      <v-icon
+                          color="white"
+                          size="28"
+                          class="mr-2"
+                          @click="modifyColor(item)" :icon="mdiPen"
+                          >
+                      </v-icon>
+                  </template>
+                  <template v-slot:[`item.data-table-expand`]="{ internalItem, isExpanded, toggleExpand }">
+                      <v-btn
+                          :append-icon="isExpanded(internalItem) ? mdiChevronUp : mdiChevronDown"
+                          :text="isExpanded(internalItem) ? 'Imagini' : 'Imagini'"
+                          class="text-none bg-primary"
+                          color="white"
+                          size="small"
+                          variant="text"
+                          border
+                          slim
+                          @click="toggleExpand(internalItem)"
+                      ></v-btn>
+                  </template>
+                  <template #[`item.justAdded`]="{item}">
+                      <div v-if="item.justAdded === true">
+                          <span class="text-red">Nu</span>
+                      </div> 
+                      <div v-else>
+                          <span class="text-green">Da</span>
+                      </div>
+                  </template>
+                  <template v-slot:expanded-row="{ columns, item: color }">
+                      <tr>
+                          <td :colspan="columns.length" class="py-2">
+                          <v-sheet class="bg-grey-darken-3">
+                              <v-data-table
+                              :headers="imagHeaders"
+                              :items="color.imaginiProdusDto"
+                              hide-default-footer
+                              density="compact"
+                              class="bg-grey-darken-3"
+                              >
+                              <template v-slot:top>
+                                  <v-toolbar flat class="bg-grey-darken-3 text-center">
+                                      <v-row class="text-center">
+                                          <v-col cols="12">
+                                              <v-btn rounded="xl" @click="addImageField(color)" type="button" color="white"
+                                                  variant="outlined" class="font-weight-bold mt-2">
+                                                  Adauga imagine
+                                                  <v-icon :icon="mdiPlus" class="pl-2"></v-icon>
+                                              </v-btn>
+                                          </v-col>
+                                      </v-row>
+                                  </v-toolbar>
+                                  
+                              </template>
+                              <template #[`item.justAdded`]="{item}">
+                                  <div v-if="item.justAdded === true">
+                                      <span class="text-red">Nu</span>
+                                  </div> 
+                                  <div v-else>
+                                      <span class="text-green">Da</span>
+                                  </div>
+                              </template>
+                              <template #[`item.actions`]="{ item }">
+                                  <v-icon
+                                      color="red"
+                                      size="28"
+                                      class="mr-2"
+                                      :disabled="!item.canDelete"
+                                      @click="deleteImage(color.numeCuloareJsonDto.culoare_ro, color.codCuloareDto, item.caleImagineDto, item.fisierInBucketDto)" :icon="mdiTrashCan"
+                                      >
+                                  </v-icon>
+                                  <v-icon
+                                      color="white"
+                                      size="28"
+                                      class="mr-2"
+                                      @click="modifyImage(item,color.numeCuloareJsonDto.culoare_ro ,color.numeCuloareJsonDto.culoare_en,color.codCuloareDto )" :icon="mdiPen"
+                                      >
+                                  </v-icon>
+                              </template>
+                              <template #[`item.presignedUrl`]="{ item }">
+                                  <NuxtImg :src="item.presignedUrl" preload
+                                  width="50"
+                                  height="50" class="ma-2">
 
-        <v-btn @click="finalSaveData" color="success" class="font-weight-bold mt-4">
-          Salvează modificări
-          <v-icon class="pl-2" size="24" :icon="mdiContentSave"></v-icon>
-        </v-btn>
-      </v-form>
-    </v-card>
-  </div>
+                                  </NuxtImg>
+                              </template>
+                              </v-data-table>
+                          </v-sheet>
+                          </td>
+                      </tr>
+                  </template>
+              </v-data-table>
+          </v-card-text>
+        </v-fade-transition>
+        
+    </v-main>
+  </v-app>
 </template>
 
 <script setup>
-import { ref, reactive, onMounted, onBeforeUnmount } from 'vue'
+import { ref, reactive, onMounted, onBeforeUnmount, handleError } from 'vue'
 import Swal from "sweetalert2";
 import adminService from '~/services/Admin'
-import { mdiContentSave, mdiDeleteCircle, mdiImage, mdiPlus } from '@mdi/js';
+import { mdiAlphaDBoxOutline, mdiCog,mdiChevronUp ,mdiChevronDown ,mdiContentSave, mdiDeleteCircle, mdiFormatColorFill, mdiImage, mdiPen, mdiPlus, mdiShape, mdiTrashCan } from '@mdi/js';
+import AdminNavDrawerOnClient from '~/components/admin/AdminNavDrawerOnClient.vue';
 
 definePageMeta({
   layout: 'admin',
@@ -583,7 +870,15 @@ const productCodesAndNames = ref([]);
 const codProdusArray = ref([])
 const numeProdusArrayRo = ref([])
 const numeProdusArrayEn = ref([])
-
+const pattern = /^.*_X\d{2}_.*$/;
+const route = useRoute()
+const watchToSave = ref(true);
+const watchToSaveText = ref('Daca ati facut o modificare, nu uitati sa salvati!');
+const productCode = ref('ADAUGARE PRODUS')
+const modifyCategoryForm = ref(null);
+const modifyDimensionForm = ref(null);
+const modifyColorForm = ref(null);
+const noProductTypeSelected = ref(false)
 const product = reactive({
     codProdusDto: '',
     oldCodProdusDto : '',
@@ -648,6 +943,7 @@ const productOptions = ref({
 
 const rules = reactive({
   fieldNotEmpty: (value) => !!String(value) || "Campul este obligatoriu",
+  maxChar: len => value => !value || value.length <= len || `${t('textFieldsMessages.maxLength')} ${len}`,
   lengthNotAbove: (len) => (value) => 
     !value || value.length <= len || `Limita este de ${len} caractere`,
     onlyNumbers: (value) =>
@@ -685,6 +981,61 @@ const rules = reactive({
   },
 })
 
+const dimensionHeaders = ref([
+    {title: 'Lungime (cm)' , align: 'center' , key: 'lungimeDto' , sortable: true},
+    {title: 'Latime (cm)' , align: 'center' , key: 'latimeDto' , sortable: true},
+    {title: 'Recomandare pat (cmxcm)' , align: 'center' , key: 'recomandarePat' , sortable: true},
+    {title: 'Pret (RON)' , align: 'center' , key: 'pretDto' , sortable: true},
+    {title: 'Pret redus (RON)' , align: 'center' , key: 'pretRedusDto' , sortable: true},
+    {title: 'Salvat' , align: 'center' , key: 'justAdded' , sortable: true},
+    {title: 'Actiuni', align: 'center', key: 'actions', sortable: false }
+])
+
+
+const colorImagesHeaders = ref([
+  { title: 'Culoare (Română)', align: 'center' ,key: 'numeCuloareJsonDto.culoare_ro' },
+  { title: 'Culoare (Engleza)', align: 'center' ,key: 'numeCuloareJsonDto.culoare_en' },
+  { title: 'Cod Culoare', align: 'center' ,key: 'codCuloareDto' },
+  { title: 'Salvat' , align: 'center' , key: 'justAdded' , sortable: true},
+  { title: 'Actiuni', align: 'center' ,key: 'actions', sortable: false }
+]);
+
+const imagHeaders = ref([
+    { title: 'Nume imagine', align: 'center' ,key: 'caleImagineDto' },
+    { title: 'Fisier', align: 'center' ,key: 'fisierInBucketDto' },
+    { title: 'Imagine', align: 'center' ,key: 'presignedUrl' },
+    { title: 'Salvat' , align: 'center' , key: 'justAdded' , sortable: true},
+    { title: 'Actiuni', align: 'center' ,key: 'actions', sortable: false }
+])
+
+const categoryHeaders = ref([
+    {title: 'Categorie (Romana)' , align: 'center' , key: 'categorieJsonDto.categorie_ro' , sortable: true},
+    {title: 'Categorie (Engleza)' , align: 'center' , key: 'categorieJsonDto.categorie_en' , sortable: true},
+    {title: 'Salvat' , align: 'center' , key: 'justAdded' , sortable: true},
+    {title: 'Actiuni', align: 'center', key: 'actions', sortable: false }
+])
+
+const openImageDialog = ref(false);
+
+const openCategoryModification = ref(false)
+const productCategoryToModify = ref({})
+const originalCategory = ref({})
+const categoryExists = ref(false)
+const categoryInitialIndex = ref(-1)
+
+const openDimensionModification = ref(false)
+const productDimensionToModify = ref({})
+const originalDimension = ref({})
+const dimensionExists = ref(false)
+const dimensionInitialIndex = ref(-1)
+
+const openColorModification = ref(false)
+const productColorToModify = ref({})
+const originalColor = ref({})
+const colorExists = ref(false)
+const colorInitialIndex = ref(-1)
+
+const imageExists = ref(false)
 
 const getProductCategoriesRo = computed(() => {
   return productOptions.value.productCategoriesForBoxJson
@@ -792,7 +1143,6 @@ const assignProductOptionsFromDb = async () => {
         navigateTo('/user/logout');
     } else {
         Object.assign(productOptions.value, responseForOptions);
-        console.log(productOptions.value)
     }
 };
 
@@ -813,23 +1163,66 @@ const assingProductCodesAndNamesFromDb = async () => {
             .map(elem => elem.codProdus)
             .filter(elem => elem !== product.codProdusDto);
 
-        console.log(numeProdusArrayEn.value)
-        console.log(numeProdusArrayRo.value)
-        console.log(codProdusArray.value)
-
     }
 }
 
 const showTypeForm = () => {
   product.tipuriProduseDto.push({
-    categorieDto: "",
     categorieJsonDto : {
       categorie_ro : "",
       categorie_en: "",
     },
     justAdded: true,
+    canDelete : true,
   });
 }
+
+const modifyType = ((category) => {
+    productCategoryToModify.value = JSON.parse(JSON.stringify(category)) // same ref with category copii
+    originalCategory.value = JSON.parse(JSON.stringify(category)) // deep copy , new obj , copii
+    categoryInitialIndex.value = product.tipuriProduseDto.findIndex(p =>
+      p.categorieJsonDto.categorie_ro.toUpperCase() === originalCategory.value.categorieJsonDto.categorie_ro &&
+      p.categorieJsonDto.categorie_en.toUpperCase() === originalCategory.value.categorieJsonDto.categorie_en
+    );
+    openCategoryModification.value = true
+})
+
+const saveCategoryModification = async () => {
+  const isValid = await modifyCategoryForm.value.validate();
+
+  if (isValid.valid) {
+    // Mark it as updated and normalize to uppercase.
+    productCategoryToModify.value.justAdded = true;
+    productCategoryToModify.value.categorieJsonDto.categorie_ro =
+      productCategoryToModify.value.categorieJsonDto.categorie_ro.toUpperCase();
+    productCategoryToModify.value.categorieJsonDto.categorie_en =
+      productCategoryToModify.value.categorieJsonDto.categorie_en.toUpperCase();
+    productCategoryToModify.value.canDelete = true
+      
+    // Duplicate category
+    const duplicateIndex = product.tipuriProduseDto.findIndex(p =>
+      p.categorieJsonDto.categorie_ro.toUpperCase() === productCategoryToModify.value.categorieJsonDto.categorie_ro &&
+      p.categorieJsonDto.categorie_en.toUpperCase() === productCategoryToModify.value.categorieJsonDto.categorie_en
+    );
+  
+    // if category entered already exists
+    if (duplicateIndex !== -1) {
+        categoryExists.value = true
+        product.tipuriProduseDto[duplicateIndex] = product.tipuriProduseDto[duplicateIndex]
+    }else{
+        product.tipuriProduseDto[categoryInitialIndex.value] = productCategoryToModify.value
+    }
+    openCategoryModification.value = false;
+    return;
+  }
+};
+
+
+const closeCategoryModification = ( () =>{
+    productCategoryToModify.value = originalCategory.value
+    openCategoryModification.value = false
+})
+
 
 const deleteType = (categorie,categorieEn) => {
   product.tipuriProduseDto = product.tipuriProduseDto.filter(
@@ -848,8 +1241,54 @@ const showDimensionForm = () => {
     pretRedusDto: 0,
     recomandarePat: "",
     justAdded: true,
+    canDelete : true,
   });
 }
+
+const modifyDimension = ((dimension) => {
+    productDimensionToModify.value = JSON.parse(JSON.stringify(dimension))
+    originalDimension.value = JSON.parse(JSON.stringify(dimension))
+    dimensionInitialIndex.value = product.dimensiuniProduseDto
+        .findIndex(p => 
+                p.lungimeDto === productDimensionToModify.value.lungimeDto
+            && p.latimeDto === productDimensionToModify.value.latimeDto
+            && p.recomandarePat === productDimensionToModify.value.recomandarePat
+            
+        )
+    openDimensionModification.value = true
+    
+})
+
+const saveDimensionModification = (async () => {
+    const isValid = await modifyDimensionForm.value.validate()
+    if(isValid.valid){
+    
+        productDimensionToModify.justAdded = true;
+        productDimensionToModify.canDelete = false;
+
+        const duplicateIndex = product.dimensiuniProduseDto
+            .findIndex(p => 
+                   p.lungimeDto === productDimensionToModify.value.lungimeDto
+                && p.latimeDto === productDimensionToModify.value.latimeDto
+                && p.recomandarePat === productDimensionToModify.value.recomandarePat
+               
+            )
+        if (duplicateIndex !== -1) {
+            dimensionExists.value = true
+            product.dimensiuniProduseDto[duplicateIndex] =  product.dimensiuniProduseDto[duplicateIndex]
+        }else{
+            product.dimensiuniProduseDto[dimensionInitialIndex.value] = productDimensionToModify.value
+        }
+        openDimensionModification.value = false;
+        return;
+      
+    }
+})
+
+const closeDimensionModification = ( () =>{
+    productDimensionToModify.value = originalDimension.value
+    openDimensionModification.value = false
+})
 
 const deleteDimension = (
   lungime,
@@ -881,8 +1320,46 @@ const showColorForm = () => {
     codCuloareDto: "",
     imaginiProdusDto: [],
     justAdded: true,
+    canDelete: true,
   });
 }
+
+const modifyColor = ((color) => {
+    productColorToModify.value = JSON.parse(JSON.stringify(color))
+    originalColor.value = JSON.parse(JSON.stringify(color))
+    colorInitialIndex.value = product.culoriProdusDto
+        .findIndex(p => 
+            p.codCuloareDto === productColorToModify.value.codCuloareDto
+            && p.numeCuloareJsonDto.culoare_ro === productColorToModify.value.numeCuloareJsonDto.culoare_ro
+        )
+    openColorModification.value = true
+})
+
+const saveColorModification = (async () => {
+    const isValid = await modifyColorForm.value.validate()
+    if(isValid.valid){
+        productColorToModify.justAdded = true;
+        productColorToModify.canDelete = false;
+        const duplicateIndex = product.culoriProdusDto
+            .findIndex(p => 
+                p.codCuloareDto === productColorToModify.value.codCuloareDto
+                && p.numeCuloareJsonDto.culoare_ro === productColorToModify.value.numeCuloareJsonDto.culoare_ro
+            )
+        if(duplicateIndex !== -1){
+            colorExists.value = true
+            product.culoriProdusDto[duplicateIndex] = product.culoriProdusDto[duplicateIndex]
+        }else{
+            product.culoriProdusDto[colorInitialIndex.value] = productColorToModify.value
+        }
+        openColorModification.value = false
+        return
+    }
+})
+
+const closeColorModification = ( () =>{
+    productColorToModify.value = originalColor.value
+    openColorModification.value = false
+})
 
 const deleteColor = (numeCuloare, codCuloare) => {
   product.culoriProdusDto = product.culoriProdusDto.filter(
@@ -901,15 +1378,79 @@ const addImageField = (culoare) => {
     caleImagineDto: "",
     presignedUrl: "",
     justAdded: true,
+    canDelete: true,
   });
+}
+const imageToModify = ref({})
+const colorIndex = ref(-1)
+const imageToModifyIndex = ref(-1)
+const originalImage = ref({})
+const modifyImage = (image,colorName , colorNameEn , colorCode) => {
+  imageToModify.value = JSON.parse(JSON.stringify(image))
+  originalImage.value = JSON.parse(JSON.stringify(image))
+  colorIndex.value = product.culoriProdusDto.findIndex(p => p.numeCuloareJsonDto.culoare_ro === colorName
+    && p.numeCuloareJsonDto.culoare_en === colorNameEn
+    && p.codCuloareDto === colorCode
+  )
+  imageToModifyIndex.value = product.culoriProdusDto[colorIndex.value].imaginiProdusDto
+    .findIndex(image => imageToModify.value.caleImagineDto === image.caleImagineDto 
+                     && imageToModify.value.fisierInBucketDto === image.fisierInBucketDto)
+   
+    openImageDialog.value = true
+}
+
+const saveImageModification = () => {
+  
+    if(product.tipulProdusuluiJsonDto.tip_ro === null || product.tipulProdusuluiJsonDto.tip_ro === '' 
+    || product.tipulProdusuluiJsonDto.tip_en === null || product.tipulProdusuluiJsonDto.tip_en === '' 
+  ){
+    noProductTypeSelected.value = true
+    return
+  }
+  // search already existing image
+  imageToModify.value.canDelete = true
+  imageToModify.value.justAdded = false
+  const fileExtension = imageToModify.value.file.name.split('.').pop();
+
+  const dotIndex = imageToModify.value.file.name.lastIndexOf('.');
+
+  let baseName = dotIndex !== -1 ? imageToModify.value.file.name.substring(0, dotIndex) :imageToModify.value.file.name;
+  if (pattern.test(imageToModify.value.file.name)) {
+      imageToModify.value.caleImagineDto = baseName + `.${fileExtension}`;
+  } else {
+      imageToModify.value.caleImagineDto = baseName + 
+          `_X${product.culoriProdusDto[colorIndex.value].codCuloareDto}_` + 
+          `${product.tipulProdusuluiJsonDto.tip_ro.toUpperCase()}` 
+          + `.${fileExtension}`;
+  }
+
+  const findAlreadyExistingImage = product.culoriProdusDto[colorIndex.value].imaginiProdusDto
+    .findIndex(image => imageToModify.value.caleImagineDto === image.caleImagineDto 
+                     && imageToModify.value.fisierInBucketDto === image.fisierInBucketDto)
+   
+  
+  if(findAlreadyExistingImage !== -1){
+    imageExists.value = true
+    product.culoriProdusDto[colorIndex.value].imaginiProdusDto[imageToModifyIndex.value] = originalImage.value
+    openImageDialog.value = false
+    return
+  }
+  
+  
+  product.culoriProdusDto[colorIndex.value].imaginiProdusDto[imageToModifyIndex.value] = imageToModify.value
+  openImageDialog.value = false
+  
+}
+
+const closeImageModification = () => {
+  imageToModify.value = originalImage.value
+  openImageDialog.value = false
 }
 
 const handleFileChange = (imagine) => {
-  if (imagine.file) {
-    imagine.caleImagineDto = imagine.file.name;
-    imagine.presignedUrl = URL.createObjectURL(imagine.file);
-    imagine.imageStream = imagine.file;
-  }
+  imagine.caleImagineDto = imagine.file.name;
+  imagine.presignedUrl = URL.createObjectURL(imagine.file);
+  imagine.file = imagine.file;
 }
 
 const deleteImage = (numeCuloare, codCuloare, caleImagineDto, fisierInBucket) => {
@@ -942,7 +1483,6 @@ const deleteImage = (numeCuloare, codCuloare, caleImagineDto, fisierInBucket) =>
 const mainForm = ref(null);
 
 const finalSaveData = async () => {
-  console.log(await mainForm.value.validate())
 
   const isValidForm = await mainForm.value.validate()
   
@@ -1017,15 +1557,7 @@ const finalSaveData = async () => {
               const addingProductResponse = await adminService.saveProductChanges(product,'empty');
               if(Array.isArray(addingProductResponse)){
                   Swal.fire("Salvat!", "", "success");
-
-                  product.culoriProdusDto.forEach(color => {
-                    color.imaginiProdusDto.forEach(image => {
-                      if (image.presignedUrl) {
-                        URL.revokeObjectURL(image.presignedUrl);
-                      }
-                    });
-                  });
-                  navigateTo('/admin/products')
+                  navigateTo(`/admin/product/${product.codProdusDto.toUpperCase()}`)
                   return
               }else{
                   Swal.fire("Nu s-a salvat.O eroare a avut loc" , "" , "error")
@@ -1057,15 +1589,7 @@ onBeforeMount(async() => {
     await assignProductOptionsFromDb();
 })
 
-// onBeforeUnmount(() => {
-//   product.forEach(color => {
-//     color.imaginiProdusDto.forEach(image => {
-//       if (image.presignedUrl) {
-//         URL.revokeObjectURL(image.presignedUrl);
-//       }
-//     });
-//   });
-// })
+
 
 </script>
 

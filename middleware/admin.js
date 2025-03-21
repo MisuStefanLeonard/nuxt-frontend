@@ -12,9 +12,6 @@ export default defineNuxtRouteMiddleware((to, from) => {
   }
   userStore.setUser(user)
 
-  console.log(userStore.isAuthenticated,userStore.isAdmin)
-
-
   if (!userStore.isAuthenticated || !userStore.isAdmin) {
   
     const requiredForAdminMessage = $i18n.t('messages.loginRequiredForAdmin')

@@ -7,7 +7,7 @@
             </v-container>
             <div fluid class="mt-3 ">
                 <v-sheet elevation="24" color="grey-lighten-4">
-                    <v-sheet elevation="24" class="">
+                    <v-sheet elevation="24" class="" v-if="screenSize === true">
                         <v-row no-gutters class="p-2">
                             <v-col cols="12" class="mb-3">
                                 <p class="font-weight-light h5 text-center">{{ $t('shop.filters') }}</p>
@@ -95,9 +95,227 @@
                             
                         </v-row>
                     </v-sheet>
-                    <!-- DE ADAUGAT SETURILE! -->
+                    
                     <v-row>
-                        <v-col sm="6" xs="12" md="6" v-for="set in currentSetsOnPage.shopSets"
+                        <v-col v-if="screenSize === 3" cols="3" class="mt-2  p-2 shadow-lg elevation-12 rounded-lg">
+                            <p class="font-weight-light h5 text-center">{{ $t('shop.filters') }} <v-icon :icon="mdiFilter"></v-icon></p>
+                            <v-divider></v-divider>
+                            <v-row>
+                                <v-col cols="12" sm="12" md="12" xs="12" class="p-2 text-center">
+                                    <v-row no-gutters>
+                                    <v-col cols="12" xs="12" sm="12" md="12" class="my-1">
+                                        <v-btn variant="flat" color="success"
+                                        @click="applyFilters" :append-icon="mdiFilter">
+                                        {{ $t('shop.applyFilters') }}
+                                        </v-btn>
+                                    </v-col>
+                                    <v-col>
+                                        <v-btn cols="12" xs="12" sm="12" md="12"
+                                        variant="flat" color="error" class="my-1"
+                                        @click="deleteFilters">
+                                        {{ $t('shop.deleteFilters') }}
+                                        </v-btn>
+                                    </v-col>
+                                    </v-row>
+                                </v-col>
+                                <v-col cols="12">
+                                    <v-text-field
+                                        :label="$t('shopSeturi.searchAfterProductName')"
+                                        variant="outlined" 
+                                        density="compact"
+                                        class="p-2"
+                                        v-model="searchSetAfter"
+                                        :prepend-inner-icon="mdiMagnify">
+                                        
+                                    </v-text-field>
+                                    <v-expansion-panels>
+                                        <v-expansion-panel :title="`${$t('shop.productType')}`" class="p-2 ">
+                                            <v-list>
+                                                <v-list-item>
+                                                    <v-checkbox
+                                                        v-for="(option, idx) in filterOptions.filterProductTypesJson"
+                                                        :key="idx"
+                                                        density="compact"
+                                                        v-model="productTypes"
+                                                        :label="selectedCurrency === 'RON' ? option.tip_ro : option.tip_en"
+                                                        :value="option.tip_ro"
+                                                        color="primary"
+                                                        
+                                                    ></v-checkbox>
+                                                </v-list-item>
+                                            </v-list>
+                                        </v-expansion-panel>
+                                        <v-divider></v-divider>
+                                        <v-expansion-panel :title="$t('shop.filterPrices')" class="p-2">
+                                            <v-expansion-panel-text>
+                                                <v-row>
+                                                    <v-col cols="12" class="p-2">
+                                                        <v-row>
+                                                            <v-col cols="12">
+                                                                <v-text-field
+                                                                    v-model="rangePrice[0]"
+                                                                    density="compact"
+                                                                    type="number"
+                                                                    variant="outlined"
+                                                                    :label="`${$t('shop.minPrice')}  ${selectedCurrency === 'RON' ? '(RON)' : '(EUR)'}`"
+                                                                ></v-text-field>
+                                                            </v-col>
+                                                            <v-col cols="12">
+                                                                <v-text-field
+                                                                    v-model="rangePrice[1]"
+                                                                    density="compact"
+                                                                    type="number"
+                                                                    variant="outlined"
+                                                                    :label="`${$t('shop.maxPrice')}  ${selectedCurrency === 'RON' ? '(RON)' : '(EUR)'}`"
+                                                                ></v-text-field>
+                                                            </v-col>
+                                                        </v-row>
+                                                        <v-range-slider
+                                                            color="primary"
+                                                            :max="selectedCurrency === 'RON' ? 2000 : 400"
+                                                            :min="0"
+                                                            :step="10"
+                                                            density="compact"
+                                                            v-model="rangePrice">
+                                                        </v-range-slider>
+                                                    </v-col>
+                                                </v-row>
+                                            </v-expansion-panel-text>
+                                        </v-expansion-panel>
+                                    </v-expansion-panels>
+                                </v-col>
+                            </v-row>
+                        </v-col>
+                        <v-col cols="9" v-if="screenSize===3" class="overflow-y-scroll overflow-x-hidden overflow-y-visible ">
+                            <v-row>
+                                <v-col sm="6" xs="12" md="6" v-for="set in currentSetsOnPage.shopSets"
+                                    :key="selectedCurrency === 'RON' ? set.numeSetJsonDto.nume_ro : set.numeSetJsonDto.nume_en">
+                                    <v-card class="bg-grey-lighten-3 p-2 my-3  h-100" elevation="24"
+                                        >
+                                        <v-card-title >
+                                        <div class="ribbon" v-if="set.pretRedusSetDto > 0" >{{ $t('shop.discount') }}</div>
+                                        <p  class="font-weight-thin h5 text-center">{{ selectedCurrency === "RON" ?  set.numeSetJsonDto.nume_ro.toUpperCase() : set.numeSetJsonDto.nume_en.toUpperCase() }}</p>
+                                        </v-card-title>
+                                        <v-card-subtitle >
+                                        <v-row>
+                                            <v-col cols="12" class="text-center">
+                                            <span>{{selectedCurrency === "RON" ? 'CULORI DISPONIBILE IN SET' : 'COLORS IN SET'}}</span>
+                                            </v-col>
+                                            <v-col cols="12" class="text-center">
+                                            <span v-for="(product,index) in set.setProductsDto"
+                                                :key="index" >
+                                                <div></div>
+                                                <span v-for="(color,index) in product.culoriProdusDto" 
+                                                    :key="index" >
+                                                    {{ color.numeCuloareDto }} , 
+                                                </span>
+                                            </span>
+                                            </v-col>
+                                        </v-row>
+                                        </v-card-subtitle>
+                                        <v-card-text class="text-center">
+                                        <v-carousel hide-delimiters 
+                                            hide-delimiter-background
+                                            cycle
+                                            class="mb-2"
+                                            height="450">
+                                            <template v-if="allImages(set.setProductsDto).length > 0">
+                                            <v-tooltip :text="`${t('general.openImage')}`">
+                                                <template v-slot:activator="{props}">
+                                                    <v-carousel-item v-for="image in allImages(set.setProductsDto)"
+                                                        eager
+                                                        :key="image.presignedUrl"
+                                                        :src="image.presignedUrl"
+                                                        @click="openImageModal(set.setProductsDto)"
+                                                        v-bind="props"
+                                                        class="cursor-pointer"
+                                                        :aspect-ratio="16 / 5"
+                                                        >
+                                                    </v-carousel-item>
+                                                </template>
+                                            </v-tooltip>
+                                            
+                                            </template>
+
+                                            <!-- Fallback when no images are found -->
+                                            <template v-else>
+                                            <v-carousel-item src="/notFound.png" cover></v-carousel-item>
+                                            </template>
+                                        </v-carousel>
+                                        <v-dialog v-model="isImageModalOpen" max-height="700">
+                                            <v-card >
+                                                <v-card-title class="text-center">
+                                                    <v-btn color="primary" text @click="isImageModalOpen = false"><v-icon size="24" :icon="mdiClose"></v-icon></v-btn>
+                                                </v-card-title>
+                                                
+                                                    <v-carousel 
+                                                    hide-delimiters 
+                                                    
+                                                    hide-delimiter-background
+                                                    cycle
+                                                    progress="primary"
+                                                    class="mb-2"
+                                                    >
+                                                    <template v-if="imagesInModal.length > 0">
+                                                        <v-carousel-item v-for="(image,index) in imagesInModal"
+                                                        :key="index" :src="image.presignedUrl" :aspect-ratio="4/3"  eager>
+                                                        </v-carousel-item>
+                                                    </template>
+
+                                            
+                                                    <template v-else>
+                                                    <v-carousel-item src="/notFound.png" cover></v-carousel-item>
+                                                    </template>
+                                                </v-carousel>
+                                                
+                                                
+                                            
+                                                
+                                            
+                                            </v-card>
+                                        </v-dialog>
+                                        <v-container fluid>
+                                            <div v-if="set.pretRedusSetDto > 0" class="font-weight-light h5 mb-2 text-red">
+                                                <p class="text-black"><s>{{ set.pretSetDto }} {{ selectedCurrency === 'RON' ? 'RON' : 'EUR' }}</s></p>
+                                                {{  set.pretRedusSetDto }} {{ selectedCurrency === 'RON' ? 'RON' : 'EUR' }}
+                                            </div>
+                                            <p v-else class="font-weight-light h5 mb-2">{{ set.pretSetDto }} {{ selectedCurrency === 'RON' ? 'RON' : 'EUR' }}</p>
+                                        </v-container>
+                                        <v-row no-gutters>
+                                            <v-col cols="12" class="my-1">
+                                                <NuxtLink prefetch :prefetch-on="{interaction: true}"
+                                                :to="localPath(`/set/${set.encodedIdSet}/${set.numeSetJsonDto.nume_ro}`)">
+                                                    <v-btn variant="flat" color="primary" >
+                                                        {{ $t('shop.seeDetails') }} <v-icon class="ml-1" size="24" :icon="mdiArrowRight"></v-icon>
+                                                    </v-btn>
+                                                </NuxtLink>
+                                            
+                                            </v-col >
+                                            <v-col cols="12" class="my-1">
+                                                <p class="font-weight-light h5"><span class="h1 font-weight-light">{{ set.reviewsInfoGeneral.averageRating }}</span> / 5</p>
+                                                <v-rating
+                                                    hover :length="5"
+                                                    :size="24"
+                                                    readonly
+                                                    half-increments
+                                                    v-model="set.reviewsInfoGeneral.averageRating"
+                                                    color="orange-lighten-1"
+                                                    active-color="primary"
+                                                    class="ma-2"
+                                                ></v-rating>
+                                                <p class="font-weight-light h5">{{ set.reviewsInfoGeneral.totalReviews }} {{ $t('general.reviews') }}</p>
+                                            </v-col>
+                                        </v-row>
+                                        </v-card-text>
+                                    </v-card>
+                                </v-col>
+                            </v-row>
+                            <v-container v-if="currentSetsOnPage.shopSets.length <= 0" fluid class="bg-grey-lighten-4 text-center mt-4  elevation-12">
+                                <p class="font-weight-light h5">{{ $t('shop.noProductFound') }}</p>
+                                <v-icon :icon="mdiEmoticonSadOutline" size="24"></v-icon>
+                            </v-container>
+                        </v-col>
+                        <v-col v-else sm="6" xs="12" md="6" v-for="set in currentSetsOnPage.shopSets"
                         :key="selectedCurrency === 'RON' ? set.numeSetJsonDto.nume_ro : set.numeSetJsonDto.nume_en">
                         <v-card class="bg-grey-lighten-3 p-2 my-3  h-100" elevation="24"
                             >
@@ -225,7 +443,7 @@
                             <v-pagination  v-model="dataPage" :length="getPaginationLen" class="d-none"></v-pagination>
                             <v-btn @click="loadMoreSets" variant="flat" color="primary">{{ $t('shop.loadMoreProducts') }}</v-btn>
                         </v-container>
-                        <v-container v-else fluid class="bg-grey-lighten-4 text-center mt-5  elevation-24">
+                        <v-container  v-else-if="currentSetsOnPage.shopSets.length <=0 && screenSize===true" fluid class="bg-grey-lighten-4 text-center mt-5  elevation-24 ">
                             <p class="font-weight-light h5">{{ $t('shop.noProductFound') }}</p>
                             <v-icon size="24" :icon="mdiEmoticonSadOutline"></v-icon>
                         </v-container>
@@ -241,7 +459,9 @@
 <script setup>
 
 import { mdiArrowRight, mdiClose, mdiEmoticonSadOutline,mdiFilter,mdiMagnify } from '@mdi/js';
+import { useDisplay } from 'vuetify';
 import productService from '~/services/Products'
+
 
 
 definePageMeta({
@@ -263,6 +483,14 @@ defineOgImageComponent('NuxtSeo', {
 })
 useHead({
   title : 'Texx - Magazin seturi'
+})
+const {name} = useDisplay()
+const screenSize = computed(() => {
+    switch (name.value) {
+      case 'xs': return true
+      case 'sm' : return true
+      default : return 3
+    }
 })
 
 const loadNoMoreSetsAlert = ref(false)
@@ -448,6 +676,8 @@ onBeforeMount(async () => {
   position: relative;
   z-index: 1;
   width: 100%;
+  height: 100%;
+  overflow-x: hidden;
 }
 
 .ribbon {

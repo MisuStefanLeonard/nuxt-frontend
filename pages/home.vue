@@ -4,38 +4,7 @@
       <v-alert color="red-darken-4" variant="flat">
         <span class="font-weight-thin h5"> <v-icon class="mx-2"  :icon="mdiTruck" size="24"></v-icon>{{$t('homePage.orderOver1')}} {{ getMinOrderPriceForFreeDelivery }} {{ selectedCurrency === 'RON' ? 'RON' : 'EUR'  }} {{$t('homePage.orderOver2')}}</span>
       </v-alert>
-      <!-- <div class="none">
-        <span>Bun venit pe texx.ro</span>
-        <br>
-        <span>Bun venit pe texx.ro</span>
-        <br>
-        <span>Bun venit pe texx.ro</span>
-        <br>
-        <span>Bun venit pe texx.ro</span>
-        <br>
-        <span>Bun venit pe texx.ro</span>
-        <br>
-        <span>Bun venit pe texx.ro</span>
-        <br>
-        <span>Bun venit pe texx.ro</span>
-        <br>
-        <span>Bun venit pe texx.ro</span>
-        <span>Bun venit pe texx.ro</span>
-        <br>
-        <span>Bun venit pe texx.ro</span>
-        <br>
-        <span>Bun venit pe texx.ro</span>
-        <br>
-        <span>Bun venit pe texx.ro</span>
-        <br>
-        <span>Bun venit pe texx.ro</span>
-        <br>
-        <span>Bun venit pe texx.ro</span>
-        <br>
-        <span>Bun venit pe texx.ro</span>
-        <br>
-        <span>Bun venit pe texx.ro</span>
-      </div> -->
+      
       <v-carousel height="auto" hide-delimiters show-arrows="hover">
         <v-carousel-item v-for="img in carouselImgs"
           :key="img"

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <v-footer class="bg-blue-grey-darken-4 text-center d-flex flex-column" app>
+        <v-footer class="bg-blue-grey-darken-4 text-center d-flex flex-column" >
             <v-row justify="center" no-gutters class="d-block text-center">
                 <v-col>
                     Administrare <strong class=""> texx</strong> -

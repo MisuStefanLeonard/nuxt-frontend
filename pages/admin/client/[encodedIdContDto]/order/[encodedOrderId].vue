@@ -4,6 +4,7 @@
             v-if="clientData.emailDto && encodedIdAccountDto"
             :email-dto="clientData.emailDto"
             :encoded-id-account-dto="encodedIdAccountDto"
+            type="client"
         ></AdminNavDrawerOnClient>
         <v-main class="bg-grey-darken-3">
             <v-container fluid v-if="currentOrderData">

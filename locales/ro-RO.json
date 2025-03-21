@@ -279,8 +279,9 @@
         },
         "discount" : "REDUCERE ",
         "limitedEdition" : "LIMITAT",
-        "newProduct" : "NOU"
-
+        "newProduct" : "NOU",
+        "filterDimensions" : "Dimenisuni" ,
+        "filterPrices" : "Pret"
     },
     "shopSeturi" : {
         "sets" : "SETURI PRODUSE",
