@@ -69,6 +69,10 @@
               Importa Excel
               <v-icon size="24" class="pl-3" right :icon="mdiFileUpload"></v-icon>
             </v-btn>
+            <v-btn rounded color="success" class="m-2 " @click="triggerExcelExport">
+              Exporta excel
+              <v-icon size="24" class="pl-3" right :icon="mdiFileUpload"></v-icon>
+            </v-btn>
             <v-btn rounded class="m-2 " color="primary" @click="redirectToAddingProduct()">
               Adauga Produs
               <v-icon size="24" class="pl-3" right :icon="mdiPlus"></v-icon>
@@ -241,6 +245,40 @@ onMounted(() => {
   isLoaded.value = true;
 })
 
+const triggerExcelExport = (async () => {
+    const response = await adminService.exportXlsxFile();
+    if(response.status === 200){
+      const blob = new Blob([response.message], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      const now = new Date();
+      const day = now.getDate().toString().padStart(2, '0');
+      const month = (now.getMonth() + 1).toString().padStart(2, '0');
+      const year = now.getFullYear();
+      const fileName = `Produse_${day}_${month}_${year}.xlsx`;
+      link.setAttribute('download' ,  fileName); // Set the desired file name
+
+      // Programmatically click the anchor to trigger the download
+      document.body.appendChild(link);
+      link.click();
+
+      // Clean up by removing the anchor and revoking the object URL
+      link.remove();
+      window.URL.revokeObjectURL(url);
+      fireAlarm('success' , 'Succes' , "Fisierul se gaseste in bara de donwload" , 2000)
+      return
+    }else if(response.status === 204){
+      fireAlarm('warning' , 'Atentie' , "Nu aveti produse in baza de date" , 3000)
+      return
+    }else {
+      fireAlarm('error' , 'Atentie' , "O eroare a avut loc. Contactati administratorul." , 3000)
+      return
+    }
+  
+
+})
+
 // Methods
 const getProducts = async () => {
   try {
@@ -296,7 +334,7 @@ const importExcel = async () => {
 }
 
 const seeProductPage = (productCode) => {
-  navigateTo(`/admin/product/${productCode}`);
+  navigateTo(`/admin/product/${productCode}?general=1`);
 }
 
 function fireAlarm(icon , title , text , timer){
@@ -428,7 +466,7 @@ const activateSelectedProducts = async () => {
 
 
 const redirectToAddingProduct = () => {
-  navigateTo('/admin/product/add');
+  navigateTo('/admin/product/add?general=1');
 }
 </script>
 

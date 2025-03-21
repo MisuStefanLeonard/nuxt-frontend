@@ -265,7 +265,9 @@
       },
       "discount": "DISCOUNT",
       "limitedEdition": "LIMITED",
-      "newProduct": "NEW"
+      "newProduct": "NEW",
+      "filterDimensions" : "Dimensions" ,
+      "filterPrices" : "Price"
     },
     "shopSeturi": {
       "sets": "PRODUCT SETS",

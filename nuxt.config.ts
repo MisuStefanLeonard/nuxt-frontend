@@ -1,11 +1,5 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  // runtimeConfig : {
-  //   public: {
-  //     backend : process.env.NODE_ENV === 'development' 
-  //         ? process.env.BACKEND_URL : 'prod backend url'
-  //   }
-  // },
   ssr: true,
   vite:{
     build : {
@@ -18,9 +12,10 @@ export default defineNuxtConfig({
   robots: {
     blockNonSeoBots:true,
     blockAiBots: true,
-    disallow : ['/en/admin/*' , '/admin/*' ,'/user/profile/*'
+    disallow : ['/en/admin/**' , '/admin/**' ,'/user/profile/**'
       , '/en/user/profile/*' , '/user/order/*' , '/en/user/order/*',
-    ]
+    ],
+    sitemap : 'https://texxshop.ro/sitemap.xml'
   },
   modules: [
     '@pinia/nuxt',
@@ -67,6 +62,10 @@ export default defineNuxtConfig({
     host: '0.0.0.0', // Listen on all network interfaces
     port: 3000, // Optional: Specify a port, default is 3000
   },
+  site: {
+    url: 'https://texxshop.ro',
+    name: 'TexxShop',
+  },
   components : false,
   gtm: {
     id :process.env.NODE_ENV === 'development'
@@ -110,11 +109,9 @@ export default defineNuxtConfig({
   },
   routeRules : {
     '/:locale?/admin/**' : {ssr: false },
-    '/en/admin/**' : {redirect : '/404'},
+    '/en/admin/**' : { redirect: `/error/404`},
     '/' : {redirect : '/home'},
     '/en' : {redirect : '/en/home'}
-    // '/:locale?/user/profile' : {ssr: false},
-    // '/:locale?/user/profile/**' : {ssr: false}
   },
   build: {
     transpile: ['vuetify'],

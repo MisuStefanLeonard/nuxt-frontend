@@ -45,7 +45,7 @@
 </template>
 
 <script setup>
-import { mdiAccount, mdiCarShiftPattern, mdiCart, mdiCogOutline, mdiMenu, mdiMonitorDashboard, mdiShopping, mdiTicketPercent } from '@mdi/js';
+import { mdiAccount, mdiCarShiftPattern, mdiCart, mdiCogOutline, mdiHome, mdiMenu, mdiMonitorDashboard, mdiShopping, mdiTicketPercent } from '@mdi/js';
 import { ref } from 'vue';
 
 const sidebar = ref(false);
@@ -97,7 +97,13 @@ const navAdminItems = ref([
     path: '/admin/general',
     icon: mdiCogOutline,
     dropdown: []
-  }
+  },
+  {
+    title: 'Acasa',
+    path: '/home',
+    icon: mdiHome,
+    dropdown: []
+  },
 ]);
 
 const toggleSidebar = () => {

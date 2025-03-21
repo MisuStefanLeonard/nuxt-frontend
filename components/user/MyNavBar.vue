@@ -14,7 +14,7 @@
       <div class="d-flex align-center justify-center flex-grow-1">
         <v-toolbar-title class="d-flex align-center justify-center">
           <NuxtLink :to="localePath('/home')" style="cursor: pointer" class="text-decoration-none d-flex align-center">
-            <img src="../../assets/LogoTexx.png" alt="Logo" height=45 class="mr-1">
+            <img src="../../assets/LogoTexx.png" alt="Logo" height=45 class="mr-1" preload/>
           </NuxtLink>
         </v-toolbar-title>
       </div>

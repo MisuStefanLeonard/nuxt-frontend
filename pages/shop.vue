@@ -1,206 +1,558 @@
 <template>
-    <div class="background-wrapper" >
+    <v-app class="background-wrapper" >
         <div class="background"></div>
         <div class="content" fluid>
           <v-container fluid>
             <p class="font-weight-light h1 text-center">{{ $t('shop.products') }}</p>
           </v-container>
-          <div fluid class="mt-3">
-            <v-sheet elevation="24" color="grey-lighten-4 p-2">
+          <div fluid class="mt-3 ">
+            <v-sheet elevation="24" color="grey-lighten-3">
+              <v-sheet elevation="24" class="" v-if="screenSize === true">
+                <v-row no-gutters class=" " >
+                  <v-col cols="12" >
+                    <p class="font-weight-light h5 text-center mt-2">{{ $t('shop.filters') }}</p>
+                    <v-row no-gutters>
+                      <v-col cols="12" sm="12" md="12" xs="12" class="p-3 ">
+                        <v-select
+                          item-color="primary"
+                          multiple
+                          variant="outlined"
+                          :label="`${$t('shop.productType')}`"
+                          density="compact"
+                          v-model="productTypes"
+                          :item-title="selectedCurrency === 'RON' ? 'tip_ro' : 'tip_en'"
+                          item-value="tip_ro"
+                          chips
+                          closable-chips
+                          clearable
+                          :items="filterOptions.filterProductTypesJson">
+                        </v-select>
+                      </v-col>
+                      <v-col cols="12" sm="12" md="12" xs="12" class="p-3 ">
+                        <v-select
+                          item-color="primary"
+                          multiple
+                          variant="outlined"
+                          :label="`${$t('shop.productCategories')}`"
+                          density="compact"
+                          v-model="productCategories"
+                          :item-title="selectedCurrency === 'RON' ? 'categorie_ro' : 'categorie_en'"
+                          item-value="categorie_ro"
+                          chips
+                          closable-chips
+                          clearable
+                          :items="filterOptions.filterProductCategoriesJson">
+                        </v-select>
+                      </v-col>
+                      <v-col cols="12" sm="12" md="12" xs="12" class="p-3 ">
+                        <v-select
+                          item-color="primary"
+                          variant="outlined"
+                          multiple
+                          :label="`${$t('shop.color')}`"
+                          density="compact"
+                          v-model="productColors"
+                          :item-title="selectedCurrency === 'RON' ? 'culoare_ro' : 'culoare_en'"
+                          item-value="culoare_ro"
+                          chips
+                          clearable
+                          :items="filterOptions.filterColorsJson">
+                        </v-select>
+                      </v-col>
+                      <v-col cols="12" sm="12" md="12" xs="12"  class="p-2">
+                        <v-row no-gutters>
+                          <v-col cols="12" class="p-2">
+                            <v-row>
+                              <v-col cols="6">
+                                <v-text-field
+                                  v-model="rangeWidth[0]"
+                                  density="compact"
+                                  type="number"
+                                  variant="outlined"
+                                  :label="`${$t('shop.minWidth')}`"
+                                ></v-text-field>
+                              </v-col>
+                              <v-col cols="6">
+                                <v-text-field
+                                  v-model="rangeWidth[1]"
+                                  density="compact"
+                                  type="number"
+                                  variant="outlined"
+                                  :label="`${$t('shop.maxWidth')}`"
+                                ></v-text-field>
+                              </v-col>
+                            </v-row>
+                            <v-range-slider
+                            color="primary"
+                            :max="300"
+                            :min="0"
+                            :step="5"
+                            density="compact"
+                            v-model="rangeWidth">
+                            </v-range-slider>
+                          </v-col>
+                          <v-col cols="12" class="p-2">
+                            <v-row>
+                              <v-col cols="6">
+                                <v-text-field
+                                  v-model="rangeHeight[0]"
+                                  density="compact"
+                                  type="number"
+                                  variant="outlined"
+                                  :label="`${$t('shop.minHeight')}`"
+                                ></v-text-field>
+                              </v-col>
+                              <v-col cols="6">
+                                <v-text-field
+                                  v-model="rangeHeight[1]"
+                                  density="compact"
+                                  type="number"
+                                  variant="outlined"
+                                  :label="`${$t('shop.maxHeight')}`"
+                                ></v-text-field>
+                              </v-col>
+                            </v-row>
+                            <v-range-slider
+                            color="primary"
+                            :max="300"
+                            :min="0"
+                            :step="5"
+                            density="compact"
+                            v-model="rangeHeight">
+                            </v-range-slider>
+                          </v-col>
+                          <v-col cols="12" class="p-2">
+                            <v-row>
+                              <v-col cols="6">
+                                <v-text-field
+                                  v-model="rangePrice[0]"
+                                  density="compact"
+                                  type="number"
+                                  variant="outlined"
+                                  :label="`${$t('shop.minPrice')}  ${selectedCurrency === 'RON' ? '(RON)' : '(EUR)'}`"
+                                ></v-text-field>
+                              </v-col>
+                              <v-col cols="6">
+                                <v-text-field
+                                  v-model="rangePrice[1]"
+                                  density="compact"
+                                  type="number"
+                                  variant="outlined"
+                                  :label="`${$t('shop.maxPrice')}  ${selectedCurrency === 'RON' ? '(RON)' : '(EUR)'}`"
+                                ></v-text-field>
+                              </v-col>
+                            </v-row>
+                            <v-range-slider
+                            color="primary"
+                            :max="selectedCurrency === 'RON' ? 2000 : 400"
+                            :min="0"
+                            :step="10"
+                            density="compact"
+                            v-model="rangePrice">
+                            </v-range-slider>
+                          </v-col>
+                        </v-row>
+                      </v-col>
+                      <v-col cols="12" sm="12" md="12" xs="12" class="p-2">
+                        <v-container fluid>
+                          <v-checkbox :label="selectedCurrency === 'RON' ? 'Exclude de la filtrare:' : 'Exclude from filters: '"
+                          v-model="excludeFromFiltration" color="green"
+                          >
 
-              <v-sheet elevation="24" class="p-2 m-3">
-                <v-row no-gutters class=" p-2">
-                <v-col cols="12" >
-                  <p class="font-weight-light h5 text-center">{{ $t('shop.filters') }}</p>
-                  <v-row no-gutters>
-                    <v-col cols="12" sm="12" md="12" xs="12" class="p-3 ">
-                      <v-select
-                        item-color="primary"
-                        multiple
-                        variant="outlined"
-                        :label="`${$t('shop.productType')}`"
-                        density="comfortable"
-                        v-model="productTypes"
-                        :item-title="selectedCurrency === 'RON' ? 'tip_ro' : 'tip_en'"
-                        item-value="tip_ro"
-                        chips
-                        closable-chips
-                        clearable
-                        :items="filterOptions.filterProductTypesJson">
-                      </v-select>
-                    </v-col>
-                    <v-col cols="12" sm="12" md="12" xs="12" class="p-3 ">
-                      <v-select
-                        item-color="primary"
-                        multiple
-                        variant="outlined"
-                        :label="`${$t('shop.productCategories')}`"
-                        density="comfortable"
-                        v-model="productCategories"
-                        :item-title="selectedCurrency === 'RON' ? 'categorie_ro' : 'categorie_en'"
-                        item-value="categorie_ro"
-                        chips
-                        closable-chips
-                        clearable
-                        :items="filterOptions.filterProductCategoriesJson">
-                      </v-select>
-                    </v-col>
-                    <v-col cols="12" sm="12" md="12" xs="12" class="p-3 ">
-                      <v-select
-                        item-color="primary"
-                        variant="outlined"
-                        multiple
-                        :label="`${$t('shop.color')}`"
-                        density="comfortable"
-                        v-model="productColors"
-                        :item-title="selectedCurrency === 'RON' ? 'culoare_ro' : 'culoare_en'"
-                        item-value="culoare_ro"
-                        chips
-                        clearable
-                        :items="filterOptions.filterColorsJson">
-                      </v-select>
-                    </v-col>
-                    <v-col cols="12" sm="12" md="12" xs="12"  class="p-2">
-                      <v-row no-gutters>
-                        <v-col cols="12" class="p-2">
-                          <v-row>
-                            <v-col cols="6">
-                              <v-text-field
-                                v-model="rangeWidth[0]"
-                                density="compact"
-                                type="number"
-                                variant="outlined"
-                                :label="`${$t('shop.minWidth')}`"
-                              ></v-text-field>
-                            </v-col>
-                            <v-col cols="6">
-                              <v-text-field
-                                v-model="rangeWidth[1]"
-                                density="compact"
-                                type="number"
-                                variant="outlined"
-                                :label="`${$t('shop.maxWidth')}`"
-                              ></v-text-field>
-                            </v-col>
-                          </v-row>
-                          <v-range-slider
-                          color="primary"
-                          :max="300"
-                          :min="0"
-                          :step="5"
-                          density="comfortable"
-                          v-model="rangeWidth">
-                          </v-range-slider>
-                        </v-col>
-                        <v-col cols="12" class="p-2">
-                          <v-row>
-                            <v-col cols="6">
-                              <v-text-field
-                                v-model="rangeHeight[0]"
-                                density="compact"
-                                type="number"
-                                variant="outlined"
-                                :label="`${$t('shop.minHeight')}`"
-                              ></v-text-field>
-                            </v-col>
-                            <v-col cols="6">
-                              <v-text-field
-                                v-model="rangeHeight[1]"
-                                density="compact"
-                                type="number"
-                                variant="outlined"
-                                :label="`${$t('shop.maxHeight')}`"
-                              ></v-text-field>
-                            </v-col>
-                          </v-row>
-                          <v-range-slider
-                          color="primary"
-                          :max="300"
-                          :min="0"
-                          :step="5"
-                          density="comfortable"
-                          v-model="rangeHeight">
-                          </v-range-slider>
-                        </v-col>
-                        <v-col cols="12" class="p-2">
-                          <v-row>
-                            <v-col cols="6">
-                              <v-text-field
-                                v-model="rangePrice[0]"
-                                density="compact"
-                                type="number"
-                                variant="outlined"
-                                :label="`${$t('shop.minPrice')}  ${selectedCurrency === 'RON' ? '(RON)' : '(EUR)'}`"
-                              ></v-text-field>
-                            </v-col>
-                            <v-col cols="6">
-                              <v-text-field
-                                v-model="rangePrice[1]"
-                                density="compact"
-                                type="number"
-                                variant="outlined"
-                                :label="`${$t('shop.maxPrice')}  ${selectedCurrency === 'RON' ? '(RON)' : '(EUR)'}`"
-                              ></v-text-field>
-                            </v-col>
-                          </v-row>
-                          <v-range-slider
-                          color="primary"
-                          :max="selectedCurrency === 'RON' ? 2000 : 400"
-                          :min="0"
-                          :step="10"
-                          density="comfortable"
-                          v-model="rangePrice">
-                          </v-range-slider>
-                        </v-col>
-                      </v-row>
-                    </v-col>
-                    <v-col cols="12" sm="12" md="12" xs="12" class="p-2">
-                      <v-container fluid>
-                         <v-checkbox :label="selectedCurrency === 'RON' ? 'Exclude de la filtrare:' : 'Exclude from filters: '"
-                         v-model="excludeFromFiltration" color="green"
-                         >
-
-                         </v-checkbox>
-                        <v-switch 
-                        :label="`${selectedCurrency === 'RON' ? 'Fata reversibila' : 'Two face'} : ${fataReversibila  ? $t('yes') : $t('no')}`"
-                        density="comfortable"
-                        v-model="fataReversibila"
-                        inset
-                        color="success"
-                        :false-value="false"
-                        :true-value="true">
-                      </v-switch>
-                      </v-container>
-                      
-                    </v-col>
+                          </v-checkbox>
+                          <v-switch 
+                          :label="`${selectedCurrency === 'RON' ? 'Fata reversibila' : 'Two face'} : ${fataReversibila  ? $t('yes') : $t('no')}`"
+                          density="compact"
+                          v-model="fataReversibila"
+                          :disabled="excludeFromFiltration"
+                          inset
+                          color="success"
+                          :false-value="false"
+                          :true-value="true">
+                        </v-switch>
+                        </v-container>
+                      </v-col>
+                      <v-col cols="12" sm="12" md="12" xs="12" class="p-2 text-center">
+                        <v-row no-gutters>
+                          <v-col cols="12" xs="12" sm="12" md="6" class="my-1">
+                            <v-btn variant="flat" color="success"
+                            @click="applyFilters" :append-icon="mdiFilter">
+                              {{ $t('shop.applyFilters') }}
+                            </v-btn>
+                          </v-col>
+                          <v-col>
+                            <v-btn cols="12" xs="12" sm="12" md="6"
+                            variant="flat" color="error" class="my-1"
+                            @click="deleteFilters">
+                            {{ $t('shop.deleteFilters') }}
+                            </v-btn>
+                          </v-col>
+                        </v-row>
+                        
+                      </v-col>
+                    </v-row>
+                  
+                  </v-col>
+                </v-row>
+              </v-sheet>
+              <v-divider opacity="0"></v-divider>
+              <v-row no-gutters id="products" >
+                <v-col v-if="screenSize === 3" cols="3" class="mt-2  p-2 shadow-lg elevation-12 position-sticky rounded-lg">
+                 
+                  <p class="font-weight-light h5 text-center mt-2">{{ $t('shop.filters') }} <v-icon :icon="mdiFilter"></v-icon></p>
+                  <v-divider></v-divider>
+                  <v-row>
                     <v-col cols="12" sm="12" md="12" xs="12" class="p-2 text-center">
+                     
                       <v-row no-gutters>
-                        <v-col cols="12" xs="12" sm="12" md="6" class="my-1">
+                        <v-col cols="12" xs="12" sm="12" md="12" class="my-1">
                           <v-btn variant="flat" color="success"
                           @click="applyFilters" :append-icon="mdiFilter">
                             {{ $t('shop.applyFilters') }}
                           </v-btn>
                         </v-col>
                         <v-col>
-                          <v-btn cols="12" xs="12" sm="12" md="6"
+                          <v-btn cols="12" xs="12" sm="12" md="12"
                           variant="flat" color="error" class="my-1"
                           @click="deleteFilters">
                           {{ $t('shop.deleteFilters') }}
                           </v-btn>
                         </v-col>
                       </v-row>
-                      
+                    </v-col>
+                    <v-col cols="12">
+                        <v-expansion-panels>
+                          <v-expansion-panel :title="`${$t('shop.productType')}`">
+                            <v-expansion-panel-text>
+                              <v-list>
+                                <v-list-item>
+                                    <v-checkbox
+                                      v-for="(option, idx) in filterOptions.filterProductTypesJson"
+                                      :key="idx"
+                                      density="compact"
+                                      v-model="productTypes"
+                                      :label="selectedCurrency === 'RON' ? option.tip_ro : option.tip_en"
+                                      :value="option.tip_ro"
+                                      color="primary"
+                                    ></v-checkbox>
+                                </v-list-item>
+                              </v-list>
+                            </v-expansion-panel-text>
+                          </v-expansion-panel>
+                          <v-divider></v-divider>
+                          <v-expansion-panel :title="`${$t('shop.color')}`">
+                            <v-expansion-panel-text>
+                              <v-list>
+                                <v-list-item>
+                                    <v-checkbox
+                                      v-for="(option, idx) in filterOptions.filterColorsJson"
+                                      :key="idx"
+                                      v-model="productColors"
+                                      density="compact"
+                                      :label="selectedCurrency === 'RON' ? option.culoare_ro : option.culoare_en"
+                                      :value="option.culoare_ro"
+                                      color="primary"
+                                    ></v-checkbox>
+                                </v-list-item>
+                              </v-list>
+                            </v-expansion-panel-text>
+                          </v-expansion-panel>
+                          <v-divider></v-divider>
+                          <v-expansion-panel :title="`${$t('shop.productCategories')}`">
+                            <v-expansion-panel-text>
+                              <v-list>
+                                <v-list-item>
+                                    <v-checkbox
+                                      v-for="(option, idx) in filterOptions.filterProductCategoriesJson"
+                                      :key="idx"
+                                      v-model="productCategories"
+                                       density="compact"
+                                      :label="selectedCurrency === 'RON' ? option.categorie_ro : option.categorie_en"
+                                      :value="option.categorie_ro"
+                                      color="primary"
+                                    ></v-checkbox>
+                                </v-list-item>
+                              </v-list>
+                            </v-expansion-panel-text>
+                          </v-expansion-panel>
+                          <v-divider></v-divider>
+                          <v-expansion-panel :title="`${$t('shop.filterDimensions')}`">
+                            <v-expansion-panel-text>
+                              <v-row>
+                                <v-col cols="12" class="p-2">
+                                  <v-row>
+                                    <v-col cols="12">
+                                      <v-text-field
+                                        v-model="rangeWidth[0]"
+                                        density="compact"
+                                        type="number"
+                                        variant="outlined"
+                                        :label="`${$t('shop.minWidth')}`"
+                                      ></v-text-field>
+                                    </v-col>
+                                    <v-col cols="12">
+                                      <v-text-field
+                                        v-model="rangeWidth[1]"
+                                        density="compact"
+                                        type="number"
+                                        variant="outlined"
+                                        :label="`${$t('shop.maxWidth')}`"
+                                      ></v-text-field>
+                                    </v-col>
+                                  </v-row>
+                                  <v-range-slider
+                                  color="primary"
+                                  :max="300"
+                                  :min="0"
+                                  :step="5"
+                                  density="compact"
+                                  v-model="rangeWidth">
+                                  </v-range-slider>
+                                </v-col>
+                                <v-col cols="12" class="p-2">
+                                  <v-row>
+                                    <v-col cols="12">
+                                      <v-text-field
+                                        v-model="rangeHeight[0]"
+                                        density="compact"
+                                        type="number"
+                                        variant="outlined"
+                                        :label="`${$t('shop.minHeight')}`"
+                                      ></v-text-field>
+                                    </v-col>
+                                    <v-col cols="12">
+                                      <v-text-field
+                                        v-model="rangeHeight[1]"
+                                        density="compact"
+                                        type="number"
+                                        variant="outlined"
+                                        :label="`${$t('shop.maxHeight')}`"
+                                      ></v-text-field>
+                                    </v-col>
+                                  </v-row>
+                                  <v-range-slider
+                                  color="primary"
+                                  :max="300"
+                                  :min="0"
+                                  :step="5"
+                                  density="compact"
+                                  v-model="rangeHeight">
+                                  </v-range-slider>
+                                </v-col>
+                              </v-row>
+                            </v-expansion-panel-text>
+                          </v-expansion-panel>
+                          <v-divider></v-divider>
+                          <v-expansion-panel :title="$t('shop.filterPrices')">
+                            <v-expansion-panel-text>
+                              <v-row>
+                                <v-col cols="12" class="p-2">
+                                  <v-row>
+                                    <v-col cols="12">
+                                      <v-text-field
+                                        v-model="rangePrice[0]"
+                                        density="compact"
+                                        type="number"
+                                        variant="outlined"
+                                        :label="`${$t('shop.minPrice')}  ${selectedCurrency === 'RON' ? '(RON)' : '(EUR)'}`"
+                                      ></v-text-field>
+                                    </v-col>
+                                    <v-col cols="12">
+                                      <v-text-field
+                                        v-model="rangePrice[1]"
+                                        density="compact"
+                                        type="number"
+                                        variant="outlined"
+                                        :label="`${$t('shop.maxPrice')}  ${selectedCurrency === 'RON' ? '(RON)' : '(EUR)'}`"
+                                      ></v-text-field>
+                                    </v-col>
+                                  </v-row>
+                                  <v-range-slider
+                                  color="primary"
+                                  :max="selectedCurrency === 'RON' ? 2000 : 400"
+                                  :min="0"
+                                  :step="10"
+                                  density="compact"
+                                  v-model="rangePrice">
+                                  </v-range-slider>
+                                </v-col>
+                              </v-row>
+                            </v-expansion-panel-text>
+                          </v-expansion-panel>
+                        </v-expansion-panels>
+                    </v-col>
+                    <v-col cols="12" sm="12" md="12" xs="12" class="p-2">
+                      <v-container fluid>
+                        <v-checkbox :label="selectedCurrency === 'RON' ? 'Exclude de la filtrare:' : 'Exclude from filters: '"
+                        v-model="excludeFromFiltration" color="green"
+                        >
+
+                        </v-checkbox>
+                        <v-switch 
+                        :label="`${selectedCurrency === 'RON' ? 'Fata reversibila' : 'Two face'} : ${fataReversibila  ? $t('yes') : $t('no')}`"
+                        density="compact"
+                        v-model="fataReversibila"
+                        :disabled="excludeFromFiltration"
+                        inset
+                        color="success"
+                        :false-value="false"
+                        :true-value="true">
+                      </v-switch>
+                      </v-container>
                     </v-col>
                   </v-row>
-                 
+                
                 </v-col>
-              </v-row>
-              </v-sheet>
-              <v-divider opacity="0"></v-divider>
-              <v-row no-gutters id="products">
-                <v-col sm="6" xs="12" md="6" v-for="product in currentProductsOnPage"
+               
+                <v-col cols="9" v-if="screenSize===3" class="overflow-y-scroll overflow-x-hidden overflow-y-visible h-100">
+                  <v-row>
+                    <v-col sm="6" xs="12" md="6" v-for="product in currentProductsOnPage"
+                      :key="product.codProdusDto" class="my-2 ">
+                      <v-card class="bg-grey-lighten-2 p-2 ml-3 my-1 mr-1 h-100 elevation-6" 
+                        >
+                        <v-card-title >
+                          <div
+                            class="ribbon"
+                            v-if="
+                              (product.dimensiuniProduseDto.length <= 0 && product.pretBazaRedusDto > 0) || 
+                              (product.dimensiuniProduseDto.some(dim => dim.pretRedusDto > 0))
+                            "
+                          >
+                            {{ $t('shop.discount') }}
+                          </div>
+                          <p  class="font-weight-thin h5 text-center">{{ product.numeProdusDto.toUpperCase() }}</p>
+                        </v-card-title>
+                        <v-card-text class="text-center">
+                          <div v-if="product.dimensiuniProduseDto.length > 0" class="mb-2">
+                            <span>* Pretul difera in functie de dimensiunea produsului</span>
+                            <br>
+                            <span>* Pretul afisat este pentru cea mai mica dimensiune</span>
+                          </div>
+                          <v-carousel hide-delimiters 
+                            show-arrows="hover"
+                            hide-delimiter-background
+                            cycle
+                            class="mb-2"
+                            height="300">
+                            <template v-if="allImages(product).length > 0">
+                              <v-tooltip :text="`${t('general.openImage')}`">
+                                  <template v-slot:activator="{props}">
+                                      <v-carousel-item v-for="image in allImages(product)"
+                                          eager
+                                          :key="image.presignedUrl"
+                                          :src="image.presignedUrl"
+                                          @click="openImageModal(product)"
+                                          v-bind="props"
+                                          class="cursor-pointer"
+                                          :aspect-ratio="3 / 4"
+                                        >
+                                      </v-carousel-item>
+                                  </template>
+                              </v-tooltip>
+                            </template>
+
+                            <!-- Fallback when no images are found -->
+                            <template v-else>
+                              <v-carousel-item src="/notFound.png" cover></v-carousel-item>
+                            </template>
+                          </v-carousel>
+                          <v-dialog v-model="isImageModalOpen" max-height="700" max-width="600">
+                            <v-card >
+                              <v-card-title class="text-center">
+                                  <v-btn color="primary" text @click="isImageModalOpen = false"><v-icon :icon="mdiClose" size="24"></v-icon></v-btn>
+                              </v-card-title>
+                              
+                                  <v-carousel 
+                                  hide-delimiters 
+                                  
+                                  hide-delimiter-background
+                                  cycle
+                                  progress="primary"
+                                  class="mb-2"
+                                  >
+                                  <template v-if="imagesInModal.length > 0">
+                                  
+                                      <v-carousel-item v-for="(image,index) in imagesInModal"
+                                      :key="index" :src="image.presignedUrl" :aspect-ratio="4/3"  eager
+                                    >
+                                      </v-carousel-item>
+                                  </template>
+
+                              
+                                  <template v-else>
+                                  <v-carousel-item src="/notFound.png" cover></v-carousel-item>
+                                  </template>
+                              </v-carousel>
+                            </v-card>
+                          </v-dialog>
+                          <v-container fluid>
+                            <p v-if="product.dimensiuniProduseDto.length <= 0" class="font-weight-light h5 mb-2">
+                              <span v-if="product.pretBazaRedusDto > 0">
+                                <s>{{ product.pretBazaDto }} {{ selectedCurrency === 'RON' ? 'RON' : 'EUR' }}</s>
+                                <br>
+                                <span class="text-error font-weight-bold">
+                                  {{ product.pretBazaRedusDto }} {{ selectedCurrency === 'RON' ? 'RON' : 'EUR' }}
+                                </span>
+                              </span>
+                              <span v-else>
+                                {{ product.pretBazaDto }} {{ selectedCurrency === 'RON' ? 'RON' : 'EUR' }}
+                              </span>
+                            </p>
+                            <div v-else>
+                              <template v-if="product.dimensiuniProduseDto.some(dimension => dimension.pretRedusDto > 0)">
+                                <p class="font-weight-light h5 mb-2">
+                                  <s>{{ product.dimensiuniProduseDto[product.dimensiuniProduseDto.length-1].pretDto }} {{ selectedCurrency === 'RON' ? 'RON' : 'EUR' }}</s>
+                                  <br>
+                                  <span class="text-error font-weight-bold">
+                                    {{ product.dimensiuniProduseDto[product.dimensiuniProduseDto.length-1].pretRedusDto }} {{ selectedCurrency === 'RON' ? 'RON' : 'EUR' }}
+                                  </span>
+                                </p>
+                              </template>
+                              <template v-else>
+                                <p class="font-weight-light h5 mb-2">
+                                  {{ product.dimensiuniProduseDto[product.dimensiuniProduseDto.length-1].pretDto }} {{ selectedCurrency === 'RON' ? 'RON' : 'EUR' }}
+                                </p>
+                              </template>
+                            </div>
+                          </v-container>
+                          <v-row no-gutters>
+                            <v-col cols="12" class="mt-1">
+                              <NuxtLink prefetch :prefetch-on="{interaction: true}"
+                                :to="localPath(`/product/${product.codProdusDto}/${product.tipulProdusuluiDto}`)"
+                                @click="storeUserScreenPosition()">
+                                  <v-btn variant="flat" color="primary"  >
+                                      {{ $t('shop.seeDetails') }} <v-icon class="ml-1" :icon="mdiArrowRight" size="24"></v-icon>
+                                  </v-btn>
+                              </NuxtLink>
+                            
+                            </v-col >
+                            <v-col cols="12" class="mt-1">
+                              <p class="font-weight-light h5"><span class="h3 font-weight-light">{{ product.reviewsInfoGeneral.averageRating }}</span> / 5</p>
+                                <v-rating
+                                    hover :length="5"
+                                    :size="20"
+                                    readonly
+                                    half-increments
+                                    v-model="product.reviewsInfoGeneral.averageRating"
+                                    color="orange-lighten-1"
+                                    active-color="primary"
+                                    class=""
+                                ></v-rating>
+                                <p class="font-weight-light h5">{{ product.reviewsInfoGeneral.totalReviews }} {{ $t('general.reviews') }}</p>
+                            </v-col>
+                          </v-row>
+                        </v-card-text>
+                      </v-card>
+                    </v-col>
+                  </v-row>
+                  <v-container v-if="currentProductsOnPage.length <= 0" fluid class="bg-grey-lighten-4 text-center m-3 p-2 elevation-24">
+                    <p class="font-weight-light h5">{{ $t('shop.noProductFound') }}</p>
+                    <v-icon :icon="mdiEmoticonSadOutline" size="24"></v-icon>
+                  </v-container>
+                </v-col>
+                <v-col v-else sm="6" xs="12" md="6" v-for="product in currentProductsOnPage"
                   :key="product.codProdusDto" class="my-2">
-                  <v-card class="bg-grey-lighten-3 p-3 m-2 h-100" elevation="24"
+                  <v-card class="bg-grey-lighten-3 p-3 mx-2 h-100" elevation="24"
                     >
                     <v-card-title >
                       <div
@@ -236,7 +588,8 @@
                                       @click="openImageModal(product)"
                                       v-bind="props"
                                       class="cursor-pointer"
-                                      :aspect-ratio="3 / 4">
+                                      :aspect-ratio="3 / 4"
+                                    >
                                   </v-carousel-item>
                               </template>
                           </v-tooltip>
@@ -264,7 +617,8 @@
                               <template v-if="imagesInModal.length > 0">
                               
                                   <v-carousel-item v-for="(image,index) in imagesInModal"
-                                  :key="index" :src="image.presignedUrl" :aspect-ratio="4/3"  eager>
+                                  :key="index" :src="image.presignedUrl" :aspect-ratio="4/3"  eager
+                                >
                                   </v-carousel-item>
                               </template>
 
@@ -306,17 +660,17 @@
                         </div>
                       </v-container>
                       <v-row no-gutters>
-                        <v-col cols="12" class="my-1">
+                        <v-col cols="12" class="mt-1">
                           <NuxtLink prefetch :prefetch-on="{interaction: true}"
                             :to="localPath(`/product/${product.codProdusDto}/${product.tipulProdusuluiDto}`)"
                             @click="storeUserScreenPosition()">
-                              <v-btn variant="flat" color="primary" >
+                              <v-btn variant="flat" color="primary"  >
                                   {{ $t('shop.seeDetails') }} <v-icon class="ml-1" :icon="mdiArrowRight" size="24"></v-icon>
                               </v-btn>
                           </NuxtLink>
-                         
+                        
                         </v-col >
-                        <v-col cols="12" class="my-1">
+                        <v-col cols="12" class="mt-1">
                           <p class="font-weight-light h5"><span class="h1 font-weight-light">{{ product.reviewsInfoGeneral.averageRating }}</span> / 5</p>
                             <v-rating
                                 hover :length="5"
@@ -335,6 +689,7 @@
                   </v-card>
                 </v-col>
                 
+                
                 <v-container v-if="currentProductsOnPage.length > 0" fluid class="bg-grey-lighten-4 text-center elevation-24 my-3">
                   <v-alert v-if="loadNoMoreProductsAlert" type="info" variant="flat" class="mb-2">
                   {{ $t('shop.maxProductsLoaded') }}
@@ -342,7 +697,7 @@
                   <v-pagination  v-model="dataPage" :length="getPaginationLen" class="d-none"></v-pagination>
                   <v-btn @click="loadMoreProducts" variant="flat" color="primary">{{ $t('shop.loadMoreProducts') }}</v-btn>
                 </v-container>
-                <v-container v-else fluid class="bg-grey-lighten-4 text-center m-3 p-2 elevation-24">
+                <v-container v-else-if="currentProductsOnPage.length <=0 && screenSize===true" fluid class="bg-grey-lighten-4 text-center m-3 p-2 elevation-24">
                  <p class="font-weight-light h5">{{ $t('shop.noProductFound') }}</p>
                  <v-icon :icon="mdiEmoticonSadOutline" size="24"></v-icon>
                 </v-container>
@@ -352,13 +707,14 @@
            
           </div>
         </div>
-    </div>
+      </v-app>
 </template>
 
 
 <script setup>
-import { mdiArrowRight, mdiClose, mdiEmoticonSadOutline, mdiFilter } from '@mdi/js';
+import { mdiArrowDown, mdiArrowRight, mdiClose, mdiEmoticonSadOutline, mdiFilter } from '@mdi/js';
 import { ref } from 'vue';
+import { useDisplay } from 'vuetify';
 import productService from '~/services/Products'
 
 definePageMeta({
@@ -391,7 +747,7 @@ const dataPage = ref(1);
 const dimensionsValues = ref([0,300,0,300]);
 const selectedCurrency = ref('RON');
 const excludeFromFiltration = ref(true)
-
+const {name} = useDisplay()
 const route = useRoute()
 const router = useRouter()
 const localPath = useLocalePath();
@@ -399,7 +755,7 @@ const {t} = useI18n()
 
 const rangeWidth = ref([0,300])
 const rangeHeight = ref([0,300])
-const rangePrice = ref([0,2000])
+const rangePrice = selectedCurrency.value === "RON" ?  ref([0,2000]) : ref([0,400])
 
 const productTypes = ref([]);
 const productCategories = ref([]);
@@ -407,7 +763,13 @@ const productColors = ref([]);
 const fataReversibila = ref(true)
 const isImageModalOpen = ref(false);
 const imagesInModal = ref([]);
-
+const screenSize = computed(() => {
+    switch (name.value) {
+      case 'xs': return true
+      case 'sm' : return true
+      default : return 3
+    }
+})
 
 const getCurrentLocale = () => {
   const currentLanguage = useCookie('i18n_redirected').value;
@@ -498,8 +860,8 @@ const allImages = ((product) => {
 })
 
 const applyFiltersFromQuery = async () => {
- 
-  if (route.query.type) {
+  try{
+    if (route.query.type) {
     productTypes.value = Array.isArray(route.query.type) ? route.query.type : [route.query.type];
    
   }
@@ -557,6 +919,10 @@ const applyFiltersFromQuery = async () => {
   for(let i = 1 ; i <= dataPage.value ; i++){
     await getPaginatedProducts(i - 1 , productTypes.value , productCategories.value ,productColors.value , dimensionsValues.value , rangePrice.value , excludeFromFiltration.value === true ? null : fataReversibila.value === true , selectedCurrency.value);
   }
+  }catch(error){
+
+  }
+  
   // await getPaginatedProducts(dataPage.value -1 , productTypes.value , productCategories.value,productColors.value , dimensionsValues.value , rangePrice.value , excludeFromFiltration.value === true ? null : fataReversibila.value === true , selectedCurrency.value);
    
 };
@@ -717,6 +1083,16 @@ onMounted(async () => {
   overflow: auto;
 }
 
+.filter-sidebar {
+  position: sticky;
+  top: 0;
+  /* Give it a fixed height if desired (e.g., full viewport height) */
+  height: 100vh;
+  /* Optional styling */
+  
+  
+}
+
 .background {
   position: fixed;
   top: 0;
@@ -734,7 +1110,11 @@ onMounted(async () => {
   position: relative;
   z-index: 1;
   width: 100%;
+  height: 100%;
+  overflow-y: visible;
+  overflow-x: hidden;
 }
+
 
 .ribbon {
   font-size: 14px;

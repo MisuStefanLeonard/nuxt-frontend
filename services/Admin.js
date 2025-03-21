@@ -21,6 +21,10 @@ class AdminService extends ApiService{
         formData.append('ExcelFromClient', file);
         return this.post('products/addProducts', formData,null);
     }
+
+    exportXlsxFile(){
+        return this.get('exportProductsExcel' , null , true , false )
+    }
     
 
     getProductsForAdminPage(){
@@ -58,8 +62,8 @@ class AdminService extends ApiService{
         modifiedProduct.culoriProdusDto.forEach(culoare => {
             if (culoare.imaginiProdusDto) {
                 culoare.imaginiProdusDto.forEach(imagine => {
-                    if (imagine.imageStream) {
-                        formData.append('images', imagine.imageStream);
+                    if (imagine.file) {
+                        formData.append('images', imagine.file);
                     }
                 });
             }
