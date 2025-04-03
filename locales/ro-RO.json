@@ -152,7 +152,9 @@
         "delete" : "Sterge",
         "modify" : "Modifica",
         "addAddress" : "Adauga adresa",
-        "sendForm" : "Trimite formular" 
+        "sendForm" : "Trimite formular" ,
+        "send" : "Trimite",
+        "close" : "Inchide"
     },
     "forgotPassword" : {
         "title" : "Resetare parola",
@@ -470,6 +472,8 @@
         "text16" : "Inca nu te-ai decis?",
         "text17" : "Contacteaza-ne",
         "text18" : "Aveti alta intrebare?",
+        "text19" : "Magazin",
+        "text20" : "Cuverturi, perdele si draperii de calitate pentru casa ta",
         "freqQuestions" : "Intrebari frecvente",
         "questions" : {
             "Q1" : "Cat timp dureaza livrarea?",
@@ -496,6 +500,14 @@
         "orderDeliveryAddress" : "Adresa livrare",
         "orderBillingAddress" : "Adresa facturare",
         "noOrderPlaced" : "Nu aveti nicio comanda plasata",
+        "sendBillOnEmail" : "TRIMITE FACTURA PE MAIL",
+        "visualizeBill" : "VIZUALIZEAZA FACTURA",
+        "orderOptionsTitle" : "Optiuni comanda",
+        "billServiceNotConfigured" : "Serviciul invalid momentan. Contactati administratorul prin formularul de contact.",
+        "billNotGeneratedYet" : "Adminul nu a generat factura inca. Contactati administratorul prin formularul de contact.",
+        "billDownloadedSuccefully" : "Factura a fost descarcata cu succes",
+        "billSentSuccefully" : "Factura a fost trimisa cu succes pe e-mail",
+        "orderNotFound" : "Comanda nu a fost gasita.",
         "orderPaymentType" : "Tip plata"
     },
     "orderConfirmationPage" : {

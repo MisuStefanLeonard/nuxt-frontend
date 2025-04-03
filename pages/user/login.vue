@@ -98,7 +98,7 @@ definePageMeta({
   layout: 'default',
   keywords:'log in , logare',
   siteName : 'Texx - Logare',
-  canonicalUrl : 'http://localhost:3000/user/login',
+  canonicalUrl : process.env.NODE_ENV === 'development' ? 'http://localhost:3000/user/login' : 'https://texxshop.ro/user/login',
   ogType : 'website',
   ogDescription : 'Logare pe Texx',
   description : 'Logare pe Texx'

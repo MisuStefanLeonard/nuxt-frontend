@@ -177,7 +177,7 @@ function fireAlarm(icon, title, text, isLoading) {
 
 // Navigate to client page
 function seeClientPage(encodedIdContDto) {
-    navigateTo(`/admin/client/${encodedIdContDto}/data`);
+    navigateTo(`/admin/client/${encodedIdContDto}/general?personalData=1`);
 }
 
 onBeforeMount(() => {

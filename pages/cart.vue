@@ -493,7 +493,7 @@
                     <v-card-text>
                     
                         <p class="font-weight-light h5 text-center my-2">{{ $t('cart.totalPrice') }} <b> {{  itemsInCart.pretTotal }} {{ currentCurrency === 'RON' ? 'RON' : 'EUR' }}</b></p>
-                        <v-btn variant="flat" color="black" @click="navigateTo(localPath('/user/checkout'))" >
+                        <v-btn variant="flat" color="black" @click="triggerCheckout()" >
                             {{ $t('cart.goToCheckout') }} <v-icon class="ml-1"  :icon="mdiArrowRight" size="24"></v-icon>
                         </v-btn>
                     </v-card-text>
@@ -518,8 +518,8 @@ definePageMeta({
   layout: 'default',
   keywords:'cos cumparaturi , shopping cart , pret afisat',
   middleware: 'locale',
-  siteName : 'Texx - Magazin seturi',
-  canonicalUrl : 'http://localhost:3000/cart',
+  siteName : 'Texx - Cos cumparaturi',
+  canonicalUrl : process.env.NODE_ENV ?  'http://localhost:3000/cart' : 'https://texxshop.ro/cart',
   ogType : 'product',
   ogDescription : 'Vizualizeaza produsele pe care le ai in cos pe Texx',
   description : 'Toate produsele tale la un click distanta de cumparare'
@@ -528,6 +528,7 @@ definePageMeta({
 useHead({
     title : 'Cos cumparaturi'
 })
+const gtm = useGtm()
 
 const {name} = useDisplay()
 const isMounted = ref(false)
@@ -591,6 +592,21 @@ function fireAlarm(position , icon , title , timer){
         showConfirmButton: false,
         timer: timer
     });
+}
+
+function triggerCheckout(){
+    try{
+    gtm.trackEvent({
+        event: 'begin_checkout',
+        category: 'E-Commerce checkout',
+        label : "Checkout button pressed",
+        noninteraction: false,
+    })
+    navigateTo(localPath('/user/checkout'));
+}
+catch(error){
+    console.log(error)
+}
 }
 
 const modifyQuantity = (async (isDecrementing,item) => {

@@ -7,7 +7,12 @@
                 <v-breadcrumbs-divider><p class="font-weight-bold h6">/</p></v-breadcrumbs-divider>
                 <v-breadcrumbs-item disabled><p class="font-weight-bold h6">COMENZI</p></v-breadcrumbs-item>
             </v-breadcrumbs>
-        
+            <v-snackbar v-model="popSnackBarErrorMessage"
+            timeout="3000"
+            color="error"
+            rounded>
+                {{ $t('sweetAlert2.CheckForm') }}
+            </v-snackbar>
             <div >
                 <p class="h3 font-weight-light text-center p-3">Istoric comenzi</p>
                 <v-container fluid v-if="clientOrders.length <= 0" >
@@ -25,6 +30,57 @@
                         <v-expansion-panel v-for="(order,index) in clientOrders" 
                         :key="index" :title="`${t('orderHistory.order')} #${order.orderId}`" class="bg-grey-lighten-5 my-3" >
                             <v-expansion-panel-text>
+                                <v-card class="bg-grey-darken-4 elevation-24 p-3">
+                                    <v-card-title :class="{'text-body-1' : screenSize === true}">
+                                        {{ $t('orderHistory.orderOptionsTitle') }} <v-icon class="mx-2" size="24" :icon="mdiCog"></v-icon>
+                                    </v-card-title>
+                                    <v-divider></v-divider>
+                                    <v-card-text>
+                                        <v-row >
+                                            <v-col cols="12">
+                                                <v-btn color="primary" @click="visualizeBill(order.orderId , order.orderBillNumber)">
+                                                    {{ $t('orderHistory.visualizeBill') }} <v-icon class="mx-2" size="24" :icon="mdiEye"></v-icon>
+                                                </v-btn>
+                                            </v-col>
+                                            <v-dialog v-model="openSendingBillOnEmailDialog" style="z-index: 999;">
+                                                <v-card class="p-2 bg-grey-darken-4">
+                                                    <v-card-text>
+                                                        <v-form ref="emailForm" validate-on="input" v-slot="{validate}">
+                                                            <v-text-field :label="`${t('profile.personalDataGeneral.email')}`"
+                                                            :prepend-icon="mdiEmailFast" class="p-1"
+                                                            v-model="emailForBill"
+                                                            :rules="[rules.email , rules.notEmpty]"
+                                                            variant="outlined"
+                                                            color="white">
+
+                                                            </v-text-field>
+                                                            <v-row>
+                                                                <v-col cols="12" class="text-center">
+                                                                    <v-btn color="primary" variant="outlined" @click="sendBillOnEmail(order.orderId,order.orderBillNumber ,validate)">
+                                                                        {{ $t('button.send') }} <v-icon class="mx-1" :icon="mdiArrowRight"></v-icon>
+                                                                    </v-btn>
+                                                                </v-col>
+                                                                <v-col cols="12" class="text-center">
+                                                                    <v-btn color="red" variant="outlined" @click="closeBillDialog()">
+                                                                        {{ $t('button.close') }} <v-icon class="mx-1" :icon="mdiAlphaX"></v-icon>
+                                                                    </v-btn>
+                                                                </v-col>
+                                                            </v-row>
+                                                        </v-form>
+                                                    </v-card-text>
+                                                </v-card>
+                                            </v-dialog>
+                                            <v-col cols="12">
+                                                <v-btn color="green" @click="openEmailDialog(order.userOrderDetails.email)">
+                                                    {{ $t('orderHistory.sendBillOnEmail') }} <v-icon class="mx-2" size="24" :icon="mdiEmailFast"></v-icon>
+                                                </v-btn>
+                                                
+                                            </v-col>
+                                        </v-row>
+                                    </v-card-text>
+                                </v-card>
+                                <v-divider></v-divider>
+
                                 <v-card class="bg-grey-darken-4 elevation-24 p-3">
                                     <v-card-title :class="{'text-body-1' : screenSize === true}">
                                         {{ $t('orderHistory.details') }} <v-icon class="mx-2" size="24" :icon="mdiCardAccountDetailsOutline"></v-icon>
@@ -54,7 +110,7 @@
                                     <!-- <v-card-actions> -->
                                         <v-container :class="{'text-center' : screenSize === true}" fluid>
                                             <v-btn  class="bg-green"  :class="{'text-body-2' : screenSize === true}">
-                                            {{ $t('orderHistory.orderTracking') }}
+                                            {{ $t('orderHistory.orderTracking') }} <v-icon :icon="mdiTruckFast" class="mx-1"></v-icon>
                                             </v-btn>
                                         </v-container>
                                     <!-- </v-card-actions> -->
@@ -454,7 +510,6 @@
                                             </v-col>
                                             <v-col cols="12" xs="12" sm="2">
                                                 <div class="h-100  d-flex align-center justify-center">
-                                                    {{ console.log(order.orderVoucher) }}
                                                     <div v-if="order.orderVoucher === null">
                                                         <p  class="font-weight-light h5 text-center">{{ item.cartItems[0].pretCurent * item.cartItems[0].cantitate }}
                                                         {{ selectedCurrency === 'RON' ? 'RON' : 'EUR' }}
@@ -537,15 +592,18 @@
 <script setup>
 
 import orderService from '~/services/Order';
+import userService from '~/services/User';
 import { useDisplay } from 'vuetify';
-import { mdiArrowLeft, mdiArrowRight, mdiBallotOutline, mdiCardAccountDetailsOutline, mdiFileDocumentPlusOutline, mdiMapMarkerOutline, mdiPackageVariant, mdiProjectorScreenVariantOffOutline, mdiTruckCheckOutline, mdiTruckFast } from '@mdi/js';
+import Swal from 'sweetalert2';
+import { ref } from 'vue'
+import { mdiAlphaX, mdiArrowLeft, mdiArrowRight, mdiBallotOutline, mdiCardAccountDetailsOutline, mdiCog, mdiEmailFast, mdiEye, mdiFileDocumentPlusOutline, mdiMapMarkerOutline, mdiPackageVariant, mdiProjectorScreenVariantOffOutline, mdiTruckCheckOutline, mdiTruckFast } from '@mdi/js';
 
 definePageMeta({
   title : 'Comenzi',
   layout: 'default',
   keywords:'comenzi,orders,client orders, comenzi client',
   siteName : 'Texx - Comenzi',
-  canonicalUrl : 'http://localhost:3000/user/profile/orders',
+  canonicalUrl : process.env.NODE_ENV === 'development' ?  'http://localhost:3000/user/profile/orders' : 'https://texxshop.ro/user/profile/orders',
   ogType : 'website',
   middleware: ['auth' , 'locale'],
   ogDescription : 'Comenzile dumnevoastra pe Texx',
@@ -559,10 +617,18 @@ useHead({
 const clientOrders = ref([])
 const stepValue = ref(0)
 const stepValueSet = ref(0)
-
+const openSendingBillOnEmailDialog = ref(false)
+const emailForBill = ref('')
 const selectedCurrency = useState('selectedCurrency');
 const {t} = useI18n()
+const emailRegex = /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/;
+const emailForm = ref()
+const popSnackBarErrorMessage = ref(false)
 
+const rules = {
+  email: value => (!!value && emailRegex.test(String(value))) || t('textFieldsMessages.email'),
+  notEmpty: value => !!value || t('textFieldsMessages.requiredRule')
+}
 const {name} = useDisplay()
 
 const screenSize = computed(() => {
@@ -574,12 +640,12 @@ const screenSize = computed(() => {
 
 const getClientOrders = (async () => {
     const response = await orderService.getClientOrders(selectedCurrency.value);
-    console.log(response)
     if(response.length > 0){
         clientOrders.value = response
     }else{
         clientOrders.value = []
     }
+    console.log(clientOrders.value)
 })
 
 const dimensionsForImage = computed(() => {
@@ -602,6 +668,187 @@ const checkProductType = ((type) => {
 
 const getFirstImageFromSet = ((productsInSet) => {
     return productsInSet.find(p => p.culoareSelectata.imaginiProdusDto.length > 0)?.culoareSelectata.imaginiProdusDto[0].presignedUrl;
+})
+
+const openEmailDialog = ((email) => {
+    openSendingBillOnEmailDialog.value = true
+    emailForBill.value = email
+})
+
+const closeBillDialog = (() => {
+    openSendingBillOnEmailDialog.value = false
+    emailForBill.value = ''
+})
+
+const visualizeBill = (async (orderId,orderBillNumber) => {
+    Swal.fire({
+        title: 'Wait...',
+        text: '',
+        allowOutsideClick: false,
+        didOpen: () => {
+            Swal.showLoading();
+        }
+    });
+
+    if(selectedCurrency.value === 'RON'){
+        if(orderBillNumber === null || orderBillNumber.numar_ro === null || orderBillNumber.numar_ro === undefined || orderBillNumber.numar_ro === ''){
+            Swal.close()
+            Swal.fire({
+                title: `${t('sweetAlert2.Attention')}`,
+                text: `${t('orderHistory.billNotGeneratedYet')}`,
+                icon:'warning'
+            });
+            openSendingBillOnEmailDialog.value = false;
+            return
+        }
+    }else {
+        if(orderBillNumber === null || orderBillNumber.numar_en === null || orderBillNumber.numar_en === undefined || orderBillNumber.numar_en === ''){
+            Swal.close()
+            Swal.fire({
+                title: `${t('sweetAlert2.Attention')}`,
+                text: `${t('orderHistory.billNotGeneratedYet')}`,
+                icon:'warning'
+            });
+            openSendingBillOnEmailDialog.value = false;
+            return
+        }
+    }
+
+    const response = await userService.visualizeBill(orderId,selectedCurrency.value)
+
+    Swal.close()
+    if(response.status === 200){
+        const blob = new Blob([response.message], { type: 'application/pdf' });
+        
+        const url = window.URL.createObjectURL(blob);
+    
+        const link = document.createElement('a');
+        link.href = url;
+        const currentDate = new Date()
+        const formattedDate = currentDate.toISOString().split('T')[0];
+        link.setAttribute('download', `factura_${formattedDate}_orderId_${orderId}`);
+    
+        document.body.appendChild(link);
+        link.click();
+    
+        link.remove();
+        window.URL.revokeObjectURL(url);
+        Swal.fire({
+            title: `${t('sweetAlert2.Attention')}`,
+            text: `${t('orderHistory.billDownloadedSuccefully')}`,
+            icon:'success',
+            timer: 3000,
+        });
+    }else if(response.status === 404){
+        Swal.fire({
+            title: `${t('sweetAlert2.Attention')}`,
+            text: `${t('orderHistory.billServiceNotConfigured')}`,
+            icon:'warning'
+        });
+    }else if(response.status === 400){
+        Swal.fire({
+            title: `${t('sweetAlert2.Attention')}`,
+            text: `${t('orderHistory.orderNotFound')}`,
+            icon:'warning'
+        });
+    }else if(response.status === 500){
+        Swal.fire({
+            title:`${t('sweetAlert2.Error')}`,
+            text: '500 - Internal Server Error',
+            icon:'error'
+        });
+    }
+    return
+
+
+})
+
+const sendBillOnEmail = (async (orderIdParam , orderBillNumber , validate) => {
+    try{
+    Swal.fire({
+        title: 'Wait...',
+        text: '',
+        allowOutsideClick: false,
+        didOpen: () => {
+            Swal.showLoading();
+        }
+    });
+
+    if(selectedCurrency.value === 'RON'){
+        if(orderBillNumber === null || orderBillNumber.numar_ro === null || orderBillNumber.numar_ro === undefined || orderBillNumber.numar_ro === ''){
+            Swal.close()
+            Swal.fire({
+                title: `${t('sweetAlert2.Attention')}`,
+                text: `${t('orderHistory.billNotGeneratedYet')}`,
+                icon:'warning',
+                timer: 3000,
+            });
+            openSendingBillOnEmailDialog.value = false;
+            return
+        }
+    }else {
+        if(orderBillNumber === null || orderBillNumber.numar_en === null || orderBillNumber.numar_en === undefined || orderBillNumber.numar_en === ''){
+            Swal.close()
+            Swal.fire({
+                title: `${t('sweetAlert2.Attention')}`,
+                text: `${t('orderHistory.billNotGeneratedYet')}`,
+                icon:'warning'
+            });
+            openSendingBillOnEmailDialog.value = false;
+            return
+        }
+    }
+
+
+    const {valid} = await validate()
+   
+
+    if(!valid){
+       popSnackBarErrorMessage.value = true
+       Swal.close()
+       return
+    }
+
+    const sendBillOnEmailObj = {
+        currency : selectedCurrency.value,
+        email: emailForBill.value,
+        orderId: orderIdParam
+    }
+
+    const response = await userService.sendBillOnEmail(sendBillOnEmailObj)
+
+    Swal.close()
+    if(response.status === 200){
+        Swal.fire({
+            title: `${t('sweetAlert2.Attention')}`,
+            text: `${t('orderHistory.billSentSuccefully')}`,
+            icon:'success'
+        });
+    }else if(response.status === 404){
+        Swal.fire({
+            title: `${t('sweetAlert2.Attention')}`,
+            text: `${t('orderHistory.billServiceNotConfigured')}`,
+            icon:'warning'
+        });
+    }else if(response.status === 400){
+        Swal.fire({
+            title: `${t('sweetAlert2.Attention')}`,
+            text: `${t('orderHistory.orderNotFound')}`,
+            icon:'warning'
+        });
+    }else if(response.status === 500){
+        Swal.fire({
+            title: `${t('sweetAlert2.Error')}`,
+            text: '500 - Internal Server Error',
+            icon:'error'
+        });
+    }
+    openSendingBillOnEmailDialog.value = false;
+    return
+}catch(error){
+    Swal.close()
+    console.log(error)
+}
 })
 
 onMounted(async () => {
@@ -636,5 +883,9 @@ onMounted(async () => {
   z-index: 1;
   max-width: 100%;
   width: 100%;
+}
+
+.swal2-container {
+  z-index: 10000000 !important;
 }
 </style>

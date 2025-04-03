@@ -66,7 +66,7 @@ useHead({
   keywords : "Contact Us, Get in Touch, Customer Support, Reach Us, Send a Message, Feedback Form, Email Support, Phone Number, Address, Contact Form, Chat with Us, Frequently Asked Questions, Submit a Request, Online Assistance, Business Hours, Contact Page Support, Talk to Our Team, 24/7 Customer Service, Write to Us, Online Contact, Customer Helpline, Contact for Queries, Request Callback, Instant Help, How to Reach Us, Help Center, Contact Details, Speak to a Representative, Send Feedback, Support Email Address, Reach Out Online, Contact via Chat, Customer Queries Form, Contactați-ne, Ia legătura cu noi, Suport clienți, Trimite un mesaj, Formular de contact, Asistență clienți, Număr de telefon, Adresă, Formular de feedback, Chat cu noi, Întrebări frecvente, Program de lucru, Suport online, Trimitere cerere, Asistență rapidă, Pagina de contact, Scrie-ne un mesaj, Echipa noastră de suport, Serviciu clienți 24/7, Cere ajutor, Suport tehnic, Cum să ne contactați, Apel de asistență, Solicită un răspuns, Asistență imediată, Cum ne puteți găsi, Centru de ajutor, Detalii de contact, Vorbește cu un consultant, Trimite un feedback, Suport prin e-mail, Accesează asistența, Cerere de suport clienți",
   layout: 'default',
   siteName : 'Texx - Contact',
-  canonicalUrl : 'http://localhost:3000/contact',
+  canonicalUrl : process.env.NODE_ENV ? 'http://localhost:3000/contact' : 'https://texxshop.ro/contact',
   ogType : 'website',
   ogDescription : 'Suport 24/7 cu clientii nostrii. Contacti-ne daca aveti vreo problema',
   description : 'Contact Texx - Home decor. Suport valabil oricand. Nu ezitati sa ne contacta-ti daca aveti vreo problema. '

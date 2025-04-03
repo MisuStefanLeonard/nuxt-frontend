@@ -1,17 +1,30 @@
 <template>
   <div fluid class="m-auto ">
     <div id="image" class=" text-center">
-      <v-alert color="red-darken-4" variant="flat">
+      <v-alert density="compact" color="red-darken-4" variant="flat" v-if="showFreeDeliveryBanner">
         <span class="font-weight-thin h5"> <v-icon class="mx-2"  :icon="mdiTruck" size="24"></v-icon>{{$t('homePage.orderOver1')}} {{ getMinOrderPriceForFreeDelivery }} {{ selectedCurrency === 'RON' ? 'RON' : 'EUR'  }} {{$t('homePage.orderOver2')}}</span>
       </v-alert>
-      
-      <v-carousel height="auto" hide-delimiters show-arrows="hover">
-        <v-carousel-item v-for="img in carouselImgs"
+      <v-carousel height="auto" hide-delimiters show-arrows="hover" >
+        <v-carousel-item v-for="img in carouselImgs" 
           :key="img"
           :src="img"
-         
+          :aspect-ratio="height !== true ? 10 / 4 : 4/ 3"
           cover
-        ></v-carousel-item>
+        >
+        <div class="d-flex justify-center align-center fill-height text-black text-h6 font-weight-thin elevation-24">
+          <v-row>
+            <v-col cols="12" v-if="height !== true || name === 'sm'">
+             {{ $t('homePage.text20') }}
+            </v-col>
+            <v-col cols="12">
+              <v-btn color="green"  variant="flat" class="rounded-xl" @click="navigateTo(localePath('/shop'))">
+                <span class="text-white">{{ $t('homePage.text19') }} <v-icon  :icon="mdiShopping"></v-icon></span>
+              </v-btn>
+            </v-col>
+          </v-row>
+        
+        </div>
+        </v-carousel-item>
       </v-carousel>
     </div>
     <section class="row elevation-24 p-4  rounded bg-grey-lighten-5" id="welcome">
@@ -404,7 +417,7 @@
 import productService from '~/services/Products';
 import userService from '~/services/User';
 import { useDisplay } from 'vuetify';
-import { mdiArrowRight, mdiCardAccountMail, mdiFrequentlyAskedQuestions, mdiShoppingOutline, mdiTruck } from '@mdi/js';
+import { mdiArrowRight, mdiCardAccountMail, mdiFrequentlyAskedQuestions, mdiShopping, mdiShoppingOutline, mdiTruck } from '@mdi/js';
 
 definePageMeta({
   title : 'Acasa',
@@ -412,7 +425,7 @@ definePageMeta({
   middleware : 'locale',
   keywords: "cuverturi de pat, cuverturi moderne, cuverturi premium, cuverturi pentru dormitor, cuverturi pentru pat matrimonial, cuverturi pentru pat de o persoană, cuverturi pentru copii, cuverturi pentru pătuțuri de bebeluși, cuverturi colorate pentru copii, cuverturi cu personaje animate, cuverturi termoizolante, cuverturi matlasate, cuverturi din bumbac satinat, cuverturi pentru bucătărie, cuverturi decorative pentru canapea, cuverturi rezistente la pete, cuverturi impermeabile, cuverturi premium pentru sufragerie, cuverturi din catifea, cuverturi groase pentru iarnă, cuverturi răcoroase pentru vară, cuverturi din microfibră, cuverturi cu textură moale, cuverturi din lână, cuverturi pentru protecție mobilier, cuverturi pentru hoteluri, cuverturi personalizate, cuverturi anti-acarieni, cuverturi confortabile, cuverturi cu broderie, cuverturi handmade, draperii blackout, draperii elegante, draperii pentru living, draperii moderne pentru sufragerie, draperii pentru dormitor, draperii termoizolante, draperii din in, draperii cu dublu strat, draperii pentru copii, draperii cu imprimeuri jucăușe, draperii pentru camera copiilor, draperii cu personaje Disney, draperii pentru pătuțuri, draperii pentru bucătărie, draperii scurte pentru bucătărie, draperii anti-mucegai pentru bucătărie, draperii rustice pentru bucătărie, draperii izolante fonic, draperii anti-reflexie, draperii cu efect de întunecare totală, draperii cu protecție UV, draperii pentru birou, draperii rezistente la apă, draperii elegante din mătase, perdele albe, perdele vaporoase, perdele pentru dormitor, perdele scurte, perdele moderne, perdele transparente, perdele pentru copii, perdele colorate pentru camera copiilor, perdele cu imprimeuri pentru copii, perdele blackout pentru camera copiilor, perdele pentru bucătărie, perdele scurte pentru bucătărie, perdele cu modele florale pentru bucătărie, perdele rustice pentru bucătărie, perdele anti-mucegai pentru bucătărie, perdele termoizolante pentru bucătărie, perdele decorative pentru bucătărie, perdele filtrante, perdele care lasă lumina să pătrundă, perdele cu efect de aerisire, perdele care oferă intimitate, perdele cu strat protector, perdele anti-alergice, perdele cu strat dublu, perdele pentru izolare termică, perne decorative, perne confortabile, perne ortopedice, perne hipoalergenice, perne din puf de gâscă, perne cu umplutură de bambus, perne cu spumă cu memorie, perne pentru bucătărie, perne pentru scaune de bucătărie, perne cu efect relaxant, perne cu infuzie de lavandă, perne pentru un somn liniștit, perne pentru gât și coloană, perne pentru gravide, perne pentru copii mici, seturi de lenjerii de pat, seturi de cuverturi și perdele, seturi de lenjerii premium, seturi de perne și pături, seturi de draperii și perdele, seturi complete pentru dormitor, seturi textile pentru camera copiilor, seturi de lenjerii pentru pătuțuri de bebeluși, seturi de draperii pentru copii, seturi de perdele și draperii pentru bucătărie, seturi de textile pentru casă, textile premium online, cumpără cuverturi online, reduceri la textile pentru casă, promoții la perdele și draperii, livrare rapidă, decor interior, amenajare locuință, textile pentru dormitor, textile pentru sufragerie, textile pentru camere de copii, textile pentru bucătărie, textile pentru hol, textile de lux pentru casă, textile pentru un somn odihnitor, textile care echilibrează temperatura camerei, textile pentru un aer mai curat, textile pentru reducerea umezelii, textile care împiedică formarea mucegaiului, textile pentru reducerea zgomotului, textile care mențin răcoarea vara, textile pentru confort maxim, textile care îmbunătățesc calitatea somnului, textile pentru protecția pielii sensibile, întuneric în cameră, respirație mai bună în cameră, aer proaspăt în dormitor, izolare fonică pentru un somn liniștit, bedspreads, modern bedspreads, premium bedspreads, bedroom bedspreads, double bed bedspreads, single bed bedspreads, children bedspreads, baby crib bedspreads, colorful bedspreads for kids, animated character bedspreads, thermal insulation bedspreads, quilted bedspreads, satin cotton bedspreads, kitchen bedspreads, decorative bedspreads for sofas, stain-resistant bedspreads, waterproof bedspreads, premium bedspreads for living rooms, velvet bedspreads, thick winter bedspreads, cooling summer bedspreads, microfiber bedspreads, soft-textured bedspreads, wool bedspreads, furniture protection bedspreads, hotel-quality bedspreads, custom-made bedspreads, anti-mite bedspreads, comfortable bedspreads, embroidered bedspreads, handmade bedspreads, blackout curtains, elegant curtains, living room curtains, modern living room curtains, bedroom curtains, thermal insulating curtains, linen curtains, double-layer curtains, children curtains, playful print curtains, kids room curtains, Disney character curtains, crib curtains, kitchen curtains, short kitchen curtains, anti-mold kitchen curtains, rustic kitchen curtains, soundproof curtains, anti-reflection curtains, total blackout curtains, UV protection curtains, office curtains, water-resistant curtains, elegant silk curtains, white curtains, airy curtains, privacy-enhancing curtains, protective layer curtains, anti-allergy curtains, double-layer curtains, thermal insulation curtains, despre noi magazin textile casă, firma producătoare de perdele și draperii, despre brandul nostru de textile casă, cine suntem și ce oferim, despre compania noastră de cuverturi și perne, experiență în producția de textile pentru casă, valori și misiune în industria textilelor, producător perdele și draperii de calitate, istoria companiei noastre, cumpără perdele direct de la producător, companie specializată în textile premium, despre noi cuverturi și perne de lux, perdele și draperii fabricate cu pasiune, calitate și tradiție în textile pentru casă, fabricăm cuverturi și perne de înaltă calitate, lideri în industria textilelor de casă, despre noi perdele și draperii personalizate, angajamentul nostru față de calitate, producător românesc de perdele și draperii, despre brandul nostru premium de textile, echipa noastră și viziunea brandului, inovație și design în textile pentru casă, despre noi expertiză în textile decorative, descoperă istoria brandului nostru, textile casă create cu atenție la detalii, companie de încredere pentru perdele și cuverturi, perne și cuverturi pentru un confort suprem, despre noi magazin de perdele și perne online, cine suntem și de ce ne aleg clienții, firma noastră specialiști în textile pentru casă, tradiție și calitate în perdele și draperii, de ce să alegi perdelele noastre?, despre noi experiență de peste X ani, premium home textiles, about us home textiles company, curtains and drapes manufacturer, about our home textiles brand, who we are and what we offer, about our bedding and pillow company, experience in home textiles production, values and mission in the textile industry, quality curtains and drapes manufacturer, our company history, buy curtains directly from the manufacturer, specialized home textiles company, about us premium bedding and pillows, curtains and drapes made with passion, tradition and quality in home textiles, we manufacture high-quality bedding and pillows, leaders in the home textile industry, about us custom-made curtains and drapes, our commitment to quality, Romanian manufacturer of curtains and drapes, about our premium home textile brand, our team and brand vision, innovation and design in home textiles, about us expertise in decorative textiles, discover the story behind our brand, home textiles crafted with attention to detail, trusted company for curtains and bedding, pillows and bedspreads for ultimate comfort, about us online store for curtains and pillows, who we are and why customers choose us, our company home textiles specialists, tradition and quality in curtains and drapes, why choose our curtains?, about us over X years of experience, premium home textiles directly from the manufacturer, about us our mission and values, we collaborate with top home textile producers, what makes us different in the home textile industry, our passion for design and comfort, personalized services for curtains and drapes, we manufacture sustainable and elegant home textiles",
   siteName : 'Texx - Home decor',
-  canonicalUrl : 'http://localhost:3000/home',
+  canonicalUrl : process.env.NODE_ENV === 'development' ? 'http://localhost:3000/home' : 'https://texxshop.ro/home',
   ogType : 'website',
   ogDescription : 'La noi puteti gasii cuverturi si perdele de inalta calitate. Va asteptam !!',
   description : 'Cuverturi si pedele de inalta calitate. Livrare acasa. Livrare la comanda de peste 300 RON. Livrare in toata tara! '
@@ -438,6 +451,7 @@ const height = computed(() => {
       default : return 3
     }
 })
+const showFreeDeliveryBanner = ref(true)
 const generalSettings = ref({})
 const limitedEditionProductsRef = ref([]);
 const activeSlideLimitedEditionProducts = ref(0)
@@ -475,9 +489,7 @@ const getLimitedEditionProducts = (async() => {
 })
 
 const getNewProducts = (async () => {
-  console.log(selectedCurrency.value)
   const response = await productService.getNewProductsInShop(selectedCurrency.value)
-  console.log(response)
   if(response && response.length > 0){
     newProductsRef.value = response
   }
@@ -502,20 +514,27 @@ const findFirstColorWithImage = ((product) => {
 
 const getGeneralSettings = (async () => {
   // const response = await adminService.getGeneralSettings()
-  const response = await userService.getGeneralSettingsData()
-
+  const response = await userService.getGeneralSettingsData("pret_comanda_minima" , selectedCurrency.value)
   generalSettings.value = response;
+  if(generalSettings.value.value === null 
+    || generalSettings.value.value === ""
+    || generalSettings.value.value === undefined){
+      showFreeDeliveryBanner.value = false
+  }
+
 })
 
 
 const getMinOrderPriceForFreeDelivery = computed(() => {
   if(generalSettings){
-    return generalSettings.value['pret_comanda_minima']
+    showFreeDeliveryBanner.value = true
+    if(selectedCurrency.value === 'RON')
+      return generalSettings.value.value
+    return generalSettings.value.value / 5
   }
-  return '500'
+  
 })
 
-console.log('NODE ENV FROM .ENV : ' , process.env.NODE_ENV )
 
 onMounted(async () => {
  await getLimitedEditionProducts()

@@ -49,7 +49,7 @@ const props = defineProps({
     emailDto: String,
     productCode : String,
     encodedIdAccountDto: String,
-    accountData: Object,
+    // accountData: Object,
     type: String
 })
 
@@ -66,19 +66,19 @@ const navDataClient = computed(() => [
         title: 'Date personale' ,
         icon:mdiCardAccountDetailsOutline , 
         subtitle:'',
-        route: `/admin/client/${props.encodedIdAccountDto}/data`
+        route: `/admin/client/${props.encodedIdAccountDto}/general?personalData=1`
     },
     {
         title: 'Adrese' ,
         icon:mdiMapMarkerOutline , 
         subtitle:'',
-        route: `/admin/client/${props.encodedIdAccountDto}/addresses`
+        route: `/admin/client/${props.encodedIdAccountDto}/general?addresses=1`
     },
     {
         title: 'Comenzi' ,
         icon:mdiCartOutline , 
         subtitle:'',
-        route: `/admin/client/${props.encodedIdAccountDto}/orders`
+        route: `/admin/client/${props.encodedIdAccountDto}/general?orders=1`
     },
   ])
 

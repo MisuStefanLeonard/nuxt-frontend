@@ -44,7 +44,7 @@ definePageMeta({
   keywords:'profil,profile,dataa,personal data,date personale',
   middleware: 'auth',
   siteName : 'Texx - Profil',
-  canonicalUrl : 'http://localhost:3000/user/profile',
+  canonicalUrl : process.env.NODE_ENV ? 'http://localhost:3000/user/profile' : 'https://texxshop.ro/user/profile',
   ogType : 'website',
   ogDescription : 'Datele profilului dumnevoastra pe Texx',
   description : 'Modifica si vizualizeaza-ti datele pe Texx'

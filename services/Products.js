@@ -44,7 +44,6 @@ class ProductsService extends ApiService{
      */
     
     getSetsForUsers(pageNumber , productTypes , productPrice ,productName ,currency){
-       console.log('in products.js',currency)
         const params = {
             productTypes,
             productPrice,

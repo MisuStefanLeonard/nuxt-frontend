@@ -17,6 +17,7 @@ export default defineNuxtConfig({
     ],
     sitemap : 'https://texxshop.ro/sitemap.xml'
   },
+
   modules: [
     '@pinia/nuxt',
     'pinia-plugin-persistedstate/nuxt',
@@ -84,7 +85,7 @@ export default defineNuxtConfig({
     lazy: true,
     langDir : "../locales",
     strategy : "prefix_except_default",
-    baseUrl : 'http://localhost:3000',
+    baseUrl : process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://texxshop.ro',
     detectBrowserLanguage: {
       useCookie: true,
       cookieKey: 'i18n_redirected',
@@ -125,7 +126,8 @@ export default defineNuxtConfig({
     '~/plugins/SweetAlert.js',
     '~/plugins/vuetify.js',
     '~/plugins/emitter.js',
-    '~/plugins/google.recaptcha.client.js'
+    '~/plugins/google.recaptcha.client.js',
+    '~/plugins/apexChart.client.js'
   ],
   css: [
     'bootstrap/dist/css/bootstrap.min.css',

@@ -1212,7 +1212,7 @@ definePageMeta({
   layout: 'default',
   keywords:'finalizare cumparaturi , plata , finish shopping , payment',
   siteName : 'Texx - Finalizare cumparaturi',
-  canonicalUrl : 'http://localhost:3000/user/checkout',
+  canonicalUrl : process.env.NODE_ENV === 'development' ?  'http://localhost:3000/user/checkout' : 'https://texxshop.ro/user/checkout',
   ogType : 'website',
   middleware: ['locale'],
   ogDescription : 'Finalizare cumparaturi pe Texx',
@@ -1230,6 +1230,8 @@ const userData = ref({
   nrTelefon: '',
   email: '',
 })
+
+
 
 const deliveryUserAddress = ref({
   aliasDto: '',
@@ -1305,7 +1307,6 @@ const tableHeaders = ref([
     t('checkout.tableHeaders.cost'),
     t('checkout.tableHeaders.select')
 ])
-
 
 
 const tableRows = ref([
@@ -1765,9 +1766,7 @@ const syncCartOnCheckout = ( async () => {
     if(response === -2){
         fireAlarm('top-end' , 'error' , "Error" ,t('checkout.fetchError') , 4000);
         dialogControl.value = true;
-        // setTimeout(() => {
-        //     navigateTo(localePath('/cart'));
-        // }, 4000);
+    
     }else if(response === -4){
         fireAlarm('top-end' , 'error' , "Error" ,t('checkout.emptyCart') , 4000);
         setTimeout(() => {
@@ -1809,9 +1808,13 @@ function fireAlarm(position , icon , title ,text, timer){
 }
 
 const getMinOrderPrice = (async () => {
-    const response = await userService.getGeneralSettingsData();
+    const response = await userService.getGeneralSettingsData("pret_comanda_minima");
     generalSettings.value = response
-    console.log(generalSettings.value)
+    if(generalSettings.value.pret_comanda_minima === null 
+    || generalSettings.value.pret_comanda_minima === ""
+    || generalSettings.value.pret_comanda_minima === undefined){
+        generalSettings.value.pret_comanda_minima = 10000000
+    }
 })
 
 
