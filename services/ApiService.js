@@ -91,17 +91,17 @@ class ApiService {
     }
 
     post(url, data, returnData = false, isAnonymous = false) {
-        const options = isAnonymous ? {} : { withCredentials: true }; // Conditionally set credentials
+        const options = isAnonymous ? {} : { withCredentials: true }; 
         return this.apiRequest("POST", url, data, options, returnData);
     }
 
     put(url, data, returnData = false, isAnonymous = false) {
-        const options = isAnonymous ? {} : { withCredentials: true }; // Conditionally set credentials
+        const options = isAnonymous ? {} : { withCredentials: true }; 
         return this.apiRequest("PUT", url, data, options, returnData);
     }
 
     delete(url, data = null, returnData = false, isAnonymous = false) {
-        const options = isAnonymous ? {} : { withCredentials: true }; // Conditionally set credentials
+        const options = isAnonymous ? {} : { withCredentials: true };
         return this.apiRequest("DELETE", url, data, options, returnData);
     }
 }

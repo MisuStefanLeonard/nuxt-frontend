@@ -27,7 +27,7 @@
     layout: 'default',
     keywords:'log out , delogare',
     siteName : 'Texx - Delogare',
-    canonicalUrl : 'http://localhost:3000/user/logout',
+    // canonicalUrl : 'http://localhost:3000/user/logout',
     ogType : 'website',
     ogDescription : 'Delogare de pe Texx',
     description : 'Delogare de pe Texx'

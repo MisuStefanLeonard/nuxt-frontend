@@ -155,13 +155,32 @@ class UserService extends ApiService {
     return this.post('sendContactEmail' , formData , false , false)
   }
 
-
   /**
    * 
    * @returns {Dictionary} [The data with the general app settings stored in db]
    */
-  getGeneralSettingsData(){
-    return this.get('settings' , true , false , false);
+  getGeneralSettingsData(setting){
+    return this.get(`settings/${setting}` , true , false , false);
+  }
+
+  /**
+   * 
+   * @param {integer} orderId [The current order id] 
+   * @returns {File} [The file bytes to process for the blob , .pdf extension!!!]
+   */
+
+  visualizeBill(orderId , currency){
+    return this.get(`visualizeBill/${orderId}/${currency}`, null , true , false)
+  }
+
+  /**
+   * 
+   * @param {Object} bodyReq [The body data that contains info about currency,email and orderId]
+   * @returns 
+   */
+
+  sendBillOnEmail(bodyReq ){
+    return this.post('sendBillOnEmail' , bodyReq , null, false)
   }
   
 }

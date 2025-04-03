@@ -140,7 +140,9 @@
       "delete" : "Delete",
       "modify" : "Modify",
       "addAddress" : "Add address",
-      "sendForm" : "Send form" 
+      "sendForm" : "Send form" ,
+      "send" : "Send",
+      "close" : "Close"
     },
     "forgotPassword": {
       "title": "Reset Password",
@@ -454,6 +456,9 @@
       "text16": "Still undecided?",
       "text17" : "Contact us",
       "text18" : "Do you have another question?",
+      "text19" : "Shop",
+      "text20" : "Douvets , drapes and curtains for your home",
+
       "freqQuestions": "Frequently Asked Questions",
       "questions": {
           "Q1": "How long does delivery take?",
@@ -480,6 +485,14 @@
         "orderDeliveryAddress": "Delivery Address",
         "orderBillingAddress": "Billing Address",
         "noOrderPlaced": "You have no orders placed",
+        "sendBillOnEmail" : "SEND BILL ON EMAIL",
+        "visualizeBill" : "VISUALIZE BILL",
+        "orderOptionsTitle" : "Order options",
+        "billServiceNotConfigured" : "Service not available yet. Contact admin through contact form",
+        "billNotGeneratedYet" : "The admin has not yet generated the bill. Contact admin through contact form",
+        "billDownloadedSuccefully" : "Bill has been succesfully downloaded ",
+        "billSentSuccefully" : "Bill has been succefully sent on e-mail",
+        "orderNotFound" : "Order not found",
         "orderPaymentType": "Payment Type"
     },
     "orderConfirmationPage": {

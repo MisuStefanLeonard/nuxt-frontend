@@ -23,7 +23,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
   if (!userStore.isAuthenticated) {
     const logoutMessage = $i18n.t('messages.loginRequired')
     userStore.showSnackbar(logoutMessage);
-    return navigateTo(localePath('/user/login'));
+    return navigateTo(localePath('/user/logout'));
     
   }
 });

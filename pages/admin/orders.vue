@@ -103,15 +103,16 @@ const getOrders = (async () => {
     const response = await adminService.getMainOrders()
     if(response.length != 0){
         orders.value = response
-        console.log(orders.value)
     }
 })
 
 function seeOrder(encodedIdComanda , encodedIdCont){
     navigateTo({
-        path: `/admin/client/${encodedIdCont}/data`,
+        path: `/admin/client/${encodedIdCont}/general`,
         query: {
-            order: encodedIdComanda
+            // order: encodedIdComanda,
+            encodedOrderId: encodedIdComanda,
+            encodedAccountId : encodedIdCont,
         }
     })
 }

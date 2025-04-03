@@ -130,20 +130,22 @@
                                     </v-text-field>
                                     <v-expansion-panels>
                                         <v-expansion-panel :title="`${$t('shop.productType')}`" class="p-2 ">
-                                            <v-list>
-                                                <v-list-item>
-                                                    <v-checkbox
-                                                        v-for="(option, idx) in filterOptions.filterProductTypesJson"
-                                                        :key="idx"
-                                                        density="compact"
-                                                        v-model="productTypes"
-                                                        :label="selectedCurrency === 'RON' ? option.tip_ro : option.tip_en"
-                                                        :value="option.tip_ro"
-                                                        color="primary"
-                                                        
-                                                    ></v-checkbox>
-                                                </v-list-item>
-                                            </v-list>
+                                            <v-expansion-panel-text>
+                                                <v-list>
+                                                    <v-list-item>
+                                                        <v-checkbox
+                                                            v-for="(option, idx) in filterOptions.filterProductTypesJson"
+                                                            :key="idx"
+                                                            density="compact"
+                                                            v-model="productTypes"
+                                                            :label="selectedCurrency === 'RON' ? option.tip_ro : option.tip_en"
+                                                            :value="option.tip_ro"
+                                                            color="primary"
+                                                            
+                                                        ></v-checkbox>
+                                                    </v-list-item>
+                                                </v-list>
+                                            </v-expansion-panel-text>
                                         </v-expansion-panel>
                                         <v-divider></v-divider>
                                         <v-expansion-panel :title="$t('shop.filterPrices')" class="p-2">
@@ -470,7 +472,7 @@ definePageMeta({
   keywords: "seturi textile pentru casă, seturi de cuverturi și perdele, seturi de lenjerii de pat, seturi de draperii și perdele, seturi de perne și pături, seturi de textile pentru dormitor, seturi de textile pentru sufragerie, seturi de textile pentru camera copiilor, seturi pentru decor interior, seturi de textile premium, seturi de lenjerii de lux, seturi de perdele și draperii, seturi de perdele și cuverturi, seturi de draperii elegante, seturi de lenjerii și perne, seturi de perne și pleduri, seturi de draperii blackout, seturi de perdele pentru bucătărie, seturi de perdele rustice, seturi de perdele moderne, seturi de perdele personalizate, seturi de perdele cu imprimeuri, seturi de draperii din in, seturi de textile pentru copii, seturi de perdele pentru camera copiilor, seturi de lenjerii pentru pătuțuri, seturi de textile pentru hoteluri, seturi de lenjerii premium, seturi de cuverturi matlasate, seturi de cuverturi termoizolante, seturi de cuverturi și perne, seturi de textile pentru living, seturi de perdele și accesorii, seturi de draperii și perne, seturi de perdele pentru dormitor, seturi de textile pentru casă online, seturi de draperii groase, seturi de perdele vaporoase, seturi de textile pentru casă moderne, home textile sets, bedspread and curtain sets, luxury bedding sets, curtain and drape sets, pillow and blanket sets, bedroom textile sets, living room textile sets, children s textile sets, home decor textile sets, premium textile sets, luxury bedding collections, curtain and bedspread sets, elegant drapery sets, linen and pillow sets, throw pillow and blanket sets, blackout curtain sets, kitchen curtain sets, rustic curtain sets, modern curtain sets, custom curtain sets, printed curtain sets, linen drapery sets, children s room curtain sets, crib bedding sets, hotel textile sets, premium bedding sets, quilted bedspread sets, thermal bedspread sets, bedspread and pillow sets, living room textile bundles, curtain and accessories sets, drapery and pillow sets, bedroom curtain sets, online home textile sets, thick drapery sets, airy curtain sets, modern home textile collections, transport gratis, free delivery, anywhere, everywhere, oriunde in tara",
   middleware : 'locale',
   siteName : 'Texx - Magazin seturi',
-  canonicalUrl : 'http://localhost:3000/shopSeturi',
+  canonicalUrl : process.env.NODE_ENV ? 'http://localhost:3000/shopSeturi' : 'https://texxshop.ro/shopSeturi',
   ogType : 'product',
   ogDescription : 'Seturi avantajoasa de cuverturi,perdele sau draperii la Texx. Transport gratuit la comenzi de peste 300 RON. Livrare oriunde in tara.',
   description : 'Seturi avantajoasa de cuverturi,perdele sau draperii la Texx. Livrare acasa. Livrare gratis la comanda de peste 300 RON. Livrare in toata tara! '
@@ -523,7 +525,7 @@ const getPaginatedSets = (async (pageNumber,productTypes = null ,priceRange ,pro
       priceRange,productName,
       currency);
 
-    console.log(responseFromPaginatedProducts)
+    console.log('response',responseFromPaginatedProducts)
   if(responseFromPaginatedProducts.shopSets.length !== null || responseFromPaginatedProducts.shopSets.length > 0){
     currentSetsOnPage.value = responseFromPaginatedProducts
   }
@@ -633,7 +635,6 @@ const deleteFilters = () => {
     productTypes.value = [];
     searchSetAfter.value = '';
     rangePrice.value = selectedCurrency.value === "RON" ? [0,2000] : [0,400]
-    console.log(rangePrice.value)
     router.push({ query: {} });
     getPaginatedSets(0, productTypes.value , rangePrice.value,searchSetAfter.value, selectedCurrency.value);
 };

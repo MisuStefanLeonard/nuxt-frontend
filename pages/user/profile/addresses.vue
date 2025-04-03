@@ -204,7 +204,7 @@ definePageMeta({
   layout: 'default',
   keywords:'adrese , addresses , client , user',
   siteName : 'Texx - Adrese',
-  canonicalUrl : 'http://localhost:3000/user/profile/addresses',
+  canonicalUrl : process.env.NODE_ENV === 'development' ? 'http://localhost:3000/user/profile/addresses' : 'https://texxshop.ro/user/profile/addresses',
   ogType : 'website',
   middleware: 'auth',
   ogDescription : 'Adresele dumnevoastra pe Texx',

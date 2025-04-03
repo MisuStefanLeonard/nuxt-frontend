@@ -598,13 +598,48 @@ class AdminService extends ApiService{
      * THE ** END ** OF THE API'S FOR THE DASHBOARD DATA
      */
 
+    /**
+     * 
+     * @param {FormData} formData [Form data with the modified general settings]
+     * @returns {HttpStatusCode} - 200 for succes
+     */
+
     modifyGeneralSettings(formData){
         return this.post('modifyGeneralSettings' , formData , false , false)
     }
+    /**
+     * 
+     * @returns {Dictionary} [A map with the attribute name and it's corresponding value ]
+     */
 
     getGeneralSettings(){
         return this.get('generalSettings' , true , false , false)
     }
+
+    /**
+     * API Method to generate the bill for the current order
+     * @param {integer} orderId [Order id]
+     * @returns {HttpStatusCode} [200 for success]
+     */
+
+    generateBill(orderId, currency){
+        return this.get(`generateBill/${orderId}/${currency}` , null , false , false )
+    }
+
+    /**
+     * API Method to visualize and download the bill for the current order
+     * @param {integer} orderId [Order id]
+     * @returns {HttpStatusCode,PDF File} [200 for success]
+     */
+
+    visualizeBillApi(orderId, currency){
+        return this.get(`bill/${orderId}/${currency}` , null , true , false )
+    }
+
+    cancelBill(orderId, currency){
+        return this.put(`bill/cancel/${orderId}/${currency}` , false , false , false)
+    }
+
 }
 
 export default new AdminService();

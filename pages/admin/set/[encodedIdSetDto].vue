@@ -12,14 +12,14 @@
             </v-container>
             
             <!-- Loop through each product in the set -->
-            <v-container fluid class=" w-100" v-for="product in setToModify.productsOnSet" :key="product.numeProdusDto">
+            <v-container  fluid class=" w-100" v-for="product in setToModify.productsOnSet" :key="product.numeProdusJsonDto.nume_ro">
                 <v-card class="font-weight-light bg-grey-darken-3 my-2 rounded-xl" variant="outlined">
                     <v-card-title class="bg-blue opacity-80">
                         <p class="font-weight-bold">{{ product.codProdusDto }}</p>
                     </v-card-title>
                     <v-divider></v-divider>
                     <v-card-subtitle class="p-2">
-                        <p class="font-weight-bold h6">{{ product.tipProdusDto.toUpperCase() }}</p>
+                        <p class="font-weight-bold h6">{{ product.tipProdusJsonDto.tip_ro.toUpperCase() }}</p>
                     </v-card-subtitle>
                     <v-divider></v-divider>
                     <v-card-text>
@@ -454,14 +454,12 @@ const selectedProduct = ref(null);
 const selectedProductData = ref({
     idProdusDto: 0,
     codProdusDto: '',
-    numeProdusDto: '',
     numeProdusJsonDto : {
         nume_ro : '',
         nume_en : ''
     },
     activInMagazinDto: false,
     pretBazaDto: 0,
-    tipProdusDto: '',
     tipProdusJsonDto : {
         tip_ro : '',
         tip_en : ''
@@ -474,11 +472,10 @@ const selectedProductData = ref({
     temporar: true,
     selectedColors: [],
     selectedDimensions: [],
-    // selectedManopere: [],
     selectedManopere: [],
 });
 
-var setToModify = ref({
+const setToModify = ref({
    descriereSetJsonDto : {
     descriere_en : '',
     descriere_ro : ''
@@ -493,7 +490,7 @@ var setToModify = ref({
    pretSetDto: 0,
    productsOnSet : []
 })
-var originalSet = ref({});
+const originalSet = ref({});
 const generalSetForm = ref(null);
 const productCodes = ref([])
 const seturiNames = ref([])
@@ -605,10 +602,9 @@ function validateSet() {
 
     for (const product of setToModify.value.productsOnSet) {
         // Check if at least one product has a selected color
-        console.log('nume' , product.numeProdusDto , 'culoare' , product.selectedColors)
         if (product.selectedColors.length > 0) {
             hasColor = true;
-            productNameWithError = product.numeProdusDto
+            productNameWithError = product.numeProdusJsonDto.nume_ro
         }else{
             hasColor = false
         }
@@ -619,7 +615,7 @@ function validateSet() {
             (product.tipProdusJsonDto.tip_ro.toLowerCase() === 'perdea' || product.tipProdusJsonDto.tip_ro.toLowerCase() === 'draperie') &&
             (product.selectedManopere.length === 0)
         ) {
-            productNameWithError = product.numeProdusDto
+            productNameWithError =  product.numeProdusJsonDto.nume_ro
             validManopere = false;
         }else{
             validManopere = true;
@@ -632,7 +628,7 @@ function validateSet() {
             product.tipProdusJsonDto.tip_ro.toLowerCase() !== 'draperie' && // Skip draperie
             (product.selectedDimensions.length === 0) // No dimension selected
         ) {
-            productNameWithError = product.numeProdusDto
+            productNameWithError =  product.numeProdusJsonDto.nume_ro
             validDimensions = false;
         }else {
             validDimensions = true;
@@ -757,11 +753,9 @@ const addProductToSet = (async () => {
         fireVAlert(3000 , showSuccesAlert)
         selectedProductData.value.idProdusDto = getSelectedProductData.idProdusDto;
         selectedProductData.value.codProdusDto = getSelectedProductData.codProdusDto;
-        selectedProductData.value.numeProdusDto = getSelectedProductData.numeProdusDto;
         selectedProductData.value.numeProdusJsonDto =  getSelectedProductData.numeProdusJsonDto,
         selectedProductData.value.activInMagazinDto = getSelectedProductData.activInMagazinDto;
         selectedProductData.value.pretBazaDto = getSelectedProductData.pretBazaDto;
-        selectedProductData.value.tipProdusDto = getSelectedProductData.tipProdusDto;
         selectedProductData.value.tipProdusJsonDto =  getSelectedProductData.tipProdusJsonDto,
         selectedProductData.value.productOptions = getSelectedProductData.productOptions
         selectedProductData.value.temporar = false;
@@ -788,11 +782,9 @@ function saveProductToSet(){
     const newProductToSet = {
         idProdusDto : selectedProductData.value.idProdusDto,
         codProdusDto : selectedProductData.value.codProdusDto,
-        numeProdusDto : selectedProductData.value.numeProdusDto,
         numeProdusJsonDto : selectedProductData.value.numeProdusJsonDto,
         activInMagazinDto : selectedProductData.value.activInMagazinDto,
         pretBazaDto : selectedProductData.value.pretBazaDto,
-        tipProdusDto : selectedProductData.value.tipProdusDto,
         tipProdusJsonDto : selectedProductData.value.tipProdusJsonDto,
         productOptions : selectedProductData.value.productOptions,
         temporar: selectedProductData.value.temporar,
@@ -826,7 +818,7 @@ async function saveSetModifications(){
                 if(responseFromUpdatingSet === 1){
                     fireAlarm('success' , 'Succes!' , 'Modificat cu succes' , null);
                     setToModify.value = {...setToModify.value};
-                    originalSet = JSON.parse(JSON.stringify(setToModify.value));
+                    originalSet.value = JSON.parse(JSON.stringify(setToModify.value));
                     return
                 }else if(responseFromUpdatingSet === -3){
                     fireAlarm('error' , "Atentie" , "Cineva cumpara acest set. Va rugam asteptati" , null)
@@ -877,11 +869,12 @@ async function getCurrentSetPageById(){
         formData.value.descriere_en = setToModify.value.descriereSetJsonDto.descriere_en || '';
         formData.value.pretSetDto = setToModify.value.pretSetDto || 0;
         formData.value.pretRedusSetDto = setToModify.value.pretRedusSetDto || 0;
-        originalSet = JSON.parse(JSON.stringify(setToModify.value));
+        originalSet.value = JSON.parse(JSON.stringify(setToModify.value));
     }
 }
 
 const getProductCodes = (async () => {
+    
     fireAlarm('info' , 'Loading...' , 'Asteptati..' , true)
     const getCodes = await adminService.getProductCodes()
     if(getCodes.length === 0){
@@ -891,9 +884,11 @@ const getProductCodes = (async () => {
         swal.close()
         productCodes.value = getCodes
     }
+
 })
 
 const getSeturiNames = (async () => {
+  
     const getSeturiNames = await adminService.getSeturiNames()
     if(getSeturiNames.length !== 0){
         const seturi = getSeturiNames

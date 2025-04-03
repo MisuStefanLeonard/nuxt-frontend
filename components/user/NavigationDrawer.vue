@@ -1,5 +1,14 @@
 <template>
   <v-navigation-drawer v-model="internalSidebar" temporary  style="position:fixed; top:0; left:0; overflow-y:scroll;">
+    <div class="text-center">
+      <NuxtImg
+       class="text-center"
+        src="/LogoTexx.png"
+        width="75"
+        height="75">
+
+        </NuxtImg>
+    </div>
     <v-list class="text-left d-flex flex-column fill-height">
       <!-- Menu items -->
       <v-list-item v-for="item in menuItems" :key="item.title" @click="goTo(item.path)">
