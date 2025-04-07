@@ -720,6 +720,7 @@ import productService from '~/services/Products'
 definePageMeta({
   title : 'Texx - Magazin',
   layout: 'default',
+  middleware : ['locale'],
   keywords: "cuverturi de pat, cuverturi premium, cuverturi moderne, cuverturi matrimoniale, cuverturi din bumbac, cuverturi decorative, cuverturi pentru dormitor, cuverturi impermeabile, cuverturi termoizolante, cuverturi matlasate, cuverturi elegante, cuverturi pentru camera copiilor, cuverturi cu imprimeuri, cuverturi catifelate, cuverturi rustice, cuverturi pentru hoteluri, cuverturi ieftine, cuverturi de lux, cuverturi textile, cuverturi brodate, cuverturi anti-pete, cuverturi rezistente la spălare, cuverturi rezistente la uzură, cuverturi pentru canapele, cuverturi pentru fotolii, cuverturi lavabile, cuverturi pentru sezon rece, cuverturi vara, cuverturi usoare, cuverturi groase, perdele moderne, perdele transparente, perdele elegante, perdele termice, perdele pentru living, perdele pentru dormitor, perdele scurte, perdele lungi, perdele pentru bucătărie, perdele de lux, perdele minimaliste, perdele clasice, perdele cu modele florale, perdele cu dungi, perdele personalizate, perdele rustice, perdele cu broderie, perdele blackout, perdele izolante, perdele pentru copii, perdele pentru bebeluși, perdele decorative, perdele pentru hoteluri, perdele cu prindere inele, perdele cu rejansă, perdele lavabile, perdele anti-mucegai, perdele anti-alergice, draperii moderne, draperii termoizolante, draperii opace, draperii blackout, draperii cu imprimeuri, draperii pentru living, draperii elegante, draperii minimaliste, draperii vintage, draperii catifelate, draperii rustice, draperii cu modele florale, draperii lungi, draperii scurte, draperii personalizate, draperii pentru dormitor, draperii pentru bucătărie, draperii pentru birou, draperii de lux, draperii cu rejansă, draperii cu inele, draperii din in, draperii anti-mucegai, draperii anti-alergice, draperii lavabile, perne decorative, perne pufoase, perne ortopedice, perne hipoalergenice, perne din puf de gâscă, perne cu umplutură de bambus, perne din spumă cu memorie, perne ergonomice, perne premium, perne pentru dormit, perne pentru canapele, perne pentru copii, perne pentru bucătărie, perne pentru fotolii, perne pentru paturi matrimoniale, perne cu arome relaxante, perne terapeutice, perne pentru suport cervical, perne cu lavandă, perne anti-alergice, perne anti-praf, perne anti-acarieni, perne pentru hoteluri, perne pentru călătorii, bedspreads, luxury bedspreads, modern bedspreads, cotton bedspreads, decorative bedspreads, hotel bedspreads, embroidered bedspreads, floral bedspreads, bedspreads for winter, summer bedspreads, quilted bedspreads, double bed bedspreads, baby bedspreads, hypoallergenic bedspreads, modern curtains, elegant curtains, thermal curtains, blackout curtains, minimalist curtains, rustic curtains, floral curtains, short curtains, long curtains, luxury curtains, curtains for hotels, customized curtains, kitchen curtains, bedroom curtains, living room curtains, nursery curtains, embroidered curtains, curtains with rings, curtains with pleats, modern drapes, thermal drapes, opaque drapes, blackout drapes, vintage drapes, rustic drapes, floral drapes, long drapes, short drapes, custom drapes, luxury drapes, bedroom drapes, living room drapes, office drapes, embroidered drapes, hotel drapes, drapes with rings, decorative pillows, soft pillows, orthopedic pillows, hypoallergenic pillows, goose down pillows, memory foam pillows, ergonomic pillows, luxury pillows, bed pillows, couch pillows, sofa pillows, children’s pillows, travel pillows, therapeutic pillows, anti-allergy pillows, lavender pillows, bamboo pillows, shop bedspreads, shop curtains, shop drapes, shop pillows, home textiles shop, buy bedspreads online, buy curtains online, buy drapes online, buy pillows online, premium home textiles, luxury home textiles, custom curtains online, custom drapes online, best bedspreads for home, best curtains for bedroom, best drapes for living room, affordable home decor textiles, best online textile store, transport gratis, free delivery, anywhere, everywhere, oriunde in tara",
   siteName : 'Texx - Magazin',
   canonicalUrl : process.env.NODE_ENV ? 'http://localhost:3000/shop' : 'https://texxshop.ro/shop',
@@ -745,7 +746,7 @@ const currentProductsOnPage = ref([]);
 const filterOptions = ref({});
 const dataPage = ref(1);
 const dimensionsValues = ref([0,300,0,300]);
-const selectedCurrency = ref('RON');
+const selectedCurrency = useState('selectedCurrency');
 const excludeFromFiltration = ref(true)
 const {name} = useDisplay()
 const route = useRoute()
@@ -771,14 +772,6 @@ const screenSize = computed(() => {
     }
 })
 
-const getCurrentLocale = () => {
-  const currentLanguage = useCookie('i18n_redirected').value;
-  if(currentLanguage === 'ro') {
-    selectedCurrency.value = 'RON'
-  }else if(currentLanguage === 'en'){
-    selectedCurrency.value = "EUR"
-  }
-}
 
 const getNextPageOfProducts = (async (pageNumber,productTypes = null,productCategories = null,colorOptions = null,dimensions ,priceRange , reverseFace , currency) => {
   const responseFromPaginatedProducts = 
@@ -1066,7 +1059,6 @@ onBeforeMount(async () => {
 })
 
 onMounted(async () => {
-  getCurrentLocale();
  
   // await applyFiltersFromQuery();
   await restoreQueryParams()
