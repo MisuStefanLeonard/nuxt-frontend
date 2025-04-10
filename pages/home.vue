@@ -28,9 +28,6 @@
       </v-carousel> -->
       <p>AICIIIIIIIIIII</p>
       <p>AICIIIIIIIIIII2</p>
-      <p>AICIIIIIIIIIII3</p>
-      <p>AICIIIIIIIIIII4</p>
-
     </div>
     <section class="row elevation-24 p-4  rounded bg-grey-lighten-5" id="welcome">
       <h3 class="text-center pb-2 pt-2 font-weight-thin">{{ $t('homePage.welcome') }} </h3>
