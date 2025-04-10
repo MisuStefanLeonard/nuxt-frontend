@@ -1,6 +1,6 @@
 <template>
   <div fluid class="m-auto ">
-    <!-- <div id="image" class=" text-center">
+    <div id="image" class=" text-center">
       <v-alert density="compact" color="red-darken-4" variant="flat" v-if="showFreeDeliveryBanner">
         <span class="font-weight-thin h5"> <v-icon class="mx-2"  :icon="mdiTruck" size="24"></v-icon>{{$t('homePage.orderOver1')}} {{ getMinOrderPriceForFreeDelivery }} {{ selectedCurrency === 'RON' ? 'RON' : 'EUR'  }} {{$t('homePage.orderOver2')}}</span>
       </v-alert>
@@ -26,7 +26,7 @@
         </div>
         </v-carousel-item>
       </v-carousel>
-    </div> -->
+    </div>
     <section class="row elevation-24 p-4  rounded bg-grey-lighten-5" id="welcome">
       <h3 class="text-center pb-2 pt-2 font-weight-thin">{{ $t('homePage.welcome') }} </h3>
       
@@ -432,7 +432,8 @@ definePageMeta({
 })
 
 useHead({
-  title : 'Acasa'
+  title : 'Acasa',
+  link: useLocaleHead()
 })
 
 

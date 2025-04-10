@@ -1,5 +1,12 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
+  runtimeConfig: {
+    public: {
+      siteUrl: process.env.NODE_ENV === 'production'
+        ? 'https://texxshop.ro'
+        : 'http://localhost:3000'
+    }
+  },
   ssr: true,
   vite:{
     build : {
@@ -14,6 +21,8 @@ export default defineNuxtConfig({
     blockAiBots: true,
     disallow : ['/en/admin/**' , '/admin/**' ,'/user/profile/**'
       , '/en/user/profile/*' , '/user/order/*' , '/en/user/order/*',
+      '/en/user/checkout' , '/user/checkout' , '/en/terms_and_conditions' , 
+      '/terms_and_conditions' , 'return_policy' , '/en/return_policy'
     ],
     sitemap : 'https://texxshop.ro/sitemap.xml'
   },

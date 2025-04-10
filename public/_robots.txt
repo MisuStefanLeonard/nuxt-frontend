@@ -7,4 +7,5 @@ Disallow: /*?page=
 Disallow: /*?sort=
 # block filtering
 Disallow: /*?filter=
+Sitemap: https://texxshop.ro/sitemap.xml
 

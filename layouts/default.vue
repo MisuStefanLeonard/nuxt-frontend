@@ -23,19 +23,23 @@
 
   const route = useRoute();
   const i18n = useI18n()
-
-  useSeoMeta({
-  })
+  const runTimeConfigs = useRuntimeConfig()
+  const canonicalUrl = ref(`${runTimeConfigs.public.siteUrl}${route.fullPath}`)
 
   useHead({
     titleTemplate : (titleChunk) => {
       return titleChunk ? `${titleChunk}` : 'Site Title';
     },
     htmlAttrs:{
-      // lang: route.path.startsWith('/en') ? 'en' : 'ro',
       lang: i18n.locale.value
-      // dir: route.meta.ltr
     },
+    link: [
+      ...useLocaleHead({ addSeoAttributes: true }).value.link.filter(l => l.rel !== 'canonical'),
+      {
+        rel: 'canonical',
+        href: canonicalUrl
+      }
+    ],
     meta : [
       {
         property : 'og:title' , 
