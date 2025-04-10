@@ -434,7 +434,6 @@ definePageMeta({
 
 useHead({
   title : 'Acasa',
-  link: useLocaleHead()
 })
 
 
