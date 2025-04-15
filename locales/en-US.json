@@ -4,13 +4,10 @@
     "menu": {
       "home": "Home",
       "about": "About Us",
+      "services" : "Services",
       "contact": "Contact Us",
       "shop": "Shop",
       "allProducts" : "All products",
-      "cuverturi": "Bedspreads",
-      "perdele": "Curtains",
-      "draperii": "Drapes",
-      "perne": "Pillows",
       "sets" : "Bundles",
       "profile": "Profile",
       "myProfile": "My Profile",
@@ -512,6 +509,26 @@
       "text3": "In addition to curtains and draperies, we are also dedicated to manufacturing luxurious cushions, crafted for ultimate comfort. Whether decorative or designed for rest, each product is made with meticulous attention to detail, using fine materials and high-quality fillings. Moreover, we offer a collection of premium bedspreads designed to perfectly complement the decor of an elegant and sophisticated bedroom.",
       "text4": "We aim to offer our customers not just products, but a unique experience in which the quality of the materials and the craftsmanship are paramount. By choosing [Company Name], you choose a team passionate about textiles, with a clear mission: to transform every home into a warm, elegant, and comfortable space.",
       "text5": "We invite you to discover our collections and benefit from personalized craftsmanship services, specially created to fulfill all your desires for curtains, draperies, cushions, and bedspreads. Quality defines us, and our customers’ satisfaction is our greatest reward!"
+    },
+    "aboutUsPage": {
+      "text1": "A modern, exclusive concept",
+      "text2": "Tak Decor is a modern and exclusive concept, inspired by the latest trends promoted by top designers from Spain, France, and Germany.",
+      "text3": "Our collections of curtains, drapes, upholstery, and home textiles, as well as hanging systems and decorative accessories, cover a wide variety of shapes, patterns, and colors in minimalist, classic, opulent, contemporary, or innovative styles.",
+      "text4": "From rustic to modern, from simple to sumptuous, from traditional to avant-garde, Tak Decor can satisfy the most demanding tastes and expectations.",
+      "text5": "We are a dynamic and creative company, customer-focused, offering the most practical solutions for any type of interior: office, commercial, or residential. Our belief is that curtains and accessories are objects that ennoble, inspire, and create harmony.",
+      "text6": "The optimal price-quality ratio, personalized services, and attention to detail are the advantages we invite you to discover by visiting our showroom and online store www.perdele-online.ro.",
+      "text7": "Welcome to the world of Tak Decor!",
+      "text8": "Would you like to talk about your project?",
+      "text9": "Let’s see how your home would look dressed in a new set of modern, elegant, warm curtains and drapes, perfectly integrated into your overall design concept!",
+      "text10": "What do you say, sounds good?",
+      "text11": "Yes, I want to talk!"
+    },
+    
+    "servicesPage": {
+      "text1": "In the Tak Home Decoration showroom or at the customers' homes, we meet expectations with samples and catalogs, with models from our own portfolio, and with practical ideas regarding interior design elements and their harmonious combination with our curtains, drapes, and accessories.",
+      "text2": "Benefiting from fruitful collaborations with renowned designers and architects, the Tak Decor team can facilitate contact with them for specialized consultation.",
+      "text3": "To offer the best solutions adapted to your space, we will take into account all necessary elements—from the room’s structure and composition, colors, and furniture, to the smallest details. And most importantly, we will always consider your tastes and preferences so that they are reflected as much as possible in the newly created atmosphere! All these (curtains, drapes, bedspreads, decorative pillows, etc.) will be tailored to the desired dimensions, fully in line with the requirements and conditions imposed by the client.",
+      "text4": "Additionally, our technical team provides high-quality installation and assembly services for mounting systems at your residence, ensuring the perfect integration of curtains, drapes, and decorations into the client’s personal space."
     },
     
     "cookieBanner": {

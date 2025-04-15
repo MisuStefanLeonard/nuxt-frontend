@@ -68,7 +68,9 @@ import productService from '~/services/Products'
 import { mdiHome, mdiInformation,mdiAccount,mdiStore,mdiPackageVariant,mdiBedKingOutline,mdiWindowShutterOpen,
   mdiBlindsHorizontal,mdiBedOutline,mdiGift,mdiShoppingOutline,
   mdiSecurity,
-  mdiArrowRight
+  mdiArrowRight,
+  mdiAccountGroup,
+  mdiRoomService
  } from '@mdi/js'
 // Inject the emitter
 const nuxtApp = useNuxtApp()
@@ -96,6 +98,9 @@ function handleMenuClick(item) {
 const menuItems = [
   { title: 'menu.home', path: '/home', icon: mdiHome },
   { title: 'menu.contact', path: '/contact', icon: mdiInformation },
+  { title: 'menu.about', path: '/about', icon: mdiAccountGroup },
+  { title: 'menu.services', path: '/servicii', icon: mdiRoomService },
+
 ]
 
 const menuItems2 = ref([

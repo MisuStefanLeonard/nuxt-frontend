@@ -37,17 +37,13 @@
       ...useLocaleHead({ addSeoAttributes: true }).value.link.filter(l => l.rel !== 'canonical'),
       {
         rel: 'canonical',
-        href: canonicalUrl
+        href: canonicalUrl.value
       }
     ],
     meta : [
       {
         property : 'og:title' , 
-        content: `Texx - ${route.meta.title || 'Default'}` 
-      },
-      {
-        property: 'og:description',
-        content: route.meta.ogDescription || '',
+        content: `Takdecor - ${route.meta.title || 'Default'}` 
       },
       {
         property: 'og:locale',
@@ -58,16 +54,8 @@
         content: 'en_US',
       },
       {
-        property: 'og:type',
-        content: route.meta.ogType || 'Default',
-      },
-      {
         property: 'og:url',
-        content: route.meta.canonicalUrl || 'Default',
-      },
-      {
-        property: 'og:site_name',
-        content: route.meta.siteName || 'Default',
+        content: canonicalUrl.value|| 'Default',
       },
       {
         name : 'description',
@@ -80,7 +68,7 @@
       },
       {
         name: 'author',
-        content: 'Misu Stefan-Leonard, Romania , all rights reserved'
+        content: 'Takdecor, Romania , all rights reserved'
       },
       {
         name: 'charset',

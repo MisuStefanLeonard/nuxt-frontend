@@ -1595,16 +1595,21 @@ onMounted(async () => {
 
 
 useHead({
-    title : `Texx - ${productCode}`,
+    title : `Takdecor - ${productCode}`,
     link : [
         {rel: 'dns-prefetch' , href: 'https://dw45vxtt6tooj.cloudfront.net'},
         {rel: 'preconnect' , href: 'https://dw45vxtt6tooj.cloudfront.net'},
     ],
     keywords : selectedKeywords.value,
-    siteName : `Texx - ${productCode}`,
-    canonicalUrl : `http://localhost:3000/${productCode}/${productType}`,
     ogDescription : `${product.value.descriereDto}`,
     description : `${product.value.descriereDto}`
+})
+
+useSeoMeta({
+  title : `Takdecor - ${productCode}`,
+  ogSiteName : `Takdecor - ${productCode}`,
+  ogType: 'product',
+  ogDescription :  `${product.value.descriereDto}`,
 })
 
 </script>

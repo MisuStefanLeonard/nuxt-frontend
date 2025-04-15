@@ -1,47 +1,112 @@
 <template>
-    <div>
-        <div>
-          <p class="font-weight-light h5">{{ $t('aboutUs.title') }}</p>
-          <v-divider opacity="0"></v-divider>
+    <div class="m-auto">
+        <div class=" text-center">
+          <v-alert density="compact" color="red-darken-4" variant="flat" v-if="showFreeDeliveryBanner">
+            <span class="font-weight-thin h5"> <v-icon class="mx-2"  :icon="mdiTruck" size="24"></v-icon>{{$t('homePage.orderOver1')}} {{ getMinOrderPriceForFreeDelivery }} {{ selectedCurrency === 'RON' ? 'RON' : 'EUR'  }} {{$t('homePage.orderOver2')}}</span>
+          </v-alert>
+          <v-carousel height="auto" hide-delimiters show-arrows="hover" >
+            <v-carousel-item v-for="img in carouselImgs" 
+              :key="img"
+              :src="img"
+              :aspect-ratio="height !== true ? 10 / 4 : 4/ 3"
+              cover
+            >
+            <div class="d-flex justify-center align-center fill-height text-black text-h6 font-weight-thin elevation-24">
+              <v-row>
+                <v-col cols="12" >
+                <span class="font-weight-light h1">{{ $t('menu.about').toUpperCase() }}</span>
+                </v-col>
+              </v-row>
+            
+            </div>
+            </v-carousel-item>
+          </v-carousel>
         </div>
-        <div>
-          <p class="font-wight-normal h6">La Texx, ne-am propus să aducem în 
-            România cele mai fine și elegante textile pentru casă. 
-            Situată în inima Brașovului, compania noastră oferă servicii de 
-            manoperă premium pentru perdele și draperii, alături de o gamă 
-            exclusivistă de materiale de cea mai înaltă calitate. 
-            Pentru noi, fiecare perdea și fiecare draperie reprezintă mai
-            mult decât un simplu element decorativ – ele sunt o expresie a rafinamentului și a bunului gust.
-          </p>
+        <section class="row elevation-24 p-4  rounded bg-grey-lighten-5" id="about-us-info">
+          <h3 class="text-center pb-2 pt-2  font-weight-thin">{{ $t('aboutUsPage.text1') }} </h3>
+          <h4 class="text-center font-weight-normal my-3">
+            {{ $t('aboutUsPage.text2') }}
+          </h4>
           <v-divider opacity="0"></v-divider>
-          <p class="font-wight-normal h6">
-            Folosim țesături de top, importate de la cei
-             mai renumiți producători, pentru a crea perdele și draperii elegante, 
-             care îmbină armonios frumusețea cu funcționalitatea. De asemenea, ne specializăm în perdele din in, un material nobil, natural și durabil, 
-            care adaugă un plus de stil oricărui interior.
-          </p>
           <v-divider opacity="0"></v-divider>
-          <p class="font-wight-normal h6">
-            Pe lângă perdele și draperii, suntem dedicați și fabricării de perne luxoase, create pentru confortul suprem. Fie că este vorba de perne decorative sau perne pentru odihnă, fiecare produs este confecționat cu atenție la detalii, folosind materiale fine și umpluturi de înaltă calitate. În plus, oferim și o colecție de cuverturi premium, menite să completeze perfect decorul unui dormitor elegant și sofisticat.
-          </p>
           <v-divider opacity="0"></v-divider>
-          <p class="font-wight-normal h6">
-            Ne dorim să oferim clienților noștri nu doar produse, ci o experiență unică, în care calitatea materialelor și măiestria execuției sunt pe primul loc. Alegând [Numele Companiei], alegeți o echipă pasionată de textile, cu o misiune clară: să transformăm fiecare locuință într-un spațiu cald, elegant și confortabil.
-          </p>
           <v-divider opacity="0"></v-divider>
-          <p class="font-wight-normal h6">
-            Vă invităm să descoperiți colecțiile noastre și să beneficiați de servicii de manoperă personalizate, create special pentru a vă îndeplini toate dorințele în materie de perdele, draperii, perne și cuverturi. Calitatea ne definește, iar satisfacția clienților noștri este cea mai mare recompensă!
-          </p>
+
+          <v-row>
+            <v-col cols="12" md="6" sm="12" xs="12">
+              <div class="d-flex justify-center align-center fill-height text-black text-h6 font-weight-thin">
+                <v-img src="/cuv4.jpeg" class="rounded-xl"
+                :aspect-ratio="height !== true ? 10 / 6 : 4/ 3"
+                cover>
+
+                </v-img>
+              </div>
+            </v-col>
+            <v-col cols="12" md="6" sm="12" xs="12">
+              <div class="d-flex justify-center align-center fill-height text-black text-h6 font-weight-thin">
+                <span class="font-weight-thin text-center">
+                  {{ $t('aboutUsPage.text3') }}
+                </span>
+              </div>
+             
+            </v-col>
+          </v-row>
           <v-divider opacity="0"></v-divider>
-        </div>
+          <v-divider opacity="0"></v-divider>
+          <v-divider opacity="0"></v-divider>
+          <v-divider opacity="0"></v-divider>
+          <v-divider opacity="0"></v-divider>
+
+          <v-row>
+              <v-col cols="12" md="6" sm="12" xs="12">
+              <div class="d-flex justify-center align-center fill-height text-black text-h6 font-weight-thin">
+                <v-row>
+                  <v-col cols="12">
+                    <p class="text-center">
+                      {{ $t('aboutUsPage.text4') }}
+                    </p>
+                  </v-col>
+                  <v-col cols="12">
+                    <p  class="text-center">
+                      {{ $t('aboutUsPage.text5') }}
+                    </p>
+                  </v-col>
+                  <v-col cols="12">
+                    <p  class="text-center">
+                      {{ $t('aboutUsPage.text6') }}
+                    </p>
+                  </v-col>
+                  <v-col cols="12">
+                    <p  class="text-center">
+                      {{ $t('aboutUsPage.text7') }}
+                    </p>
+                  </v-col>
+                </v-row>
+              </div>
+              </v-col>
+              <v-col cols="12" md="6" sm="12" xs="12">
+                <div class="d-flex justify-center align-center fill-height text-black text-h6 font-weight-thin">
+                  <v-img src="/cuv5.jpeg" class="rounded-xl"
+                  :aspect-ratio="height !== true ? 10 / 6 : 4/ 3"
+                  cover>
+
+                  </v-img>
+                </div>
+              </v-col>
+          </v-row>
+        </section>
+        <ContactBannerFooter>
+        </ContactBannerFooter>
     </div>
 </template>
 
 
 
 <script setup>
+import { useDisplay } from 'vuetify';
+import ContactBannerFooter from '~/components/user/ContactBannerFooter.vue';
 definePageMeta({
-  title : `Texx - Despre noi`,
+  title : `Takdecor - Despre noi`,
   keywords: [
     // **Romanian Keywords**
   'despre noi magazin textile casă',
@@ -127,14 +192,29 @@ definePageMeta({
   'personalized services for curtains and drapes',
   'we manufacture sustainable and elegant home textiles'
   ],
-
-
-
   layout: 'default',
-  siteName : 'Texx - Despre noi',
-  canonicalUrl : 'http://localhost:3000/about',
-  ogType : 'website',
-  ogDescription : 'Paseste pe texx pentru ati gasii perdeaua perfecta pentru casa ta',
   description : 'Paseste pe texx pentru ati gasii perdeaua si draperia perfecta pentru casa ta'
 })
+
+useHead({
+    title: 'Despre noi'
+})
+
+useSeoMeta({
+  title : `Takdecor - Despre noi`,
+  ogSiteName : 'Takdecor - Despre noi',
+  ogType : 'website',
+  ogDescription : 'Paseste pe texx pentru ati gasii perdeaua perfecta pentru casa ta',
+})
+
+const carouselImgs = ['/cuv1.jpeg','/cuv2.jpeg','/cuv3.jpeg','/cuv4.jpeg','/cuv5.jpeg','/cuv6.jpeg',]
+const {name} = useDisplay()
+const height = computed(() => {
+    switch (name.value) {
+      case 'xs': return true
+      default : return 3
+    }
+})
+
 </script>
+

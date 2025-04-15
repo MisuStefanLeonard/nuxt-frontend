@@ -518,8 +518,6 @@ definePageMeta({
   layout: 'default',
   keywords:'cos cumparaturi , shopping cart , pret afisat',
   middleware: 'locale',
-  siteName : 'Texx - Cos cumparaturi',
-  canonicalUrl : process.env.NODE_ENV ?  'http://localhost:3000/cart' : 'https://texxshop.ro/cart',
   ogType : 'product',
   ogDescription : 'Vizualizeaza produsele pe care le ai in cos pe Texx',
   description : 'Toate produsele tale la un click distanta de cumparare'

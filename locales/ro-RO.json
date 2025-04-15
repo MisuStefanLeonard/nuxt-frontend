@@ -4,13 +4,10 @@
     "menu": {
       "home": "Acasă",
       "about": "Despre noi",
+      "services" : "Servicii",
       "contact": "Contactează-ne",
       "shop": "Magazin",
       "allProducts" : "Toate produsele",
-      "cuverturi": "Cuverturi",
-      "perdele": "Perdele",
-      "draperii": "Draperii",
-      "perne": "Perne",
       "profile": "Profil",
       "sets" : "Seturi",
       "myProfile": "Profilul meu",
@@ -521,11 +518,31 @@
         "checkMail" : "Poate dura de la 1 pana la 5 minute pana poate ajunge mail-ul. Va rog verificati si la spam! Multumim mult!"
     },
     "aboutUs" : {
-        "text1" : "La Texx, ne-am propus să aducem în România cele mai fine și elegante textile pentru casă. Situată în inima Brașovului, compania noastră oferă servicii de manoperă premium pentru perdele și draperii, alături de o gamă exclusivistă de materiale de cea mai înaltă calitate. Pentru noi, fiecare perdea și fiecare draperie reprezintă mai mult decât un simplu element decorativ – ele sunt o expresie a rafinamentului și a bunului gust.",
+        "text1" : "La Takdecor, ne-am propus să aducem în România cele mai fine și elegante textile pentru casă. Situată în inima Brașovului, compania noastră oferă servicii de manoperă premium pentru perdele și draperii, alături de o gamă exclusivistă de materiale de cea mai înaltă calitate. Pentru noi, fiecare perdea și fiecare draperie reprezintă mai mult decât un simplu element decorativ – ele sunt o expresie a rafinamentului și a bunului gust.",
         "text2" : "Folosim țesături de top, importate de la cei mai renumiți producători, pentru a crea perdele și draperii elegante, care îmbină armonios frumusețea cu funcționalitatea. De asemenea, ne specializăm în perdele din in, un material nobil, natural și durabil, care adaugă un plus de stil oricărui interior.",
         "text3" : "Pe lângă perdele și draperii, suntem dedicați și fabricării de perne luxoase, create pentru confortul suprem. Fie că este vorba de perne decorative sau perne pentru odihnă, fiecare produs este confecționat cu atenție la detalii, folosind materiale fine și umpluturi de înaltă calitate. În plus, oferim și o colecție de cuverturi premium, menite să completeze perfect decorul unui dormitor elegant și sofisticat.",
-        "text4" : "Ne dorim să oferim clienților noștri nu doar produse, ci o experiență unică, în care calitatea materialelor și măiestria execuției sunt pe primul loc. Alegând [Numele Companiei], alegeți o echipă pasionată de textile, cu o misiune clară: să transformăm fiecare locuință într-un spațiu cald, elegant și confortabil.",
+        "text4" : "Ne dorim să oferim clienților noștri nu doar produse, ci o experiență unică, în care calitatea materialelor și măiestria execuției sunt pe primul loc. Alegând Takdecor, alegeți o echipă pasionată de textile, cu o misiune clară: să transformăm fiecare locuință într-un spațiu cald, elegant și confortabil.",
         "text5" : "Vă invităm să descoperiți colecțiile noastre și să beneficiați de servicii de manoperă personalizate, create special pentru a vă îndeplini toate dorințele în materie de perdele, draperii, perne și cuverturi. Calitatea ne definește, iar satisfacția clienților noștri este cea mai mare recompensă!"
+    },
+    "aboutUsPage" : {
+        "text1" : "Un concept modern, exclusivist",
+        "text2" : "Tak Decor este un concept modern şi exclusivist, inspirat de cele mai noi tendinţe promovate de designeri de top din Spania, Franţa şi Germania.",
+        "text3" : "Colecţiile noastre de perdele, draperii, tapiţerii şi textile de casă, sisteme de prindere şi accesorii deco îmbracă cele mai diverse forme,modele şi culori, în stiluri minimaliste, clasice, opulente, contemporane sau inovative.",
+        "text4" : "De la rustic la modern, de la simplu la somptuos, de la tradiţional la avangardist, Tak Decor poate satisface cele mai exigente gusturi şi aşteptări.",
+        "text5" : "Suntem o companie dinamică şi creativă, centrată pe client şi pe oferirea celor mai practice soluţii pentru orice tip de interior: office, comercial sau rezidential. Crezul nostru este acela că perdelele şi accesoriile sunt obiecte care înnobilează, inspiră şi creează armonie.",
+        "text6" : "Raportul optim preţ-calitate, serviciile personalizate şi atenţia pentru detalii sunt atuurile pe care vă invităm să le descoperiţi vizitand showroomul nostru şi magazinul virtual www.perdele-online.ro.",
+        "text7" : "Bun venit în lumea Tak Decor!",
+        "text8" : "Vrei sa discutam despre proiectul tau?",
+        "text9" : "Hai sa vedem cum ar arata casa ta imbracata cu un set nou de perdele si draperii moderne, elegante, calde si integrate in conceptul general de design al locatiei tale!",
+        "text10" : "Ce spui, suna bine?",
+        "text11" : "Da, vreau sa discutam!"
+    },
+    "servicesPage" : {
+        "text1" : "In showroomul Tak Home Decoration sau la domiciliul clienţilor,venim în întâmpinarea aşteptărilor cu mostre şi cataloage, cu modele din portofoliul propriu, cu idei practice privind elementele de design interior şicombinarea armonioasă a acestora cu perdelele, draperiile şi accesoriile noastre.",
+        "text2" : "Beneficiind de o colaborare fructuoasă cu designeri şi arhitecţi de renume,echipa Tak Decor vă poate facilita contactul cu aceştia, pentru consultanţă de specialitate.",
+        "text3" : "Pentru o oferi cele mai bune soluţii adaptate spaţiului dvs., vom lua in considerare toate elementele necesare, de la structura si compozitia camerei, culori,mobilă, pana la cele mai mici detalii. Iar ce este cel mai important – vom ţine cont întotdeauna de gusturile şi preferinţele dvs., astfel încât acestea să se reflecte cat mai mult atmosfera nou creeată! Iar toate acestea ( perdele, draperii, cuverturi, perne decorative, etc ) vor fi confectionate conform dimensiunilor dorite, în deplin acord cu cerinţele şi condiţiile impuse de client. ",
+        "text4" : "De asemenea, echipa tehnică oferă servicii de calitate de montaj şi asamblare a sistemelor de prindere la reşedinţa dvs. şi asigură integrarea perfectă a perdelelor, draperiilor, decoraţiunilor în spaţiul personal al clientului."
+
     },
     "cookieBanner" : {
         "info" : "Site-ul nostru foloseste cookie-uri pentru buna functionare a acestuia",
