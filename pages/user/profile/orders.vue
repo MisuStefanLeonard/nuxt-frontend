@@ -189,18 +189,20 @@
                                             :key="index">
                                             <v-col cols="12" xs="12" sm="3" class="text-center">
                                                 <div v-if="checkKey(item.key)">
-                                                    <NuxtImg preload
+                                                    <NuxtImg preload  format="webp"
                                                         v-if="item.cartItems[0].culoareSelectata&&item.cartItems[0].culoareSelectata.imaginiProdusDto[0] !== undefined&&item.cartItems[0].culoareSelectata.imaginiProdusDto[0].presignedUrl !== 'empty'"
                                                         :src="item.cartItems[0].culoareSelectata.imaginiProdusDto[0].presignedUrl"
                                                         fit="cover"
                                                         sizes="sm:400 md:800"
+                                                        alt="selected color image"
                                                         :width="dimensionsForImage.width"
                                                         :height="dimensionsForImage.height"
                                                         class="border-sm" >
                                                     </NuxtImg>
-                                                    <NuxtImg v-else preload
+                                                    <NuxtImg v-else preload  format="webp"
                                                         src="notFound.png"
                                                         sizes="sm:400 md:800"
+                                                        alt="not found image"
                                                         :width="dimensionsForImage.width"
                                                         :height="dimensionsForImage.height"
                                                         class="border-sm" >
@@ -209,19 +211,21 @@
                                                     <p>{{ item.cartItems[0].cantitate }} x</p>
                                                 </div>
                                                 <div v-else>
-                                                    <NuxtImg preload
+                                                    <NuxtImg preload  format="webp"
                                                         v-if="item.cartItems && item.cartItems.length > 1 && getFirstImageFromSet(item.cartItems)"
                                                         :src="getFirstImageFromSet(item.cartItems)"
                                                         sizes="sm:400 md:800"
+                                                        alt="selected color image"
                                                         :width="dimensionsForImage.width"
                                                         :height="dimensionsForImage.height"
                                                         class="border-sm" >
                                                     </NuxtImg>
-                                                    <NuxtImg v-else preload
+                                                    <NuxtImg v-else preload  format="webp"
                                                         src="notFound.png"
                                                         sizes="sm:400 md:800"
                                                         :width="dimensionsForImage.width"
                                                         :height="dimensionsForImage.height"
+                                                        alt="not found image"
                                                         class="border-sm" >
                                                     </NuxtImg>
                                                     <p>{{ item.cartItems[0].cantitate }} x</p>
@@ -285,8 +289,9 @@
                                                                                         <p class="font-weight-light h6">{{ $t('shopSeturi.rejansaIncretire') }} {{ item.cartItems[0].selectedManopera.tipGalerie.incretireRejansa  }}</p>
                                                                                         <p class="font-weight-light h6">{{ $t('shopSeturi.catchWithRings') }} {{ item.cartItems[0].selectedManopera.tipGalerie.sePrindeCuInele === true ? 'Da' : 'Nu'  }}</p>
                                                                                         <p class="font-weight-light h6">{{ $t('cart.meterPrice') }} {{ item.cartItems[0].selectedManopera.tipGalerie.pretTipRejansa }}  {{ selectedCurrency === 'RON' ? 'RON' : 'EUR' }}</p>
-                                                                                        <NuxtImg preload
+                                                                                        <NuxtImg preload  format="webp"
                                                                                             :src="item.cartItems[0].selectedManopera.tipGalerie.presignedUrl"
+                                                                                            alt="Imagine galerie"
                                                                                             :width="dimensionsForImage.width"
                                                                                             :height="dimensionsForImage.height">
                                                                                             >
@@ -301,9 +306,10 @@
                                                                                     </v-card-title>
                                                                                     <v-card-text >
                                                                                         <p class="font-weight-light h6">{{ $t('shop.color') }} : {{ item.cartItems[0].selectedManopera.tipInel.numeTipInel  }}</p>
-                                                                                        <NuxtImg preload
+                                                                                        <NuxtImg preload  format="webp"
                                                                                             :src="item.cartItems[0].selectedManopera.tipInel.presignedUrl"
                                                                                             :width="dimensionsForImage.width"
+                                                                                            alt="Ring type image"
                                                                                             :height="dimensionsForImage.height">
                                                                                             >
                                                                                         </NuxtImg>
@@ -318,9 +324,10 @@
                                                                                     <v-card-text >
                                                                                         <p class="font-weight-light h6">{{ $t('profile.personalDataGeneral.name') }} : {{ item.cartItems[0].selectedManopera.tipLinie.numeTipCusaturaColt  }}</p>
                                                                                         <p class="font-weight-light h6">{{ $t('cart.meterPrice') }} {{  item.cartItems[0].selectedManopera.tipLinie.pretTipCusaturaColt }}  {{ selectedCurrency === 'RON' ? 'RON' : 'EUR'}} </p>
-                                                                                        <NuxtImg preload
+                                                                                        <NuxtImg preload  format="webp"
                                                                                             :src="item.cartItems[0].selectedManopera.tipLinie.presignedUrl"
                                                                                             :width="dimensionsForImage.width"
+                                                                                            alt="Line type image"
                                                                                             :height="dimensionsForImage.height">
                                                                                             >
                                                                                         </NuxtImg>
@@ -371,16 +378,18 @@
                                                                     <NuxtImg v-if="productInSet.culoareSelectata.imaginiProdusDto&&productInSet.culoareSelectata.imaginiProdusDto.length>0 "
                                                                     :src="productInSet.culoareSelectata.imaginiProdusDto[0].presignedUrl"
                                                                     fit="cover"
-                                                                    sizes="sm:400 md:800"
+                                                                    sizes="sm:400 md:800"  format="webp"
                                                                     :width="dimensionsForImage.width"
                                                                     :height="dimensionsForImage.height"
+                                                                    alt="Selected image for product on set"
                                                                     class="border-sm" >
                                                                     </NuxtImg>
                                                                     <NuxtImg v-else preload
                                                                     src="notFound.png"
-                                                                    sizes="sm:400 md:800"
+                                                                    sizes="sm:400 md:800"  format="webp"
                                                                     :width="dimensionsForImage.width"
                                                                     :height="dimensionsForImage.height"
+                                                                    alt="not found image"
                                                                     class="border-sm" >
                                                                     </NuxtImg>
                                                                     <div v-if="checkProductType(productInSet.tipProdus)">
@@ -433,10 +442,12 @@
                                                                                     <p class="font-weight-light h6">{{ $t('shopSeturi.rejansaName') }} {{ productInSet.selectedManopera.tipGalerie.numeTipRejansa  }}</p>
                                                                                     <p class="font-weight-light h6">{{ $t('shopSeturi.rejansaIncretire') }} {{ productInSet.selectedManopera.tipGalerie.incretireRejansa  }}</p>
                                                                                     <p class="font-weight-light h6">{{ $t('shopSeturi.catchWithRings') }} {{ productInSet.selectedManopera.tipGalerie.sePrindeCuInele === true ? 'Da' : 'Nu'  }}</p>
-                                                                                    <NuxtImg preload
+                                                                                    <NuxtImg preload  format="webp"
                                                                                         :src="productInSet.selectedManopera.tipGalerie.presignedUrl"
                                                                                         :width="dimensionsForImage.width"
-                                                                                        :height="dimensionsForImage.height">
+                                                                                        :height="dimensionsForImage.height"
+                                                                                        alt="Galery type image"
+                                                                                        
                                                                                         >
                                                                                     </NuxtImg>
                                                                                 </v-card-text>
@@ -449,10 +460,11 @@
                                                                                 </v-card-title>
                                                                                 <v-card-text >
                                                                                     <p class="font-weight-light h6">{{ $t('shop.color') }} : {{ productInSet.selectedManopera.tipInel.numeTipInel  }}</p>
-                                                                                    <NuxtImg preload
+                                                                                    <NuxtImg preload  format="webp"
                                                                                         :src="productInSet.selectedManopera.tipInel.presignedUrl"
                                                                                         :width="dimensionsForImage.width"
-                                                                                        :height="dimensionsForImage.height">
+                                                                                        :height="dimensionsForImage.height"
+                                                                                        alt="Ring type image"
                                                                                         >
                                                                                     </NuxtImg>
                                                                                 </v-card-text>
@@ -465,10 +477,11 @@
                                                                                 </v-card-title>
                                                                                 <v-card-text >
                                                                                     <p class="font-weight-light h6">{{ $t('profile.personalDataGeneral.name') }} : {{ productInSet.selectedManopera.tipLinie.numeTipCusaturaColt  }}</p>
-                                                                                    <NuxtImg preload
+                                                                                    <NuxtImg preload  format="webp"
                                                                                         :src="productInSet.selectedManopera.tipLinie.presignedUrl"
                                                                                         :width="dimensionsForImage.width"
-                                                                                        :height="dimensionsForImage.height">
+                                                                                        :height="dimensionsForImage.height"
+                                                                                        alt="Line type image"
                                                                                         >
                                                                                     </NuxtImg>
                                                                                 </v-card-text>

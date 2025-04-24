@@ -1,7 +1,9 @@
 <template>
     <div>
         <section class="row elevation-24   rounded bg-grey-lighten-5" id="contact">
-          <v-img src="/cuv2.jpeg" 
+          <v-img src="/cuv2.jpeg" preload
+          format="webp"
+          alt="background_image"
           :aspect-ratio="height !== true ? 9 / 4 : 4/ 3"
           cover>
           <div class="overlay d-flex justify-center align-center fill-height text-h6  elevation-24">
@@ -47,6 +49,7 @@
 
 <script setup>
 import { mdiEmail, mdiPhone } from '@mdi/js';
+import { NuxtImg } from '#components';
 import { useDisplay } from 'vuetify';
 const {name} = useDisplay()
 const height = computed(() => {

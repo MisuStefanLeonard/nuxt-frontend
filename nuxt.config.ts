@@ -1,4 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
+import vuetify from 'vite-plugin-vuetify'
+
 export default defineNuxtConfig({
   runtimeConfig: {
     public: {
@@ -22,7 +24,7 @@ export default defineNuxtConfig({
     disallow : ['/en/admin/**' , '/admin/**' ,'/user/profile/**'
       , '/en/user/profile/*' , '/user/order/*' , '/en/user/order/*',
       '/en/user/checkout' , '/user/checkout' , '/en/terms_and_conditions' , 
-      '/terms_and_conditions' , 'return_policy' , '/en/return_policy'
+      '/terms_and_conditions' , '/return_policy' , '/en/return_policy'
     ],
     sitemap : 'https://texxshop.ro/sitemap.xml'
   },
@@ -35,7 +37,12 @@ export default defineNuxtConfig({
     '@zadigetvoltaire/nuxt-gtm',
     '@nuxtjs/robots',
     '@nuxtjs/sitemap',
-    'nuxt-og-image'
+    'nuxt-og-image',
+    async (options, nuxt) => {
+      nuxt.hooks.hook('vite:extendConfig', (config) => {
+        config.plugins?.push(vuetify())
+      })
+    },
   ],
   app: {
     pageTransition: {name: 'page' , mode:'out-in'},
@@ -75,7 +82,7 @@ export default defineNuxtConfig({
   },
   site: {
     url: 'https://texxshop.ro',
-    name: 'TexxShop',
+    name: 'Takdecor',
   },
   components : false,
   gtm: {

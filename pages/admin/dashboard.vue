@@ -91,185 +91,202 @@
                 <v-col cols="6">
                   <v-card :style="boxShadowStyle" class="p-2 bg-grey-darken-4 ">
                     <v-card-text>
-                        <LineChartClient v-if="computedSeriesForTodayOrders && mounted"
-                          :chart-type="'bar'"
-                          :height="300"
-                          :title-text="'Venit zi curenta'"
-                          :title-alignment="'center'"
-                          :x-label="'Ora'"
-                          :y-label="'Valoare(RON)'"
-                          :is-category-x-axis="true"
-                          :is-numeric-x-axis="false"
-                          :series="computedSeriesForTodayOrders">
-                      
-                      </LineChartClient>
+                      <ClientOnly>
+                          <LineChartClient v-if="computedSeriesForTodayOrders && mounted"
+                            :chart-type="'bar'"
+                            :height="300"
+                            :title-text="'Venit zi curenta'"
+                            :title-alignment="'center'"
+                            :x-label="'Ora'"
+                            :y-label="'Valoare(RON)'"
+                            :is-category-x-axis="true"
+                            :is-numeric-x-axis="false"
+                            :series="computedSeriesForTodayOrders">
+                        
+                        </LineChartClient>
+                      </ClientOnly>
                     </v-card-text>
                   </v-card>
                 </v-col>
                 <v-col cols="6">
                   <v-card :style="boxShadowStyle" class="p-2 bg-grey-darken-4 ">
                     <v-card-text>
-                        <LineChartClient v-if="computedSeriesForMonthlyOrders && mounted"
-                          :chart-type="'area'"
-                          :height="300"
-                          :title-text="'Venit lunar'"
-                          :title-alignment="'center'"
-                          :x-label="'Data'"
-                          :y-label="'Valoare(RON)'"
-                          :is-category-x-axis="false"
-                          :is-numeric-x-axis="false"
-                          :is-date-time-x-axis="true"
-                          :series="computedSeriesForMonthlyOrders">
-                      
-                      </LineChartClient>
+                      <ClientOnly>
+                          <LineChartClient v-if="computedSeriesForMonthlyOrders && mounted"
+                            :chart-type="'area'"
+                            :height="300"
+                            :title-text="'Venit lunar'"
+                            :title-alignment="'center'"
+                            :x-label="'Data'"
+                            :y-label="'Valoare(RON)'"
+                            :is-category-x-axis="false"
+                            :is-numeric-x-axis="false"
+                            :is-date-time-x-axis="true"
+                            :series="computedSeriesForMonthlyOrders">
+                        
+                        </LineChartClient>
+                      </ClientOnly>
                     </v-card-text>
                   </v-card>
                 </v-col>
                 <v-col cols="12">
                   <v-card :style="boxShadowStyle" class="p-2 bg-grey-darken-4 ">
                     <v-card-text>
-                        <LineChartClient v-if="computedSeriesForYearlyOrders && mounted"
-                          :chart-type="'area'"
-                          :height="300"
-                          :title-text="'Venit anual'"
-                          :title-alignment="'center'"
-                          :x-label="'Data'"
-                          :y-label="'Valoare(RON)'"
-                          :is-category-x-axis="false"
-                          :is-numeric-x-axis="false"
-                          :is-date-time-x-axis="true"
-                          :series="computedSeriesForYearlyOrders">
-                      
-                      </LineChartClient>
+                      <ClientOnly>
+                          <LineChartClient v-if="computedSeriesForYearlyOrders && mounted"
+                            :chart-type="'area'"
+                            :height="300"
+                            :title-text="'Venit anual'"
+                            :title-alignment="'center'"
+                            :x-label="'Data'"
+                            :y-label="'Valoare(RON)'"
+                            :is-category-x-axis="false"
+                            :is-numeric-x-axis="false"
+                            :is-date-time-x-axis="true"
+                            :series="computedSeriesForYearlyOrders">
+                        </LineChartClient>
+                      </ClientOnly>
                     </v-card-text>
                   </v-card>
                 </v-col>
                 <v-col cols="6">
                   <v-card :style="boxShadowStyle" class="p-2 bg-grey-darken-4 ">
                     <v-card-text>
-                        <LineChartClient v-if="computeSeriesFor10MostSelledProducts && mounted"
-                          :chart-type="'bar'"
-                          :height="300"
-                          :title-text="'10 cele mai vandute produse'"
-                          :title-alignment="'center'"
-                          :x-label="'COD PRODUS'"
-                          :y-label="'Valoare vanzari (RON)'"
-                          :categories="Object.keys(dashBoardData.venitTotalPeProdus)"
-                          :is-category-x-axis="true"
-                          :is-numeric-x-axis="false"
-                          :series="computeSeriesFor10MostSelledProducts">
-                      
-                      </LineChartClient>
+                      <ClientOnly>
+                          <LineChartClient v-if="computeSeriesFor10MostSelledProducts && mounted"
+                            :chart-type="'bar'"
+                            :height="300"
+                            :title-text="'10 cele mai vandute produse'"
+                            :title-alignment="'center'"
+                            :x-label="'COD PRODUS'"
+                            :y-label="'Valoare vanzari (RON)'"
+                            :categories="Object.keys(dashBoardData.venitTotalPeProdus)"
+                            :is-category-x-axis="true"
+                            :is-numeric-x-axis="false"
+                            :series="computeSeriesFor10MostSelledProducts">
+                          </LineChartClient>
+                      </ClientOnly>
                     </v-card-text>
                   </v-card>
                 </v-col>
                 <v-col cols="6">
                   <v-card :style="boxShadowStyle" class="p-2 bg-grey-darken-4 ">
                     <v-card-text>
-                      <LineChartClient v-if="computeSeriesForOrders && mounted" 
-                          :chart-type="'bar'"
-                          :height="300"
-                          :title-text="'Comenzi'"
-                          :title-alignment="'center'"
-                          :y-label="'Nr. comenzi'"
-                          :x-label="'Stare comenzi'"
-                          :categories="Object.keys(dashBoardData.tipuriComenziGeneral)"
-                          :is-category-x-axis="true"
-                          :is-numeric-x-axis="false"
-                          :series="computeSeriesForOrders">
-                      
-                      </LineChartClient>
+                      <ClientOnly>
+                        <LineChartClient v-if="computeSeriesForOrders && mounted" 
+                            :chart-type="'bar'"
+                            :height="300"
+                            :title-text="'Comenzi'"
+                            :title-alignment="'center'"
+                            :y-label="'Nr. comenzi'"
+                            :x-label="'Stare comenzi'"
+                            :categories="Object.keys(dashBoardData.tipuriComenziGeneral)"
+                            :is-category-x-axis="true"
+                            :is-numeric-x-axis="false"
+                            :series="computeSeriesForOrders">
+                        
+                        </LineChartClient>
+                      </ClientOnly>
                     </v-card-text>
                   </v-card>
                 </v-col>
                 <v-col cols="12">
                   <v-card :style="boxShadowStyle" class="p-2 bg-grey-darken-4 ">
                     <v-card-text>
-                      <LineChartClient v-if="computeSeriesForSalesPerProduct && mounted" 
-                          :chart-type="'bar'"
-                          :height="300"
-                          :title-text="'Venit pe produs'"
-                          :x-label="'COD PRODUS'"
-                          :y-label="'Valoare vanzari (RON)'"
-                          :title-alignment="'center'"
-                          :categories="Object.keys(dashBoardData.venitTotalPeProdus)"
-                          :is-category-x-axis="true"
-                          :is-numeric-x-axis="false"
-                          :series="computeSeriesForSalesPerProduct">
-                      
-                      </LineChartClient>
+                      <ClientOnly>
+                        <LineChartClient v-if="computeSeriesForSalesPerProduct && mounted" 
+                            :chart-type="'bar'"
+                            :height="300"
+                            :title-text="'Venit pe produs'"
+                            :x-label="'COD PRODUS'"
+                            :y-label="'Valoare vanzari (RON)'"
+                            :title-alignment="'center'"
+                            :categories="Object.keys(dashBoardData.venitTotalPeProdus)"
+                            :is-category-x-axis="true"
+                            :is-numeric-x-axis="false"
+                            :series="computeSeriesForSalesPerProduct">
+                        
+                        </LineChartClient>
+                      </ClientOnly>
                     </v-card-text>
                   </v-card>
                 </v-col>
                 <v-col cols="6">
                   <v-card :style="boxShadowStyle" class="p-2 bg-grey-darken-4 ">
                     <v-card-text>
-                      <LineChartClient v-if="computeBounceRate && mounted" 
-                          :chart-type="'bar'"
-                          :height="300"
-                          :title-text="'Rata de iesire (%)'"
-                          :title-alignment="'center'"
-                          :y-label="'Procentaj (%)'"
-                          :categories="['Rata de iesire (%)']"
-                          :is-category-x-axis="true"
-                          :is-numeric-x-axis="false"
-                          :series="computeBounceRate">
-                      
-                      </LineChartClient>
+                      <ClientOnly>
+                        <LineChartClient v-if="computeBounceRate && mounted" 
+                            :chart-type="'bar'"
+                            :height="300"
+                            :title-text="'Rata de iesire (%)'"
+                            :title-alignment="'center'"
+                            :y-label="'Procentaj (%)'"
+                            :categories="['Rata de iesire (%)']"
+                            :is-category-x-axis="true"
+                            :is-numeric-x-axis="false"
+                            :series="computeBounceRate">
+                        </LineChartClient>
+                      </ClientOnly>
                     </v-card-text>
                   </v-card>
                 </v-col>
                 <v-col cols="6">
                   <v-card :style="boxShadowStyle" class="p-2 bg-grey-darken-4 ">
                     <v-card-text>
-                      <LineChartClient v-if="computeAverageSessionTime&&mounted" 
-                          :chart-type="'bar'"
-                          :height="300"
-                          :title-text="'Utilizatorul normal'"
-                          :title-alignment="'center'"
-                          :y-label="'Minute'"
-                          :categories="['Sesiune media a utilizatorului']"
-                          :is-category-x-axis="true"
-                          :is-numeric-x-axis="false"
-                          :series="computeAverageSessionTime">
-                      
-                      </LineChartClient>
+                      <ClientOnly>
+                        <LineChartClient v-if="computeAverageSessionTime&&mounted" 
+                            :chart-type="'bar'"
+                            :height="300"
+                            :title-text="'Utilizatorul normal'"
+                            :title-alignment="'center'"
+                            :y-label="'Minute'"
+                            :categories="['Sesiune media a utilizatorului']"
+                            :is-category-x-axis="true"
+                            :is-numeric-x-axis="false"
+                            :series="computeAverageSessionTime">
+                        
+                        </LineChartClient>
+                      </ClientOnly>
                     </v-card-text>
                   </v-card>
                 </v-col>
                 <v-col cols="6">
                   <v-card :style="boxShadowStyle" class="p-2 bg-grey-darken-4 ">
                     <v-card-text>
-                      <LineChartClient v-if="computeEngagementSession && mounted" 
-                          :chart-type="'bar'"
-                          :height="300"
-                          :title-text="'Numarul de sesiuni mai lungi (>10 secunde)'"
-                          :title-alignment="'center'"
-                          :y-label="'Numar sesiuni'"
-                          :categories="['Numarul de sesiuni']"
-                          :is-category-x-axis="true"
-                          :is-numeric-x-axis="false"
-                          :series="computeEngagementSession">
-                      
-                      </LineChartClient>
+                        <ClientOnly>
+                          <LineChartClient v-if="computeEngagementSession && mounted" 
+                              :chart-type="'bar'"
+                              :height="300"
+                              :title-text="'Numarul de sesiuni mai lungi (>10 secunde)'"
+                              :title-alignment="'center'"
+                              :y-label="'Numar sesiuni'"
+                              :categories="['Numarul de sesiuni']"
+                              :is-category-x-axis="true"
+                              :is-numeric-x-axis="false"
+                              :series="computeEngagementSession">
+                          
+                          </LineChartClient>
+                      </ClientOnly>
                     </v-card-text>
                   </v-card>
                 </v-col>
                 <v-col cols="6">
                   <v-card :style="boxShadowStyle" class="p-2 bg-grey-darken-4 ">
                     <v-card-text>
-                      <LineChartClient v-if="computeEngagementRate&&mounted" 
-                          :chart-type="'bar'"
-                          :height="300"
-                          :title-text="'Rata de angajament mai lunga (>10 secunde)'"
-                          :title-alignment="'center'"
-                          :y-label="'Procentaj (%)'"
-                          :categories="['Sesiune media a utilizatorului']"
-                          :is-category-x-axis="true"
-                          :is-numeric-x-axis="false"
-                          :series="computeEngagementRate">
-                      
-                      </LineChartClient>
+                      <ClientOnly>
+                        <LineChartClient v-if="computeEngagementRate&&mounted" 
+                            :chart-type="'bar'"
+                            :height="300"
+                            :title-text="'Rata de angajament mai lunga (>10 secunde)'"
+                            :title-alignment="'center'"
+                            :y-label="'Procentaj (%)'"
+                            :categories="['Sesiune media a utilizatorului']"
+                            :is-category-x-axis="true"
+                            :is-numeric-x-axis="false"
+                            :series="computeEngagementRate">
+                        
+                        </LineChartClient>
+                      </ClientOnly>
                     </v-card-text>
                   </v-card>
                 </v-col>
@@ -666,7 +683,8 @@
 import adminService from '~/services/Admin';
 import { VDateInput } from 'vuetify/labs/components';
 import { mdiEye, mdiMinus, mdiMonitorDashboard, mdiPlus, mdiRefresh, mdiRefreshCircle } from '@mdi/js';
-import LineChartClient from '~/components/admin/ApexCharts/LineChart.client.vue';
+// import LineChartClient from '~/components/admin/ApexCharts/LineChart.client.vue';
+const LineChartClient = defineAsyncComponent(() => import('~/components/admin/ApexCharts/LineChart.client.vue'))
 const dashBoardData = ref({
   pretMediuComandaGeneral: 0,
   // tipuriClientiGeneral : {},

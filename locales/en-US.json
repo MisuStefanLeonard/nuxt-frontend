@@ -587,8 +587,12 @@
     },
     
     "footer": {
-      "title": "Texx.ro",
-      "clientSupprt": "Customer Support",
+      "title": "Takdecor",
+      "mondayToFriday" : "Monday - Friday: ",
+      "callNow" : "Call now!",
+      "leaveMail": "Leave us a mail!",
+      "office" : "Office location",
+      "clientSupport": "Customer Support",
       "info": "Information",
       "titleSubText": {
         "termsAndConditions": "Terms and Conditions",

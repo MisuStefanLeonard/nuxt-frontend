@@ -57,13 +57,12 @@
 import { mdiArrowRight } from '@mdi/js';
 import { useDisplay } from 'vuetify';
 import ContactBannerFooter from '~/components/user/ContactBannerFooter.vue';
+import userService from '~/services/User';
 
 useHead({
   title : `Servicii`,
-  keywords: 'Servicii montaj cuverturi, Draperii personalizate pentru locuințe, Perne decorative la comandă, Decor textil interior la domiciliu, Consultanță perdele acasă, Instalare profesională draperii, Cuverturi livrate și montate, Textile pentru decorarea locuinței, Măsurători perdele la fața locului, Amenajare textilă rezidențială, Stilizare interioară cu textile, Montaj perdele și draperii, Textile elegante pentru dormitor, Consultanță decor la domiciliu, Cuverturi și accesorii de lux, Servicii textile pentru camere rezidențiale, Perdele la comandă cu montaj, Personalizare perne și lenjerii, Instalare galerii de perdele, Decor textil complet pentru casă, Bedspread installation services, Custom drapes for homes, Decorative pillow design services, Personalized textile decor for interiors, Home visit for curtain consultation, Premium curtains installation, Bedspread design and delivery, Home decor textile services, On-site drapery measurement, Residential textile decoration, Home styling with textiles, Curtain and drape mounting service, Elegant bedroom textiles, Home visit decor consultations, Luxury bedspreads and accessories, Textile setup for residential interiors, Made-to-measure curtains service, Pillow and bedding customization, Curtain rod installation services, Full-service home textile decor',
+  keywords: "Servicii montaj cuverturi, Draperii personalizate pentru locuințe, Perne decorative la comandă, Decor textil interior la domiciliu, Consultanță perdele acasă, Instalare profesională draperii, Cuverturi livrate și montate, Textile pentru decorarea locuinței, Măsurători perdele la fața locului, Amenajare textilă rezidențială, Stilizare interioară cu textile, Montaj perdele și draperii, Textile elegante pentru dormitor, Consultanță decor la domiciliu, Cuverturi și accesorii de lux, Servicii textile pentru camere rezidențiale, Perdele la comandă cu montaj, Personalizare perne și lenjerii, Instalare galerii de perdele, Decor textil complet pentru casă, Bedspread installation services, Custom drapes for homes, Decorative pillow design services, Personalized textile decor for interiors, Home visit for curtain consultation, Premium curtains installation, Bedspread design and delivery, Home decor textile services, On-site drapery measurement, Residential textile decoration, Home styling with textiles, Curtain and drape mounting service, Elegant bedroom textiles, Home visit decor consultations, Luxury bedspreads and accessories, Textile setup for residential interiors, Made-to-measure curtains service, Pillow and bedding customization, Curtain rod installation services, Full-service home textile decor",
   layout: 'default',
-  siteName : 'Takdecor - Servicii',
-  description : 'Servicii Takdecor - Home decor. Oferim servicii de cea mai inalta calitate, montare de galerii,draperii,perdele cat si solutii de decorare camerei dumnevoastra'
 })
 
 useSeoMeta({
@@ -71,6 +70,7 @@ useSeoMeta({
   ogSiteName : 'Takdecor - Servicii',
   ogType: 'website',
   ogDescription : 'Servicii de montare draperii,galerii,perdele cat si cele mai calitative cuverturi din Romania, marca Reig Marti.',
+  description : 'Servicii Takdecor - Home decor. Oferim servicii de cea mai inalta calitate, montare de galerii,draperii,perdele cat si solutii de decorare camerei dumnevoastra'
 })
 
 const carouselImgs = ['/cuv1.jpeg','/cuv2.jpeg','/cuv3.jpeg','/cuv4.jpeg','/cuv5.jpeg','/cuv6.jpeg',]
@@ -80,6 +80,36 @@ const height = computed(() => {
       case 'xs': return true
       default : return 3
     }
+})
+
+const showFreeDeliveryBanner = ref(false)
+const generalSettings = ref({})
+const selectedCurrency = useState('selectedCurrency');
+
+const getGeneralSettings = (async () => {
+  const response = await userService.getGeneralSettingsData("pret_comanda_minima" , selectedCurrency.value)
+  generalSettings.value = response;
+  if(generalSettings.value.value === null 
+    || generalSettings.value.value === ""
+    || generalSettings.value.value === undefined){
+      showFreeDeliveryBanner.value = false
+  }
+
+})
+
+
+const getMinOrderPriceForFreeDelivery = computed(() => {
+  if(generalSettings){
+    showFreeDeliveryBanner.value = true
+    if(selectedCurrency.value === 'RON')
+      return generalSettings.value.value
+    return generalSettings.value.value / 5
+  }
+  
+})
+
+onMounted(async () => {
+ await getGeneralSettings();
 })
 
 </script>

@@ -145,26 +145,23 @@
                                 <v-card-text class="h-100">
                                     <v-row>
                                         <v-col cols="12">
-                                            <v-img  v-if="findFirstColorWithImage(product) !== 'empty'"
-                                                :aspect-ratio="10 / 9"
-                                                
-                                                eager class=" h-75 p-2 cursor-pointer  "
+                                          <NuxtImg v-if="findFirstColorWithImage(product) !== 'empty'"
+                                                 :width="height === true ? 175 : 300" :height="height === true ? 175 : 300" preload fit="cover"
+                                                 class=" h-100 p-2 cursor-pointer  "
                                                 :alt="`${product.numeProdusDto} + culoare ${product.culoriProdusDto[0].numeCuloareDto}`"
                                                 :src="findFirstColorWithImage(product)" 
                                                 @click="navigateTo(localePath(`/product/${product.codProdusDto}/${product.tipulProdusuluiDto}`))" 
                                                 v-bind="props">
                                             
-                                            </v-img>
-                                            <v-img v-else
-                                                
-                                                :aspect-ratio="10 / 9"
-                                                eager class="h-75 p-2 cursor-pointer "
+                                            </NuxtImg>
+                                            <NuxtImg v-else
+                                                :width="height === true ? 175 : 300" :height="height === true ? 175 : 300" preload fit="cover"
+                                                class="h-100 p-2 cursor-pointer "
                                                 :alt="`Image ${product.numeProdusDto}`"
                                                 @click="navigateTo(localePath(`/product/${product.codProdusDto}/${product.tipulProdusuluiDto}`))" 
                                                 src="/notFound.png" 
                                                 v-bind="props" >
-                                            </v-img>
-                                            
+                                            </NuxtImg>
                                         </v-col>
                                         <v-col cols="12">
                                             <p v-if="product.pretBazaRedusDto === 0"  class="text-center font-weight-thin h5 mx-2">{{ product.pretBazaDto }} {{selectedCurrency}}</p>
@@ -184,15 +181,9 @@
                                     </v-row>
                                 </v-card-text>
                             </v-card>
-                            
-                            
-
                             </div>
-                        
                       </template>
                     </v-tooltip>
-                        
-                    
                     </v-slide-group-item>
                 </v-slide-group>
             </v-sheet>
@@ -239,26 +230,23 @@
                                 <v-card-text class="h-100">
                                     <v-row>
                                         <v-col cols="12">
-                                            <v-img  v-if="findFirstColorWithImage(product) !== 'empty'"
-                                                :aspect-ratio="10 / 9"
-                                                
-                                                eager class=" h-75 p-2 cursor-pointer  "
+                                          <NuxtImg v-if="findFirstColorWithImage(product) !== 'empty'"
+                                                 :width="height === true ? 175 : 300" :height="height === true ? 175 : 300" preload fit="cover"
+                                                 class=" h-100 p-2 cursor-pointer  "
                                                 :alt="`${product.numeProdusDto} + culoare ${product.culoriProdusDto[0].numeCuloareDto}`"
                                                 :src="findFirstColorWithImage(product)" 
                                                 @click="navigateTo(localePath(`/product/${product.codProdusDto}/${product.tipulProdusuluiDto}`))" 
                                                 v-bind="props">
                                             
-                                            </v-img>
-                                            <v-img v-else
-                                                
-                                                :aspect-ratio="10 / 9"
-                                                eager class="h-75 p-2 cursor-pointer "
+                                            </NuxtImg>
+                                            <NuxtImg v-else
+                                                :width="height === true ? 175 : 300" :height="height === true ? 175 : 300" preload fit="cover"
+                                                class="h-100 p-2 cursor-pointer "
                                                 :alt="`Image ${product.numeProdusDto}`"
                                                 @click="navigateTo(localePath(`/product/${product.codProdusDto}/${product.tipulProdusuluiDto}`))" 
                                                 src="/notFound.png" 
                                                 v-bind="props" >
-                                            </v-img>
-                                            
+                                            </NuxtImg>
                                         </v-col>
                                         <v-col cols="12">
                                             <p v-if="product.pretBazaRedusDto === 0"  class="text-center font-weight-thin h5 mx-2">{{ product.pretBazaDto }} {{selectedCurrency}}</p>
@@ -278,15 +266,9 @@
                                     </v-row>
                                 </v-card-text>
                             </v-card>
-                            
-                            
-
                             </div>
-                        
                       </template>
                     </v-tooltip>
-                        
-                    
                     </v-slide-group-item>
                 </v-slide-group>
             </v-sheet>
@@ -333,24 +315,23 @@
                                 <v-card-text class="h-100">
                                     <v-row>
                                         <v-col cols="12">
-                                            <v-img  v-if="findFirstColorWithImage(product) !== 'empty'"
-                                                :aspect-ratio="10 / 9"
-                                                eager class=" h-75 p-2 cursor-pointer  "
+                                            <NuxtImg v-if="findFirstColorWithImage(product) !== 'empty'"
+                                                 :width="height === true ? 175 : 300" :height="height === true ? 175 : 300" preload fit="cover"
+                                                 class=" h-100 p-2 cursor-pointer  "
                                                 :alt="`${product.numeProdusDto} + culoare ${product.culoriProdusDto[0].numeCuloareDto}`"
                                                 :src="findFirstColorWithImage(product)" 
                                                 @click="navigateTo(localePath(`/product/${product.codProdusDto}/${product.tipulProdusuluiDto}`))" 
                                                 v-bind="props">
                                             
-                                            </v-img>
-                                            <v-img v-else
-                                                
-                                                :aspect-ratio="10 / 9"
-                                                eager class="h-75 p-2 cursor-pointer "
+                                            </NuxtImg>
+                                            <NuxtImg v-else
+                                                :width="height === true ? 175 : 300" :height="height === true ? 175 : 300" preload fit="cover"
+                                                class="h-100 p-2 cursor-pointer "
                                                 :alt="`Image ${product.numeProdusDto}`"
                                                 @click="navigateTo(localePath(`/product/${product.codProdusDto}/${product.tipulProdusuluiDto}`))" 
                                                 src="/notFound.png" 
                                                 v-bind="props" >
-                                            </v-img>
+                                            </NuxtImg>
                                             
                                         </v-col>
                                         <v-col cols="12">
@@ -399,13 +380,6 @@
           </v-card>
         </v-col>
       </v-row>
-      <!-- <v-divider opacity="0"></v-divider>
-      <v-divider opacity="0"></v-divider>
-      <div class="mt-4 text-center">
-        <p class="font-weight-thin h3">{{ $t('homePage.text18') }}</p>
-        <v-btn variant="flat" color="green" class="rounded-xl" @click="navigateTo(localePath('/contact'))">
-          {{ $t('homePage.text17') }} <v-icon class="ml-3"  :icon="mdiCardAccountMail" size="24"></v-icon></v-btn>
-      </div> -->
     </section>
     <v-divider opacity="0"></v-divider>
     <v-divider opacity="0"></v-divider>
@@ -502,7 +476,6 @@ const getNewProducts = (async () => {
 
 const getUserPreferences = (async () => {
   const response = await productService.getMostViewedProducts(selectedCurrency.value)
-  console.log(response)
   if(response && response.length > 0){
     userPreferencesProducts.value = response
   }

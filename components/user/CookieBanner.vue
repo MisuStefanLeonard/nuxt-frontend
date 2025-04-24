@@ -3,7 +3,12 @@
         <v-dialog v-model="dialog" persistent max-width="1000">
             <v-card class="bg-grey-darken-4 ">
                 <v-card-title class="text-center bg-grey-darken-4" >
-                    <img src="../../assets/LogoTexx.png" alt="Logo" height=45 class="mr-1">
+                    <NuxtImg
+                     src="/LogoTexx.png" 
+                     alt="Logo" :height="45" :width="45" 
+                     class="mr-1"
+                     format="webp"
+                     preload/>
                 </v-card-title>
                 <v-card-text class="text-left">
                     <v-row>
@@ -45,6 +50,8 @@
 </template>
 
 <script setup>
+import { NuxtImg } from '#components'
+
 
 const {t} = useI18n()
 const dialog = ref(false)

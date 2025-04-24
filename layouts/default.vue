@@ -18,27 +18,26 @@
   import FooterComp from '~/components/user/FooterComp.vue';
   import FirstTimeEntering from '~/components/user/FirstTimeEntering.vue';
   import CookieBanner from '~/components/user/CookieBanner.vue';
-  import { ref, onMounted } from 'vue';
-  import { useNuxtApp } from '#app';
 
   const route = useRoute();
-  const i18n = useI18n()
   const runTimeConfigs = useRuntimeConfig()
-  const canonicalUrl = ref(`${runTimeConfigs.public.siteUrl}${route.fullPath}`)
+  const canonicalUrl = computed(() => `${runTimeConfigs.public.siteUrl}${route.fullPath}`)
+  const head = useLocaleHead({
+    seo: true,
+    dir: true,
+    lang: true,
+  })
 
-  useHead({
+  useHead(() => ({
     titleTemplate : (titleChunk) => {
       return titleChunk ? `${titleChunk}` : 'Site Title';
     },
-    htmlAttrs:{
-      lang: i18n.locale.value
+    htmlAttrs : {
+      lang: head.value.htmlAttrs.lang
     },
     link: [
-      ...useLocaleHead({ addSeoAttributes: true }).value.link.filter(l => l.rel !== 'canonical'),
-      {
-        rel: 'canonical',
-        href: canonicalUrl.value
-      }
+      {rel: 'canonical' , href: `${canonicalUrl.value}`},
+      ...(head.value.link.filter(h => h.hreflang && h.hreflang.includes('-')) || [])
     ],
     meta : [
       {
@@ -97,13 +96,7 @@
             height="0" width="0" style="display:none;visibility:hidden"></iframe>`,
       }
     ],
-    link:
-      [
-        // { rel: 'icon', type: 'image/png', href: 'favicon-16x16.png' },
-        // { rel: 'icon', type: 'image/png', href: 'favicon-32x32.png' },
-        { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-      ]
-  
-  })
+
+  }))
 
 </script>

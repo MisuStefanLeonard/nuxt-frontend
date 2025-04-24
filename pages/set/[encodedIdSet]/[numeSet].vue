@@ -25,23 +25,15 @@
                                             @click="dialog = true"
                                             format="webp"
                                             sizes="md:800px"
+                                            alt="zoomed image"
                                             :width="screenSize.width"
                                             :height="screenSize.height"
                                             class="cursor-pointer"
                                             >
 
                                             </NuxtImg>
-                                            <!-- <v-img
-                                                :src="selectedImage.url" 
-                                                eager 
-                                                class="cursor-pointer"
-                                                :aspect-ratio="4 / 4"
-                                                @click="dialog = true"
-                                                v-bind="props" >
-                                            </v-img> -->
                                         </template>
                                     </v-tooltip>
-                                    
                                 </v-col>
                             </v-row>
                               
@@ -66,6 +58,7 @@
                                                     preload
                                                     format="webp"
                                                     class="mx-5 my-5 w-50"
+                                                    alt="zoomed image"
                                                     @click="() => { toggle(); selectImage(image); }"
                                                         :class="selectedClass " 
                                                         v-bind="props" 
@@ -81,25 +74,6 @@
                                                             </v-scale-transition>
                                                         </div>
                                                     </NuxtImg>
-                                                    <!-- <v-img
-                                                        eager
-                                                        :aspect-ratio="7 / 8"
-                                                        :src="image.url"
-                                                        class="mx-5 w-50"
-                                                        @click="() => { toggle(); selectImage(image); }"
-                                                        :class="selectedClass " 
-                                                        v-bind="props" >
-                                                        <div class="d-flex fill-height align-center justify-center">
-                                                            <v-scale-transition>
-                                                                <v-icon
-                                                                    v-if="isSelected"
-                                                                    color="black"
-                                                                    icon="mdi-close-circle-outline"
-                                                                    size="24"
-                                                                ></v-icon>
-                                                            </v-scale-transition>
-                                                        </div>
-                                                    </v-img> -->
                                                 </template>
                                             </v-tooltip>
                                         </v-slide-group-item>
@@ -113,6 +87,7 @@
                                                 :src="selectedImage.url"
                                                 aspect-ratio="16/9"
                                                 class="mx-auto"
+                                                alt="selected image url"
                                             ></v-img>
                                         </v-card-text>
                                         <v-card-actions>

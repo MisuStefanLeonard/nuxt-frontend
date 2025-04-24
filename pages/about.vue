@@ -105,6 +105,9 @@
 <script setup>
 import { useDisplay } from 'vuetify';
 import ContactBannerFooter from '~/components/user/ContactBannerFooter.vue';
+import userService from '~/services/User';
+
+
 definePageMeta({
   title : `Takdecor - Despre noi`,
   keywords: [
@@ -214,6 +217,36 @@ const height = computed(() => {
       case 'xs': return true
       default : return 3
     }
+})
+
+const showFreeDeliveryBanner = ref(false)
+const generalSettings = ref({})
+const selectedCurrency = useState('selectedCurrency');
+
+const getGeneralSettings = (async () => {
+  const response = await userService.getGeneralSettingsData("pret_comanda_minima" , selectedCurrency.value)
+  generalSettings.value = response;
+  if(generalSettings.value.value === null 
+    || generalSettings.value.value === ""
+    || generalSettings.value.value === undefined){
+      showFreeDeliveryBanner.value = false
+  }
+
+})
+
+
+const getMinOrderPriceForFreeDelivery = computed(() => {
+  if(generalSettings){
+    showFreeDeliveryBanner.value = true
+    if(selectedCurrency.value === 'RON')
+      return generalSettings.value.value
+    return generalSettings.value.value / 5
+  }
+  
+})
+
+onMounted(async () => {
+ await getGeneralSettings();
 })
 
 </script>

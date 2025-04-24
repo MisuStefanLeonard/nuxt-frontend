@@ -56,6 +56,7 @@
                                                 :src="product.cartItems[0].culoareSelectata.imaginiProdusDto[0].presignedUrl"
                                                 fit="cover"
                                                 sizes="sm:400 md:800"
+                                                format="webp"
                                                 :width="dimensionsForImage.width"
                                                 :height="dimensionsForImage.height"
                                                 class="border-sm" >
@@ -64,6 +65,7 @@
                                                 src="notFound.png"
                                                 fit="cover"
                                                 sizes="sm:400 md:800"
+                                                format="webp"
                                                 :width="dimensionsForImage.width"
                                                 :height="dimensionsForImage.height"
                                                 class="border-sm" >
@@ -80,6 +82,7 @@
                                                 :src="getFirstImageFromSet(product.cartItems)"
                                                 sizes="sm:400 md:800"
                                                 :width="dimensionsForImage.width"
+                                                format="webp"
                                                 :height="dimensionsForImage.height"
                                                 class="border-sm" >
                                             </NuxtImg>
@@ -87,6 +90,7 @@
                                                 src="notFound.png"
                                                 sizes="sm:400 md:800"
                                                 :width="dimensionsForImage.width"
+                                                format="webp"
                                                 :height="dimensionsForImage.height"
                                                 class="border-sm" >
                                             </NuxtImg>
@@ -157,6 +161,7 @@
                                                 :src="productInSet.culoareSelectata.imaginiProdusDto[0].presignedUrl"
                                                 fit="cover"
                                                 sizes="sm:400 md:800"
+                                                format="webp"
                                                 :width="dimensionsForImage.width"
                                                 :height="dimensionsForImage.height"
                                                 class="border-sm" >
@@ -164,6 +169,7 @@
                                                 <NuxtImg v-else preload
                                                     src="notFound.png"
                                                     sizes="sm:400 md:800"
+                                                    format="webp"
                                                     :width="dimensionsForImage.width"
                                                     :height="dimensionsForImage.height"
                                                     class="border-sm" >
@@ -224,13 +230,14 @@
                                                                         :alt="currentCurrency === 'RON' ? 'Imaginea tipului de rejansa' : 'Image of rennaisance type '"
                                                                         :src="productInSet.selectedManopera.tipGalerie.presignedUrl"
                                                                         :width="dimensionsForImage.width"
-                                                                        :height="dimensionsForImage.height">
+                                                                        :height="dimensionsForImage.height"
+                                                                        format="webp">
                                                                         >
                                                                         </NuxtImg>
                                                                         <NuxtImg src="/notFound.png" v-else
                                                                         alt="Not found image"
                                                                         :width="dimensionsForImage.width"
-                                                                        :height="dimensionsForImage.height"></NuxtImg>
+                                                                        :height="dimensionsForImage.height"  format="webp"></NuxtImg>
                                                                     </v-card-text>
                                                                 </v-card>
                                                             </v-stepper-window-item>
@@ -245,14 +252,15 @@
                                                                         :alt="currentCurrency === 'RON' ? 'Imaginea culorii inelului' : 'Image of ring color '"
                                                                         :src="productInSet.selectedManopera.tipInel.presignedUrl"
                                                                         :width="dimensionsForImage.width"
-                                                                        :height="dimensionsForImage.height">
-                                                                        >
+                                                                        :height="dimensionsForImage.height"
+                                                                        format="webp">
+                                                                        
 
                                                                         </NuxtImg>
                                                                         <NuxtImg src="/notFound.png" v-else
                                                                         alt="Not found image"
                                                                         :width="dimensionsForImage.width"
-                                                                        :height="dimensionsForImage.height"></NuxtImg>
+                                                                        :height="dimensionsForImage.height"  format="webp"></NuxtImg>
                                                                     </v-card-text>
                                                                 </v-card>
                                                             </v-stepper-window-item>
@@ -267,14 +275,14 @@
                                                                         :src="productInSet.selectedManopera.tipLinie.presignedUrl"
                                                                         :alt="currentCurrency === 'RON' ? 'Imaginea tipului de cusatura de colt' : 'Cornet stich image '"
                                                                         :width="dimensionsForImage.width"
-                                                                        :height="dimensionsForImage.height">
-                                                                        >
+                                                                        :height="dimensionsForImage.height"  format="webp">
+                                                                        
 
                                                                         </NuxtImg>
                                                                         <NuxtImg src="/notFound.png" v-else
                                                                         alt="Not found image"
                                                                         :width="dimensionsForImage.width"
-                                                                        :height="dimensionsForImage.height"></NuxtImg>
+                                                                        :height="dimensionsForImage.height"  format="webp"></NuxtImg>
                                                                     </v-card-text>
                                                                 </v-card>
                                                             </v-stepper-window-item>
@@ -395,15 +403,15 @@
                                                         <p class="font-weight-light h6">{{ $t('shopSeturi.rejansaIncretire') }} {{ product.cartItems[0].selectedManopera.tipGalerie.incretireRejansa  }}</p>
                                                         <p class="font-weight-light h6">{{ $t('shopSeturi.catchWithRings') }} {{ product.cartItems[0].selectedManopera.tipGalerie.sePrindeCuInele === true ? 'Da' : 'Nu'  }}</p>
                                                         <p class="font-weight-light h6">{{ $t('cart.meterPrice') }} {{ product.cartItems[0].selectedManopera.tipGalerie.pretTipRejansa }}  {{ currentCurrency === 'RON' ? 'RON' : 'EUR' }}</p>
-                                                        <NuxtImg preload v-if="product.cartItems[0].selectedManopera.tipGalerie.presignedUrl !== 'empty'"
+                                                        <NuxtImg  format="webp" preload v-if="product.cartItems[0].selectedManopera.tipGalerie.presignedUrl !== 'empty'"
                                                         :alt="currentCurrency === 'RON' ? 'Imaginea tipului de rejansa' : 'Image of rennaisance type '"
                                                         :src="product.cartItems[0].selectedManopera.tipGalerie.presignedUrl"
                                                         :width="dimensionsForImage.width"
                                                         :height="dimensionsForImage.height">
                                                         >
                                                         </NuxtImg>
-                                                        <NuxtImg src="/notFound.png" v-else
-                                                        alt="Not found image"
+                                                        <NuxtImg  format="webp" src="/notFound.png" v-else
+                                                        alt="Not found image" preload
                                                         :width="dimensionsForImage.width"
                                                         :height="dimensionsForImage.height"></NuxtImg>
                                                     </v-card-text>
@@ -416,7 +424,7 @@
                                                     </v-card-title>
                                                     <v-card-text >
                                                         <p class="font-weight-light h6">{{ $t('shop.color') }} : {{ product.cartItems[0].selectedManopera.tipInel.numeTipInel  }}</p>
-                                                        <NuxtImg preload v-if="product.cartItems[0].selectedManopera.tipInel.presignedUrl !== 'empty'"
+                                                        <NuxtImg  format="webp" preload v-if="product.cartItems[0].selectedManopera.tipInel.presignedUrl !== 'empty'"
                                                         :alt="currentCurrency === 'RON' ? 'Imaginea culorii inelului' : 'Image of ring color '"
                                                         :src="product.cartItems[0].selectedManopera.tipInel.presignedUrl"
                                                         :width="dimensionsForImage.width"
@@ -425,7 +433,7 @@
 
                                                         </NuxtImg>
                                                         <NuxtImg src="/notFound.png" v-else
-                                                        alt="Not found image"
+                                                        alt="Not found image" preload  format="webp"
                                                         :width="dimensionsForImage.width"
                                                         :height="dimensionsForImage.height"></NuxtImg>
                                                     </v-card-text>
@@ -440,7 +448,7 @@
                                                         <p class="font-weight-light h6">{{ $t('profile.personalDataGeneral.name') }} : {{ product.cartItems[0].selectedManopera.tipLinie.numeTipCusaturaColt  }}</p>
                                                         <p class="font-weight-light h6">{{ $t('cart.meterPrice') }} {{  product.cartItems[0].selectedManopera.tipLinie.pretTipCusaturaColt }}  {{ currentCurrency === 'RON' ? 'RON' : 'EUR'}} </p>                                                          
                                                         <p class="font-weight-light h6">{{ $t('profile.personalDataGeneral.name') }} : {{ product.cartItems[0].selectedManopera.tipLinie.numeTipCusaturaColt  }}</p>
-                                                        <NuxtImg preload v-if="product.cartItems[0].selectedManopera.tipLinie.presignedUrl !== 'empty'"
+                                                        <NuxtImg  format="webp" preload v-if="product.cartItems[0].selectedManopera.tipLinie.presignedUrl !== 'empty'"
                                                         :src="product.cartItems[0].selectedManopera.tipLinie.presignedUrl"
                                                         :alt="currentCurrency === 'RON' ? 'Imaginea tipului de cusatura de colt' : 'Cornet stich image '"
                                                         :width="dimensionsForImage.width"
@@ -448,7 +456,7 @@
                                                         >
 
                                                         </NuxtImg>
-                                                        <NuxtImg src="/notFound.png" v-else
+                                                        <NuxtImg  format="webp" src="/notFound.png" v-else
                                                         alt="Not found image"
                                                         :width="dimensionsForImage.width"
                                                         :height="dimensionsForImage.height"></NuxtImg>

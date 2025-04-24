@@ -14,7 +14,7 @@
       <div class="d-flex align-center justify-center flex-grow-1">
         <v-toolbar-title class="d-flex align-center justify-center">
           <NuxtLink :to="localePath('/home')" style="cursor: pointer" class="text-decoration-none d-flex align-center">
-            <img src="../../assets/LogoTexx.png" alt="Logo" height=45 class="mr-1" preload/>
+            <NuxtImg loading="lazy" src="/LogoTexx.png" alt="Logo" :height="45" :width="45" class="mr-1" preload  format="webp"/>
           </NuxtLink>
         </v-toolbar-title>
       </div>
@@ -125,31 +125,27 @@ if (emitter) {
     isLoggedIn.value = status;
   })
 }
-const getCartCount = function(){ 
+const getCartCount = computed(() => { 
   try {
     localStorage.setItem('test' , 'test');
     var getItem = localStorage.getItem('test');
     if(getItem !== null ){
       localStorage.removeItem('test');
       var cartCountS = localStorage.getItem('cartCount');
-     
       if(cartCountS === null){
         localStorage.setItem('cartCount' , '0')
       }
-
       cartCountS = localStorage.getItem('cartCount')
-      
       cartCount.value = String(parseInt(cartCountS))
     }
   } catch (exception) {
     console.error("Local storage not available" , ex);
     return 0 // def value
   }
-}
+})
 
 const getProductTypesAndCategories = (async () => {
   const productTypesAndCategories = await productService.getProductTypesAndCategoriesForUser()
-  console.log(productTypesAndCategories)
   productTypesRo.value = productTypesAndCategories.productTypesJson.map(elem => elem.tip_ro)
   productTypesEn.value = productTypesAndCategories.productTypesJson.map(elem => elem.tip_en)
   
@@ -207,7 +203,7 @@ function isAuthenticated() {
 onMounted(async () => {
   isLoggedIn.value = isAuthenticated();
   isClient.value = true;
-  getCartCount()
+  console.log(getCartCount.value)
   await getProductTypesAndCategories()
 })
 

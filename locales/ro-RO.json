@@ -600,8 +600,12 @@
     },
     
     "footer" : {
-        "title" : "Texx.ro",
-        "clientSupprt" : "Suport clienti",
+        "title" : "Takdecor",
+        "mondayToFriday" : "Luni - Vineri: ",
+        "callNow" : "Suna acum!",
+        "clientSupport" : "Suport clienti",
+        "leaveMail": "Lasa-ne un mail!",
+        "office" : "Sediu",
         "info" : "Informatii",
         "titleSubText" : {
             "termsAndConditions" : "Termeni si conditii",

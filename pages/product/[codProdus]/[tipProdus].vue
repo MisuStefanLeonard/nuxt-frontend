@@ -30,13 +30,15 @@
                                             v-bind="props"
                                             @click="dialog = true"
                                             format="webp"
+                                            alt="selected_image"
                                             sizes="md:800px sm:400px"
                                             :width="screenSize.width"
                                             :height="screenSize.height"
                                             class="cursor-pointer"
                                             ></NuxtImg>
                                             <v-img v-else
-                                            src="/notFound.png">
+                                            src="/notFound.png"
+                                            alt="notFound image">
                                                 
                                             </v-img>
                                         </template>
@@ -75,6 +77,7 @@
                                                     format="webp"
                                                     class="mx-5 my-5 w-50"
                                                     sizes="xs:200px"
+                                                    alt="selected_image"
                                                     @click="() => { toggle(); selectImage(image); }"
                                                         :class="selectedClass " 
                                                         v-bind="props" 
@@ -101,6 +104,7 @@
                                             <v-img
                                                 :src="selectedImage.imageUrl"
                                                 aspect-ratio="16/9"
+                                                alt="selected image in dialog"
                                                
                                             ></v-img>
                                         </v-card-text>

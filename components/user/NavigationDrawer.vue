@@ -3,9 +3,10 @@
     <div class="text-center">
       <NuxtImg
        class="text-center"
-        src="/LogoTexx.png"
-        width="75"
-        height="75">
+        src="/LogoTexx.png"  format="webp"
+        width="75" loading="lazy"
+        height="75"
+        alt="Logo">
 
         </NuxtImg>
     </div>
