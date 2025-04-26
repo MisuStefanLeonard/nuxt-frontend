@@ -14,10 +14,10 @@
         </v-alert>
         <v-container class="text-h5 d-block justify-center">
           <v-card class="bg-blue-grey-lighten-4">
-            <v-card-title class="text-h6 text-md-h5 text-lg-h4">texx.ro</v-card-title>
+            <v-card-title class="text-h6 text-md-h5 text-lg-h4">Takdecor.ro</v-card-title>
             <v-card-text class="font-weight-light">
               <template v-if="confirmationSucces">
-                Bun venit pe texx.ro!
+                Bun venit pe Takdecor.ro!
               </template>
               <template v-if="expiredLink">
                 {{ $t('messages.textExpiredLink') }}
@@ -59,7 +59,7 @@ definePageMeta({
     title : 'Confirmare cont',
     layout: 'default',
     keywords:'account confirmation , confirmare cont',
-    siteName : 'Texx - Confirmare cont',
+    siteName : 'Takdecor - Confirmare cont',
   })
 
   useHead({

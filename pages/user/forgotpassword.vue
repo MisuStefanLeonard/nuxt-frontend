@@ -61,11 +61,11 @@ definePageMeta({
   title : 'Resetare parola',
   layout: 'default',
   keywords:'forgot password , uitare parola , am uitat parola',
-  siteName : 'Texx - Resetare',
+  siteName : 'Takdecor - Resetare',
   canonicalUrl : 'http://localhost:3000/user/forgotpassword',
   ogType : 'website',
-  ogDescription : 'Resetare parola pe Texx',
-  description : 'Resetare parola pe Texx'
+  ogDescription : 'Resetare parola pe Takdecor',
+  description : 'Resetare parola pe Takdecor'
 })
 
 useHead({

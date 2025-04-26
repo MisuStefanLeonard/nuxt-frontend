@@ -33,7 +33,7 @@ definePageMeta({
   title : 'Confirmare comanda',
   layout: 'default',
   keywords:'confirmare comanda , order confirmation',
-  siteName : 'Texx - Confirmare',
+  siteName : 'Takdecor - Confirmare',
 })
 
 useHead({

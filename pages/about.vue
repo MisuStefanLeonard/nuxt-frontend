@@ -196,7 +196,7 @@ definePageMeta({
   'we manufacture sustainable and elegant home textiles'
   ],
   layout: 'default',
-  description : 'Paseste pe texx pentru ati gasii perdeaua si draperia perfecta pentru casa ta'
+  description : 'Paseste pe Takdecor pentru ati gasii perdeaua si draperia perfecta pentru casa ta'
 })
 
 useHead({
@@ -207,7 +207,7 @@ useSeoMeta({
   title : `Takdecor - Despre noi`,
   ogSiteName : 'Takdecor - Despre noi',
   ogType : 'website',
-  ogDescription : 'Paseste pe texx pentru ati gasii perdeaua perfecta pentru casa ta',
+  ogDescription : 'Paseste pe Takdecor pentru ati gasii perdeaua perfecta pentru casa ta',
 })
 
 const carouselImgs = ['/cuv1.jpeg','/cuv2.jpeg','/cuv3.jpeg','/cuv4.jpeg','/cuv5.jpeg','/cuv6.jpeg',]

@@ -615,12 +615,12 @@ definePageMeta({
   title : 'Comenzi',
   layout: 'default',
   keywords:'comenzi,orders,client orders, comenzi client',
-  siteName : 'Texx - Comenzi',
+  siteName : 'Takdecor - Comenzi',
   canonicalUrl : process.env.NODE_ENV === 'development' ?  'http://localhost:3000/user/profile/orders' : 'https://texxshop.ro/user/profile/orders',
   ogType : 'website',
   middleware: ['auth' , 'locale'],
-  ogDescription : 'Comenzile dumnevoastra pe Texx',
-  description : 'Comenzile dumnevoastra pe Texx'
+  ogDescription : 'Comenzile dumnevoastra pe Takdecor',
+  description : 'Comenzile dumnevoastra pe Takdecor'
 })
 
 useHead({

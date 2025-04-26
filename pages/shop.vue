@@ -726,7 +726,7 @@ definePageMeta({
 })
 
 useHead({
-  title : 'Texx - Magazin'
+  title : 'Takdecor - Magazin'
 })
 
 useSeoMeta({
@@ -737,7 +737,7 @@ useSeoMeta({
 })
 
 defineOgImageComponent('NuxtSeo', {
-  title: 'Texx - Magazin',
+  title: 'Takdecor - Magazin',
   theme: '#ff0000',
   colorMode: 'dark',
 })

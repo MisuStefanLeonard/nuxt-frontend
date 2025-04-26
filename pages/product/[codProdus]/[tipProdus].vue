@@ -633,7 +633,7 @@
                                
                                 <span><v-icon class="mr-2" size="24" :icon="mdiPhone"></v-icon>0744959764</span>
                                 <br>
-                                <span><v-icon class="mr-2" size="24" :icon="mdiEmail"></v-icon>texx@email.com</span>
+                                <span><v-icon class="mr-2" size="24" :icon="mdiEmail"></v-icon>office@takdecor.ro</span>
                             </div>
                         </v-card-text>
                     </v-card>
@@ -964,7 +964,6 @@ const {t} = useI18n();
 const {name} = useDisplay()
 const currency = useState('selectedCurrency')
 definePageMeta({
-//   title : `Texx - ${productCode}`,
   middleware : ['locale'],
   layout: 'default',
   ogType : 'product',

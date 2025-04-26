@@ -97,11 +97,11 @@ definePageMeta({
   title : 'Logare',
   layout: 'default',
   keywords:'log in , logare',
-  siteName : 'Texx - Logare',
+  siteName : 'Takdecor - Logare',
   canonicalUrl : process.env.NODE_ENV === 'development' ? 'http://localhost:3000/user/login' : 'https://texxshop.ro/user/login',
   ogType : 'website',
-  ogDescription : 'Logare pe Texx',
-  description : 'Logare pe Texx'
+  ogDescription : 'Logare pe Takdecor',
+  description : 'Logare pe Takdecor'
 })
 
 useHead({

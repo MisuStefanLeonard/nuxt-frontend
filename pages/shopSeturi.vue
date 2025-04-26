@@ -472,24 +472,24 @@ definePageMeta({
   keywords: "seturi textile pentru casă, seturi de cuverturi și perdele, seturi de lenjerii de pat, seturi de draperii și perdele, seturi de perne și pături, seturi de textile pentru dormitor, seturi de textile pentru sufragerie, seturi de textile pentru camera copiilor, seturi pentru decor interior, seturi de textile premium, seturi de lenjerii de lux, seturi de perdele și draperii, seturi de perdele și cuverturi, seturi de draperii elegante, seturi de lenjerii și perne, seturi de perne și pleduri, seturi de draperii blackout, seturi de perdele pentru bucătărie, seturi de perdele rustice, seturi de perdele moderne, seturi de perdele personalizate, seturi de perdele cu imprimeuri, seturi de draperii din in, seturi de textile pentru copii, seturi de perdele pentru camera copiilor, seturi de lenjerii pentru pătuțuri, seturi de textile pentru hoteluri, seturi de lenjerii premium, seturi de cuverturi matlasate, seturi de cuverturi termoizolante, seturi de cuverturi și perne, seturi de textile pentru living, seturi de perdele și accesorii, seturi de draperii și perne, seturi de perdele pentru dormitor, seturi de textile pentru casă online, seturi de draperii groase, seturi de perdele vaporoase, seturi de textile pentru casă moderne, home textile sets, bedspread and curtain sets, luxury bedding sets, curtain and drape sets, pillow and blanket sets, bedroom textile sets, living room textile sets, children s textile sets, home decor textile sets, premium textile sets, luxury bedding collections, curtain and bedspread sets, elegant drapery sets, linen and pillow sets, throw pillow and blanket sets, blackout curtain sets, kitchen curtain sets, rustic curtain sets, modern curtain sets, custom curtain sets, printed curtain sets, linen drapery sets, children s room curtain sets, crib bedding sets, hotel textile sets, premium bedding sets, quilted bedspread sets, thermal bedspread sets, bedspread and pillow sets, living room textile bundles, curtain and accessories sets, drapery and pillow sets, bedroom curtain sets, online home textile sets, thick drapery sets, airy curtain sets, modern home textile collections, transport gratis, free delivery, anywhere, everywhere, oriunde in tara",
   middleware : 'locale',
   siteName : 'Takdecor - Seturi produse',
-  description : 'Seturi avantajoasa de cuverturi,perdele sau draperii la Texx. Livrare acasa. Livrare gratis la comanda de peste 300 RON. Livrare in toata tara! '
+  description : 'Seturi avantajoasa de cuverturi,perdele sau draperii la Takdecor. Livrare acasa. Livrare gratis la comanda de peste 300 RON. Livrare in toata tara! '
 })
 
 useSeoMeta({
   title : 'Takdecor - Seturi produse',
   ogSiteName : 'Takdecor - Seturi produse',
   ogType: 'product',
-  ogDescription : 'Seturi avantajoasa de cuverturi,perdele sau draperii la Texx. Transport gratuit la comenzi de peste 300 RON. Livrare oriunde in tara.',
+  ogDescription : 'Seturi avantajoasa de cuverturi,perdele sau draperii la Takdecor. Transport gratuit la comenzi de peste 300 RON. Livrare oriunde in tara.',
 
 })
 
 defineOgImageComponent('NuxtSeo', {
-  title: 'Texx - Magazin seturi',
+  title: 'Takdecor - Magazin seturi',
   theme: '#ff0000',
   colorMode: 'dark',
 })
 useHead({
-  title : 'Texx - Magazin seturi'
+  title : 'Takdecor - Magazin seturi'
 })
 const {name} = useDisplay()
 const screenSize = computed(() => {

@@ -9,7 +9,7 @@
               {{ $t("logout.succesfullLogoutMessage")  }}
             </v-alert>
             <v-card class="bg-blue-grey-lighten-4 text-center">
-              <v-card-title class="text-h6 text-md-h5 text-lg-h4">texx.ro</v-card-title>
+              <v-card-title class="text-h6 text-md-h5 text-lg-h4">Takdecor.ro</v-card-title>
               <v-card-text class="font-weight-light">{{ $t("logout.logoutMessage")  }}</v-card-text>
             </v-card>
           </v-col>
@@ -26,11 +26,11 @@
     title : 'Delogare',
     layout: 'default',
     keywords:'log out , delogare',
-    siteName : 'Texx - Delogare',
+    siteName : 'Takdecor - Delogare',
     // canonicalUrl : 'http://localhost:3000/user/logout',
     ogType : 'website',
-    ogDescription : 'Delogare de pe Texx',
-    description : 'Delogare de pe Texx'
+    ogDescription : 'Delogare de pe Takdecor',
+    description : 'Delogare de pe Takdecor'
   })
 
 useHead({

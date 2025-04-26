@@ -203,12 +203,12 @@ definePageMeta({
   title : 'Adrese',
   layout: 'default',
   keywords:'adrese , addresses , client , user',
-  siteName : 'Texx - Adrese',
+  siteName : 'Takdecor - Adrese',
   canonicalUrl : process.env.NODE_ENV === 'development' ? 'http://localhost:3000/user/profile/addresses' : 'https://texxshop.ro/user/profile/addresses',
   ogType : 'website',
   middleware: 'auth',
-  ogDescription : 'Adresele dumnevoastra pe Texx',
-  description : 'Adresele dumnevoastra pe Texx'
+  ogDescription : 'Adresele dumnevoastra pe Takdecor',
+  description : 'Adresele dumnevoastra pe Takdecor'
 })
 
 useHead({

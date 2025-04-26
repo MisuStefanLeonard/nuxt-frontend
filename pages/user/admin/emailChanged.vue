@@ -12,7 +12,7 @@
         </v-alert>
         <v-container class="text-h5 d-block justify-center">
           <v-card class="bg-blue-grey-lighten-4">
-            <v-card-title class="text-h6 text-md-h5 text-lg-h4">texx.ro</v-card-title>
+            <v-card-title class="text-h6 text-md-h5 text-lg-h4">Takdecor.ro</v-card-title>
             <v-card-text class="font-weight-light">
               <template v-if="changedDataSuccess">
                {{ $t('messages.changeDataSuccessAdmin') }}
@@ -41,7 +41,7 @@
     title : 'Schimbare email',
     layout: 'default',
     keywords:'email changing , schimbare email , admin',
-    siteName : 'Texx - Schimbare mail',
+    siteName : 'Takdecor - Schimbare mail',
   })
 
   useHead({

@@ -706,7 +706,7 @@
             </div>
             <!-- USER INPUT -->
             <div class="text-center p-2 ">
-                <div v-if="checkCompletedPersonalAccountDetails">
+                <!-- <div v-if="checkCompletedPersonalAccountDetails">
                     <v-alert type="success" variant="tonal" v-if="personalDetailsSelected" class="mb-4">
                         Selectata cu succes
                     </v-alert>
@@ -732,7 +732,7 @@
                             <p  class="font-weight-light h6">E-mail : {{ syncedItems.userOrderDetails.email }} </p>
                         </v-card-text>
                     </v-card>
-                </div>
+                </div> -->
                 
                 <p class="font-weight-light h4 mt-4">{{currentCurrency === 'RON' ? 'Detalii comanda' : 'Order details'}}</p>
                 <v-form ref="userInfoForm" validate-on="input" class="bg-blue-grey-lighten-5 elevation-12">
@@ -1205,18 +1205,19 @@ import orderService from '~/services/Order';
 import userService from '~/services/User'
 import { useDisplay } from 'vuetify';
 import { mdiArrowLeft, mdiArrowRight, mdiCheck, mdiClose, mdiEmoticonSadOutline, mdiFileDocumentPlusOutline, mdiInformation, mdiMapMarkerOutline } from '@mdi/js';
+import { cartCount } from '~/middleware/cart';
 
 
 definePageMeta({
   title : 'Finalizare cumparaturi',
   layout: 'default',
   keywords:'finalizare cumparaturi , plata , finish shopping , payment',
-  siteName : 'Texx - Finalizare cumparaturi',
+  siteName : 'Takdecor - Finalizare cumparaturi',
   canonicalUrl : process.env.NODE_ENV === 'development' ?  'http://localhost:3000/user/checkout' : 'https://texxshop.ro/user/checkout',
   ogType : 'website',
   middleware: ['locale'],
-  ogDescription : 'Finalizare cumparaturi pe Texx',
-  description : 'Finalizare cumparaturi pe Texx'
+  ogDescription : 'Finalizare cumparaturi pe Takdecor',
+  description : 'Finalizare cumparaturi pe Takdecor'
 })
 
 useHead({
@@ -1526,19 +1527,19 @@ const checkCompletedPersonalAccountDetails = computed(() => {
    
 })
 
-const clearOrSelectUserDetails = () => {
-    // Toggle the value
-    if (personalDetailsSelected.value === false) {
-        // Clear user details
-        userData.value.email = '';
-        userData.value.nume = '';
-        userData.value.prenume = '';
-        userData.value.nrTelefon = '';
-    } else {
-        // Sync user details
-        userData.value = { ...syncedItems.value.userOrderDetails };
-    }
-};
+// const clearOrSelectUserDetails = () => {
+//     // Toggle the value
+//     if (personalDetailsSelected.value === false) {
+//         // Clear user details
+//         userData.value.email = '';
+//         userData.value.nume = '';
+//         userData.value.prenume = '';
+//         userData.value.nrTelefon = '';
+//     } else {
+//         // Sync user details
+//         userData.value = { ...syncedItems.value.userOrderDetails };
+//     }
+// };
 
 const assignDeliveryUserAddress = async (deliveryAddress) => {
     deliveryAddressSelected.value = !deliveryAddressSelected.value
@@ -1677,6 +1678,16 @@ const orderPayment = (async () => {
                     let getTokenAndOrderId = responseFromPayment.message.split(' ')[1];
                     const orderId = getTokenAndOrderId.split('|')[1]
                     const orderConfirmationToken = getTokenAndOrderId.split('|')[0]
+                    var getCartCount = localStorage.getItem('cartCount')
+                    if(getCartCount !== null){
+                        var updateCart = parseInt(getCartCount);
+                        updateCart++
+                        localStorage.setItem('cartCount' , String(updateCart))
+                        cartCount.value = String(updateCart)
+                    }else{
+                        localStorage.setItem('cartCount' , '0');
+                        cartCount.value = '0'
+                    }
                     await navigateTo(localePath({
                         path: `/user/order/${orderConfirmationToken}`,
                         query: { i : orderId }
@@ -1817,9 +1828,18 @@ const getMinOrderPrice = (async () => {
     }
 })
 
+const completeUserDetailsIfAvailable = (() => {
+    if(checkCompletedPersonalAccountDetails){
+        if(checkCompletedPersonalAccountDetails.value === true){
+            userData.value = { ...syncedItems.value.userOrderDetails };
+        }
+    }
+})
+
 
 onMounted(async () => {
     await syncCartOnCheckout()
     await getMinOrderPrice()
+    completeUserDetailsIfAvailable()
 })
 </script>

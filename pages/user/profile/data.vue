@@ -64,12 +64,12 @@ definePageMeta({
   title : 'Date personale',
   layout: 'default',
   keywords:'date personale , personal data , client personal data , date personale client',
-  siteName : 'Texx - Date personale',
+  siteName : 'Takdecor - Date personale',
   canonicalUrl :process.env.NODE_ENV === 'development' ?  'http://localhost:3000/user/profile/data' : 'https://texxshop.ro/user/profile/data',
   ogType : 'website',
   middleware: 'auth',
-  ogDescription : 'Datele dumnevoastra pe Texx',
-  description : 'Datele dumnevoastra pe Texx'
+  ogDescription : 'Datele dumnevoastra pe Takdecor',
+  description : 'Datele dumnevoastra pe Takdecor'
 })
 
 useHead({

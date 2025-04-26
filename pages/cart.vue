@@ -527,7 +527,7 @@ definePageMeta({
   keywords:'cos cumparaturi , shopping cart , pret afisat',
   middleware: 'locale',
   ogType : 'product',
-  ogDescription : 'Vizualizeaza produsele pe care le ai in cos pe Texx',
+  ogDescription : 'Vizualizeaza produsele pe care le ai in cos pe Takdecor',
   description : 'Toate produsele tale la un click distanta de cumparare'
 })
 

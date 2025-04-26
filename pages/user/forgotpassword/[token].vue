@@ -75,7 +75,7 @@
     title : 'Confirmare resetare parola',
     layout: 'default',
     keywords:'reset password , resetare parola',
-    siteName : 'Texx - Resetare parola',
+    siteName : 'Takdecor - Resetare parola',
   })
 
   useHead({
