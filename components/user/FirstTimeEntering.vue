@@ -1,6 +1,6 @@
 <template>
     <div fluid class>
-      <v-dialog v-model="dialog" persistent max-width="1000">
+      <v-dialog v-model="dialog" persistent max-width="1000" max-height="1000">
         <v-card class="pa-4">
           <v-card-title class="text-h5 font-weight-bold text-center">
             🎉 Bine ați venit pe site-ul nostru! 🎉
@@ -30,7 +30,6 @@
   const dialog = ref(false);
   
   onMounted(() => {
-    console.log(dialog.value)
     var getVoucherReceived = localStorage.getItem("voucherReceived");
     if(getVoucherReceived !== null && getVoucherReceived === "1"){
         dialog.value = false;

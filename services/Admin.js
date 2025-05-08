@@ -629,6 +629,7 @@ class AdminService extends ApiService{
     /**
      * API Method to visualize and download the bill for the current order
      * @param {integer} orderId [Order id]
+     * @param {String} currency [Current currency for the bill to be visualiazed]
      * @returns {HttpStatusCode,PDF File} [200 for success]
      */
 
@@ -636,9 +637,88 @@ class AdminService extends ApiService{
         return this.get(`bill/${orderId}/${currency}` , null , true , false )
     }
 
+    /**
+     * API Method to cancel the bill for the current order
+     * @param {integer} orderId [Order id]
+     * @param {String} currency [Current currency for the bill to cancel]
+     * @returns {HttpStatusCode,PDF File} [200 for success]
+     */
+
     cancelBill(orderId, currency){
         return this.put(`bill/cancel/${orderId}/${currency}` , false , false , false)
     }
+
+    /**
+     * API Method to get all the pop-ups defined
+     * @returns {List} [List of current pop-ups]
+     */
+
+    getAllPopUps(){
+        return this.get('getAllPopUps' , true , false , false)
+    }
+
+    /**
+     * API Method to create a pop-up
+     * @param {Object} newPopUp [Object of type PopUps class]
+     * IdPopUp 
+       DescriereJson {
+        descriere_ro,
+        descriere_en
+       }
+       TitluJson {
+        nume_ro,
+        nume_en
+       }
+       IsActive   
+        * @returns {HttpStatusCode} [200 FOR SUCCESS]
+     */
+
+    createPopUp(newPopUp){
+        return this.post('create_popup' , newPopUp , null , false)
+    }
+
+     /**
+     * API Method to update a pop-up
+     * @param {Object} updatedPopUp [Object of type PopUps class]
+     * IdPopUp 
+       DescriereJson {
+        descriere_ro,
+        descriere_en
+       }
+       TitluJson {
+        nume_ro,
+        nume_en
+       }
+       IsActive   
+       * @returns {HttpStatusCode} [200 FOR SUCCESS]
+     */
+    
+
+    updatePopUp(updatedPopUp){
+        return this.put('update_popup' , updatedPopUp , false , false)
+    }
+
+    /**
+     * 
+     * @param {int} popUpId [pop-up id to delete]
+     * @returns {HttpStatusCode} [200 FOR SUCCESS]
+     */
+
+    deletePopUp(popUpId){
+        return this.post(`delete_popup/${popUpId}` , null , false , false)
+    }
+
+      /**
+     * 
+     * @param {int} popUpId [pop-up id to modify the state (1/0 , true/false)]
+     * @returns {HttpStatusCode} [200 FOR SUCCESS]
+     */
+
+    modifyPopUpState(popUpId){
+        return this.put(`modifyPopUpState/${popUpId}` , null , false , false)
+    }
+
+
 
 }
 

@@ -182,6 +182,15 @@ class UserService extends ApiService {
   sendBillOnEmail(bodyReq ){
     return this.post('sendBillOnEmail' , bodyReq , null, false)
   }
+
+   /**
+     * API Method to get all the pop-ups defined
+     * @returns {List} [List of current pop-ups]
+     */
+
+   getAllPopUps(){
+    return this.get('getAllPopUps' , true , false , false)
+}
   
 }
 

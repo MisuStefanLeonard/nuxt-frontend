@@ -1,6 +1,6 @@
 <template>
     <v-app>
-      <FirstTimeEntering />
+      <!-- <FirstTimeEntering /> -->
       <MyNavBar :key="route.fullPath" />
       <v-main>
         <SnackbarExpired />
