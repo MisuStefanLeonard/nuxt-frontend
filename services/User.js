@@ -190,7 +190,7 @@ class UserService extends ApiService {
 
    getAllPopUps(){
     return this.get('getAllPopUps' , true , false , false)
-}
+  }
   
 }
 

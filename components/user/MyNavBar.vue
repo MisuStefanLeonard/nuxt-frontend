@@ -1,6 +1,5 @@
 <template>
   <div>
-    <!-- Use the custom NavigationDrawer component -->
     <NavigationDrawer 
       :sidebar="sidebar" 
       :menu-items="menuItems" 
@@ -8,12 +7,11 @@
       :admin-items="adminItems"
     />
     <v-toolbar style="z-index: 2;">
-      <v-app-bar-nav-icon @click="sidebar = !sidebar">
-      </v-app-bar-nav-icon>
+      <v-app-bar-nav-icon @click="sidebar = !sidebar" />
       <v-spacer></v-spacer>
       <div class="d-flex align-center justify-center flex-grow-1">
         <v-toolbar-title class="d-flex align-center justify-center">
-          <NuxtLink :to="localePath('/home')" style="cursor: pointer" class="text-decoration-none d-flex align-center">
+          <NuxtLink :to="localePath('/home')"  class="text-decoration-none d-flex align-center cursor-pointer">
             <NuxtImg loading="lazy" src="/LogoTexx.png" alt="Logo" :height="45" :width="45" class="mr-1" preload  format="webp"/>
           </NuxtLink>
         </v-toolbar-title>
@@ -203,7 +201,6 @@ function isAuthenticated() {
 onMounted(async () => {
   isLoggedIn.value = isAuthenticated();
   isClient.value = true;
-  console.log(getCartCount.value)
   await getProductTypesAndCategories()
 })
 

@@ -56,7 +56,7 @@
                                     <v-col cols="9">
                                         <p class="font-wieght-light h5">PROMOTIE #{{ popup.idPopUp }}</p>
                                     </v-col>
-                                    <v-col cols="3">
+                                    <v-col cols="12">
                                         <v-btn :color="popup.isActive === true ? 'success' : 'error'">
                                             {{ popup.isActive === true ? 'Activa' : 'Inactiva' }}
                                         </v-btn>

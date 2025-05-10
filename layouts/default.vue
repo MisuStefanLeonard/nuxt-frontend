@@ -1,11 +1,10 @@
 <template>
     <v-app>
-      <!-- <FirstTimeEntering /> -->
+      <FirstTimeEntering />
       <MyNavBar :key="route.fullPath" />
       <v-main>
         <SnackbarExpired />
         <NuxtPage />
-       
       </v-main>
       <FooterComp />
       <CookieBanner/>

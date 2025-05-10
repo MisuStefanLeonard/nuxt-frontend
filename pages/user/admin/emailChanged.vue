@@ -32,9 +32,6 @@
   import { useRoute } from 'vue-router'
   import UserService from '~/services/User'
   
-  definePageMeta({
-    layout: 'default'
-  })
 
 
   definePageMeta({

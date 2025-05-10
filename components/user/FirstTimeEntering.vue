@@ -1,48 +1,122 @@
 <template>
-    <div fluid class>
-      <v-dialog v-model="dialog" persistent max-width="1000" max-height="1000">
+  <div>
+    <div
+      v-for="popUp in lambdaPopUp"
+      :key="popUp.idPopUp"
+    >
+      <v-dialog
+        v-model="dialogOpen[popUp.idPopUp]"
+        persistent
+        max-width="1000"
+        max-height="1000"
+      >
         <v-card class="pa-4">
           <v-card-title class="text-h5 font-weight-bold text-center">
-            🎉 Bine ați venit pe site-ul nostru! 🎉
+            {{ locale === 'en'
+               ? popUp.titluJson.nume_en
+               : popUp.titluJson.nume_ro }}
           </v-card-title>
-  
+
           <v-card-text class="text-body-1 text-center">
-            Sunteți client nou pe site? Vrem să vă mulțumim cu un VOUCHER DE 5% REDUCERE la prima comandă! 🎁
+            {{ locale === 'en'
+               ? popUp.descriereJson.descriere_en
+               : popUp.descriereJson.descriere_ro }}
           </v-card-text>
-  
-          <v-divider class="my-2"></v-divider>
-  
-          <v-card-text class="text-h6 text-center">
-            <strong>Cod Voucher: <span class="text-primary">WELCOME5</span></strong>
+
+          <v-divider class="my-2" />
+
+          <v-card-text
+            v-if="popUp.voucher"
+            class="text-h6 text-center"
+          >
+            <strong>
+              {{ locale === 'en' ? 'Voucher Code:' : 'Cod Voucher:' }}
+              <span class="text-primary">
+                {{ popUp.voucher.codVoucherDto }}
+              </span>
+            </strong>
+            <br />
+            <strong>
+              {{ popUp.voucher.reducereDto }}%
+              {{ locale === 'en' ? 'OFF' : 'REDUCERE' }}
+            </strong>
           </v-card-text>
-  
+
           <v-card-actions class="justify-center">
-            <v-btn color="primary" variant="flat" @click="getVoucher()">❌ Închide</v-btn>
+            <v-btn
+              color="primary"
+              @click="closePopUpById(popUp.idPopUp)"
+            >
+              ❌ {{ locale === 'en' ? 'Close' : 'Închide' }}
+            </v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
     </div>
-  </template>
-  
-  <script setup>
-  import { ref, onMounted } from 'vue';
-  
-  const dialog = ref(false);
-  
-  onMounted(() => {
-    var getVoucherReceived = localStorage.getItem("voucherReceived");
-    if(getVoucherReceived !== null && getVoucherReceived === "1"){
-        dialog.value = false;
-    }else{
-        dialog.value = true;
+  </div>
+</template>
+
+<script setup>
+import { ref, reactive, onBeforeMount } from 'vue'
+import userService from '~/services/User'
+import { useI18n } from 'vue-i18n'
+
+const { locale } = useI18n()
+const lambdaPopUp = ref([])
+const dialogOpen = reactive({})
+
+// key in localStorage
+const STORAGE_KEY = 'closedPopUps'
+// 7 days in ms
+const EXPIRY_MS = 7 * 24 * 60 * 60 * 1000
+
+// load stored record { ids: [], expiry } or return empty array
+function loadClosedIds() {
+  const raw = localStorage.getItem(STORAGE_KEY)
+  if (!raw) return []
+  try {
+    const { ids, expiry } = JSON.parse(raw)
+    if (Date.now() > expiry) {
+      // expired — clear it
+      localStorage.removeItem(STORAGE_KEY)
+      return []
     }
-   
-  });
-  
-  const getVoucher =  (() => {
-    dialog.value = false;
-    localStorage.setItem("voucherReceived" , "1");
+    return Array.isArray(ids) ? ids : []
+  } catch {
+    localStorage.removeItem(STORAGE_KEY)
+    return []
+  }
+}
+
+// save new list of ids with fresh 7-day expiry
+function saveClosedIds(ids) {
+  const record = {
+    ids,
+    expiry: Date.now() + EXPIRY_MS
+  }
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(record))
+}
+
+async function getPopUpsForUser() {
+  const response = await userService.getAllPopUps()
+  if (!response || !response.length) return
+
+  const closed = loadClosedIds()
+  lambdaPopUp.value = response
+
+  response.forEach(p => {
+    dialogOpen[p.idPopUp] = !closed.includes(p.idPopUp)
   })
- 
-  </script>
-  
+}
+
+function closePopUpById(idPopUp) {
+  dialogOpen[idPopUp] = false
+  const closed = loadClosedIds()
+  if (!closed.includes(idPopUp)) {
+    closed.push(idPopUp)
+    saveClosedIds(closed)
+  }
+}
+
+onBeforeMount(getPopUpsForUser)
+</script>

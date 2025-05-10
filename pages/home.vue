@@ -1,5 +1,5 @@
 <template>
-  <div fluid class="m-auto ">
+  <div class="m-auto ">
     <div id="image" class=" text-center">
       <v-alert density="compact" color="red-darken-4" variant="flat" v-if="showFreeDeliveryBanner">
         <span class="font-weight-thin h5"> <v-icon class="mx-2"  :icon="mdiTruck" size="24"></v-icon>{{$t('homePage.orderOver1')}} {{ getMinOrderPriceForFreeDelivery }} {{ selectedCurrency === 'RON' ? 'RON' : 'EUR'  }} {{$t('homePage.orderOver2')}}</span>
@@ -128,7 +128,7 @@
                     <v-tooltip :text="`${t('general.seeProduct')}`"
                       >
                       <template v-slot:activator = "{props}">
-                        <div fluid class="text-center mx-5 my-2">
+                        <div class="text-center mx-5 my-2">
                             <v-card class="h-100 p-2  bg-grey-lighten-4 elevation-12">
                                 <v-card-title>
                                   <div
@@ -213,7 +213,7 @@
                     <v-tooltip :text="`${t('general.seeProduct')}`"
                       >
                       <template v-slot:activator = "{props}">
-                        <div fluid class="text-center mx-5 my-2">
+                        <div class="text-center mx-5 my-2">
                             <v-card class="h-100 p-2  bg-grey-lighten-4 elevation-12">
                                 <v-card-title>
                                   <div
@@ -298,7 +298,7 @@
                     <v-tooltip :text="`${t('general.seeProduct')}`"
                       >
                       <template v-slot:activator = "{props}">
-                        <div fluid class="text-center mx-5 my-2">
+                        <div class="text-center mx-5 my-2">
                             <v-card class="h-100 p-2  bg-grey-lighten-4 elevation-12">
                                 <v-card-title>
                                   <div
@@ -510,7 +510,6 @@ const getMinOrderPriceForFreeDelivery = computed(() => {
       return generalSettings.value.value
     return generalSettings.value.value / 5
   }
-  
 })
 
 

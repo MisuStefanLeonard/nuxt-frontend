@@ -193,11 +193,6 @@ import { mdiContentSave, mdiFileDocumentPlusOutline, mdiMapMarkerOutline, mdiPen
 import { ref, computed, onMounted } from 'vue'
 import UserService from '~/services/User'
 
-definePageMeta({
-    layout: 'default',
-   
-})
-
 
 definePageMeta({
   title : 'Adrese',
