@@ -1,4 +1,4 @@
-ARG NODE_VERSION=23.7.0
+ARG NODE_VERSION=24.0.1
 
 FROM node:${NODE_VERSION}-alpine as build
 ENV NODE_OPTIONS="--max-old-space-size=4096"
@@ -7,7 +7,7 @@ WORKDIR /app
 
 COPY ./package*.json /app/
 
-RUN npm install -g npm@11.3.0
+RUN npm install 
 
 COPY . /app
 
