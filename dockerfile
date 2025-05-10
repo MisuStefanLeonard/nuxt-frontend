@@ -1,4 +1,4 @@
-ARG NODE_VERSION=23.7
+ARG NODE_VERSION=23.5
 
 FROM node:${NODE_VERSION}-alpine as build
 ENV NODE_OPTIONS="--max-old-space-size=4096"
