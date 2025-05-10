@@ -5,9 +5,9 @@ ENV NODE_OPTIONS="--max-old-space-size=4096"
 
 WORKDIR /app
 
-RUN npm install 
-
 COPY ./package*.json /app/
+
+RUN npm install 
 
 COPY . /app
 
